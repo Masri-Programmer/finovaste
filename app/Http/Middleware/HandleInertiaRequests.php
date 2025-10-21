@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\ComponentService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -37,7 +38,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-
+        $componentService = new ComponentService();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -45,8 +46,13 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'supported_locales' => ['en', 'de'],
+            'i18n' => [
+                'locale' => app()->getLocale(),
+                'supported_locales' => ['en', 'de'],
+            ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'navigation' => $componentService->getStructuredComponent('main_navigation'),
+            'footer' => $componentService->getStructuredComponent('site_footer'),
         ];
     }
 }

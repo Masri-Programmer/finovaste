@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // import CookieConsentBanner from '@/components/CookieConsentBanner.vue';
-// import Header from '@/components/layout/header/Header.vue';
-
+import Header from '@/components/layout/header/Header.vue';
 import { AppPageProps } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -38,6 +37,7 @@ const jsonLdSchema = computed(() => {
         '@graph': baseGraph,
     });
 });
+const menuSections = [];
 </script>
 
 <template>
@@ -71,7 +71,8 @@ const jsonLdSchema = computed(() => {
             {{ jsonLdSchema }}
         </component> -->
     </Head>
-    <!-- <Header :menuSections="menuSections" />
+    <Header :menuSections="menuSections" />
+    <!-- 
     <RightSideNav />
     <main
         class="grid gap-4 overflow-hidden sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"

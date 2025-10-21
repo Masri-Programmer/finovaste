@@ -1,9 +1,9 @@
 import common from './en/common.json';
 import validation from './en/validation.json';
 
-const enMessages = {
+const en = {
     common,
     validation,
 };
 
-export default enMessages;
+export default en;
