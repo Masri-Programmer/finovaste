@@ -8,7 +8,7 @@
             >
                 <!-- Left Section: Brand -->
                 <div class="flex flex-1 items-center justify-start">
-                    <AppLogoIcon class="size-6 fill-current" />
+                    <AppLogoIcon class="size-6 fill-current" /> &nbsp; Finovaste
                 </div>
 
                 <!-- Center Section: Desktop Navigation -->
@@ -59,13 +59,7 @@
 <script setup lang="ts">
 import AppearanceIcon from '@/components/AppearanceIcon.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-// import CurrencySwitch from '@/components/CurrencySwitch.vue';
 import LanguageSwitch from '@/components/LanguageSwitch.vue';
-// import { ref } from 'vue';
-// import Brand from './Brand.vue';
-// import DesktopNav from './DesktopNav.vue';
-// import HeaderBtns from './HeaderBtns.vue';
-// import MobileNav from './MobileNav.vue';
 
 // const isSheetOpen = ref(false);
 import { dashboard, login, register } from '@/routes';

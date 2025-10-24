@@ -1,0 +1,69 @@
+{
+    "homepage": {
+        "meta": {
+            "title": "FinoVaste Web Components | Build Faster, Build Smarter",
+            "description": "Elevate your Vue and Inertia.js applications with FinoVaste's powerful, themeable web components. Build faster, smarter, and more reliably.",
+            "keywords": "web components, vue components, inertia.js, tailwind css, shadcn/ui, developer tools, finoVaste"
+        },
+        "hero": {
+            "headline": "Build Your Next Big Thing with FinoVaste",
+            "subheading": "Our powerful web components integrate seamlessly with your existing stack, letting you build faster and more reliably than ever before.",
+            "cta": {
+                "primary": "Get Started",
+                "secondary": "Learn More"
+            },
+            "visual": {
+                "lightModePlaceholder": "Dynamic App Visual (Light Mode)",
+                "darkModePlaceholder": "Dynamic App Visual (Dark Mode)"
+            },
+            "notifications": {
+                "navigating": "Redirecting to sign-up page...",
+                "learnMoreClicked": "Thanks for your interest! More info coming soon."
+            }
+        }
+    },
+    "marketplace": {
+        "title": "Marketplace",
+        "featuredListings": "Featured Listings",
+        "searchPlaceholder": "Search listings..."
+    },
+    "categories": {
+        "all": "All",
+        "properties": "Properties",
+        "vehicles": "Vehicles",
+        "furniture": "Furniture",
+        "electronics": "Electronics",
+        "art": "Art & Collectibles",
+        "businesses": "Businesses",
+        "startups": "Startups"
+    },
+    "locations": {
+        "sanFrancisco": "San Francisco, CA",
+        "losAngeles": "Los Angeles, CA"
+    },
+    "reviews": {
+        "label": "reviews"
+    },
+    "listings": {
+        "capitalRaised": "Capital Raised",
+        "investors": "Investors",
+        "minInvestment": "Min. Investment",
+        "investNow": "Invest Now",
+        "auctionEnds": "Auction ends in",
+        "startingBid": "Starting Bid",
+        "currentBid": "Current Bid",
+        "placeBid": "Place Bid",
+        "apartment": {
+            "title": "Modern Downtown Luxury Apartment",
+            "description": "Stunning 3-bedroom apartment in the heart of downtown with panoramic city views. Premium finishes and smart home technology throughout."
+        },
+        "carCollection": {
+            "title": "2024 Luxury Sports Car Collection",
+            "description": "Rare collection of high-performance luxury vehicles. Limited edition models with verified authenticity and full service history."
+        }
+    },
+    "notifications": {
+        "wishlistAdded": "Added to your wishlist!",
+        "errorGeneric": "An unexpected error occurred. Please try again."
+    }
+}

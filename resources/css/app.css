@@ -162,3 +162,39 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer components {
+    .container-custom {
+        @apply container mx-auto max-w-7xl overflow-hidden px-4 sm:px-8 lg:px-12;
+    }
+
+    .page-custom {
+        @apply container mx-auto mt-12 max-w-7xl px-4 py-16 sm:px-8 lg:px-12;
+    }
+
+    .container-custom-y {
+        @apply py-4 sm:py-8 lg:py-12;
+    }
+}
+html,
+body {
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+    scroll-behavior: cubic-bezier(0.42, 0, 0.58, 1);
+
+    ::-webkit-scrollbar {
+        width: 0.6em;
+        height: auto;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: var(----background);
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--chart-3);
+        border-radius: 10px;
+    }
+}

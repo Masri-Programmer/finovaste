@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use ComponentSeeder;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\ComponentSeeder as SeedersComponentSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,12 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'test@example.com',
-            'password' => 'freewill210',
+        $this->call([
+            UserSeeder::class,
+            // AddressSeeder::class,
+            RoleSeeder::class,
+            SeedersComponentSeeder::class,
+            CategorySeeder::class,
         ]);
     }
 }

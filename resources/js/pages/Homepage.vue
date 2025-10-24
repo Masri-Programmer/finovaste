@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import Layout from './layout/layout.vue';
+import Layout from '../components/layout/layout.vue';
+import Hero from './homepage/Hero.vue';
+import Marketplace from './homepage/Marketplace.vue';
 </script>
 
 <template>
-    <Layout />
+    <Layout>
+        <Hero />
+        <Marketplace />
+    </Layout>
 </template>

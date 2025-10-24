@@ -72,13 +72,13 @@ const menuSections = [];
         </component> -->
     </Head>
     <Header :menuSections="menuSections" />
-    <!-- 
-    <RightSideNav />
     <main
-        class="grid gap-4 overflow-hidden sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
+        class="container-custom x-4 mt-14 grid min-h-screen items-center gap-4 overflow-hidden sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
     >
         <slot />
     </main>
+    <!--
+    <RightSideNav />
     <Footer :menuSections="menuSections" />
     <ScrollTop />
     <CookieConsentBanner /> -->

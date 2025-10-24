@@ -9,7 +9,9 @@ export function useLanguageSwitcher() {
     const page = usePage();
     const locale = computed(() => page.props.locale as string);
 
-    const supportedLocales = computed(() => page.props.supported_locales as string[]);
+    const supportedLocales = computed(
+        () => page.props.supported_locales as string[],
+    );
 
     const availableLanguages = computed(() =>
         supportedLocales.value.map((code) => ({
