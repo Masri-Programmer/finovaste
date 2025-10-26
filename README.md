@@ -33,37 +33,24 @@ The platform is designed as a hybrid marketplace combining traditional e-commerc
 - UI/UX features
 - Privacy & legal compliance
 - Search & filtering
-- Payment integration
 - Reviews & ratings
 
-3. \***\*Transaction Types\*\*** - Explanation of all 4 transaction models (Buy, Invest, Auction, Donate)
+1.  \***\*Transaction Types\*\*** - Explanation of all 4 transaction models (Buy, Invest, Auction, Donate)
+2.  \***\*Categories\*\*** - All 7 supported categories with icons
+3.  \***\*Tech Stack\*\*** - Complete list of technologies and libraries used
+4.  \***\*File Structure\*\*** - Documentation of the entire project structure
+5.  \***\*Getting Started\*\*** - Installation and setup instructions
+6.  \***\*Core Components\*\*** - Detailed description of each major component
+7.  \***\*Internationalization Guide\*\*** - How the i18n system works with code examples
+8.  \***\*Authentication Guide\*\*** - Auth flow and usage examples
+9.  \***\*Features in Detail\*\*** - Deep dive into:
 
-4. \***\*Categories\*\*** - All 7 supported categories with icons
-
-5. \***\*Tech Stack\*\*** - Complete list of technologies and libraries used
-
-6. \***\*File Structure\*\*** - Documentation of the entire project structure
-
-7. \***\*Getting Started\*\*** - Installation and setup instructions
-
-8. \***\*Core Components\*\*** - Detailed description of each major component
-
-9. \***\*Internationalization Guide\*\*** - How the i18n system works with code examples
-
-10. \***\*Authentication Guide\*\*** - Auth flow and usage examples
-
-11. \***\*Features in Detail\*\*** - Deep dive into:
-
--   - Media preview system
+        - Media preview system
         - Share functionality
         - Product FAQs
         - Risk disclosures
         - Campaign system
 
-12. \***\*UI Components\*\*** - List of all 40+ shadcn/ui components
-
-13. \***\*Data Models\*\*** - TypeScript interfaces for key data structures
-
-14. \***\*Future Enhancements\*\*** - Planned features and backend requirements
-
-The README is well-organized with emojis for visual clarity, code examples, tables, and a professional structure that makes it easy for developers to understand and contribute to your project!
+10. \***\*UI Components\*\*** - List of all 40+ shadcn/ui components
+11. \***\*Data Models\*\*** - TypeScript interfaces for key data structures
+12. \***\*Future Enhancements\*\*** - Planned features and backend requirements

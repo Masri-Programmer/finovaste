@@ -19,18 +19,10 @@ import {
 import { Progress } from '@/components/ui/progress';
 
 // Import icons
-import { Clock, Heart, MapPin, Moon, Star, Sun, Users } from 'lucide-vue-next';
+import { Clock, Heart, MapPin, Star, Users } from 'lucide-vue-next';
 
 // Import the custom category filter component
 import MarketplaceCategoryFilters from './Filters.vue';
-
-// --- In a real Inertia app, these would be props passed from your controller ---
-// const props = defineProps({
-//   listings: Array,
-//   categories: Array,
-//   filters: Object
-// })
-// --------------------------------------------------------------------------
 
 // --- Initialize composables ---
 const { t } = useI18n();
@@ -40,7 +32,7 @@ const toast = useToast();
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
-// --- Sample Data (to replace with Inertia props) ---
+// --- Sample Data ---
 const filters = ref({
     category: 'all',
     search: '',
@@ -57,16 +49,15 @@ const categories = ref([
 ]);
 
 const listings = ref([
-    // Based on the "Modern Downtown Luxury Apartment" card
     {
         id: 1,
-        titleKey: 'listings.apartment.title',
-        descriptionKey: 'listings.apartment.description',
+        titleKey: 'homepage.listings.apartment.title',
+        descriptionKey: 'homepage.listings.apartment.description',
         category: 'Properties',
         type: 'Investment',
-        typeVariant: 'accent', // Uses the custom CSS accent color
-        imageUrl: '/img/apartment-dining.jpg', // Placeholder
-        locationKey: 'locations.sanFrancisco',
+        typeVariant: 'accent',
+        imageUrl: 'https://placehold.co/600x400.png?text=Luxury+Apartment',
+        locationKey: 'homepage.locations.sanFrancisco',
         reviews: 34,
         rating: 4.5,
         capitalRaised: 450000,
@@ -74,16 +65,15 @@ const listings = ref([
         investors: 52,
         minInvestment: 25000,
     },
-    // Based on the "2024 Luxury Sports Car Collection" card
     {
         id: 2,
-        titleKey: 'listings.carCollection.title',
-        descriptionKey: 'listings.carCollection.description',
+        titleKey: 'homepage.listings.carCollection.title',
+        descriptionKey: 'homepage.listings.carCollection.description',
         category: 'Vehicles',
         type: 'Auction',
-        typeVariant: 'secondary', // Uses the custom CSS secondary color
-        imageUrl: '/img/g-wagon.jpg', // Placeholder
-        locationKey: 'locations.losAngeles',
+        typeVariant: 'secondary',
+        imageUrl: 'https://placehold.co/600x400?text=Car+Collection',
+        locationKey: 'homepage.locations.losAngeles',
         reviews: 28,
         rating: 5,
         auctionEndsIn: '2d 14h',
@@ -93,27 +83,18 @@ const listings = ref([
 ]);
 // --- End Sample Data ---
 
-/**
- * --- Inertia + Toast Example ---
- * Simulate adding an item to a wishlist.
- */
 function addToWishlist(listingId: number) {
-    // @ts-ignore - Assuming 'route' is globally available via Ziggy
     router.post(
         route('wishlist.add', { id: listingId }),
-        {
-            // POST data
-        },
+        {},
         {
             preserveScroll: true,
             onSuccess: () => {
-                // Show success notification
-                toast.success(t('notifications.wishlistAdded'));
+                toast.success(t('homepage.notifications.wishlistAdded'));
             },
             onError: (errors) => {
-                // Show error notification
                 const errorMsg =
-                    errors.message || t('notifications.errorGeneric');
+                    errors.message || t('homepage.notifications.errorGeneric');
                 toast.error(errorMsg);
             },
         },
@@ -125,22 +106,8 @@ function addToWishlist(listingId: number) {
     <div class="min-h-screen bg-background p-4 text-foreground md:p-8">
         <header class="mb-4 flex items-center justify-between">
             <h1 class="text-3xl font-bold text-foreground">
-                {{ t('marketplace.title') }}
+                {{ t('homepage.marketplace.title') }}
             </h1>
-
-            <Button
-                variant="outline"
-                size="icon"
-                aria-label="Toggle dark mode"
-                @click="toggleDark()"
-            >
-                <Sun
-                    class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
-                />
-                <Moon
-                    class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
-                />
-            </Button>
         </header>
 
         <MarketplaceCategoryFilters
@@ -150,7 +117,7 @@ function addToWishlist(listingId: number) {
 
         <section class="mt-6">
             <h2 class="mb-4 text-2xl font-semibold">
-                {{ t('marketplace.featuredListings') }}
+                {{ t('homepage.marketplace.featuredListings') }}
             </h2>
 
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -165,14 +132,12 @@ function addToWishlist(listingId: number) {
                             :alt="t(listing.titleKey)"
                             class="h-48 w-full object-cover"
                         />
-
                         <Badge
                             :variant="listing.typeVariant"
                             class="absolute top-4 left-4"
                         >
                             {{ listing.type }}
                         </Badge>
-
                         <Button
                             variant="secondary"
                             size="icon"
@@ -197,7 +162,7 @@ function addToWishlist(listingId: number) {
                         </CardDescription>
 
                         <div
-                            class="mt-4 flex items-center justify-between text-sm text-muted-foreground"
+                            class="mt-4 flex flex-col items-start gap-2 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
                         >
                             <div class="flex items-center gap-1">
                                 <MapPin class="h-4 w-4" />
@@ -209,7 +174,7 @@ function addToWishlist(listingId: number) {
                                     >{{ listing.rating }} ({{
                                         listing.reviews
                                     }}
-                                    {{ t('reviews.label') }})</span
+                                    {{ t('homepage.reviews.label') }})</span
                                 >
                             </div>
                         </div>
@@ -223,7 +188,7 @@ function addToWishlist(listingId: number) {
                                     class="mb-1 flex justify-between text-sm font-medium"
                                 >
                                     <span>{{
-                                        t('listings.capitalRaised')
+                                        t('homepage.listings.capitalRaised')
                                     }}</span>
                                     <span class="text-foreground"
                                         >${{
@@ -243,18 +208,22 @@ function addToWishlist(listingId: number) {
                                 />
                             </div>
                             <div
-                                class="flex items-center justify-between text-sm"
+                                class="flex flex-col items-start gap-2 text-sm sm:flex-row sm:items-center sm:justify-between"
                             >
                                 <span
                                     class="flex items-center gap-1 text-muted-foreground"
                                 >
                                     <Users class="h-4 w-4" />
                                     {{ listing.investors }}
-                                    {{ t('listings.investors') }}
+                                    {{ t('homepage.listings.investors') }}
                                 </span>
                                 <div>
                                     <span class="text-muted-foreground"
-                                        >{{ t('listings.minInvestment') }}:
+                                        >{{
+                                            t(
+                                                'homepage.listings.minInvestment',
+                                            )
+                                        }}:
                                     </span>
                                     <span class="font-bold text-foreground"
                                         >${{
@@ -276,7 +245,7 @@ function addToWishlist(listingId: number) {
                                     class="flex items-center gap-1 text-secondary-foreground"
                                 >
                                     <Clock class="h-4 w-4" />
-                                    {{ t('listings.auctionEnds') }}
+                                    {{ t('homepage.listings.auctionEnds') }}
                                 </span>
                                 <span
                                     class="font-bold text-secondary-foreground"
@@ -287,7 +256,9 @@ function addToWishlist(listingId: number) {
                                 class="flex items-baseline justify-between text-sm"
                             >
                                 <span class="text-muted-foreground"
-                                    >{{ t('listings.startingBid') }}:</span
+                                    >{{
+                                        t('homepage.listings.startingBid')
+                                    }}:</span
                                 >
                                 <span class="font-medium text-foreground"
                                     >${{
@@ -299,7 +270,9 @@ function addToWishlist(listingId: number) {
                                 class="flex items-baseline justify-between text-sm"
                             >
                                 <span class="text-muted-foreground"
-                                    >{{ t('listings.currentBid') }}:</span
+                                    >{{
+                                        t('homepage.listings.currentBid')
+                                    }}:</span
                                 >
                                 <span class="text-lg font-bold text-primary"
                                     >${{
@@ -315,14 +288,14 @@ function addToWishlist(listingId: number) {
                             v-if="listing.type === 'Investment'"
                             class="w-full"
                         >
-                            {{ t('listings.investNow') }}
+                            {{ t('homepage.listings.investNow') }}
                         </Button>
                         <Button
                             v-if="listing.type === 'Auction'"
                             class="w-full"
                             variant="outline"
                         >
-                            {{ t('listings.placeBid') }}
+                            {{ t('homepage.listings.placeBid') }}
                         </Button>
                     </CardFooter>
                 </Card>

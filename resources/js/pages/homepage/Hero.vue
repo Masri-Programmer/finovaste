@@ -24,7 +24,7 @@ function handleLearnMore() {
 </script>
 
 <template>
-    <section class="mx-auto">
+    <section class="mx-auto px-4 sm:px-6 lg:px-8">
         <div
             class="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16"
         >
@@ -54,19 +54,6 @@ function handleLearnMore() {
                     </Button>
                 </div>
             </div>
-
-            <!-- <div class="flex items-center justify-center">
-                <div
-                    :class="[
-                        'flex h-80 w-full max-w-md items-center justify-center rounded-lg border p-8 shadow-md transition-colors duration-300',
-                        visualClasses,
-                    ]"
-                >
-                    <span class="text-lg font-medium italic">
-                        {{ visualPlaceholderText }}
-                    </span>
-                </div>
-            </div> -->
         </div>
     </section>
 </template>

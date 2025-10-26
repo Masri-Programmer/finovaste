@@ -1,25 +1,23 @@
 {
-    "homepage": {
-        "meta": {
-            "title": "FinoVaste Web Components | Build Faster, Build Smarter",
-            "description": "Elevate your Vue and Inertia.js applications with FinoVaste's powerful, themeable web components. Build faster, smarter, and more reliably.",
-            "keywords": "web components, vue components, inertia.js, tailwind css, shadcn/ui, developer tools, finoVaste"
+    "meta": {
+        "title": "Finovaste | Your Marketplace to Buy, Invest, & Bid on Assets",
+        "description": "Discover, buy, and invest in a diverse range of assets on Finovaste. From luxury properties and startups to collectibles and vehicles, it's your all-in-one platform for direct purchase, fractional investment, live auctions, and donations.",
+        "keywords": "Finovaste, investment, asset marketplace, buy assets, fractional investment, property investment, startup investing, live auctions, luxury auctions, collectibles, art, vehicles, donations, e-commerce"
+    },
+    "hero": {
+        "headline": "Your Gateway to Exclusive Assets & Investments",
+        "subheading": "Finovaste is the all-in-one platform to discover, purchase, and invest in properties, startups, luxury goods, and collectibles.",
+        "cta": {
+            "primary": "Explore Marketplace",
+            "secondary": "How It Works"
         },
-        "hero": {
-            "headline": "Build Your Next Big Thing with FinoVaste",
-            "subheading": "Our powerful web components integrate seamlessly with your existing stack, letting you build faster and more reliably than ever before.",
-            "cta": {
-                "primary": "Get Started",
-                "secondary": "Learn More"
-            },
-            "visual": {
-                "lightModePlaceholder": "Dynamic App Visual (Light Mode)",
-                "darkModePlaceholder": "Dynamic App Visual (Dark Mode)"
-            },
-            "notifications": {
-                "navigating": "Redirecting to sign-up page...",
-                "learnMoreClicked": "Thanks for your interest! More info coming soon."
-            }
+        "visual": {
+            "lightModePlaceholder": "Marketplace Preview (Light Mode)",
+            "darkModePlaceholder": "Marketplace Preview (Dark Mode)"
+        },
+        "notifications": {
+            "navigating": "Loading the marketplace...",
+            "learnMoreClicked": "Loading details on how Finovaste works..."
         }
     },
     "marketplace": {
