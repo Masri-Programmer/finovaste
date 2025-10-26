@@ -24,7 +24,7 @@ function handleLearnMore() {
 </script>
 
 <template>
-    <section class="mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="mx-auto mt-8 sm:mt-10 md:mt-12">
         <div
             class="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16"
         >

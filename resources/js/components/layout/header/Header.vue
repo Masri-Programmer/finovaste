@@ -1,14 +1,14 @@
 <template>
     <header class="fixed top-0 right-0 left-0 z-50">
         <div
-            class="border-b border-secondary/20 bg-secondary/10 text-secondary-foreground shadow-sm"
+            class="border-b border-secondary/20 bg-secondary/10 text-secondary-foreground shadow-sm backdrop-blur-2xl"
         >
             <div
-                class="container-custom flex h-14 items-center !overflow-visible px-4"
+                class="container-custom flex h-14 items-center !overflow-visible"
             >
-                <!-- Left Section: Brand -->
                 <div class="flex flex-1 items-center justify-start">
-                    <AppLogoIcon class="size-6 fill-current" /> &nbsp; Finovaste
+                    <AppLogoIcon class="size-6 fill-current" /> &nbsp;
+                    {{ $page.props.name }}
                 </div>
 
                 <!-- Center Section: Desktop Navigation -->

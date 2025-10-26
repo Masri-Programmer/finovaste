@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { useDark, useToggle } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
-// Import components from shadcn/ui
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,21 +15,14 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
-// Import icons
 import { Clock, Heart, MapPin, Star, Users } from 'lucide-vue-next';
 
-// Import the custom category filter component
+import Pagination from '@/components/layout/Pagination.vue';
 import MarketplaceCategoryFilters from './Filters.vue';
 
-// --- Initialize composables ---
 const { t } = useI18n();
 const toast = useToast();
 
-// --- VueUse: Dark Mode Toggle ---
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
-
-// --- Sample Data ---
 const filters = ref({
     category: 'all',
     search: '',
@@ -55,7 +45,7 @@ const listings = ref([
         descriptionKey: 'homepage.listings.apartment.description',
         category: 'Properties',
         type: 'Investment',
-        typeVariant: 'accent',
+        typeVariant: 'secondary',
         imageUrl: 'https://placehold.co/600x400.png?text=Luxury+Apartment',
         locationKey: 'homepage.locations.sanFrancisco',
         reviews: 34,
@@ -84,26 +74,26 @@ const listings = ref([
 // --- End Sample Data ---
 
 function addToWishlist(listingId: number) {
-    router.post(
-        route('wishlist.add', { id: listingId }),
-        {},
-        {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success(t('homepage.notifications.wishlistAdded'));
-            },
-            onError: (errors) => {
-                const errorMsg =
-                    errors.message || t('homepage.notifications.errorGeneric');
-                toast.error(errorMsg);
-            },
-        },
-    );
+    // router.post(
+    //     route('wishlist.add', { id: listingId }),
+    //     {},
+    //     {
+    //         preserveScroll: true,
+    //         onSuccess: () => {
+    //             toast.success(t('homepage.notifications.wishlistAdded'));
+    //         },
+    //         onError: (errors) => {
+    //             const errorMsg =
+    //                 errors.message || t('homepage.notifications.errorGeneric');
+    //             toast.error(errorMsg);
+    //         },
+    //     },
+    // );
 }
 </script>
 
 <template>
-    <div class="min-h-screen bg-background p-4 text-foreground md:p-8">
+    <div class="min-h-screen bg-background text-foreground">
         <header class="mb-4 flex items-center justify-between">
             <h1 class="text-3xl font-bold text-foreground">
                 {{ t('homepage.marketplace.title') }}
@@ -120,7 +110,7 @@ function addToWishlist(listingId: number) {
                 {{ t('homepage.marketplace.featuredListings') }}
             </h2>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
                 <Card
                     v-for="listing in listings"
                     :key="listing.id"
@@ -301,5 +291,7 @@ function addToWishlist(listingId: number) {
                 </Card>
             </div>
         </section>
+
+        <Pagination />
     </div>
 </template>

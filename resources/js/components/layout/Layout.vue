@@ -5,6 +5,7 @@ import { AppPageProps } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import Footer from './Footer.vue';
 
 const { t } = useI18n();
 const page = usePage();
@@ -73,13 +74,13 @@ const menuSections = [];
     </Head>
     <Header :menuSections="menuSections" />
     <main
-        class="container-custom x-4 mt-14 grid min-h-screen items-center gap-4 overflow-hidden sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
+        class="container-custom mt-16 grid min-h-screen items-center gap-4 overflow-hidden sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
     >
         <slot />
+        <Footer :menuSections="menuSections" />
     </main>
     <!--
     <RightSideNav />
-    <Footer :menuSections="menuSections" />
     <ScrollTop />
     <CookieConsentBanner /> -->
 </template>

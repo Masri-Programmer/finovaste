@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
 import { useWindowScroll, watchDebounced } from '@vueuse/core';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -29,24 +28,24 @@ const searchTerm = ref(props.currentFilters.search || '');
 const { y } = useWindowScroll();
 const isSticky = ref(false);
 watch(y, (newY) => {
-    isSticky.value = newY > 10;
+    isSticky.value = newY > 40;
 });
 
 function applyFilters() {
-    router.get(
-        route('marketplace.index'),
-        {
-            category:
-                activeCategory.value === 'all'
-                    ? undefined
-                    : activeCategory.value,
-            search: searchTerm.value || undefined,
-        },
-        {
-            preserveState: true,
-            preserveScroll: true,
-        },
-    );
+    // router.get(
+    //     route('marketplace.index'),
+    //     {
+    //         category:
+    //             activeCategory.value === 'all'
+    //                 ? undefined
+    //                 : activeCategory.value,
+    //         search: searchTerm.value || undefined,
+    //     },
+    //     {
+    //         preserveState: true,
+    //         preserveScroll: true,
+    //     },
+    // );
 }
 
 function selectCategory(categoryId: string) {
@@ -67,15 +66,16 @@ watchDebounced(
     <nav
         class="w-full py-3 transition-all duration-200"
         :class="{
-            'sticky top-0 z-40 bg-background/95 shadow-md backdrop-blur-sm':
-                isSticky,
+            'sticky top-0 z-40 bg-background/95 backdrop-blur-sm': isSticky,
             'border-b border-border': !isSticky,
         }"
     >
         <div
-            class="flex flex-col items-center justify-between gap-4 md:flex-row"
+            class="flex flex-col flex-wrap items-center justify-between gap-4 md:flex-row"
         >
-            <div class="flex w-full items-center gap-1 overflow-x-auto">
+            <div
+                class="flex w-full flex-wrap items-center gap-1 overflow-x-auto"
+            >
                 <Button
                     :variant="activeCategory === 'all' ? 'secondary' : 'ghost'"
                     class="flex-shrink-0 rounded-full"
