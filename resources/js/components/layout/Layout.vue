@@ -5,6 +5,7 @@ import { AppPageProps } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import Cookies from './Cookies.vue';
 import Footer from './Footer.vue';
 
 const { t } = useI18n();
@@ -78,9 +79,10 @@ const menuSections = [];
     >
         <slot />
         <Footer :menuSections="menuSections" />
+        <Cookies />
     </main>
     <!--
     <RightSideNav />
     <ScrollTop />
-    <CookieConsentBanner /> -->
+     -->
 </template>

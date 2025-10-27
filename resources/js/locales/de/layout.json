@@ -44,5 +44,40 @@
         "navigationAriaLabel": "Seitennavigation",
         "previous": "Vorherige",
         "next": "Nächste"
+    },
+    "cookieConsent": {
+        "banner": {
+            "title": "Cookie-Einstellungen",
+            "description": "Wir verwenden Cookies, um Ihr Surferlebnis zu verbessern, personalisierte Inhalte bereitzustellen und unseren Datenverkehr zu analysieren.",
+            "acceptAll": "Alle akzeptieren",
+            "necessaryOnly": "Nur Notwendige",
+            "customize": "Anpassen"
+        },
+        "modal": {
+            "title": "Cookie-Präferenzen",
+            "description": "Verwalten Sie Ihre Cookie-Einstellungen. Sie können unten verschiedene Arten von Cookies aktivieren oder deaktivieren.",
+            "necessary": {
+                "title": "Notwendige Cookies",
+                "description": "Diese Cookies sind für die ordnungsgemäße Funktion der Website unerlässlich. Sie ermöglichen Kernfunktionen."
+            },
+            "analytics": {
+                "title": "Analyse-Cookies",
+                "description": "Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Informationen anonym sammeln."
+            },
+            "marketing": {
+                "title": "Marketing-Cookies",
+                "description": "Diese Cookies werden verwendet, um Besucher über Websites hinweg zu verfolgen, um relevante Anzeigen anzuzeigen."
+            },
+            "preference": {
+                "title": "Präferenz-Cookies",
+                "description": "Diese Cookies ermöglichen es der Website, sich an Ihre getroffenen Entscheidungen zu erinnern und erweiterte Funktionen bereitzustellen."
+            },
+            "cancel": "Abbrechen",
+            "save": "Einstellungen speichern"
+        },
+        "toast": {
+            "success": "Cookie-Einstellungen erfolgreich gespeichert!",
+            "error": "Speichern der Einstellungen fehlgeschlagen. Bitte versuchen Sie es erneut."
+        }
     }
 }
