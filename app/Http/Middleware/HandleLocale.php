@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
-class SetLocale
+class HandleLocale
 {
     /**
      * Handle an incoming request.
@@ -22,7 +22,7 @@ class SetLocale
             $supportedLocales = config('app.supported_locales');
 
             if (in_array($locale, $supportedLocales, true)) {
-                App::setLocale($locale);
+                App::handleLocale($locale);
             }
         }
 

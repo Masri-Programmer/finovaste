@@ -48,6 +48,7 @@
                                 <Link
                                     v-if="$page.props.auth.user"
                                     :href="logout()"
+                                    @click="handleLogout"
                                     class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                 >
                                     logout
@@ -69,10 +70,13 @@ import AppearanceIcon from '@/components/AppearanceIcon.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import LanguageSwitch from '@/components/LanguageSwitch.vue';
 
+import { Link, router } from '@inertiajs/vue3';
 // const isSheetOpen = ref(false);
 import { login, logout, register } from '@/routes';
-import { Link } from '@inertiajs/vue3';
 defineProps<{
     menuSections: Array<any>;
 }>();
+const handleLogout = () => {
+    router.flushAll();
+};
 </script>
