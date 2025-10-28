@@ -71,9 +71,4 @@
       "passwordPlaceholder": "Passwort",
       "cancelButton": "Abbrechen",
       "confirmButton": "Konto löschen"
-    },
-    "menu": {
-    "settings": "Einstellungen",
-    "logout": "Abmelden"
-  }
-  }
+    }  }

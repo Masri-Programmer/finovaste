@@ -11,7 +11,7 @@ Route::get('/', function () {
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'can:view-dashboard'])->name('dashboard');
 
 Route::get('language/{locale}', [LanguageController::class, 'switch'])
     ->whereIn('locale', config('app.supported_locales'))
