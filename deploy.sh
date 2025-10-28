@@ -32,7 +32,7 @@ echo "🗺️ Generating sitemap..."
 php artisan sitemap:generate
 
 echo "⚙️ Reloading SSR service with new code..."
-pm2 reload "$PM2_PROCESS_NAME"
+./node_modules/.bin/pm2 reload "$PM2_PROCESS_NAME"
 
 php artisan up
 
