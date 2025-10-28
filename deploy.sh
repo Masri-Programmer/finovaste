@@ -2,17 +2,11 @@
 #  chmod +x deploy.sh 
 set -e
 
-PROJECT_DIR="/var/www/virtual/finovast/finovaste"
 PM2_PROCESS_NAME="finovaste-ssr"
 
 echo "🚀 Starting deployment..."
 
-cd "$PROJECT_DIR" || { echo "❌ Could not cd into $PROJECT_DIR. Aborting."; exit 1; }
-
 php artisan down || true
-
-echo "🔄 Pulling latest changes from git..."
-git pull origin main
 
 echo "📦 Installing Composer (PHP) dependencies..."
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev

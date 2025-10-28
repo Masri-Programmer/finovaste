@@ -26,36 +26,48 @@
                                         class="relative h-9 w-9 rounded-full"
                                     >
                                         <Bell class="h-5 w-5" />
-                                        <!-- <span
-                                            v-if="
-                                                $page.props.auth
-                                                    .notifications_count > 0
-                                            "
-                                            class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white"
-                                        >
-                                            {{
-                                                $page.props.auth
-                                                    .notifications_count
-                                            }}
-                                        </span> -->
                                     </Button>
 
-                                    <UserMenu />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger as-child>
+                                            <Button
+                                                variant="ghost"
+                                                class="relative h-9 w-9 rounded-full"
+                                            >
+                                                <Avatar class="h-9 w-9">
+                                                    <AvatarFallback>{{
+                                                        getInitials(
+                                                            $page.props.auth
+                                                                .user.name,
+                                                        )
+                                                    }}</AvatarFallback>
+                                                </Avatar>
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent
+                                            class="w-56"
+                                            align="end"
+                                        >
+                                            <UserMenuContent
+                                                :user="auth.user"
+                                            />
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </template>
 
                                 <template v-else>
                                     <Link
                                         :href="login()"
-                                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                                        class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                     >
-                                        Log in
+                                        {{ t('auth.login.button') }}
                                     </Link>
-                                    <Link
+                                    <!-- <Link
                                         :href="register()"
                                         class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                     >
-                                        Register
-                                    </Link>
+                                        {{ t('auth.register.button') }}
+                                    </Link> -->
                                 </template>
                             </nav>
                         </div>
@@ -70,13 +82,34 @@
 import AppearanceIcon from '@/components/AppearanceIcon.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import LanguageSwitch from '@/components/LanguageSwitch.vue';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import UserMenu from '@/components/UserMenu.vue';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import UserMenuContent from '@/components/UserMenuContent.vue';
 import { Bell } from 'lucide-vue-next';
+// import { AvatarImage } from '@/components/ui/avatar'; // Uncomment if you use AvatarImage
 
-import { login, register } from '@/routes';
-import { Link } from '@inertiajs/vue3';
+import { login } from '@/routes';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 defineProps<{
     menuSections: Array<any>;
 }>();
+
+const page = usePage();
+const auth = computed(() => page.props.auth);
+
+const getInitials = (name: string) => {
+    if (!name) return '';
+    const names = name.split(' ');
+    const initials = names.map((n) => n[0]).join('');
+    return initials.toUpperCase();
+};
 </script>
