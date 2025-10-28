@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#  chmod +x deploy.sh 
 set -e
 
 PROJECT_DIR="/var/www/virtual/finovast/finovaste"
