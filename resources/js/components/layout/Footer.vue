@@ -19,7 +19,7 @@
                             class="flex cursor-pointer items-center space-x-3 text-muted-foreground transition-colors hover:text-primary"
                             @click="
                                 copyToClipboard(
-                                    'contact@finovaste.com',
+                                    'xxxx',
                                     t('layout.footer.contact.emailLabel'),
                                 )
                             "

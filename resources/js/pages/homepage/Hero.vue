@@ -5,11 +5,9 @@ import { router } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
-// Initialize composables
 const { t } = useI18n();
 const toast = useToast();
 
-// --- Functionality ---
 function handleGetStarted() {
     router.visit(login(), {
         method: 'get',
