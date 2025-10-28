@@ -3,7 +3,7 @@
 set -e
 
 PROJECT_DIR="/var/www/virtual/finovast/finovaste"
-PM2_PROCESS_NAME="inertia-ssr"
+PM2_PROCESS_NAME="finovaste-ssr"
 
 echo "🚀 Starting deployment..."
 
