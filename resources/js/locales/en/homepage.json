@@ -63,5 +63,14 @@
     "notifications": {
         "wishlistAdded": "Added to your wishlist!",
         "errorGeneric": "An unexpected error occurred. Please try again."
+    },
+    "faqs": {
+        "title": "Häufig gestellte Fragen (FAQs)",
+        "showAll": "Alle anzeigen",
+        "allFaqsTitle": "Alle FAQs zum Listing",
+        "frage1": "Was ist die erwartete Rendite?",
+        "antwort1": "Die Zielrendite liegt bei 8-10% pro Jahr.",
+        "frage2": "Wann beginnt die Auszahlung?",
+        "antwort2": "Die Auszahlungen beginnen im nächsten Quartal."
     }
 }

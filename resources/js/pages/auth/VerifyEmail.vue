@@ -6,25 +6,27 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { logout } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
     status?: string;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <template>
     <AuthLayout
-        title="Verify email"
-        description="Please verify your email address by clicking on the link we just emailed to you."
+        :title="t('auth.verifyEmail.title')"
+        :description="t('auth.verifyEmail.description')"
     >
-        <Head title="Email verification" />
+        <Head :title="t('auth.verifyEmail.headTitle')" />
 
         <div
             v-if="status === 'verification-link-sent'"
             class="mb-4 text-center text-sm font-medium text-green-600"
         >
-            A new verification link has been sent to the email address you
-            provided during registration.
+            {{ t('auth.verifyEmail.successMessage') }}
         </div>
 
         <Form
@@ -34,7 +36,7 @@ defineProps<{
         >
             <Button :disabled="processing" variant="secondary">
                 <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-                Resend verification email
+                {{ t('auth.verifyEmail.button') }}
             </Button>
 
             <TextLink
@@ -42,7 +44,7 @@ defineProps<{
                 as="button"
                 class="mx-auto block text-sm"
             >
-                Log out
+                {{ t('auth.verifyEmail.logoutLink') }}
             </TextLink>
         </Form>
     </AuthLayout>

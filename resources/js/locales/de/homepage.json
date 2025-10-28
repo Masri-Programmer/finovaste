@@ -47,6 +47,7 @@
         "investors": "Investoren",
         "minInvestment": "Mindestinvestition",
         "investNow": "Jetzt investieren",
+        "risk": "Risiko",
         "auctionEnds": "Auktion endet in",
         "startingBid": "Startgebot",
         "currentBid": "Aktuelles Gebot",
@@ -63,5 +64,24 @@
     "notifications": {
         "wishlistAdded": "Zur Wunschliste hinzugefügt!",
         "errorGeneric": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "faqs": {
+        "title": "Häufig gestellte Fragen (FAQs)",
+        "showAll": "Alle anzeigen",
+        "allFaqsTitle": "Alle FAQs zum Listing",
+        "frage1": "Was ist die erwartete Rendite?",
+        "antwort1": "Die Zielrendite liegt bei 8-10% pro Jahr.",
+        "frage2": "Wann beginnt die Auszahlung?",
+        "antwort2": "Die Auszahlungen beginnen im nächsten Quartal."
+    },
+    "campaigns": {
+        "spende": "Spende",
+        "projekt": "Projekt",
+        "information": "Information"
+    },
+    "links": {
+        "website": "Webseite",
+        "pitchdeck": "Pitchdeck",
+        "details": "Details"
     }
 }

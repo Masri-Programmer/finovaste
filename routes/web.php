@@ -17,6 +17,9 @@ Route::get('language/{locale}', [LanguageController::class, 'switch'])
     ->whereIn('locale', config('app.supported_locales'))
     ->name('language.switch');
 
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
+
 Route::resource('{model}', ModelController::class)
     ->only(['index', 'show'])
     ->names('dynamic')
@@ -29,5 +32,3 @@ Route::middleware('is.admin')->group(function () {
         ->names('dynamic')
         ->parameters(['{model}' => 'item']);
 });
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
