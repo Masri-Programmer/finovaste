@@ -43,4 +43,3 @@ pm2 reload "$PM2_PROCESS_NAME"
 php artisan up
 
 echo "✅ Deployment finished successfully!"
-
