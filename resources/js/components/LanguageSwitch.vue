@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { Check, Languages } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
@@ -16,7 +26,11 @@ const { locale, availableLanguages, setLocale } = useLanguageSwitcher();
             <DropdownMenu>
                 <TooltipTrigger as-child>
                     <DropdownMenuTrigger as-child>
-                        <Button variant="ghost" size="icon" :aria-label="t('languages.changeLanguage')">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            :aria-label="t('languages.changeLanguage')"
+                        >
                             <Languages class="h-5 w-5" />
                         </Button>
                     </DropdownMenuTrigger>

@@ -1,6 +1,5 @@
 import { createI18n } from 'vue-i18n';
 
-// --- Import DE messages ---
 import auth from '../locales/de/auth.json';
 import common from '../locales/de/common.json';
 import homepage from '../locales/de/homepage.json';
@@ -40,7 +39,6 @@ const i18n = createI18n({
     },
     numberFormats: {
         'en-US': {
-            // Example for EN
             currency: {
                 style: 'currency',
                 currency: 'USD',
