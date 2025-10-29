@@ -18,13 +18,13 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'street' => fake()->streetAddress(),
+            'street' => $this->fake()->streetAddress(),
             'city' => 'Oldenburg',
             'state' => 'Lower Saxony',
-            'zip' => fake()->postcode(),
+            'zip' => $this->fake()->postcode(),
             'country' => 'Germany',
-            'latitude' => fake()->latitude(53.05, 53.25),
-            'longitude' => fake()->longitude(8.1, 8.3),
+            'latitude' => $this->fake()->latitude(53.05, 53.25),
+            'longitude' => $this->fake()->longitude(8.1, 8.3),
         ];
     }
 }
