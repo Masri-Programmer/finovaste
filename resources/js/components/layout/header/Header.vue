@@ -17,7 +17,7 @@
                     <div class="flex items-center gap-x-2">
                         <div class="hidden items-center gap-x-4 lg:flex">
                             <AppearanceIcon />
-                            <!-- <LanguageSwitch /> -->
+                            <LanguageSwitch />
                             <nav class="flex items-center justify-end gap-2">
                                 <template v-if="$page.props.auth.user">
                                     <Button
@@ -81,6 +81,7 @@
 <script setup lang="ts">
 import AppearanceIcon from '@/components/AppearanceIcon.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import LanguageSwitch from '@/components/LanguageSwitch.vue';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
