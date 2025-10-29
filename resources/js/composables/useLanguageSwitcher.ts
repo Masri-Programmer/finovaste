@@ -1,6 +1,6 @@
 import language from '@/routes/language';
 import { router, usePage } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 export function useLanguageSwitcher() {
@@ -32,18 +32,18 @@ export function useLanguageSwitcher() {
         );
     };
 
-    watch(
-        locale,
-        (newLocale) => {
-            if (newLocale) {
-                i18nLocale.value = newLocale;
-                if (typeof document !== 'undefined') {
-                    document.documentElement.lang = newLocale;
-                }
-            }
-        },
-        { immediate: true },
-    );
+    // watch(
+    //     locale,
+    //     (newLocale) => {
+    //         if (newLocale) {
+    //             i18nLocale.value = newLocale;
+    //             if (typeof document !== 'undefined') {
+    //                 document.documentElement.lang = newLocale;
+    //             }
+    //         }
+    //     },
+    //     { immediate: true },
+    // );
 
     return {
         locale,

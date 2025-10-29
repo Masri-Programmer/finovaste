@@ -6,6 +6,7 @@ use App\Services\ComponentService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\App;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -47,8 +48,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'roles' => $request->user()?->roles->pluck('slug') ?? [],
             ],
-            'locale' => app()->getLocale(),
-            'supported_locales' => config('app.supported_locales'),
+            'locale' => fn() => App::getLocale(),
+            'supported_locales' => fn() => config('app.supported_locales'),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'navigation' => $componentService->getStructuredComponent('main_navigation'),
             'footer' => $componentService->getStructuredComponent('site_footer'),
