@@ -9,6 +9,10 @@ export function useLanguageSwitcher() {
     const page = usePage();
     const locale = computed(() => page.props.locale as string);
 
+    console.log(
+        '[Finovaste Debug] page.props.locale received:',
+        page.props.locale,
+    );
     const supportedLocales = computed(
         () => page.props.supported_locales as string[],
     );
@@ -32,18 +36,26 @@ export function useLanguageSwitcher() {
         );
     };
 
-    // watch(
-    //     locale,
-    //     (newLocale) => {
-    //         if (newLocale) {
-    //             i18nLocale.value = newLocale;
-    //             if (typeof document !== 'undefined') {
-    //                 document.documentElement.lang = newLocale;
-    //             }
-    //         }
-    //     },
-    //     { immediate: true },
-    // );
+    watch(
+        locale,
+        (newLocale) => {
+            console.log(
+                '[Finovaste Debug] Watcher triggered. New locale is:',
+                newLocale,
+            );
+            if (newLocale) {
+                i18nLocale.value = newLocale;
+                console.log(
+                    '[Finovaste Debug] Set i18n-active-locale to:',
+                    i18nLocale.value,
+                );
+                if (typeof document !== 'undefined') {
+                    document.documentElement.lang = newLocale;
+                }
+            }
+        },
+        { immediate: true },
+    );
 
     return {
         locale,

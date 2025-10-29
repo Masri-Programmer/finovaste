@@ -1,5 +1,6 @@
 import { createI18n } from 'vue-i18n';
 
+// --- Import DE messages ---
 import auth_de from '../locales/de/auth.json';
 import common_de from '../locales/de/common.json';
 import homepage_de from '../locales/de/homepage.json';
@@ -47,15 +48,15 @@ const i18n = createI18n({
         },
     },
     numberFormats: {
-        'en-US': {
-            // Example for EN
-            currency: {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            },
-        },
+        // 'en-US': {
+        //     // Example for EN
+        //     currency: {
+        //         style: 'currency',
+        //         currency: 'USD',
+        //         minimumFractionDigits: 0,
+        //         maximumFractionDigits: 0,
+        //     },
+        // },
         'de-DE': {
             currency: {
                 style: 'currency',
