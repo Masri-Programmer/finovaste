@@ -1,0 +1,83 @@
+{
+    "footer": {
+        "description": "Ihre vertrauenswürdige Plattform für den Kauf, Verkauf, die Investition und das Bieten auf Premium-Assets weltweit.",
+        "contact": {
+            "email": "email",
+            "phone": "+1 (555) 123-4567",
+            "address": "San Francisco, CA 94102",
+            "emailLabel": "Email",
+            "phoneLabel": "Telefon"
+        },
+        "company": {
+            "title": "Company",
+            "about": "About Us",
+            "contact": "Contact",
+            "careers": "Careers",
+            "press": "Press"
+        },
+        "support": {
+            "title": "Support",
+            "faq": "FAQ",
+            "help": "Help Center",
+            "safety": "Safety Tips",
+            "community": "Community"
+        },
+        "legal": {
+            "title": "Legal",
+            "agb": "Allgemeine Geschäftsbedingungen",
+            "privacy": "Datenschutzerklärung",
+            "terms": "AGB",
+            "imprint": "Impressum"
+        },
+        "marketplace": {
+            "title": "Marketplace",
+            "properties": "Properties",
+            "vehicles": "Vehicles",
+            "investments": "Investments",
+            "auctions": "Auctions"
+        },
+        "copyright": "© 2025 Finovaste. Alle Rechte vorbehalten.",
+        "copied": "{type} in die Zwischenablage kopiert!",
+        "copyFailed": "Kopieren fehlgeschlagen."
+    },
+    "pagination": {
+        "navigationAriaLabel": "Seitennavigation",
+        "previous": "Vorherige",
+        "next": "Nächste"
+    },
+    "cookieConsent": {
+        "banner": {
+            "title": "Cookie-Einstellungen",
+            "description": "Wir verwenden Cookies, um Ihr Surferlebnis zu verbessern, personalisierte Inhalte bereitzustellen und unseren Datenverkehr zu analysieren.",
+            "acceptAll": "Alle akzeptieren",
+            "necessaryOnly": "Nur Notwendige",
+            "customize": "Anpassen"
+        },
+        "modal": {
+            "title": "Cookie-Präferenzen",
+            "description": "Verwalten Sie Ihre Cookie-Einstellungen. Sie können unten verschiedene Arten von Cookies aktivieren oder deaktivieren.",
+            "necessary": {
+                "title": "Notwendige Cookies",
+                "description": "Diese Cookies sind für die ordnungsgemäße Funktion der Website unerlässlich. Sie ermöglichen Kernfunktionen."
+            },
+            "analytics": {
+                "title": "Analyse-Cookies",
+                "description": "Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Informationen anonym sammeln."
+            },
+            "marketing": {
+                "title": "Marketing-Cookies",
+                "description": "Diese Cookies werden verwendet, um Besucher über Websites hinweg zu verfolgen, um relevante Anzeigen anzuzeigen."
+            },
+            "preference": {
+                "title": "Präferenz-Cookies",
+                "description": "Diese Cookies ermöglichen es der Website, sich an Ihre getroffenen Entscheidungen zu erinnern und erweiterte Funktionen bereitzustellen."
+            },
+            "cancel": "Abbrechen",
+            "save": "Einstellungen speichern"
+        },
+        "toast": {
+            "success": "Cookie-Einstellungen erfolgreich gespeichert!",
+            "error": "Speichern der Einstellungen fehlgeschlagen. Bitte versuchen Sie es erneut."
+        }
+    }
+}

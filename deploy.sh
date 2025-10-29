@@ -15,7 +15,8 @@ php artisan down || true
 # npm ci
 
 echo "🛠️ Building assets for production (SSR)..."
-NODE_OPTIONS=--max-old-space-size=4096 npm run build:ssr
+# NODE_OPTIONS=--max-old-space-size=4096 npm run build:ssr
+NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
 echo "🏃 Running database migrations..."
 php artisan migrate --force
@@ -31,8 +32,8 @@ php artisan view:cache
 # echo "🗺️ Generating sitemap..."
 # php artisan sitemap:generate
 
-echo "⚙️ Reloading SSR service with new code..."
-$HOME/bin/pm2 reload "$PM2_PROCESS_NAME"
+# echo "⚙️ Reloading SSR service with new code..."
+# $HOME/bin/pm2 reload "$PM2_PROCESS_NAME"
 
 php artisan up
 
