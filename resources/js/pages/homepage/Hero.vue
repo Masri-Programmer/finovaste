@@ -12,12 +12,12 @@ function handleGetStarted() {
     router.visit(login(), {
         method: 'get',
         onStart: () => {
-            toast.info(t('homepage.hero.notifications.navigating'));
+            toast.info(t('hero.notifications.navigating'));
         },
     });
 }
 function handleLearnMore() {
-    toast.success(t('homepage.hero.notifications.learnMoreClicked'));
+    toast.success(t('hero.notifications.learnMoreClicked'));
 }
 </script>
 
@@ -32,23 +32,23 @@ function handleLearnMore() {
                 <h1
                     class="text-4xl font-extrabold tracking-tighter md:text-5xl lg:text-6xl"
                 >
-                    {{ t('homepage.hero.headline') }}
+                    {{ t('hero.headline') }}
                 </h1>
 
                 <p class="max-w-xl text-lg text-muted-foreground md:text-xl">
-                    {{ t('homepage.hero.subheading') }}
+                    {{ t('hero.subheading') }}
                 </p>
 
                 <div class="flex flex-col gap-4 sm:flex-row">
                     <Button size="lg" @click="handleGetStarted">
-                        {{ t('homepage.hero.cta.primary') }}
+                        {{ t('hero.cta.primary') }}
                     </Button>
                     <Button
                         size="lg"
                         variant="outline"
                         @click="handleLearnMore"
                     >
-                        {{ t('homepage.hero.cta.secondary') }}
+                        {{ t('hero.cta.secondary') }}
                     </Button>
                 </div>
             </div>

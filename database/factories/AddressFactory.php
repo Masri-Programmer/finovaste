@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-// Remove the incorrect 'use Database\Factories\fake;' line.
-// Faker is accessed via the $this->faker property provided by the base Factory class.
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +17,6 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            // Change $this->fake() to $this->faker
             'street' => $this->faker->streetAddress(),
             'city' => 'Oldenburg',
             'state' => 'Lower Saxony',
