@@ -39,9 +39,9 @@ return new class extends Migration
             // SOCIAL COUNTERS & METADATA
             $table->unsignedInteger('views_count')->default(0);
             $table->unsignedInteger('likes_count')->default(0);
-            $table->decimal('average_rating', 2, 1)->default(0)->after('likes_count');
-            $table->unsignedInteger('reviews_count')->default(0)->after('average_rating');
-            $table->unsignedInteger('comments_count')->default(0)->after('reviews_count');
+            $table->decimal('average_rating', 2, 1)->default(0);
+            $table->unsignedInteger('reviews_count')->default(0);
+            $table->unsignedInteger('comments_count')->default(0);
             $table->json('meta')->nullable();
 
             // TIMESTAMPS
