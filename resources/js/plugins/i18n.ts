@@ -1,6 +1,5 @@
 import { createI18n } from 'vue-i18n';
 
-// --- GERMAN IMPORTS ---
 import auth_de from '../locales/de/auth.json';
 import common_de from '../locales/de/common.json';
 import homepage_de from '../locales/de/homepage.json';
@@ -10,7 +9,6 @@ import profile_de from '../locales/de/profile.json';
 import settings_de from '../locales/de/settings.json';
 import validation_de from '../locales/de/validation.json';
 
-// --- ENGLISH IMPORTS (You must create these files) ---
 import auth_en from '../locales/en/auth.json';
 import common_en from '../locales/en/common.json';
 import homepage_en from '../locales/en/homepage.json';
@@ -46,7 +44,6 @@ const i18n = createI18n({
         },
     },
     numberFormats: {
-        // --- Good to add EN format too ---
         'en-US': {
             currency: {
                 style: 'currency',
