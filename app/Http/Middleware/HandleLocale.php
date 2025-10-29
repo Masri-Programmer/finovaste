@@ -22,7 +22,7 @@ class HandleLocale
             $supportedLocales = config('app.supported_locales');
 
             if (in_array($locale, $supportedLocales, true)) {
-                App::handleLocale($locale);
+                App::setLocale($locale);
             }
         }
 
