@@ -12,24 +12,19 @@ class HandleLocale
 {
     /**
      * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $supportedLocales = config('app.supported_locales');
-        $defaultLocale = config('app.locale', 'de'); // Get default from config
-        $localeToSet = $defaultLocale; // Start with the default
-
-        // Check if a valid locale is in the session
         if (Session::has('locale')) {
-            $sessionLocale = Session::get('locale');
-            if (in_array($sessionLocale, $supportedLocales, true)) {
-                $localeToSet = $sessionLocale; // Use session locale
+            $locale = Session::get('locale');
+            $supportedLocales = config('app.supported_locales');
+
+            if (in_array($locale, $supportedLocales, true)) {
+                App::setLocale($locale);
             }
         }
-
-        // Set the application locale for this request
-        App::setLocale($localeToSet);
-        // App::handleLocale($localeToSet); // Or use this, both work
 
         return $next($request);
     }
