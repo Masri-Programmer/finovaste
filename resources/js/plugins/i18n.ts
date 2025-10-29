@@ -1,25 +1,21 @@
 import { createI18n } from 'vue-i18n';
 
 // --- GERMAN IMPORTS ---
-import auth_de from '../locales/de/auth.json';
-import common_de from '../locales/de/common.json';
+// import auth_de from '../locales/de/auth.json';
 import homepage_de from '../locales/de/homepage.json';
-import languages_de from '../locales/de/languages.json';
-import layout_de from '../locales/de/layout.json';
-import profile_de from '../locales/de/profile.json';
-import settings_de from '../locales/de/settings.json';
-import validation_de from '../locales/de/validation.json';
+// import languages_de from '../locales/de/languages.json';
+// import layout_de from '../locales/de/layout.json';
+// import profile_de from '../locales/de/profile.json';
+// import settings_de from '../locales/de/settings.json';
 
-// --- ENGLISH IMPORTS (EXAMPLE) ---
-// You must create these files and import them
-import auth_en from '../locales/en/auth.json';
-import common_en from '../locales/en/common.json';
+// // --- ENGLISH IMPORTS (EXAMPLE) ---
+// // You must create these files and import them
+// import auth_en from '../locales/en/auth.json';
+// import languages_en from '../locales/en/languages.json';
 import homepage_en from '../locales/en/homepage.json';
-import languages_en from '../locales/en/languages.json';
 // import layout_en from '../locales/en/layout.json';
 // import profile_en from '../locales/en/profile.json';
 // import settings_en from '../locales/en/settings.json';
-import validation_en from '../locales/en/validation.json';
 
 const i18n = createI18n({
     legacy: false,
@@ -28,24 +24,24 @@ const i18n = createI18n({
     messages: {
         // Add 'en' and any other languages
         en: {
-            common: common_en,
+            // common: common_en,
             homepage: homepage_en,
             // layout: layout_en,
             // settings: settings_en,
             // profile: profile_en,
-            validation: validation_en,
-            auth: auth_en,
-            languages: languages_en,
+            // validation: validation_en,
+            // auth: auth_en,
+            // languages: languages_en,
         },
         de: {
-            common: common_de,
+            // common: common_de,
             homepage: homepage_de,
-            layout: layout_de,
-            settings: settings_de,
-            profile: profile_de,
-            validation: validation_de,
-            auth: auth_de,
-            languages: languages_de,
+            // layout: layout_de,
+            // settings: settings_de,
+            // profile: profile_de,
+            // validation: validation_de,
+            // auth: auth_de,
+            // languages: languages_de,
         },
     },
     numberFormats: {
