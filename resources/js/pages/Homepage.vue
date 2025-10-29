@@ -5,7 +5,7 @@ import Marketplace from './homepage/Marketplace.vue';
 </script>
 
 <template>
-    <Layout>
+    <Layout link="/">
         <Hero />
         <Marketplace />
     </Layout>
