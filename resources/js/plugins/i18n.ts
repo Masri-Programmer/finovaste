@@ -13,10 +13,9 @@ import en from '../locales/en.json';
 
 const i18n = createI18n({
     legacy: false,
-    locale: 'de', // You can set a default, but the watcher will update it
+    locale: 'de',
     fallbackLocale: 'de',
     messages: {
-        // Add 'en' and any other languages
         en: {
             ...en,
         },
@@ -26,7 +25,6 @@ const i18n = createI18n({
     },
     numberFormats: {
         'en-US': {
-            // Also add number formats for other locales
             currency: {
                 style: 'currency',
                 currency: 'USD',
