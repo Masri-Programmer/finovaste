@@ -7,6 +7,7 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,6 +41,8 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
         $componentService = new ComponentService();
+        $currentLocale = App::getLocale();
+        Log::info('[Finovaste Debug] HandleInertiaRequests: App::getLocale() is: ' . $currentLocale);
         return [
             ...parent::share($request),
             'name' => config('app.name'),

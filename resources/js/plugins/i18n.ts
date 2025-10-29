@@ -1,14 +1,14 @@
 import { createI18n } from 'vue-i18n';
 
 // --- Import DE messages ---
-import auth_de from '../locales/de/auth.json';
-import common_de from '../locales/de/common.json';
-import homepage_de from '../locales/de/homepage.json';
-import languages_de from '../locales/de/languages.json';
-import layout_de from '../locales/de/layout.json';
-import profile_de from '../locales/de/profile.json';
-import settings_de from '../locales/de/settings.json';
-import validation_de from '../locales/de/validation.json';
+import auth from '../locales/de/auth.json';
+import common from '../locales/de/common.json';
+import homepage from '../locales/de/homepage.json';
+import languages from '../locales/de/languages.json';
+import layout from '../locales/de/layout.json';
+import profile from '../locales/de/profile.json';
+import settings from '../locales/de/settings.json';
+import validation from '../locales/de/validation.json';
 
 // --- Import EN messages (Example) ---
 // Make sure these files exist
@@ -20,7 +20,8 @@ import validation_de from '../locales/de/validation.json';
 // import profile_en from '../locales/en/profile.json';
 // import settings_en from '../locales/en/settings.json';
 // import validation_en from '../locales/en/validation.json';
-
+console.log('[Finovaste Debug] Imported common JSON:', common);
+console.log('[Finovaste Debug] Imported homepage JSON:', homepage);
 const i18n = createI18n({
     legacy: false,
     locale: 'de',
@@ -37,14 +38,14 @@ const i18n = createI18n({
         //     languages: languages_en,
         // },
         de: {
-            common: common_de,
-            homepage: homepage_de,
-            layout: layout_de,
-            settings: settings_de,
-            profile: profile_de,
-            validation: validation_de,
-            auth: auth_de,
-            languages: languages_de,
+            common,
+            homepage,
+            layout,
+            settings,
+            profile,
+            validation,
+            auth,
+            languages,
         },
     },
     numberFormats: {
