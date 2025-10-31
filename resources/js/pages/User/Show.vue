@@ -1,6 +1,6 @@
 <template>
     <Layout link="/">
-        <main class="mx-auto max-w-2xl p-4 md:p-8">
+        <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall
                     :title="t('settings.profile.title')"
@@ -52,13 +52,13 @@
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
                             {{ t('settings.profile.unverifiedEmailP1') }}
-                            <!-- <Link
+                            <Link
                                 :href="send()"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             >
                                 {{ t('settings.profile.unverifiedEmailLink') }}
-                            </Link> -->
+                            </Link>
                         </p>
 
                         <div
@@ -94,7 +94,7 @@
             </div>
 
             <DeleteUser />
-        </main>
+        </SettingsLayout>
     </Layout>
 </template>
 
@@ -108,7 +108,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 // import { send } from '@/routes/verification';
-import { Form, usePage } from '@inertiajs/vue3';
+import SettingsLayout from '@/layouts/settings/Layout.vue';
+import { Form, Link, usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 
 interface Props {

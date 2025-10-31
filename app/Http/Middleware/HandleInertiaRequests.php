@@ -40,13 +40,18 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
         $componentService = new ComponentService();
+        $user = $request->user();
+        if ($user) {
+            $user->load('roles', 'addresses');
+        }
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
-                'roles' => $request->user()?->roles->pluck('slug') ?? [],
+                'user' => $user,
+                'roles' => $user?->roles->pluck('slug') ?? [],
+                'addresses' => $user?->addresses ?? [],
             ],
             'locale' => fn() => App::getLocale(),
             'supported_locales' => fn() => config('app.supported_locales'),

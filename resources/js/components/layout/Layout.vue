@@ -1,44 +1,22 @@
 <script setup lang="ts">
-// import CookieConsentBanner from '@/components/CookieConsentBanner.vue';
-import Header from '@/components/layout/header/Header.vue';
-import { AppPageProps } from '@/types';
-import { Head, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import type { BreadcrumbItemType } from '@/types';
+import { Head } from '@inertiajs/vue3';
+import { defineAsyncComponent } from 'vue';
 import Cookies from './Cookies.vue';
-import Footer from './Footer.vue';
-
-const { t } = useI18n();
-const page = usePage();
-const locale = computed(() => page.props.locale as string);
-
-const customProps = page.props as AppPageProps;
-// const Footer = defineAsyncComponent(() => import('@/components/layout/Footer.vue'));
-const props = defineProps<{
+import Header from './header/Header.vue';
+const Footer = defineAsyncComponent(
+    () => import('@/components/layout/Footer.vue'),
+);
+defineProps<{
     head?: string;
     keywords?: string;
     description?: string;
-    link: string;
+    link?: string;
     image?: string;
     schema?: Record<string, any> | Record<string, any>[];
+    breadcrumbs?: BreadcrumbItemType[];
 }>();
 
-const jsonLdSchema = computed(() => {
-    const baseGraph = [];
-
-    if (props.schema) {
-        if (Array.isArray(props.schema)) {
-            baseGraph.push(...props.schema);
-        } else {
-            baseGraph.push(props.schema as any);
-        }
-    }
-
-    return JSON.stringify({
-        '@context': 'https://schema.org',
-        '@graph': baseGraph,
-    });
-});
 const menuSections = [];
 </script>
 
@@ -77,6 +55,9 @@ const menuSections = [];
     <main
         class="container-custom mt-16 grid min-h-screen items-center gap-4 overflow-hidden sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
     >
+        <!-- <div class="mt-3" v-if="breadcrumbs && breadcrumbs.length > 0">
+            <Breadcrumbs :breadcrumbs="breadcrumbs" />
+        </div> -->
         <slot />
         <Footer :menuSections="menuSections" />
         <Cookies />

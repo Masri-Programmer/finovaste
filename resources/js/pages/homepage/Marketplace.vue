@@ -35,7 +35,6 @@ const { t } = useI18n();
 const toast = useToast();
 const { copy } = useClipboard();
 
-// --- Enhanced Sample Data with new fields ---
 const filters = ref({
     category: 'all',
     search: '',
@@ -56,7 +55,7 @@ const listings = ref([
         id: 1,
         titleKey: 'homepage.listings.apartment.title',
         descriptionKey: 'homepage.listings.apartment.description',
-        category: 'Immobilien', // 🌐 Used German
+        category: 'Immobilien',
         type: 'Investment',
         typeVariant: 'secondary',
         imageUrl: 'https://placehold.co/600x400.png?text=Luxury+Apartment',
@@ -67,8 +66,7 @@ const listings = ref([
         capitalGoal: 750000,
         investors: 52,
         minInvestment: 25000,
-        // ✅ New Fields
-        riskPercentage: 7.5, // Risks %
+        riskPercentage: 7.5,
         campaigns: [
             // Campaigns badges
             {
@@ -97,14 +95,14 @@ const listings = ref([
         id: 2,
         titleKey: 'homepage.listings.carCollection.title',
         descriptionKey: 'homepage.listings.carCollection.description',
-        category: 'Fahrzeuge', // 🌐 Used German
+        category: 'Fahrzeuge',
         type: 'Auction',
         typeVariant: 'secondary',
         imageUrl: 'https://placehold.co/600x400?text=Car+Collection',
         locationKey: 'homepage.locations.losAngeles',
         reviews: 28,
         rating: 5,
-        auctionEndsIn: '2T 14Std', // 🌐 Used German
+        auctionEndsIn: '2T 14Std',
         startingBid: 150000,
         currentBid: 175000,
         // ✅ New Fields
@@ -125,7 +123,7 @@ const listings = ref([
 // 🔄 Example of triggering Inertia requests and toast messages
 function addToWishlist(listingId: number) {
     // router.post(
-    //     route('wunschliste.hinzufuegen', { id: listingId }), // 🌐 Used German route
+    //     route('wunschliste.hinzufuegen', { id: listingId }),  route
     //     {},
     //     {
     //         preserveScroll: true,

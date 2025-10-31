@@ -16,8 +16,8 @@
                 <div class="flex flex-1 justify-end">
                     <div class="flex items-center gap-x-2">
                         <div class="hidden items-center gap-x-4 lg:flex">
-                            <AppearanceIcon />
-                            <LanguageSwitch />
+                            <!-- <AppearanceIcon />
+                            <LanguageSwitch /> -->
                             <nav class="flex items-center justify-end gap-2">
                                 <template v-if="$page.props.auth.user">
                                     <Button
@@ -25,9 +25,15 @@
                                         size="icon"
                                         class="relative h-9 w-9 rounded-full"
                                     >
+                                        <Plus class="h-5 w-5" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="relative h-9 w-9 rounded-full"
+                                    >
                                         <Bell class="h-5 w-5" />
                                     </Button>
-
                                     <DropdownMenu>
                                         <DropdownMenuTrigger as-child>
                                             <Button
@@ -50,6 +56,7 @@
                                         >
                                             <UserMenuContent
                                                 :user="auth.user"
+                                                :roles="auth.roles"
                                             />
                                         </DropdownMenuContent>
                                     </DropdownMenu>
@@ -79,9 +86,10 @@
 </template>
 
 <script setup lang="ts">
-import AppearanceIcon from '@/components/AppearanceIcon.vue';
+// import AppearanceIcon from '@/components/AppearanceIcon.vue';
+// import LanguageSwitch from '@/components/LanguageSwitch.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import LanguageSwitch from '@/components/LanguageSwitch.vue';
+import UserMenuContent from '@/components/market/UserMenuContent.vue';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -89,8 +97,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import UserMenuContent from '@/components/UserMenuContent.vue';
-import { Bell } from 'lucide-vue-next';
+import { Bell, Plus } from 'lucide-vue-next';
 // import { AvatarImage } from '@/components/ui/avatar'; // Uncomment if you use AvatarImage
 
 import { login } from '@/routes';

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
 import InputError from '@/components/InputError.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
@@ -9,6 +8,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
+import Layout from '@/components/layout/Layout.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,7 +28,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <Layout :breadcrumbs="breadcrumbItems">
         <Head :title="t('settings.password.headTitle')" />
 
         <SettingsLayout>
@@ -127,5 +127,5 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                 </Form>
             </div>
         </SettingsLayout>
-    </AppLayout>
+    </Layout>
 </template>

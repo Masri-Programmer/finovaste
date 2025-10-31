@@ -6,22 +6,21 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { home, logout } from '@/routes';
+import { dashboard, logout } from '@/routes';
+import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { Home, LogOut } from 'lucide-vue-next';
+import { LogOut, Settings, User as UserIcon } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
-
 interface Props {
     user: User;
+    roles: Array<string>;
 }
-
 const { t } = useI18n();
 
 const handleLogout = () => {
     router.flushAll();
 };
-
 defineProps<Props>();
 </script>
 
@@ -34,12 +33,21 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="home()" prefetch as="button">
-                <Home class="mr-2 h-4 w-4" />
-                {{ t('auth.menu.home') }}
+            <Link class="block w-full" :href="edit()" as="button">
+                <UserIcon class="mr-2 h-4 w-4" />
+                {{ t('auth.menu.profile') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
+    <DropdownMenuGroup v-if="roles.includes('admin')">
+        <DropdownMenuItem :as-child="true">
+            <Link class="block w-full" :href="dashboard()" as="button">
+                <Settings class="mr-2 h-4 w-4" />
+                {{ t('auth.menu.settings') }}
+            </Link>
+        </DropdownMenuItem>
+    </DropdownMenuGroup>
+
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
         <Link
@@ -47,6 +55,7 @@ defineProps<Props>();
             :href="logout()"
             @click="handleLogout"
             as="button"
+            method="post"
             data-test="logout-button"
         >
             <LogOut class="mr-2 h-4 w-4" />

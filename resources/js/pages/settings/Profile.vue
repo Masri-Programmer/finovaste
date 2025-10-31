@@ -11,7 +11,8 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
+// import AppLayout from '@/layouts/AppLayout.vue';
+import Layout from '@/components/layout/Layout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
 
@@ -35,9 +36,8 @@ const user = page.props.auth.user;
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <Layout :breadcrumbs="breadcrumbItems">
         <Head :title="t('settings.profile.headTitle')" />
-
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall
@@ -133,5 +133,5 @@ const user = page.props.auth.user;
 
             <DeleteUser />
         </SettingsLayout>
-    </AppLayout>
+    </Layout>
 </template>
