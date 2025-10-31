@@ -88,12 +88,6 @@ interface LocaleString {
     de: string;
 }
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
 interface Category {
     id: number;
     name: LocaleString;

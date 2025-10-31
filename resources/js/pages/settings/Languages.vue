@@ -2,11 +2,10 @@
 import { Head } from '@inertiajs/vue3';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import { type BreadcrumbItem } from '@/types';
 
 import Layout from '@/components/layout/Layout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/languages';
+// import { edit } from '@/routes/languages';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { Check } from 'lucide-vue-next';
@@ -15,16 +14,16 @@ import { useI18n } from 'vue-i18n';
 const { locale, availableLanguages, setLocale } = useLanguageSwitcher();
 const { t } = useI18n();
 
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: t('settings.languages.breadcrumb'),
-        href: edit.url(),
-    },
-];
+// const breadcrumbItems: BreadcrumbItem[] = [
+//     {
+//         title: t('settings.languages.breadcrumb'),
+//         href: edit.url(),
+//     },
+// ];
 </script>
 
 <template>
-    <Layout :breadcrumbs="breadcrumbItems">
+    <Layout>
         <Head :title="t('settings.languages.headTitle')" />
 
         <SettingsLayout>

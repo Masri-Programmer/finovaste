@@ -11,7 +11,6 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
-
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'can:is-admin'])->name('dashboard');
@@ -20,8 +19,6 @@ Route::get('dashboard', function () {
 Route::get('language/{locale}', [LanguageController::class, 'switch'])
     ->whereIn('locale', config('app.supported_locales'))
     ->name('language.switch');
-
-
 
 Route::resource('listings', ListingController::class)
     ->middleware(['auth', 'verified']);
