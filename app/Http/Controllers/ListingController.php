@@ -53,8 +53,10 @@ class ListingController extends Controller
     public function store(Request $request)
     {
         $commonData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'title' => 'required|array',
+            'title.*' => 'nullable|string|max:255',
+            'description' => 'required|array',
+            'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'listing_type' => 'required|string|in:auction,donation,buy_now,investment',
         ]);
@@ -107,12 +109,12 @@ class ListingController extends Controller
             if (!$listable) {
                 throw new \Exception('Invalid listing type provided.');
             }
-
+            $slugTitle = $commonData['title'][config('app.fallback_locale')] ?? reset($commonData['title']);
             $listing = $listable->listing()->create([
                 'user_id' => auth()->id(),
                 'category_id' => $commonData['category_id'],
                 'title' => $commonData['title'],
-                'slug' => Str::slug($commonData['title']) . '-' . uniqid(),
+                'slug' => Str::slug($slugTitle) . '-' . uniqid(),
                 'description' => $commonData['description'],
                 'status' => 'pending',
                 // 'meta' => $request->input('meta', []),
@@ -145,24 +147,36 @@ class ListingController extends Controller
     {
         $listing->load('listable');
 
+        $allCategories = Category::orderBy('name')->get();
+        $categories = $allCategories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->getTranslations('name'),
+            ];
+        });
+
+        $listingData = $listing->toArray();
+        $listingData['listable'] = $listing->listable;
+        $listingData['title'] = $listing->getTranslations('title');
+        $listingData['description'] = $listing->getTranslations('description');
+
         return Inertia::render('listings/Edit', [
-            'listing' => $listing,
-            'categories' => Category::all(['id', 'name']),
+            'listing' => $listingData,
+            'categories' => $categories,
         ]);
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Listing $listing)
     {
-        // 1. --- Validate Common Fields ---
         $commonData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'title' => 'required|array',
+            'title.*' => 'nullable|string|max:255',
+            'description' => 'required|array',
+            'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
         ]);
-
         try {
             DB::beginTransaction();
 

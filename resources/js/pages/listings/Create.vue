@@ -34,6 +34,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+// --- MODIFIED: Import Tabs components ---
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { store } from '@/routes/listings';
@@ -53,7 +55,8 @@ const props = defineProps({
     },
 });
 
-const { t, locale } = useI18n();
+// Get all available locales (e.g., ['en', 'de'])
+const { t, locale, availableLocales, fallbackLocale } = useI18n();
 const toast = useToast();
 
 const listingType = useStorage<'buy_now' | 'auction' | 'donation'>(
@@ -61,9 +64,20 @@ const listingType = useStorage<'buy_now' | 'auction' | 'donation'>(
     'buy_now',
 );
 
+// Dynamically create initial translation objects, e.g., { en: '', de: '' }
+const initialTranslations = availableLocales.value.reduce(
+    (acc, lang) => {
+        acc[lang] = '';
+        return acc;
+    },
+    {} as { [key: string]: string },
+);
+
 const form = useForm({
-    title: '',
-    description: '',
+    // Use the dynamically generated object
+    title: { ...initialTranslations },
+    description: { ...initialTranslations },
+
     category_id: null as number | null,
     expires_at: null as Date | null,
     image: null as File | null, // For file upload
@@ -91,6 +105,7 @@ watch(listingType, (newType) => {
     form.clearErrors();
 });
 
+// Computed properties for date formatting (no changes)
 const formattedExpiresAt = computed(() => {
     return form.expires_at
         ? format(form.expires_at, 'PPP', { locale: de })
@@ -229,33 +244,100 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <h3 class="border-b pb-2 text-base font-semibold">
                             {{ t('listing.createListing.sections.core') }}
                         </h3>
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <Label for="title">
-                                    {{
-                                        t(
-                                            'listing.createListing.fields.title.label',
-                                        )
-                                    }}
-                                </Label>
-                                <Input
-                                    id="title"
-                                    v-model="form.title"
-                                    :placeholder="
-                                        t(
-                                            'listing.createListing.fields.title.placeholder',
-                                        )
-                                    "
-                                    required
-                                />
-                                <span
-                                    v-if="form.errors.title"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.title }}
-                                </span>
-                            </div>
 
+                        <Tabs :default-value="fallbackLocale as string">
+                            <TabsList
+                                :class="
+                                    cn(
+                                        'grid w-full',
+                                        `grid-cols-${availableLocales.length}`,
+                                    )
+                                "
+                            >
+                                <TabsTrigger
+                                    v-for="lang in availableLocales"
+                                    :key="`trigger-${lang}`"
+                                    :value="lang"
+                                >
+                                    {{ lang.toUpperCase() }}
+                                </TabsTrigger>
+                            </TabsList>
+
+                            <TabsContent
+                                v-for="lang in availableLocales"
+                                :key="`content-${lang}`"
+                                :value="lang"
+                                class="mt-6 space-y-4"
+                            >
+                                <div class="space-y-2">
+                                    <Label :for="`title_${lang}`">
+                                        {{
+                                            t(
+                                                'listing.createListing.fields.title.label',
+                                            )
+                                        }}
+                                    </Label>
+                                    <Input
+                                        :id="`title_${lang}`"
+                                        v-model="form.title[lang]"
+                                        :placeholder="
+                                            t(
+                                                'listing.createListing.fields.title.placeholder',
+                                            )
+                                        "
+                                        :required="lang === fallbackLocale"
+                                    />
+                                    <span
+                                        v-if="form.errors[`title.${lang}`]"
+                                        class="text-sm text-destructive"
+                                    >
+                                        {{ form.errors[`title.${lang}`] }}
+                                    </span>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <Label :for="`description_${lang}`">
+                                        {{
+                                            t(
+                                                'listing.createListing.fields.description.label',
+                                            )
+                                        }}
+                                    </Label>
+                                    <Textarea
+                                        :id="`description_${lang}`"
+                                        v-model="form.description[lang]"
+                                        :placeholder="
+                                            t(
+                                                'listing.createListing.fields.description.placeholder',
+                                            )
+                                        "
+                                        class="min-h-[120px]"
+                                    />
+                                    <span
+                                        v-if="
+                                            form.errors[`description.${lang}`]
+                                        "
+                                        class="text-sm text-destructive"
+                                    >
+                                        {{ form.errors[`description.${lang}`] }}
+                                    </span>
+                                </div>
+                            </TabsContent>
+                        </Tabs>
+                        <span
+                            v-if="form.errors.title"
+                            class="text-sm text-destructive"
+                        >
+                            {{ form.errors.title }}
+                        </span>
+                        <span
+                            v-if="form.errors.description"
+                            class="text-sm text-destructive"
+                        >
+                            {{ form.errors.description }}
+                        </span>
+
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div class="space-y-2">
                                 <Label for="category">
                                     {{
@@ -282,7 +364,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         >
                                             {{
                                                 category.name[locale] ||
-                                                category.name.de
+                                                category.name[
+                                                    fallbackLocale as string
+                                                ]
                                             }}
                                         </SelectItem>
                                     </SelectContent>
@@ -294,29 +378,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     {{ form.errors.category_id }}
                                 </span>
                             </div>
-                        </div>
 
-                        <div class="space-y-2">
-                            <Label for="description">
-                                {{
-                                    t(
-                                        'listing.createListing.fields.description.label',
-                                    )
-                                }}
-                            </Label>
-                            <Textarea
-                                id="description"
-                                v-model="form.description"
-                                :placeholder="
-                                    t(
-                                        'listing.createListing.fields.description.placeholder',
-                                    )
-                                "
-                                class="min-h-[120px]"
-                            />
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div class="space-y-2">
                                 <Label for="location">
                                     {{
