@@ -6,10 +6,15 @@
             <div
                 class="container-custom flex h-14 items-center !overflow-visible"
             >
-                <div class="flex flex-1 items-center justify-start">
+                <Link
+                    :href="home()"
+                    prefetch
+                    as="button"
+                    class="flex flex-1 items-center justify-start"
+                >
                     <AppLogoIcon class="size-6 fill-current" /> &nbsp;
                     {{ $page.props.name }}
-                </div>
+                </Link>
 
                 <div class="hidden lg:block"></div>
 
@@ -25,7 +30,13 @@
                                         size="icon"
                                         class="relative h-9 w-9 rounded-full"
                                     >
-                                        <Plus class="h-5 w-5" />
+                                        <Link
+                                            :href="create()"
+                                            prefetch
+                                            as="button"
+                                        >
+                                            <Plus class="h-5 w-5" />
+                                        </Link>
                                     </Button>
                                     <Button
                                         variant="ghost"
@@ -98,9 +109,9 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Bell, Plus } from 'lucide-vue-next';
-// import { AvatarImage } from '@/components/ui/avatar'; // Uncomment if you use AvatarImage
 
-import { login } from '@/routes';
+import { home, login } from '@/routes';
+import { create } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

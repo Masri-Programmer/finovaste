@@ -118,9 +118,7 @@ const listings = ref([
         faqs: [], // No FAQs for auction
     },
 ]);
-// --- End Sample Data ---
 
-// 🔄 Example of triggering Inertia requests and toast messages
 function addToWishlist(listingId: number) {
     // router.post(
     //     route('wunschliste.hinzufuegen', { id: listingId }),  route

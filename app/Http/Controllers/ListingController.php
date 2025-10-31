@@ -2,30 +2,42 @@
 
 namespace App\Http\Controllers;
 
+// Import all your listable models
 use App\Models\Listing;
+use App\Models\AuctionListing;
+use App\Models\DonationListing;
+use App\Models\BuyNowListing;
+use App\Models\InvestmentListing;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\InvestmentListing; // Assuming this model exists
-use App\Models\AuctionListing;    // Existing model
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ListingController extends Controller
 {
-    // A mapping for the listing types to their specific models
-    private $listableModels = [
-        'Investment' => InvestmentListing::class,
-        'Auction' => AuctionListing::class,
-        // 'BuyNow' => BuyNowListing::class, // Add others as needed
-        // 'Donation' => DonationListing::class,
-    ];
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $listings = Listing::with('listable')->get();
-        return response()->json($listings);
+        $listings = Listing::with(['listable', 'user', 'category'])
+            ->latest()
+            ->paginate(10);
+
+        return Inertia::render('listings/Index', [
+            'listings' => $listings,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('listings/Create', [
+            'categories' => Category::all(['id', 'name']),
+        ]);
     }
 
     /**
@@ -33,40 +45,108 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // 1. --- Validate Common Fields ---
+        // 'listing_type' must be sent from your frontend
+        $commonData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'type' => 'required|in:' . implode(',', array_keys($this->listableModels)), // e.g., Investment, Auction
+            'listing_type' => 'required|string|in:auction,donation,buy_now,investment', // Added all types
         ]);
 
-        $listableType = $request->input('type');
+        // 2. --- Validate and Prepare Specific Fields ---
+        $listable = null;
 
-        if (!isset($this->listableModels[$listableType])) {
-            return response()->json(['message' => 'Invalid listing type provided.'], 422);
-        }
-
-        $listableModelClass = $this->listableModels[$listableType];
-
-        DB::beginTransaction();
         try {
-            $listable = $listableModelClass::create($this->getListableData($request, $listableType));
+            DB::beginTransaction();
 
+            switch ($commonData['listing_type']) {
+
+                case 'investment':
+                    $specificData = $request->validate([
+                        'investment_goal' => 'required|numeric|min:0',
+                        'minimum_investment' => 'required|numeric|min:0',
+                        'shares_offered' => 'required|integer|min:1',
+                        'share_price' => 'required|numeric|min:0',
+                    ]);
+                    $listable = InvestmentListing::create($specificData);
+                    break;
+
+                case 'auction':
+                    $specificData = $request->validate([
+                        'start_price' => 'required|numeric|min:0',
+                        'ends_at' => 'required|date|after:now',
+                        'reserve_price' => 'nullable|numeric|gte:start_price',
+                        'buy_it_now_price' => 'nullable|numeric|gte:start_price',
+                    ]);
+                    $listable = AuctionListing::create($specificData);
+                    break;
+
+                case 'donation':
+                    $specificData = $request->validate([
+                        'donation_goal' => 'required|numeric|min:0',
+                        'is_goal_flexible' => 'boolean',
+                    ]);
+                    $listable = DonationListing::create($specificData);
+                    break;
+
+                case 'buy_now':
+                    $specificData = $request->validate([
+                        'price' => 'required|numeric|min:0',
+                        'quantity' => 'required|integer|min:1',
+                        'condition' => 'nullable|string|max:100',
+                    ]);
+                    $listable = BuyNowListing::create($specificData);
+                    break;
+            }
+
+            if (!$listable) {
+                throw new \Exception('Invalid listing type provided.');
+            }
+
+            // 3. --- Create the Main Listing ---
             $listing = $listable->listing()->create([
                 'user_id' => auth()->id(),
-                'category_id' => $request->input('category_id'),
-                'title' => $request->input('title'),
-                'description' => $request->input('description'),
-                'slug' => Str::slug($request->input('title')) . '-' . time(),
-                // ... other core listing fields
+                'category_id' => $commonData['category_id'],
+                'title' => $commonData['title'],
+                'slug' => Str::slug($commonData['title']) . '-' . uniqid(),
+                'description' => $commonData['description'],
+                'status' => 'pending',
+                // 'meta' => $request->input('meta', []),
             ]);
 
             DB::commit();
-            return response()->json(['message' => 'Listing created successfully.', 'listing' => $listing->load('listable')], 201);
+
+            return redirect()->route('listings.index')->with('success', 'Listing created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Listing creation failed.', 'error' => $e->getMessage()], 500);
+            return back()->withInput()->with('error', 'Failed to create listing: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Listing $listing)
+    {
+        $listing->load(['listable', 'user', 'category', 'address']);
+
+        return Inertia::render('listings/Show', [
+            'listing' => $listing,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Listing $listing)
+    {
+        $listing->load('listable');
+
+        return Inertia::render('listings/Edit', [
+            'listing' => $listing,
+            'categories' => Category::all(['id', 'name']),
+        ]);
     }
 
     /**
@@ -74,33 +154,57 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing)
     {
-        $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            // ... Add validation for core listing and listable-specific fields
+        // 1. --- Validate Common Fields ---
+        $commonData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        DB::beginTransaction();
         try {
-            $listing->update([
-                'category_id' => $request->input('category_id', $listing->category_id),
-                'title' => $request->input('title', $listing->title),
-                'description' => $request->input('description', $listing->description),
-                // ... other core listing fields
-            ]);
+            DB::beginTransaction();
 
-            $listableType = class_basename($listing->listable_type);
-            $listableData = $this->getListableData($request, $listableType, true); // true for update
+            // 2. --- Update the Main Listing ---
+            $listing->update($commonData);
 
-            if (!empty($listableData)) {
-                $listing->listable->update($listableData);
+            // 3. --- Update the Specific 'listable' Model ---
+            if ($listing->listable instanceof InvestmentListing) {
+                $specificData = $request->validate([
+                    'investment_goal' => 'required|numeric|min:0',
+                    'minimum_investment' => 'required|numeric|min:0',
+                    'shares_offered' => 'required|integer|min:1',
+                    'share_price' => 'required|numeric|min:0',
+                ]);
+                $listing->listable->update($specificData);
+            } elseif ($listing->listable instanceof AuctionListing) {
+                $specificData = $request->validate([
+                    'start_price' => 'required|numeric|min:0',
+                    'ends_at' => 'required|date',
+                    'reserve_price' => 'nullable|numeric|gte:start_price',
+                    'buy_it_now_price' => 'nullable|numeric|gte:start_price',
+                ]);
+                $listing->listable->update($specificData);
+            } elseif ($listing->listable instanceof DonationListing) {
+                $specificData = $request->validate([
+                    'donation_goal' => 'required|numeric|min:0',
+                    'is_goal_flexible' => 'boolean',
+                ]);
+                $listing->listable->update($specificData);
+            } elseif ($listing->listable instanceof BuyNowListing) {
+                $specificData = $request->validate([
+                    'price' => 'required|numeric|min:0',
+                    'quantity' => 'required|integer|min:1',
+                    'condition' => 'nullable|string|max:100',
+                ]);
+                $listing->listable->update($specificData);
             }
 
             DB::commit();
-            return response()->json(['message' => 'Listing updated successfully.', 'listing' => $listing->load('listable')]);
+
+            return redirect()->route('listings.show', $listing)->with('success', 'Listing updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Listing update failed.', 'error' => $e->getMessage()], 500);
+            return back()->withInput()->with('error', 'Failed to update listing: ' . $e->getMessage());
         }
     }
 
@@ -109,53 +213,18 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
-        DB::beginTransaction();
         try {
-            $listing->listable->delete(); // Delete the specific listing type data
-            $listing->delete(); // Delete the main listing entry
-
+            DB::beginTransaction();
+            // Delete the specific model first
+            $listing->listable->delete();
+            // Then delete the main listing
+            $listing->delete();
             DB::commit();
-            return response()->json(['message' => 'Listing deleted successfully.']);
+
+            return redirect()->route('listings.index')->with('success', 'Listing deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Listing deletion failed.', 'error' => $e->getMessage()], 500);
+            return back()->with('error', 'Failed to delete listing: ' . $e->getMessage());
         }
-    }
-
-    private function getListableData(Request $request, string $listableType, bool $isUpdate = false): array
-    {
-        $data = [];
-        $requiredKeys = [];
-
-        switch ($listableType) {
-            case 'Investment':
-                $keys = ['capital_goal', 'min_investment', 'risk_percentage'];
-                $data = $request->only($keys);
-                if ($isUpdate) {
-                    $data = array_filter($data, fn($value) => !is_null($value));
-                }
-                if (isset($data['capital_goal'])) $data['donation_goal'] = $data['capital_goal'];
-                unset($data['capital_goal']);
-
-                // Note: 'capitalRaised' and 'investors' would be dynamically updated or stored in other tables.
-                // Here we focus on the static fields for creation/update.
-                break;
-
-            case 'Auction':
-                $keys = ['start_price', 'reserve_price', 'ends_at'];
-                $data = $request->only($keys);
-                if ($isUpdate) {
-                    $data = array_filter($data, fn($value) => !is_null($value));
-                }
-
-                // Map 'startingBid' (from your example) to 'start_price' (in your schema)
-                if (isset($data['startingBid'])) $data['start_price'] = $data['startingBid'];
-                unset($data['startingBid']);
-                break;
-
-                // Add other cases (BuyNow, Donation) here...
-        }
-
-        return $data;
     }
 }

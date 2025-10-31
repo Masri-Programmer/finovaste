@@ -5,6 +5,7 @@ import common_de from '../locales/de/common.json';
 import homepage_de from '../locales/de/homepage.json';
 import languages_de from '../locales/de/languages.json';
 import layout_de from '../locales/de/layout.json';
+import listing_de from '../locales/de/listing.json';
 import profile_de from '../locales/de/profile.json';
 import settings_de from '../locales/de/settings.json';
 import validation_de from '../locales/de/validation.json';
@@ -14,6 +15,7 @@ import common_en from '../locales/en/common.json';
 import homepage_en from '../locales/en/homepage.json';
 import languages_en from '../locales/en/languages.json';
 import layout_en from '../locales/en/layout.json';
+import listing_en from '../locales/en/listing.json';
 import profile_en from '../locales/en/profile.json';
 import settings_en from '../locales/en/settings.json';
 import validation_en from '../locales/en/validation.json';
@@ -28,12 +30,14 @@ const i18n = createI18n({
             layout: layout_en,
             settings: settings_en,
             profile: profile_en,
+            listing: listing_en,
             validation: validation_en,
             auth: auth_en,
             languages: languages_en,
         },
         de: {
             common: common_de,
+            listing: listing_de,
             homepage: homepage_de,
             layout: layout_de,
             settings: settings_de,

@@ -31,7 +31,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureViews();
         $this->configureRateLimiting();
 
-        Gate::define('view-dashboard', function (User $user) {
+        Gate::define('is-admin', function (User $user) {
             return $user->hasRole('admin');
         });
     }
