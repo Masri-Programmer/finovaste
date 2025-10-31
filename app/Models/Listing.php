@@ -17,6 +17,7 @@ use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
+use Illuminate\Support\Str; // <-- ********** ADD THIS LINE **********
 
 class Listing extends Model
 
@@ -43,6 +44,20 @@ class Listing extends Model
         'published_at' => 'datetime',
         'expires_at' => 'datetime',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted(): void // <-- ********** ADD THIS ENTIRE METHOD **********
+    {
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
 
     public function listable(): MorphTo
     {

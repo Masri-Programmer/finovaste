@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             // AddressSeeder::class,
             SeedersComponentSeeder::class,
             CategorySeeder::class,
+            ListingSeeder::class,
         ]);
     }
 }
