@@ -3,7 +3,6 @@ import { useForm } from '@inertiajs/vue3';
 import { useStorage } from '@vueuse/core';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -37,14 +36,24 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { store } from '@/routes/listings';
 import { type BreadcrumbItem } from '@/types';
 import { Calendar as CalendarIcon } from 'lucide-vue-next';
+import { computed, PropType, watch } from 'vue';
 
-const props = defineProps<{
-    categories: Array<{ id: number; name: string }>;
-}>();
+const props = defineProps({
+    categories: {
+        type: Array as PropType<
+            Array<{
+                id: number;
+                name: { [key: string]: string };
+            }>
+        >,
+        required: true,
+    },
+});
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const toast = useToast();
 
 const listingType = useStorage<'buy_now' | 'auction' | 'donation'>(
@@ -106,16 +115,16 @@ const onFileChange = (event: Event) => {
 };
 
 const submit = () => {
-    // form.post(route('listings.store'), {
-    //     onSuccess: () => {
-    //         toast.success(t('listing.createListing.notifications.success'));
-    //         form.reset();
-    //     },
-    //     onError: (errors) => {
-    //         console.error(errors);
-    //         toast.error(t('listing.createListing.notifications.error'));
-    //     },
-    // });
+    form.post(store.url(), {
+        onSuccess: () => {
+            toast.success(t('listing.createListing.notifications.success'));
+            form.reset();
+        },
+        onError: (errors) => {
+            console.error(errors);
+            toast.error(t('listing.createListing.notifications.error'));
+        },
+    });
 };
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -271,7 +280,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             :key="category.id"
                                             :value="category.id"
                                         >
-                                            {{ category.name }}
+                                            {{
+                                                category.name[locale] ||
+                                                category.name.de
+                                            }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -358,24 +370,24 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         </div>
 
                         <div class="space-y-2">
-                            <Label for="image">
+                            <Label for="media">
                                 {{
                                     t(
-                                        'listing.createListing.fields.image.label',
+                                        'listing.createListing.fields.media.label',
                                     )
                                 }}
                             </Label>
                             <Input
-                                id="image"
+                                id="media"
                                 type="file"
                                 @change="onFileChange"
-                                accept="image/*"
+                                multiple
                                 class="file:font-semibold file:text-primary-foreground"
                             />
                             <span class="text-sm text-muted-foreground">
                                 {{
                                     t(
-                                        'listing.createListing.fields.image.description',
+                                        'listing.createListing.fields.media.description',
                                     )
                                 }}
                             </span>

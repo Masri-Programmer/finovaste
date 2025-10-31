@@ -42,9 +42,9 @@
                 "label": "Ablaufdatum (optional)",
                 "placeholder": "Datum auswählen"
             },
-            "image": {
-                "label": "Titelbild",
-                "description": "Laden Sie ein klares Bild hoch. (JPG, PNG, WEBP)"
+            "media": {
+                "label": "Datei (Fotos, Dokumente...)",
+                "description": "Laden Sie ..."
             },
             "price": {
                 "label": "Preis (€)",

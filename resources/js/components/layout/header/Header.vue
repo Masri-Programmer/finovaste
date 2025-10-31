@@ -25,19 +25,15 @@
                             <LanguageSwitch /> -->
                             <nav class="flex items-center justify-end gap-2">
                                 <template v-if="$page.props.auth.user">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        class="relative h-9 w-9 rounded-full"
-                                    >
-                                        <Link
-                                            :href="create()"
-                                            prefetch
-                                            as="button"
+                                    <Link :href="create()" prefetch as="button">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            class="relative h-9 w-9 rounded-full"
                                         >
                                             <Plus class="h-5 w-5" />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </Link>
                                     <Button
                                         variant="ghost"
                                         size="icon"

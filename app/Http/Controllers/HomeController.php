@@ -15,11 +15,30 @@ class HomeController extends Controller
      */
     public function index(Request $request): Response
     {
-        $categories = Category::whereNull('parent_id')
+        $allCategories = Category::whereNull('parent_id')
             ->with('children')
+            ->withCount('listings')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
+
+        $categories = $allCategories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'slug' => $category->slug,
+                'icon' => $category->icon,
+
+                'name' => $category->getTranslations('name'),
+
+                'children' => $category->children->map(function ($child) {
+                    return [
+                        'id' => $child->id,
+                        'slug' => $child->slug,
+                        'name' => $child->getTranslations('name'),
+                    ];
+                })
+            ];
+        });
 
         $filters = $request->validate([
             'search' => 'nullable|string|max:100',

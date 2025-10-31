@@ -21,58 +21,112 @@ class CategorySeeder extends Seeder
         // \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $categories = [
-            'Properties' => [
+            [
+                'name' => ['en' => 'Properties', 'de' => 'Immobilien'],
                 'icon' => 'building-2',
-                'children' => ['Commercial Real Estate', 'Residential Homes', 'Land Plots']
+                'children' => [
+                    ['name' => ['en' => 'Commercial Real Estate', 'de' => 'Gewerbeimmobilien']],
+                    ['name' => ['en' => 'Residential Homes', 'de' => 'Wohnhäuser']],
+                    ['name' => ['en' => 'Land Plots', 'de' => 'Grundstücke']],
+                ]
             ],
-            'Vehicles' => [
+            [
+                'name' => ['en' => 'Vehicles', 'de' => 'Fahrzeuge'],
                 'icon' => 'car',
-                'children' => ['Cars', 'Motorcycles', 'Boats', 'Aircraft']
+                'children' => [
+                    ['name' => ['en' => 'Cars', 'de' => 'Autos']],
+                    ['name' => ['en' => 'Motorcycles', 'de' => 'Motorräder']],
+                    ['name' => ['en' => 'Boats', 'de' => 'Boote']],
+                    ['name' => ['en' => 'Aircraft', 'de' => 'Flugzeuge']],
+                ]
             ],
-            'Furniture' => [
+            [
+                'name' => ['en' => 'Furniture', 'de' => 'Möbel'],
                 'icon' => 'sofa',
-                'children' => ['Living Room', 'Bedroom', 'Office Furniture', 'Outdoor']
+                'children' => [
+                    ['name' => ['en' => 'Living Room', 'de' => 'Wohnzimmer']],
+                    ['name' => ['en' => 'Bedroom', 'de' => 'Schlafzimmer']],
+                    ['name' => ['en' => 'Office Furniture', 'de' => 'Büromöbel']],
+                    ['name' => ['en' => 'Outdoor', 'de' => 'Außenmöbel']],
+                ]
             ],
-            'Electronics' => [
+            [
+                'name' => ['en' => 'Electronics', 'de' => 'Elektronik'],
                 'icon' => 'tv',
-                'children' => ['Computers & Laptops', 'Mobile Phones', 'Cameras', 'Audio Equipment']
+                'children' => [
+                    ['name' => ['en' => 'Computers & Laptops', 'de' => 'Computer & Laptops']],
+                    ['name' => ['en' => 'Mobile Phones', 'de' => 'Handys']],
+                    ['name' => ['en' => 'Cameras', 'de' => 'Kameras']],
+                    ['name' => ['en' => 'Audio Equipment', 'de' => 'Audiogeräte']],
+                ]
             ],
-            'Art & Collectibles' => [
+            [
+                'name' => ['en' => 'Art & Collectibles', 'de' => 'Kunst & Sammlerstücke'],
                 'icon' => 'palette',
-                'children' => ['Paintings', 'Sculptures', 'Antiques', 'Stamps & Coins']
+                'children' => [
+                    ['name' => ['en' => 'Paintings', 'de' => 'Gemälde']],
+                    ['name' => ['en' => 'Sculptures', 'de' => 'Skulpturen']],
+                    ['name' => ['en' => 'Antiques', 'de' => 'Antiquitäten']],
+                    ['name' => ['en' => 'Stamps & Coins', 'de' => 'Briefmarken & Münzen']],
+                ]
             ],
-            'Businesses for Sale' => [
+            [
+                'name' => ['en' => 'Businesses for Sale', 'de' => 'Unternehmen zum Verkauf'],
                 'icon' => 'store',
-                'children' => ['Restaurants', 'Retail Stores', 'Tech Companies']
+                'children' => [
+                    ['name' => ['en' => 'Restaurants', 'de' => 'Restaurants']],
+                    ['name' => ['en' => 'Retail Stores', 'de' => 'Einzelhandelsgeschäfte']],
+                    ['name' => ['en' => 'Tech Companies', 'de' => 'Tech-Unternehmen']],
+                ]
             ],
-            'Startups' => [
+            [
+                'name' => ['en' => 'Startups', 'de' => 'Startups'],
                 'icon' => 'rocket',
-                'children' => ['FinTech', 'HealthTech', 'SaaS']
+                'children' => [
+                    ['name' => ['en' => 'FinTech', 'de' => 'FinTech']],
+                    ['name' => ['en' => 'HealthTech', 'de' => 'HealthTech']],
+                    ['name' => ['en' => 'SaaS', 'de' => 'SaaS']],
+                ]
             ],
-            'Campaigns' => [
+            [
+                'name' => ['en' => 'Campaigns', 'de' => 'Kampagnen'],
                 'icon' => 'megaphone',
-                'children' => ['Charity', 'Community Projects', 'Fundraising']
+                'children' => [
+                    ['name' => ['en' => 'Charity', 'de' => 'Wohltätigkeit']],
+                    ['name' => ['en' => 'Community Projects', 'de' => 'Gemeinschaftsprojekte']],
+                    ['name' => ['en' => 'Fundraising', 'de' => 'Spendensammlungen']],
+                ]
             ],
         ];
 
-        foreach ($categories as $categoryName => $details) {
+        foreach ($categories as $categoryData) {
+            $parentDescription = [
+                'en' => "Browse all listings under the {$categoryData['name']['en']} category.",
+                'de' => "Durchsuchen Sie alle Angebote in der Kategorie {$categoryData['name']['de']}."
+            ];
+
             $parent = Category::create([
-                'name' => $categoryName,
-                'slug' => Str::slug($categoryName),
-                'description' => "Browse all listings under the {$categoryName} category.",
-                'is_active' => true,
-                'type' => 'listing', // Example type
-                'icon' => $details['icon'],
+                'name'        => $categoryData['name'],
+                'slug'        => Str::slug($categoryData['name']['en']),
+                'description' => $parentDescription,
+                'is_active'   => true,
+                'type'        => 'listing',
+                'icon'        => $categoryData['icon'],
             ]);
 
-            foreach ($details['children'] as $childName) {
+            foreach ($categoryData['children'] as $childData) {
+                $childDescription = [
+                    'en' => "Find {$childData['name']['en']} within the {$categoryData['name']['en']} category.",
+                    'de' => "Finden Sie {$childData['name']['de']} in der Kategorie {$categoryData['name']['de']}."
+                ];
+
                 Category::create([
-                    'name' => $childName,
-                    'slug' => Str::slug($childName),
-                    'description' => "Find {$childName} within the {$categoryName} category.",
-                    'is_active' => true,
-                    'type' => 'listing',
-                    'parent_id' => $parent->id,
+                    'name'        => $childData['name'],
+                    'slug'        => Str::slug($childData['name']['en']),
+                    'description' => $childDescription,
+                    'is_active'   => true,
+                    'type'        => 'listing',
+                    'parent_id'   => $parent->id,
                 ]);
             }
         }

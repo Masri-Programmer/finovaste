@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Spatie\Translatable\HasTranslations;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
@@ -18,7 +21,8 @@ use App\Models\InvestmentListing;
 class Listing extends Model
 
 {
-    use HasFactory, SoftDeletes;
+    use HasTranslations, HasSlug, HasFactory, SoftDeletes;
+    public $translatable = ['title', 'description'];
     protected $fillable = [
         'user_id',
         'category_id',
@@ -45,6 +49,13 @@ class Listing extends Model
         return $this->morphTo();
     }
 
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
+    }
     /**
      * Get all of the listing's media.
      * A listing can have many images, videos, etc.
@@ -89,7 +100,20 @@ class Listing extends Model
     {
         return $this->morphOne(Listing::class, 'listable');
     }
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('images')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp']);
 
+        $this
+            ->addMediaCollection('documents')
+            ->acceptsMimeTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+
+        $this
+            ->addMediaCollection('videos')
+            ->acceptsMimeTypes(['video/mp4', 'video/quicktime']);
+    }
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         // 1. --- Search Filter ---

@@ -1,26 +1,37 @@
 <script setup lang="ts">
 import { useWindowScroll, watchDebounced } from '@vueuse/core';
-import { ref, watch } from 'vue';
+import { PropType, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { Search } from 'lucide-vue-next';
-const props = defineProps<{
-    categories: {
-        id: string;
-        i18nKey: string;
-        count: number;
-    }[];
-    currentFilters: {
-        category?: string;
-        search?: string;
-    };
-}>();
 
-const { t } = useI18n();
+interface Category {
+    id: number;
+    slug: string;
+    icon: string | null;
+    children: Category[];
+    name: { [key: string]: string };
+}
+
+const props = defineProps({
+    categories: {
+        type: Array as PropType<Category[]>,
+        required: true,
+    },
+    currentFilters: {
+        type: Object as PropType<{
+            category?: string;
+            search?: string;
+        }>,
+        required: true,
+    },
+});
+
+const { t, locale } = useI18n();
 
 const activeCategory = ref(props.currentFilters.category || 'all');
 const searchTerm = ref(props.currentFilters.search || '');
@@ -33,7 +44,7 @@ watch(y, (newY) => {
 
 function applyFilters() {
     // router.get(
-    //     route('marketplace.index'),
+    //     route('home'), // Assuming 'home' is the name of your HomeController@index route
     //     {
     //         category:
     //             activeCategory.value === 'all'
@@ -48,8 +59,9 @@ function applyFilters() {
     // );
 }
 
-function selectCategory(categoryId: string) {
-    activeCategory.value = categoryId;
+// Updated to accept a 'slug' instead of an 'id'
+function selectCategory(categorySlug: string) {
+    activeCategory.value = categorySlug;
     applyFilters();
 }
 
@@ -82,24 +94,18 @@ watchDebounced(
                     @click="selectCategory('all')"
                 >
                     {{ t('homepage.categories.all') }}
-                    <Badge variant="outline" class="ml-2">
-                        {{
-                            categories.reduce((acc, cat) => acc + cat.count, 0)
-                        }}
-                    </Badge>
                 </Button>
 
                 <Button
                     v-for="cat in categories"
                     :key="cat.id"
-                    :variant="activeCategory === cat.id ? 'secondary' : 'ghost'"
+                    :variant="
+                        activeCategory === cat.slug ? 'secondary' : 'ghost'
+                    "
                     class="flex-shrink-0 rounded-full"
-                    @click="selectCategory(cat.id)"
+                    @click="selectCategory(cat.slug)"
                 >
-                    {{ t(`homepage.${cat.i18nKey}`) }}
-                    <Badge variant="outline" class="ml-2">
-                        {{ cat.count }}
-                    </Badge>
+                    {{ cat.name[locale] || cat.name.de }}
                 </Button>
             </div>
 

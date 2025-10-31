@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('listings', function (Blueprint $table) {
-            // CORE IDENTIFIERS
             $table->id();
             $table->uuid()->unique();
 
@@ -22,9 +21,9 @@ return new class extends Migration
             $table->foreignId('address_id')->nullable()->constrained('addresses')->onDelete('set null');
 
             // ESSENTIAL DETAILS
-            $table->string('title');
+            $table->json('title'); // CHANGED
             $table->string('slug')->unique();
-            $table->text('description');
+            $table->json('description');
 
             // LISTING MANAGEMENT
             $table->enum('status', ['pending', 'rejected', 'active', 'expired', 'sold', 'withdrawn'])->default('pending');

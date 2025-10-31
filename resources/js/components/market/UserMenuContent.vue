@@ -10,7 +10,7 @@ import { dashboard, logout } from '@/routes';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { LogOut, Settings, User as UserIcon } from 'lucide-vue-next';
+import { LogOut, Scroll, Settings, User as UserIcon } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
 interface Props {
     user: User;
@@ -31,6 +31,14 @@ defineProps<Props>();
         </div>
     </DropdownMenuLabel>
     <DropdownMenuSeparator />
+    <DropdownMenuGroup>
+        <DropdownMenuItem :as-child="true">
+            <Link class="block w-full" :href="edit()" as="button">
+                <Scroll class="mr-2 h-4 w-4" />
+                {{ t('auth.menu.listings') }}
+            </Link>
+        </DropdownMenuItem>
+    </DropdownMenuGroup>
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="edit()" as="button">

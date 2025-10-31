@@ -28,6 +28,7 @@ import {
 } from 'lucide-vue-next';
 
 import Pagination from '@/components/layout/Pagination.vue';
+import { usePage } from '@inertiajs/vue3';
 import MarketplaceCategoryFilters from './Filters.vue';
 import ListingFaqs from './ListingFaqs.vue';
 
@@ -39,16 +40,8 @@ const filters = ref({
     category: 'all',
     search: '',
 });
-
-const categories = ref([
-    { id: 'properties', i18nKey: 'categories.properties', count: 89 },
-    { id: 'vehicles', i18nKey: 'categories.vehicles', count: 45 },
-    { id: 'furniture', i18nKey: 'categories.furniture', count: 32 },
-    { id: 'electronics', i18nKey: 'categories.electronics', count: 28 },
-    { id: 'art', i18nKey: 'categories.art', count: 21 },
-    { id: 'businesses', i18nKey: 'categories.businesses', count: 12 },
-    { id: 'startups', i18nKey: 'categories.startups', count: 7 },
-]);
+const page = usePage();
+const categories = ref(page.props.categories);
 
 const listings = ref([
     {

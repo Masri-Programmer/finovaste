@@ -35,8 +35,15 @@ class ListingController extends Controller
      */
     public function create()
     {
+        $allCategories = Category::orderBy('name')->get();
+        $categories = $allCategories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->getTranslations('name'),
+            ];
+        });
         return Inertia::render('listings/Create', [
-            'categories' => Category::all(['id', 'name']),
+            'categories' => $categories,
         ]);
     }
 
@@ -45,16 +52,13 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. --- Validate Common Fields ---
-        // 'listing_type' must be sent from your frontend
         $commonData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'listing_type' => 'required|string|in:auction,donation,buy_now,investment', // Added all types
+            'listing_type' => 'required|string|in:auction,donation,buy_now,investment',
         ]);
 
-        // 2. --- Validate and Prepare Specific Fields ---
         $listable = null;
 
         try {
@@ -104,7 +108,6 @@ class ListingController extends Controller
                 throw new \Exception('Invalid listing type provided.');
             }
 
-            // 3. --- Create the Main Listing ---
             $listing = $listable->listing()->create([
                 'user_id' => auth()->id(),
                 'category_id' => $commonData['category_id'],
@@ -114,7 +117,6 @@ class ListingController extends Controller
                 'status' => 'pending',
                 // 'meta' => $request->input('meta', []),
             ]);
-
             DB::commit();
 
             return redirect()->route('listings.index')->with('success', 'Listing created successfully.');
