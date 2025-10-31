@@ -18,7 +18,7 @@ const { t } = useI18n();
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: t('settings.languages.breadcrumb'),
-        href: edit().url,
+        href: edit.url(),
     },
 ];
 </script>
