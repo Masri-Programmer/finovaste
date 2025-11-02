@@ -14,7 +14,7 @@ class AuctionListing extends Model
      * We don't need timestamps for this specific table
      * if the main listing table's timestamps are sufficient.
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

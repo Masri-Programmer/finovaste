@@ -44,7 +44,10 @@
             },
             "media": {
                 "label": "Datei (Fotos, Dokumente...)",
-                "description": "Laden Sie ..."
+                "description": "Laden Sie ...",
+                "images": "Fotos",
+                "documents": "Dokumente",
+                "videos": "Videos"
             },
             "price": {
                 "label": "Preis (€)",

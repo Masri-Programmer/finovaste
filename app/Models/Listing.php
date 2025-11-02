@@ -17,7 +17,7 @@ use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
-use Illuminate\Support\Str; // <-- ********** ADD THIS LINE **********
+use Illuminate\Support\Str;
 
 class Listing extends Model
 
@@ -50,7 +50,7 @@ class Listing extends Model
      *
      * @return void
      */
-    protected static function booted(): void // <-- ********** ADD THIS ENTIRE METHOD **********
+    protected static function booted(): void
     {
         static::creating(function ($model) {
             if (empty($model->uuid)) {
@@ -111,10 +111,7 @@ class Listing extends Model
     {
         return $this->hasMany(Review::class);
     }
-    public function listing()
-    {
-        return $this->morphOne(Listing::class, 'listable');
-    }
+
     public function registerMediaCollections(): void
     {
         $this

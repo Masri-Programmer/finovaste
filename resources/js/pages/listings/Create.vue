@@ -34,9 +34,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-// --- MODIFIED: Import Tabs components ---
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
+import Textarea from '@/components/ui/textarea/Textarea.vue';
+import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { cn } from '@/lib/utils';
 import { store } from '@/routes/listings';
 import { type BreadcrumbItem } from '@/types';
@@ -54,9 +53,9 @@ const props = defineProps({
         required: true,
     },
 });
-
 // Get all available locales (e.g., ['en', 'de'])
-const { t, locale, availableLocales, fallbackLocale } = useI18n();
+const { locale, availableLanguages } = useLanguageSwitcher();
+const { t, fallbackLocale } = useI18n();
 const toast = useToast();
 
 const listingType = useStorage<'buy_now' | 'auction' | 'donation'>(
@@ -64,23 +63,23 @@ const listingType = useStorage<'buy_now' | 'auction' | 'donation'>(
     'buy_now',
 );
 
-// Dynamically create initial translation objects, e.g., { en: '', de: '' }
-const initialTranslations = availableLocales.value.reduce(
+const initialTranslations = availableLanguages.value.reduce(
     (acc, lang) => {
-        acc[lang] = '';
+        acc[lang.code] = '';
         return acc;
     },
     {} as { [key: string]: string },
 );
 
 const form = useForm({
-    // Use the dynamically generated object
     title: { ...initialTranslations },
     description: { ...initialTranslations },
 
     category_id: null as number | null,
     expires_at: null as Date | null,
-    image: null as File | null, // For file upload
+    images: [] as File[],
+    documents: [] as File[],
+    videos: [] as File[],
 
     listing_type: listingType.value,
 
@@ -105,7 +104,6 @@ watch(listingType, (newType) => {
     form.clearErrors();
 });
 
-// Computed properties for date formatting (no changes)
 const formattedExpiresAt = computed(() => {
     return form.expires_at
         ? format(form.expires_at, 'PPP', { locale: de })
@@ -122,11 +120,19 @@ const formattedEndsAt = computed(() => {
         : t('listing.createListing.fields.ends_at.placeholder');
 });
 
-const onFileChange = (event: Event) => {
+const onImagesChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-        form.image = target.files[0];
-    }
+    form.images = target.files ? Array.from(target.files) : [];
+};
+
+const onDocumentsChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    form.documents = target.files ? Array.from(target.files) : [];
+};
+
+const onVideosChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    form.videos = target.files ? Array.from(target.files) : [];
 };
 
 const submit = () => {
@@ -244,86 +250,59 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <h3 class="border-b pb-2 text-base font-semibold">
                             {{ t('listing.createListing.sections.core') }}
                         </h3>
-
-                        <Tabs :default-value="fallbackLocale as string">
-                            <TabsList
-                                :class="
-                                    cn(
-                                        'grid w-full',
-                                        `grid-cols-${availableLocales.length}`,
-                                    )
-                                "
-                            >
-                                <TabsTrigger
-                                    v-for="lang in availableLocales"
-                                    :key="`trigger-${lang}`"
-                                    :value="lang"
+                        <div class="mt-6 space-y-4">
+                            <div class="space-y-2">
+                                <Label for="title">
+                                    {{
+                                        t(
+                                            'listing.createListing.fields.title.label',
+                                        )
+                                    }}
+                                </Label>
+                                <Input
+                                    id="title"
+                                    v-model="form.title[locale]"
+                                    :placeholder="
+                                        t(
+                                            'listing.createListing.fields.title.placeholder',
+                                        )
+                                    "
+                                    required
+                                />
+                                <span
+                                    v-if="form.errors[`title.${locale}`]"
+                                    class="text-sm text-destructive"
                                 >
-                                    {{ lang.toUpperCase() }}
-                                </TabsTrigger>
-                            </TabsList>
+                                    {{ form.errors[`title.${locale}`] }}
+                                </span>
+                            </div>
 
-                            <TabsContent
-                                v-for="lang in availableLocales"
-                                :key="`content-${lang}`"
-                                :value="lang"
-                                class="mt-6 space-y-4"
-                            >
-                                <div class="space-y-2">
-                                    <Label :for="`title_${lang}`">
-                                        {{
-                                            t(
-                                                'listing.createListing.fields.title.label',
-                                            )
-                                        }}
-                                    </Label>
-                                    <Input
-                                        :id="`title_${lang}`"
-                                        v-model="form.title[lang]"
-                                        :placeholder="
-                                            t(
-                                                'listing.createListing.fields.title.placeholder',
-                                            )
-                                        "
-                                        :required="lang === fallbackLocale"
-                                    />
-                                    <span
-                                        v-if="form.errors[`title.${lang}`]"
-                                        class="text-sm text-destructive"
-                                    >
-                                        {{ form.errors[`title.${lang}`] }}
-                                    </span>
-                                </div>
-
-                                <div class="space-y-2">
-                                    <Label :for="`description_${lang}`">
-                                        {{
-                                            t(
-                                                'listing.createListing.fields.description.label',
-                                            )
-                                        }}
-                                    </Label>
-                                    <Textarea
-                                        :id="`description_${lang}`"
-                                        v-model="form.description[lang]"
-                                        :placeholder="
-                                            t(
-                                                'listing.createListing.fields.description.placeholder',
-                                            )
-                                        "
-                                        class="min-h-[120px]"
-                                    />
-                                    <span
-                                        v-if="
-                                            form.errors[`description.${lang}`]
-                                        "
-                                        class="text-sm text-destructive"
-                                    >
-                                        {{ form.errors[`description.${lang}`] }}
-                                    </span>
-                                </div>
-                            </TabsContent>
-                        </Tabs>
+                            <div class="space-y-2">
+                                <Label for="description">
+                                    {{
+                                        t(
+                                            'listing.createListing.fields.description.label',
+                                        )
+                                    }}
+                                </Label>
+                                <Textarea
+                                    id="description"
+                                    v-model="form.description[locale]"
+                                    :placeholder="
+                                        t(
+                                            'listing.createListing.fields.description.placeholder',
+                                        )
+                                    "
+                                    class="min-h-[120px]"
+                                />
+                                <span
+                                    v-if="form.errors[`description.${locale}`]"
+                                    class="text-sm text-destructive"
+                                >
+                                    {{ form.errors[`description.${locale}`] }}
+                                </span>
+                            </div>
+                        </div>
                         <span
                             v-if="form.errors.title"
                             class="text-sm text-destructive"
@@ -432,26 +411,74 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         </div>
 
                         <div class="space-y-2">
-                            <Label for="media">
+                            <Label for="images">
                                 {{
                                     t(
-                                        'listing.createListing.fields.media.label',
+                                        'listing.createListing.fields.media.images',
                                     )
-                                }}
-                            </Label>
+                                }}</Label
+                            >
                             <Input
-                                id="media"
+                                id="images"
                                 type="file"
-                                @change="onFileChange"
+                                @change="onImagesChange"
                                 multiple
+                                accept="image/jpeg,image/png,image/webp"
                                 class="file:font-semibold file:text-primary-foreground"
                             />
-                            <span class="text-sm text-muted-foreground">
+                            <span
+                                v-if="form.errors.images"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.images }}
+                            </span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <Label for="documents">
                                 {{
                                     t(
-                                        'listing.createListing.fields.media.description',
+                                        'listing.createListing.fields.media.documents',
                                     )
-                                }}
+                                }}</Label
+                            >
+                            <Input
+                                id="documents"
+                                type="file"
+                                @change="onDocumentsChange"
+                                multiple
+                                accept=".pdf,.doc,.docx"
+                                class="file:font-semibold file:text-primary-foreground"
+                            />
+                            <span
+                                v-if="form.errors.documents"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.documents }}
+                            </span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <Label for="videos">
+                                {{
+                                    t(
+                                        'listing.createListing.fields.media.videos',
+                                    )
+                                }}</Label
+                            >
+                            <Input
+                                id="videos"
+                                type="file"
+                                @change="onVideosChange"
+                                multiple
+                                accept="video/mp4,video/quicktime"
+                                class="file:font-semibold file:text-primary-foreground"
+                            />
+                            <span
+                                v-if="form.errors.videos"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.videos }}
                             </span>
                         </div>
                     </div>

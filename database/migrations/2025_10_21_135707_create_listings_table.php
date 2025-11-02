@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('address_id')->nullable()->constrained('addresses')->onDelete('set null');
 
             // ESSENTIAL DETAILS
-            $table->json('title'); // CHANGED
+            $table->json('title');
             $table->string('slug')->unique();
             $table->json('description');
 
