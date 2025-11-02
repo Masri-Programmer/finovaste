@@ -37,12 +37,19 @@
     },
     "locations": {
         "sanFrancisco": "San Francisco, CA",
-        "losAngeles": "Los Angeles, CA"
+        "losAngeles": "Los Angeles, CA",
+        "generic": "Verschiedene Standorte"
     },
     "reviews": {
         "label": "Bewertungen"
     },
     "listings": {
+        "price": "Preis",
+        "quantity": "Menge",
+        "buyNow": "Jetzt kaufen",
+        "donationsRaised": "Gesammelte Spenden",
+        "donors": "Spender",
+        "donateNow": "Jetzt spenden",
         "capitalRaised": "Eingesammeltes Kapital",
         "investors": "Investoren",
         "minInvestment": "Mindestinvestition",
@@ -79,9 +86,15 @@
         "projekt": "Projekt",
         "information": "Information"
     },
+    "listingTypes": {
+        "investment": "Investition",
+        "auction": "Auktion",
+        "buyNow": "Sofort-Kauf",
+        "donation": "Spende"
+    },
     "links": {
+        "details": "Details",
         "website": "Webseite",
-        "pitchdeck": "Pitchdeck",
-        "details": "Details"
+        "pitchdeck": "Pitchdeck"
     }
 }

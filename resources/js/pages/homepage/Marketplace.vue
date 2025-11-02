@@ -174,7 +174,10 @@ function shareListing(uuid: string) {
                 >
                     <CardHeader class="relative p-0">
                         <img
-                            src="https://placehold.co/600x400.png?text=Listing+Image"
+                            :src="
+                                listing.image_url ||
+                                'https://placehold.co/600x400.png?text=Listing+Image'
+                            "
                             :alt="listing.title.de"
                             class="h-48 w-full object-cover"
                         />

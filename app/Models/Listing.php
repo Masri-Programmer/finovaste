@@ -18,11 +18,14 @@ use App\Models\BuyNowListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Listing extends Model
+class Listing extends Model implements HasMedia
 
 {
-    use HasTranslations, HasSlug, HasFactory, SoftDeletes;
+    use HasTranslations, HasSlug, HasFactory, SoftDeletes, InteractsWithMedia;
     public $translatable = ['title', 'description'];
     protected $fillable = [
         'user_id',
@@ -77,9 +80,8 @@ class Listing extends Model
      */
     public function media(): MorphMany
     {
-        return $this->morphMany(Media::class, 'mediable');
+        return $this->morphMany(Media::class, 'model');
     }
-
     /**
      * Get the user that owns the listing.
      */

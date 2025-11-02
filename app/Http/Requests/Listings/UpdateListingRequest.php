@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests\Listings;
 
+use App\Models\Listing;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\InvestmentListing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
 use App\Models\BuyNowListing;
+use Illuminate\Validation\Rule;
 
 class UpdateListingRequest extends FormRequest
 {
@@ -48,6 +50,20 @@ class UpdateListingRequest extends FormRequest
         // 3. --- Type-Specific Rules ---
         $specificRules = [];
 
+        $mediaRules = [
+            'media_to_delete'   => 'nullable|array',
+            'media_to_delete.*' => [
+                'required',
+                'integer',
+                // This magic rule checks two things:
+                // 1. The ID exists in the 'media' table.
+                // 2. It belongs to the *exact listing* we are editing.
+                Rule::exists('media', 'id')->where(function ($query) {
+                    $query->where('model_type', Listing::class)
+                        ->where('model_id', $this->route('listing')->id);
+                }),
+            ],
+        ];
         if ($listing->listable instanceof InvestmentListing) {
             $specificRules = [
                 'investment_goal' => 'required|numeric|min:0',
@@ -76,7 +92,7 @@ class UpdateListingRequest extends FormRequest
         }
 
         // 4. --- Merge and return all rules ---
-        return array_merge($rules, $specificRules);
+        return array_merge($rules, $specificRules, $mediaRules);
     }
 
     /**

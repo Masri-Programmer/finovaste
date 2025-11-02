@@ -1,4 +1,10 @@
 {
+    "mediaPreview": {
+        "imageAlt": "Vorschaubild für {name}",
+        "videoNotSupported": "Ihr Browser unterstützt das Video-Tag nicht.",
+        "downloadPdf": "PDF herunterladen",
+        "removeLabel": "Datei entfernen"
+    },
     "createListing": {
         "title": "Neues Inserat erstellen",
         "description": "Wählen Sie einen Inseratstyp und füllen Sie die Details aus, um Ihr Angebot zu veröffentlichen.",
@@ -47,7 +53,8 @@
                 "description": "Laden Sie ...",
                 "images": "Fotos",
                 "documents": "Dokumente",
-                "videos": "Videos"
+                "videos": "Videos",
+                "dropzone": "Dateien hier ablegen oder durchsuchen"
             },
             "price": {
                 "label": "Preis (€)",

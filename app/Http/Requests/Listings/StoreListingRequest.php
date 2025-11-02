@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Listings;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreListingRequest extends FormRequest
@@ -13,11 +14,38 @@ class StoreListingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Your route already protects this with 'auth' middleware,
-        // so we can simply return true here.
         return true;
     }
 
+    // ... in app/Http/Requests/Listings/StoreListingRequest.php
+
+    protected function prepareForValidation(): void
+    {
+        // Handle expires_at
+        $expires = $this->expires_at;
+        if (is_array($expires) && !empty($expires)) {
+            $expires = $expires[0]; // Get the first element from the array
+        }
+
+        // Handle starts_at
+        $starts = $this->starts_at;
+        if (is_array($starts) && !empty($starts)) {
+            $starts = $starts[0]; // Get the first element
+        }
+
+        // Handle ends_at
+        $ends = $this->ends_at;
+        if (is_array($ends) && !empty($ends)) {
+            $ends = $ends[0]; // Get the first element
+        }
+
+        // Now merge the cleaned, single string values
+        $this->merge([
+            'expires_at' => $expires ? Carbon::parse($expires)->toDateTimeString() : null,
+            'starts_at'  => $starts  ? Carbon::parse($starts)->toDateTimeString() : null,
+            'ends_at'    => $ends    ? Carbon::parse($ends)->toDateTimeString() : null,
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -33,15 +61,16 @@ class StoreListingRequest extends FormRequest
             'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'listing_type' => 'required|string|in:auction,donation,buy_now,investment',
+            'location_text' => 'nullable|string|max:255',
             'expires_at' => 'nullable|date|after:now',
 
             // Media Data
             'images'   => 'nullable|array',
-            'images.*' => 'file|mimetypes:image/jpeg,image/png,image/webp',
+            'images.*' => 'file|mimetypes:image/jpeg,image/png,image/webp|max:10240',
             'documents'   => 'nullable|array',
-            'documents.*' => 'file|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'documents.*' => 'file|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
             'videos'   => 'nullable|array',
-            'videos.*' => 'file|mimetypes:video/mp4,video/quicktime',
+            'videos.*' => 'file|mimetypes:video/mp4,video/quicktime|max:51200',
         ];
 
         // 2. --- Type-Specific Rules ---
@@ -60,7 +89,8 @@ class StoreListingRequest extends FormRequest
             case 'auction':
                 $specificRules = [
                     'start_price' => 'required|numeric|min:0',
-                    'ends_at' => 'required|date|after:now',
+                    'starts_at' => 'nullable|date|after:now',
+                    'ends_at' => 'required|date|after:starts_at',
                     'reserve_price' => 'nullable|numeric|gte:start_price',
                     'buy_it_now_price' => 'nullable|numeric|gte:start_price',
                 ];
@@ -98,6 +128,7 @@ class StoreListingRequest extends FormRequest
             'category_id',
             'listing_type',
             'expires_at',
+            'location_text',
         ]);
     }
 
@@ -119,6 +150,7 @@ class StoreListingRequest extends FormRequest
             ]),
             'auction' => $this->safe()->only([
                 'start_price',
+                'starts_at',
                 'ends_at',
                 'reserve_price',
                 'buy_it_now_price'

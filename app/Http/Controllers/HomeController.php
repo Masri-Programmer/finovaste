@@ -47,11 +47,17 @@ class HomeController extends Controller
             'sort' => 'nullable|string|in:latest,oldest',
         ]);
         $listings = Listing::query()
-            ->with(['listable', 'user', 'category'])
+            ->with(['listable', 'user', 'category', 'media'])
             ->filter($filters)
             ->paginate(12)
             ->withQueryString();
 
+        $listings->getCollection()->transform(function ($listing) {
+            $listing->image_url = $listing->getFirstMediaUrl('images');
+            unset($listing->media);
+
+            return $listing;
+        });
         return Inertia::render('Homepage', [
             'categories' => $categories,
             'listings' => $listings,
