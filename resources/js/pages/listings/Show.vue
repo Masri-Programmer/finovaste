@@ -1,40 +1,24 @@
 <script setup lang="ts">
-import { Link as InertiaLink, useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { useToggle } from '@vueuse/core';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
-import { Slider } from '@/components/ui/slider';
 
 // Icons
-import {
-    ArrowLeft,
-    Building,
-    Clock,
-    Heart,
-    Mail,
-    MapPin,
-    Share2,
-    Star,
-    TrendingUp,
-    Users,
-    Video,
-} from 'lucide-vue-next';
+import Layout from '@/components/layout/Layout.vue';
+import Dialog from '@/components/ui/dialog/Dialog.vue';
+import DialogContent from '@/components/ui/dialog/DialogContent.vue';
+import DialogDescription from '@/components/ui/dialog/DialogDescription.vue';
+import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
+import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
+import Input from '@/components/ui/input/Input.vue';
+import { home } from '@/routes';
+import { show } from '@/routes/listings';
+import { ArrowLeft, Heart, Share2 } from 'lucide-vue-next';
 
 // --- Typescript Interfaces for Props ---
 interface Translatable {
@@ -143,18 +127,18 @@ watch(investmentAmount, (newAmount) => {
 const submitInvestment = () => {
     // router.post(route('listings.invest', props.listing.uuid), investForm, {
     //     onStart: () => {
-    //         toast.info(t('listings.show.toast.starting'), {
+    //         toast.info(t('listings_show.toast.starting'), {
     //             id: 'invest-submit',
     //         });
     //     },
     //     onSuccess: () => {
     //         toggleDialog(false);
-    //         toast.success(t('listings.show.toast.success'), {
+    //         toast.success(t('listings_show.toast.success'), {
     //             id: 'invest-submit',
     //         });
     //     },
     //     onError: (errors) => {
-    //         const errorMsg = errors.amount || t('listings.show.toast.failure');
+    //         const errorMsg = errors.amount || t('listings_show.toast.failure');
     //         toast.error(errorMsg, { id: 'invest-submit' });
     //     },
     // });
@@ -171,15 +155,18 @@ const seller = {
 </script>
 
 <template>
-    <div class="container mx-auto max-w-7xl p-4 py-8 md:p-8">
+    <Layout
+        :link="show.url(props.listing.id)"
+        class="container mx-auto max-w-7xl p-4 py-8 md:p-8"
+    >
         <header class="mb-6 flex items-center justify-between">
-            <InertiaLink
-                :href="'#'"
+            <Link
+                :href="home()"
                 class="flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
             >
                 <ArrowLeft class="mr-2 h-4 w-4" />
-                {{ t('listings.show.backToMarketplace') }}
-            </InertiaLink>
+                {{ t('listings_show.backToMarketplace') }}
+            </Link>
             <div class="flex items-center space-x-2">
                 <Button variant="ghost" size="icon">
                     <Share2 class="h-5 w-5" />
@@ -206,12 +193,12 @@ const seller = {
                             class="absolute right-4 bottom-4 shadow-md"
                         >
                             <Video class="mr-2 h-4 w-4" />
-                            {{ t('listings.show.watchVideo') }}
+                            {{ t('listings_show.watchVideo') }}
                         </Button>
                         <span
                             class="absolute top-4 left-4 rounded-full bg-primary/80 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur-sm"
                         >
-                            {{ t('listings.show.investmentTag') }}
+                            {{ t('listings_show.investmentTag') }}
                         </span>
                     </div>
                     <div class="mt-2 grid grid-cols-4 gap-2">
@@ -229,156 +216,13 @@ const seller = {
                         </div>
                     </div>
                 </section>
-
-                <section>
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h1
-                                class="text-3xl font-bold tracking-tight text-foreground"
-                            >
-                                {{ listingTitle }}
-                            </h1>
-                            <div
-                                class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground"
-                            >
-                                <div class="flex items-center">
-                                    <MapPin class="mr-1.5 h-4 w-4" />
-                                    {{ listingLocation }}
-                                </div>
-                                <div class="flex items-center">
-                                    <Building class="mr-1.5 h-4 w-4" />
-                                    {{ listingCategory }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-shrink-0 flex-col items-end">
-                            <div class="flex items-center space-x-1">
-                                <Star
-                                    class="h-5 w-5 fill-amber-400 text-amber-400"
-                                />
-                                <span class="text-lg font-semibold">{{
-                                    mockData.rating
-                                }}</span>
-                            </div>
-                            <span class="text-sm text-muted-foreground">
-                                {{ mockData.reviews }}
-                                {{ t('listings.show.reviews') }}
-                            </span>
-                        </div>
-                    </div>
-                    <Separator class="my-6" />
-                    <p class="text-base leading-relaxed text-foreground/80">
-                        {{ listingDescription }}
-                    </p>
-                </section>
-
-                <section class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <Card
-                        class="border-blue-200 bg-blue-50 dark:border-accent/30 dark:bg-accent/20"
-                    >
-                        <CardHeader
-                            class="flex flex-row items-center justify-between space-y-0 pb-2"
-                        >
-                            <CardTitle
-                                class="text-sm font-medium text-blue-900 dark:text-accent-foreground"
-                            >
-                                {{ t('listings.show.stats.roi') }}
-                            </CardTitle>
-                            <TrendingUp
-                                class="h-4 w-4 text-blue-700 dark:text-accent-foreground/70"
-                            />
-                        </CardHeader>
-                        <CardContent>
-                            <div
-                                class="text-2xl font-bold text-blue-950 dark:text-foreground"
-                            >
-                                {{ mockData.expectedRoi }}
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card
-                        class="border-green-200 bg-green-50 dark:border-secondary/30 dark:bg-secondary/20"
-                    >
-                        <CardHeader
-                            class="flex flex-row items-center justify-between space-y-0 pb-2"
-                        >
-                            <CardTitle
-                                class="text-sm font-medium text-green-900 dark:text-secondary-foreground"
-                            >
-                                {{ t('listings.show.stats.duration') }}
-                            </CardTitle>
-                            <Clock
-                                class="h-4 w-4 text-green-700 dark:text-secondary-foreground/70"
-                            />
-                        </CardHeader>
-                        <CardContent>
-                            <div
-                                class="text-2xl font-bold text-green-950 dark:text-foreground"
-                            >
-                                {{ mockData.duration }}
-                                {{ t('listings.show.stats.months') }}
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card
-                        class="border-pink-200 bg-pink-50 dark:border-destructive/20 dark:bg-destructive/10"
-                    >
-                        <CardHeader
-                            class="flex flex-row items-center justify-between space-y-0 pb-2"
-                        >
-                            <CardTitle
-                                class="text-sm font-medium text-pink-900 dark:text-destructive-foreground/80"
-                            >
-                                {{ t('listings.show.stats.investors') }}
-                            </CardTitle>
-                            <Users
-                                class="h-4 w-4 text-pink-700 dark:text-destructive-foreground/70"
-                            />
-                        </CardHeader>
-                        <CardContent>
-                            <div
-                                class="text-2xl font-bold text-pink-950 dark:text-foreground"
-                            >
-                                {{ mockData.investors }}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </section>
-
-                <section>
-                    <h3 class="text-lg font-semibold">
-                        {{ t('listings.show.capitalRaised') }}
-                    </h3>
-                    <Progress :model-value="capitalProgress" class="mt-4 h-3" />
-                    <div
-                        class="mt-3 flex justify-between text-sm font-medium text-muted-foreground"
-                    >
-                        <span class="font-bold text-foreground">
-                            {{
-                                mockData.capitalRaised.toLocaleString('de-DE', {
-                                    style: 'currency',
-                                    currency: 'EUR',
-                                })
-                            }}
-                        </span>
-                        <span>
-                            /
-                            {{
-                                mockData.capitalGoal.toLocaleString('de-DE', {
-                                    style: 'currency',
-                                    currency: 'EUR',
-                                })
-                            }}
-                        </span>
-                    </div>
-                </section>
             </div>
 
             <aside class="space-y-6 lg:col-span-1">
                 <Card class="sticky top-8 border-border shadow-lg">
                     <CardContent class="space-y-4 p-6">
                         <div class="text-sm font-medium text-muted-foreground">
-                            {{ t('listings.show.min') }}
+                            {{ t('listings_show.min') }}
                         </div>
                         <div class="flex items-baseline justify-between">
                             <span class="text-lg font-semibold">
@@ -394,7 +238,7 @@ const seller = {
                                 }}
                             </span>
                             <span class="text-sm text-muted-foreground">
-                                {{ t('listings.show.minimum') }}
+                                {{ t('listings_show.minimum') }}
                             </span>
                         </div>
 
@@ -405,7 +249,7 @@ const seller = {
                                 for="investment-slider"
                                 class="text-sm font-medium text-muted-foreground"
                             >
-                                {{ t('listings.show.your') }}
+                                {{ t('listings_show.your') }}
                             </Label>
                             <Slider
                                 id="investment-slider"
@@ -419,7 +263,7 @@ const seller = {
 
                         <div class="flex justify-between text-sm">
                             <span class="text-muted-foreground">{{
-                                t('listings.show.amount')
+                                t('listings_show.amount')
                             }}</span>
                             <span class="font-bold text-foreground">
                                 {{
@@ -433,7 +277,7 @@ const seller = {
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-muted-foreground">{{
-                                t('listings.show.share')
+                                t('listings_show.share')
                             }}</span>
                             <span class="font-bold text-foreground"
                                 >{{ capitalShare }}%</span
@@ -444,12 +288,12 @@ const seller = {
                             @click="toggleDialog(true)"
                             class="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90"
                         >
-                            {{ t('listings.show.button.invest') }}
+                            {{ t('listings_show.button.invest') }}
                         </Button>
                         <p
                             class="mt-2 text-center text-xs text-muted-foreground"
                         >
-                            {{ t('listings.show.securePayment') }}
+                            {{ t('listings_show.securePayment') }}
                         </p>
                     </CardContent>
                 </Card>
@@ -457,7 +301,7 @@ const seller = {
                 <Card class="border-border shadow-sm">
                     <CardHeader>
                         <CardTitle class="text-lg font-semibold">
-                            {{ t('listings.show.listedBy') }}
+                            {{ t('listings_show.listedBy') }}
                         </CardTitle>
                     </CardHeader>
                     <CardContent class="space-y-4 p-6 pt-0">
@@ -489,7 +333,7 @@ const seller = {
                                         {{ seller.rating }} ({{
                                             seller.reviews
                                         }}
-                                        {{ t('listings.show.reviews') }})
+                                        {{ t('listings_show.reviews') }})
                                     </span>
                                 </div>
                             </div>
@@ -499,19 +343,19 @@ const seller = {
 
                         <div class="grid grid-cols-2 gap-y-2 text-sm">
                             <p class="text-muted-foreground">
-                                {{ t('listings.show.memberSince') }}
+                                {{ t('listings_show.memberSince') }}
                             </p>
                             <p class="text-right font-medium">
                                 {{ seller.memberSince }}
                             </p>
                             <p class="text-muted-foreground">
-                                {{ t('listings.show.responseTime') }}
+                                {{ t('listings_show.responseTime') }}
                             </p>
                             <p class="text-right font-medium">
                                 {{ seller.responseTime }}
                             </p>
                             <p class="text-muted-foreground">
-                                {{ t('listings.show.totalListings') }}
+                                {{ t('listings_show.totalListings') }}
                             </p>
                             <p class="text-right font-medium">
                                 {{ seller.totalListings }}
@@ -520,7 +364,7 @@ const seller = {
 
                         <Button variant="secondary" class="mt-4 w-full">
                             <Mail class="mr-2 h-4 w-4" />
-                            {{ t('listings.show.button.contactSeller') }}
+                            {{ t('listings_show.button.contactSeller') }}
                         </Button>
                     </CardContent>
                 </Card>
@@ -531,11 +375,11 @@ const seller = {
             <DialogContent class="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{{
-                        t('listings.show.dialog.title')
+                        t('listings_show.dialog.title')
                     }}</DialogTitle>
                     <DialogDescription>
                         {{
-                            t('listings.show.dialog.description', {
+                            t('listings_show.dialog.description', {
                                 amount: investmentAmount.toLocaleString(
                                     'de-DE',
                                     {
@@ -555,7 +399,7 @@ const seller = {
                 >
                     <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="amount" class="text-right">
-                            {{ t('listings.show.amount') }}
+                            {{ t('listings_show.amount') }}
                         </Label>
                         <Input
                             id="amount"
@@ -579,10 +423,10 @@ const seller = {
                         :disabled="investForm.processing"
                         class="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90"
                     >
-                        {{ t('listings.show.dialog.confirmButton') }}
+                        {{ t('listings_show.dialog.confirmButton') }}
                     </Button>
                 </form>
             </DialogContent>
         </Dialog>
-    </div>
+    </Layout>
 </template>

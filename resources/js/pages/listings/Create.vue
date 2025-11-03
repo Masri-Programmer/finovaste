@@ -17,12 +17,12 @@ import {
 } from '@/components/ui/card';
 import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 // Child Form Components
-import ListingAuctionForm from '@/components/listings/ListingAuctionForm.vue';
-import ListingBuyNowForm from '@/components/listings/ListingBuyNowForm.vue';
-import ListingCommonDetails from '@/components/listings/ListingCommonDetails.vue';
-import ListingDonationForm from '@/components/listings/ListingDonationForm.vue';
-import ListingMediaUpload from '@/components/listings/ListingMediaUpload.vue';
-import ListingTypeSelector from '@/components/listings/ListingTypeSelector.vue';
+import ListingAuctionForm from '@/components/listings/create/ListingAuctionForm.vue';
+import ListingBuyNowForm from '@/components/listings/create/ListingBuyNowForm.vue';
+import ListingCommonDetails from '@/components/listings/create/ListingCommonDetails.vue';
+import ListingDonationForm from '@/components/listings/create/ListingDonationForm.vue';
+import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
+import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
 
 // Composables, Types, etc.
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
@@ -102,7 +102,6 @@ watch(listingType, (newType) => {
 
 // Submit handler
 const submit = () => {
-    console.log(form);
     form.post(store.url(), {
         onSuccess: () => {
             toast.success(t('listing.createListing.notifications.success'));

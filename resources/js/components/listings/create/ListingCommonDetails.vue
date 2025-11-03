@@ -25,7 +25,6 @@ import { useI18n } from 'vue-i18n';
 
 // --- PROPS ---
 const props = defineProps({
-    // v-model props
     title: {
         type: Object as PropType<{ [key: string]: string }>,
         required: true,
@@ -56,10 +55,6 @@ const props = defineProps({
         >,
         required: true,
     },
-    locale: {
-        type: String,
-        required: true,
-    },
     fallbackLocale: {
         type: String,
         required: true,
@@ -79,7 +74,7 @@ const emit = defineEmits([
     'update:expires_at',
 ]);
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 // --- COMPUTED PROPS ---
 const formattedExpiresAt = computed(() => {
@@ -90,13 +85,13 @@ const formattedExpiresAt = computed(() => {
 
 // --- HANDLERS for translated fields ---
 const updateTitle = (newTitle: string) => {
-    emit('update:title', { ...props.title, [props.locale]: newTitle });
+    emit('update:title', { ...props.title, [locale.value]: newTitle });
 };
 
 const updateDescription = (newDescription: string) => {
     emit('update:description', {
         ...props.description,
-        [props.locale]: newDescription,
+        [locale.value]: newDescription,
     });
 };
 </script>
@@ -114,7 +109,7 @@ const updateDescription = (newDescription: string) => {
                 </Label>
                 <Input
                     id="title"
-                    :model-value="props.title[props.locale]"
+                    :model-value="props.title[locale]"
                     @input="
                         updateTitle(($event.target as HTMLInputElement).value)
                     "
@@ -124,10 +119,10 @@ const updateDescription = (newDescription: string) => {
                     required
                 />
                 <span
-                    v-if="props.errors[`title.${props.locale}`]"
+                    v-if="props.errors[`title.${locale}`]"
                     class="text-sm text-destructive"
                 >
-                    {{ props.errors[`title.${props.locale}`] }}
+                    {{ props.errors[`title.${locale}`] }}
                 </span>
             </div>
 
@@ -137,7 +132,7 @@ const updateDescription = (newDescription: string) => {
                 </Label>
                 <Textarea
                     id="description"
-                    :model-value="props.description[props.locale]"
+                    :model-value="props.description[locale]"
                     @input="
                         updateDescription(
                             ($event.target as HTMLTextAreaElement).value,
@@ -151,10 +146,10 @@ const updateDescription = (newDescription: string) => {
                     class="min-h-[120px]"
                 />
                 <span
-                    v-if="props.errors[`description.${props.locale}`]"
+                    v-if="props.errors[`description.${locale}`]"
                     class="text-sm text-destructive"
                 >
-                    {{ props.errors[`description.${props.locale}`] }}
+                    {{ props.errors[`description.${locale}`] }}
                 </span>
             </div>
         </div>
@@ -192,8 +187,7 @@ const updateDescription = (newDescription: string) => {
                             :value="category.id"
                         >
                             {{
-                                (category.name &&
-                                    category.name[props.locale]) ||
+                                (category.name && category.name[locale]) ||
                                 (category.name &&
                                     category.name[props.fallbackLocale]) ||
                                 '...'

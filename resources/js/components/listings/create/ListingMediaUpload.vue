@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import '../../../css/filepond.css';
+import '../../../../css/filepond.css';
 
 import type { FilePondFile } from 'filepond';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 // import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 // import FilePondPluginMediaPreview from 'filepond-plugin-media-preview';
+import Label from '@/components/ui/label/Label.vue';
 import vueFilePond from 'vue-filepond';
-import Label from '../ui/label/Label.vue';
 
 // Feature ++
 const FilePond = vueFilePond(
@@ -19,8 +19,6 @@ const FilePond = vueFilePond(
 
 const { t } = useI18n();
 
-// --- PROPS ---
-// We use v-model for a 3-way binding with the parent form
 defineProps({
     images: {
         type: Array as PropType<File[]>,
