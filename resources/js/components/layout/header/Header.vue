@@ -96,7 +96,7 @@
 // import AppearanceIcon from '@/components/AppearanceIcon.vue';
 // import LanguageSwitch from '@/components/LanguageSwitch.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import UserMenuContent from '@/components/market/UserMenuContent.vue';
+import UserMenuContent from '@/components/header/UserMenuContent.vue';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {

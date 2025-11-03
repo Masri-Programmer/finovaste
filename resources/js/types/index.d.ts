@@ -83,80 +83,21 @@ export type AppPageProps<
     categories: Category[];
 };
 
-interface LocaleString {
+export interface LocaleString {
     en: string;
     de: string;
 }
 
-interface Category {
+export interface Category {
     id: number;
     name: LocaleString;
     slug: string;
 }
 
 // Listable Types
-interface InvestmentListable {
-    id: number;
-    investment_goal: number;
-    minimum_investment: number;
-    amount_raised: number;
-    investors_count: number;
-}
-
-interface BuyNowListable {
-    id: number;
-    price: string;
-    quantity: number;
-}
-
-interface AuctionListable {
-    id: number;
-    start_price: number;
-    reserve_price: number | null;
-    buy_it_now_price: number | null;
-    current_bid: number | null;
-    starts_at: string | null;
-    ends_at: string;
-}
-
-interface DonationListable {
-    id: number;
-    donation_goal: string;
-    amount_raised: string;
-    donors_count: number;
-    is_goal_flexible: boolean;
-}
-
-// Main Listing Interface
-interface Listing {
-    id: number;
-    uuid: string;
-    image_url: string;
-    user_id: number;
-    category_id: number;
-    title: LocaleString;
-    description: LocaleString;
-    status: string;
-    listable_type:
-        | 'App\\Models\\InvestmentListing'
-        | 'App\\Models\\BuyNowListing'
-        | 'App\\Models\\AuctionListing'
-        | 'App\\Models\\DonationListing';
-    listable:
-        | InvestmentListable
-        | BuyNowListable
-        | AuctionListable
-        | DonationListable;
-    user: User;
-    category: Category;
-    views_count: number;
-    likes_count: number;
-    average_rating: number;
-    reviews_count: number;
-}
 
 // Inertia Paginated Response
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
     current_page: number;
     data: T[];
     first_page_url: string;
