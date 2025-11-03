@@ -78,7 +78,7 @@
                 "placeholder": "Startdatum wählen"
             },
             "ends_at": {
-                "label": "Auktionsende (optional)",
+                "label": "Auktionsende",
                 "placeholder": "Enddatum wählen"
             },
             "donation_goal": {

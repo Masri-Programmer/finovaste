@@ -102,6 +102,7 @@ watch(listingType, (newType) => {
 
 // Submit handler
 const submit = () => {
+    console.log(form);
     form.post(store.url(), {
         onSuccess: () => {
             toast.success(t('listing.createListing.notifications.success'));

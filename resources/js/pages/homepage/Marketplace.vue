@@ -61,13 +61,13 @@ const filters = ref({
  */
 function getListingType(type: Listing['listable_type']): {
     text: string;
-    variant: 'secondary' | 'outline' | 'destructive';
+    variant: 'secondary' | 'outline' | 'destructive' | 'default' | 'ghost';
 } {
     switch (type) {
         case 'App\\Models\\InvestmentListing':
             return {
                 text: t('homepage.listingTypes.investment'),
-                variant: 'secondary',
+                variant: 'default',
             };
         case 'App\\Models\\AuctionListing':
             return {
@@ -77,7 +77,7 @@ function getListingType(type: Listing['listable_type']): {
         case 'App\\Models\\BuyNowListing':
             return {
                 text: t('homepage.listingTypes.buyNow'),
-                variant: 'outline',
+                variant: 'default',
             };
         case 'App\\Models\\DonationListing':
             return {

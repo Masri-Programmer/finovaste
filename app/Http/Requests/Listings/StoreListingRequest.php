@@ -17,29 +17,30 @@ class StoreListingRequest extends FormRequest
         return true;
     }
 
-    // ... in app/Http/Requests/Listings/StoreListingRequest.php
-
     protected function prepareForValidation(): void
     {
-        // Handle expires_at
-        $expires = $this->expires_at;
-        if (is_array($expires) && !empty($expires)) {
-            $expires = $expires[0]; // Get the first element from the array
-        }
+        $parseDate = function ($dateInput) {
+            if (is_array($dateInput) && !empty($dateInput)) {
+                if (isset($dateInput['year']) && isset($dateInput['month']) && isset($dateInput['day'])) {
+                    return "{$dateInput['year']}-{$dateInput['month']}-{$dateInput['day']}";
+                }
 
-        // Handle starts_at
-        $starts = $this->starts_at;
-        if (is_array($starts) && !empty($starts)) {
-            $starts = $starts[0]; // Get the first element
-        }
+                if (isset($dateInput[0]) && is_string($dateInput[0])) {
+                    return $dateInput[0];
+                }
+            }
 
-        // Handle ends_at
-        $ends = $this->ends_at;
-        if (is_array($ends) && !empty($ends)) {
-            $ends = $ends[0]; // Get the first element
-        }
+            if (is_string($dateInput)) {
+                return $dateInput;
+            }
 
-        // Now merge the cleaned, single string values
+            return null;
+        };
+
+        $expires = $parseDate($this->expires_at);
+        $starts  = $parseDate($this->starts_at);
+        $ends    = $parseDate($this->ends_at);
+
         $this->merge([
             'expires_at' => $expires ? Carbon::parse($expires)->toDateTimeString() : null,
             'starts_at'  => $starts  ? Carbon::parse($starts)->toDateTimeString() : null,
@@ -53,11 +54,14 @@ class StoreListingRequest extends FormRequest
      */
     public function rules(): array
     {
+        $fallbackLocale = config('app.fallback_locale');
         $rules = [
             // Common Data
             'title' => 'required|array',
+            'title.' . $fallbackLocale => 'required|string|max:255',
             'title.*' => 'nullable|string|max:255',
             'description' => 'required|array',
+            'description.' . $fallbackLocale => 'required|string',
             'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'listing_type' => 'required|string|in:auction,donation,buy_now,investment',

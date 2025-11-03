@@ -112,9 +112,7 @@ const formattedEndsAt = computed(() => {
         <div class="space-y-2">
             <Label for="ends_at">
                 {{ t('listing.createListing.fields.ends_at.label') }}
-                <span class="text-destructive"
-                    >*1111111111111111111111111111111111111111111111111</span
-                >
+                <span class="text-destructive">*</span>
             </Label>
             <Popover>
                 <PopoverTrigger as-child>
