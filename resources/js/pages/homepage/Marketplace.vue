@@ -38,9 +38,8 @@ import { AppPageProps, Listing } from '@/types';
 import MarketplaceCategoryFilters from './Filters.vue';
 
 import { usePage } from '@inertiajs/vue3';
-// import route from 'laravel-typed-wayfinder/client';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const toast = useToast();
 const { copy } = useClipboard();
 const page = usePage<AppPageProps>();
@@ -54,12 +53,7 @@ const filters = ref({
     search: '',
 });
 
-// --- Helper Functions ---
-
-/**
- * Gets i18n text and variant for a listing type
- */
-function getListingType(type: Listing['listable_type']): {
+function getListingType(type: Listing['listable_type'] | string): {
     text: string;
     variant: 'secondary' | 'outline' | 'destructive' | 'default' | 'ghost';
 } {
@@ -178,7 +172,7 @@ function shareListing(uuid: string) {
                                 listing.image_url ||
                                 'https://placehold.co/600x400.png?text=Listing+Image'
                             "
-                            :alt="listing.title.de"
+                            :alt="listing.title[locale]"
                             class="h-48 w-full object-cover"
                         />
                         <div class="absolute top-4 left-4 flex gap-2">
@@ -222,15 +216,15 @@ function shareListing(uuid: string) {
 
                     <CardContent class="flex-grow pt-6">
                         <span class="text-sm font-medium text-primary">{{
-                            listing.category.name.de
+                            listing.category.name[locale]
                         }}</span>
                         <CardTitle class="mt-1 mb-2 text-xl font-bold">
-                            {{ listing.title.de }}
+                            {{ listing.title[locale] }}
                         </CardTitle>
                         <CardDescription
                             class="line-clamp-2 text-muted-foreground"
                         >
-                            {{ listing.description.de }}
+                            {{ listing.description[locale] }}
                         </CardDescription>
 
                         <div

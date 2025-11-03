@@ -17,19 +17,36 @@ import {
 } from '@/components/ui/select';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { cn } from '@/lib/utils';
-import { type UseForm } from '@inertiajs/vue3';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { Calendar as CalendarIcon } from 'lucide-vue-next';
 import { computed, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// Define props
+// --- PROPS ---
 const props = defineProps({
-    form: {
-        type: Object as PropType<UseForm<any>>,
+    // v-model props
+    title: {
+        type: Object as PropType<{ [key: string]: string }>,
         required: true,
     },
+    description: {
+        type: Object as PropType<{ [key: string]: string }>,
+        required: true,
+    },
+    category_id: {
+        type: Number as PropType<number | null>,
+        required: true,
+    },
+    location_text: {
+        type: String,
+        required: true,
+    },
+    expires_at: {
+        type: Date as PropType<Date | null>,
+        required: true,
+    },
+    // Other props
     categories: {
         type: Array as PropType<
             Array<{
@@ -47,19 +64,41 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    errors: {
+        type: Object as PropType<Record<string, string>>,
+        required: true,
+    },
 });
+
+// --- EMITS ---
+const emit = defineEmits([
+    'update:title',
+    'update:description',
+    'update:category_id',
+    'update:location_text',
+    'update:expires_at',
+]);
 
 const { t } = useI18n();
 
 // --- COMPUTED PROPS ---
 const formattedExpiresAt = computed(() => {
-    return props.form.expires_at
-        ? format(props.form.expires_at, 'PPP', { locale: de })
+    return props.expires_at
+        ? format(props.expires_at, 'PPP', { locale: de })
         : t('listing.createListing.fields.expires_at.placeholder');
 });
 
-// All file input refs and handlers have been removed.
-// The defineExpose has also been removed.
+// --- HANDLERS for translated fields ---
+const updateTitle = (newTitle: string) => {
+    emit('update:title', { ...props.title, [props.locale]: newTitle });
+};
+
+const updateDescription = (newDescription: string) => {
+    emit('update:description', {
+        ...props.description,
+        [props.locale]: newDescription,
+    });
+};
 </script>
 
 <template>
@@ -75,17 +114,20 @@ const formattedExpiresAt = computed(() => {
                 </Label>
                 <Input
                     id="title"
-                    v-model="form.title[locale]"
+                    :model-value="props.title[props.locale]"
+                    @input="
+                        updateTitle(($event.target as HTMLInputElement).value)
+                    "
                     :placeholder="
                         t('listing.createListing.fields.title.placeholder')
                     "
                     required
                 />
                 <span
-                    v-if="form.errors[`title.${locale}`]"
+                    v-if="props.errors[`title.${props.locale}`]"
                     class="text-sm text-destructive"
                 >
-                    {{ form.errors[`title.${locale}`] }}
+                    {{ props.errors[`title.${props.locale}`] }}
                 </span>
             </div>
 
@@ -95,7 +137,12 @@ const formattedExpiresAt = computed(() => {
                 </Label>
                 <Textarea
                     id="description"
-                    v-model="form.description[locale]"
+                    :model-value="props.description[props.locale]"
+                    @input="
+                        updateDescription(
+                            ($event.target as HTMLTextAreaElement).value,
+                        )
+                    "
                     :placeholder="
                         t(
                             'listing.createListing.fields.description.placeholder',
@@ -104,26 +151,31 @@ const formattedExpiresAt = computed(() => {
                     class="min-h-[120px]"
                 />
                 <span
-                    v-if="form.errors[`description.${locale}`]"
+                    v-if="props.errors[`description.${props.locale}`]"
                     class="text-sm text-destructive"
                 >
-                    {{ form.errors[`description.${locale}`] }}
+                    {{ props.errors[`description.${props.locale}`] }}
                 </span>
             </div>
         </div>
-        <span v-if="form.errors.title" class="text-sm text-destructive">
-            {{ form.errors.title }}
+        <span v-if="props.errors.title" class="text-sm text-destructive">
+            {{ props.errors.title }}
         </span>
-        <span v-if="form.errors.description" class="text-sm text-destructive">
-            {{ form.errors.description }}
+        <span v-if="props.errors.description" class="text-sm text-destructive">
+            {{ props.errors.description }}
         </span>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div class="space-y-2">
-                <Label for="category">
+                <Label for="category_id">
                     {{ t('listing.createListing.fields.category.label') }}
                 </Label>
-                <Select v-model="form.category_id" required>
+                <Select
+                    id="category_id"
+                    :model-value="props.category_id"
+                    @update:model-value="emit('update:category_id', $event)"
+                    required
+                >
                     <SelectTrigger>
                         <SelectValue
                             :placeholder="
@@ -140,27 +192,31 @@ const formattedExpiresAt = computed(() => {
                             :value="category.id"
                         >
                             {{
-                                category.name[locale] ||
-                                category.name[fallbackLocale]
+                                (category.name &&
+                                    category.name[props.locale]) ||
+                                (category.name &&
+                                    category.name[props.fallbackLocale]) ||
+                                '...'
                             }}
                         </SelectItem>
                     </SelectContent>
                 </Select>
                 <span
-                    v-if="form.errors.category_id"
+                    v-if="props.errors.category_id"
                     class="text-sm text-destructive"
                 >
-                    {{ form.errors.category_id }}
+                    {{ props.errors.category_id }}
                 </span>
             </div>
 
             <div class="space-y-2">
-                <Label for="location">
+                <Label for="location_text">
                     {{ t('listing.createListing.fields.location.label') }}
                 </Label>
                 <Input
-                    id="location"
-                    v-model="form.location_text"
+                    id="location_text"
+                    :model-value="props.location_text"
+                    @update:model-value="emit('update:location_text', $event)"
                     :placeholder="
                         t('listing.createListing.fields.location.placeholder')
                     "
@@ -178,7 +234,8 @@ const formattedExpiresAt = computed(() => {
                             :class="
                                 cn(
                                     'w-full justify-start text-left font-normal',
-                                    !form.expires_at && 'text-muted-foreground',
+                                    !props.expires_at &&
+                                        'text-muted-foreground',
                                 )
                             "
                         >
@@ -187,7 +244,12 @@ const formattedExpiresAt = computed(() => {
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent class="w-auto p-0">
-                        <Calendar v-model="form.expires_at" />
+                        <Calendar
+                            :model-value="props.expires_at"
+                            @update:model-value="
+                                emit('update:expires_at', $event)
+                            "
+                        />
                     </PopoverContent>
                 </Popover>
             </div>

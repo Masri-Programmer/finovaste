@@ -147,10 +147,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <ListingTypeSelector v-model="listingType" />
 
                     <ListingCommonDetails
-                        :form="form"
+                        v-model:title="form.title"
+                        v-model:description="form.description"
+                        v-model:category_id="form.category_id"
+                        v-model:location_text="form.location_text"
+                        v-model:expires_at="form.expires_at"
                         :categories="props.categories"
                         :locale="locale"
                         :fallback-locale="fallbackLocale as string"
+                        :errors="form.errors"
                     />
 
                     <ListingMediaUpload
