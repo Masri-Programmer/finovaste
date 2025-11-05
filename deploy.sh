@@ -8,6 +8,7 @@ echo "🚀 Starting deployment..."
 
 php artisan down || true
 
+git pull
 # echo "📦 Installing Composer (PHP) dependencies..."
 # composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
