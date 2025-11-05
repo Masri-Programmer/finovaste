@@ -53,7 +53,7 @@ const menuSections = [];
     </Head>
     <Header :menuSections="menuSections" />
     <main
-        class="container-custom mt-16 grid min-h-screen items-center gap-4 overflow-hidden pt-4 sm:gap-6 sm:pt-6 md:gap-8 md:pt-8 lg:gap-10 lg:pt-10 xl:gap-12 xl:pt-12"
+        class="container-custom mt-16 grid min-h-screen items-center gap-4 pt-4 sm:gap-6 sm:pt-6 md:gap-8 md:pt-8 lg:gap-10 lg:pt-10 xl:gap-12 xl:pt-12"
     >
         <!-- <div class="mt-3" v-if="breadcrumbs && breadcrumbs.length > 0">
             <Breadcrumbs :breadcrumbs="breadcrumbs" />

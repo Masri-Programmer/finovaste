@@ -86,12 +86,23 @@ export type AppPageProps<
 export interface LocaleString {
     en: string;
     de: string;
+    [key: string]: string;
 }
 
 export interface Category {
     id: number;
     name: LocaleString;
     slug: string;
+    description: LocaleString;
+    is_active: boolean;
+    meta: any | null;
+    parent_id: number | null;
+    sort_order: number;
+    type: string;
+    icon: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
 }
 
 // Listable Types

@@ -36,13 +36,73 @@
             </div>
         </div>
     </section>
+    <section class="mt-8">
+        <div
+            class="flex flex-col sm:flex-row sm:items-start sm:justify-between"
+        >
+            <h1 class="text-3xl font-bold text-foreground">
+                {{ localizedTitle }}
+            </h1>
+            <div
+                class="mt-2 flex-shrink-0 sm:mt-0"
+                v-if="listing.average_rating > 0"
+            >
+                <div class="flex items-center space-x-2">
+                    <Star class="h-5 w-5 text-yellow-400" fill="currentColor" />
+                    <span class="text-lg font-bold">{{
+                        listing.average_rating
+                    }}</span>
+                    <span class="text-base text-muted-foreground">
+                        ({{ listing.reviews_count }}
+                        {{ t('listing.listing_details.reviews') }})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-4 text-muted-foreground">
+            <div class="flex items-center space-x-1">
+                <MapPin class="h-4 w-4" />
+                <span
+                    >{{ listing.address.city }},
+                    {{ listing.address.state }}</span
+                >
+            </div>
+            <span>•</span>
+            <span>{{ localizedCategoryName }}</span>
+        </div>
+        <p class="text-base text-foreground/80">
+            {{ localizedDescription }}
+        </p>
+    </section>
 </template>
 
 <script setup lang="ts">
 import Button from '@/components/ui/button/Button.vue';
+import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
+import { LocaleString } from '@/types';
+import { Listing } from '@/types/listings';
+import { MapPin, Star } from 'lucide-vue-next';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+const props = defineProps<{
+    listing: Listing;
+}>();
+const { locale } = useLanguageSwitcher();
 const { t } = useI18n();
+
+const getLocalizedString = (field: LocaleString) => {
+    return field[locale.value] || field.en;
+};
+
+const localizedTitle = computed(() => getLocalizedString(props.listing.title));
+const localizedDescription = computed(() =>
+    getLocalizedString(props.listing.description),
+);
+const localizedCategoryName = computed(() =>
+    getLocalizedString(props.listing.category.name),
+);
 </script>
 
 <style scoped></style>

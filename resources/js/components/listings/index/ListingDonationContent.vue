@@ -1,0 +1,47 @@
+<script setup lang="ts">
+import { Progress } from '@/components/ui/progress';
+import { useFormatting } from '@/composables/useFormatting';
+import { Target, Users } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
+
+defineProps<{
+    listable: any; // Or a more specific 'DonationListable' type
+}>();
+
+const { t } = useI18n();
+const { formatCurrency, getProgress } = useFormatting();
+</script>
+
+<template>
+    <div class="mt-4 space-y-3">
+        <div>
+            <div class="mb-1 flex justify-between text-sm font-medium">
+                <span>{{ t('homepage.listings.donationsRaised') }}</span>
+                <span class="text-foreground">
+                    {{ formatCurrency(listable.amount_raised) }} /
+                    {{ formatCurrency(listable.donation_goal) }}
+                </span>
+            </div>
+            <Progress
+                :model-value="
+                    getProgress(listable.amount_raised, listable.donation_goal)
+                "
+                class="[&>*]:bg-destructive"
+            />
+        </div>
+        <div class="flex items-center justify-between text-sm">
+            <span class="flex items-center gap-1 text-muted-foreground">
+                <Users class="h-4 w-4" />
+                {{ listable.donors_count }}
+                {{ t('homepage.listings.donors') }}
+            </span>
+            <span
+                v-if="listable.is_goal_flexible"
+                class="flex items-center gap-1 text-muted-foreground"
+            >
+                <Target class="h-4 w-4" />
+                {{ t('homepage.listings.flexibleGoal') }}
+            </span>
+        </div>
+    </div>
+</template>

@@ -4,7 +4,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ListingController;
-use App\Http\Controllers\ModelController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,7 +19,11 @@ Route::get('language/{locale}', [LanguageController::class, 'switch'])
     ->whereIn('locale', config('app.supported_locales'))
     ->name('language.switch');
 
+Route::get('listings', [ListingController::class, 'index'])->name('listings.index');
+Route::get('listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
+
 Route::resource('listings', ListingController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy']) // Only register these routes
     ->middleware(['auth', 'verified']);
 Route::resource('categories', CategoryController::class)->only([
     'index',

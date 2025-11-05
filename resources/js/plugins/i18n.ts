@@ -52,7 +52,7 @@ const i18n = createI18n({
         },
     },
     numberFormats: {
-        'en-US': {
+        en: {
             currency: {
                 style: 'currency',
                 currency: 'USD',
@@ -60,7 +60,7 @@ const i18n = createI18n({
                 maximumFractionDigits: 0,
             },
         },
-        'de-DE': {
+        de: {
             currency: {
                 style: 'currency',
                 currency: 'EUR',
