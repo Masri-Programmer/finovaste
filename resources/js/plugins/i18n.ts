@@ -21,28 +21,8 @@ import { createI18n } from 'vue-i18n';
 // import profile_en from '../locales/en/profile.json';
 // import settings_en from '../locales/en/settings.json';
 // import validation_en from '../locales/en/validation.json';
-const modules = import.meta.glob('../locales/**/*.json', { eager: true });
-const messages = {};
+const messages = import.meta.glob('../locales/**/*.json', { eager: true });
 
-// 2. Loop over all found modules
-for (const path in modules) {
-    // 3. Apply the fix for the 'unknown' type error
-    const value = (modules[path] as { default: object }).default;
-
-    // 4. Parse the path to get locale and group
-    //    e.g., path = '../locales/de/homepage.json'
-    const pathParts = path.split('/'); // ['..', 'locales', 'de', 'homepage.json']
-
-    const locale = pathParts[2]; // 'de'
-    const group = pathParts[3].replace('.json', ''); // 'homepage'
-
-    // 5. Build the nested messages object
-    if (!messages[locale]) {
-        messages[locale] = {};
-    }
-
-    messages[locale][group] = value;
-}
 const i18n = createI18n({
     legacy: false,
     fallbackLocale: 'de',
