@@ -1,4 +1,4 @@
-import { Category, LocaleString, User } from '@/types/Category';
+import { Category, LocaleString, User } from './../index.d';
 
 export interface PageProps {
     listing: ListingData;

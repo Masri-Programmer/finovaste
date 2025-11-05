@@ -68,7 +68,7 @@ const capitalShare = computed(() => {
             </div>
 
             <aside class="space-y-6 lg:col-span-1">
-                <ListingAside :listing="props.listing" :user="props.user" />
+                <ListingAside />
             </aside>
         </main>
     </Layout>
