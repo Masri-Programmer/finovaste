@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Address;
 use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
 use App\Models\Category;
@@ -36,7 +35,6 @@ class ListingSeeder extends Seeder
             );
         }
 
-        // 1. Create an Investment Listing
         $investment = InvestmentListing::create([
             'investment_goal' => 150000,
             'minimum_investment' => 1500,
@@ -60,7 +58,6 @@ class ListingSeeder extends Seeder
             ],
         ]);
 
-        // 2. Create a Buy Now Listing
         $buyNow = BuyNowListing::create([
             'price' => 45000,
         ]);
@@ -81,7 +78,6 @@ class ListingSeeder extends Seeder
             ],
         ]);
 
-        // 3. Create an Auction Listing
         $auction = AuctionListing::create([
             'start_price' => 75000,
             'ends_at' => now()->addWeeks(2),
@@ -101,7 +97,6 @@ class ListingSeeder extends Seeder
                 'de' => 'Das Bieten für dieses einzigartige Kunstwerk eines renommierten Künstlers beginnt jetzt. Die Auktion endet in zwei Wochen.',
             ],
         ]);
-        // 4. Create a Donation Listing
         $donation = DonationListing::create([
             'donation_goal' => 25000,
         ]);
@@ -111,7 +106,6 @@ class ListingSeeder extends Seeder
             'category_id' => $category->id,
             'address_id' => $address->id,
             'status' => 'active',
-            // 'type' => 'donation', // <-- THIS LINE WAS REMOVED
             'title' => [
                 'en' => 'Community Park Renovation Fund',
                 'de' => 'Spendenfonds für die Renovierung des Gemeindeparks',

@@ -1,86 +1,187 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import Pagination from '@/components/ui/pagination/Pagination.vue';
-import PaginationContent from '@/components/ui/pagination/PaginationContent.vue';
-import PaginationEllipsis from '@/components/ui/pagination/PaginationEllipsis.vue';
-import PaginationItem from '@/components/ui/pagination/PaginationItem.vue';
-import PaginationNext from '@/components/ui/pagination/PaginationNext.vue';
-import PaginationPrevious from '@/components/ui/pagination/PaginationPrevious.vue';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
 
-interface PaginationLinkData {
-    url: string | null;
-    label: string;
-    active: boolean;
-}
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Paginator } from '@/types';
 
-// defineProps<{
-//     links: PaginationLinkData[];
-// }>();
+const props = withDefaults(
+    defineProps<{
+        paginator: Paginator;
+        name?: string;
+        steps?: number[];
+    }>(),
+    {
+        name: 'common.pagination.defaultName',
+        steps: () => [12, 25, 50, 100],
+    },
+);
+
 const { t } = useI18n();
+
+const selectedPerPage = ref(props.paginator.per_page);
+
+const perPageSteps = computed(() => {
+    const stepsSet = new Set(props.steps);
+    stepsSet.add(props.paginator.per_page);
+    return Array.from(stepsSet).sort((a, b) => a - b);
+});
+
+const links = computed(() => props.paginator.links);
+
+const paginationInfo = computed(() => {
+    const translatedName = t(props.name);
+    if (
+        !props.paginator.from ||
+        !props.paginator.to ||
+        props.paginator.total === 0
+    ) {
+        return t('common.pagination.noResults', { name: translatedName });
+    }
+    return t('common.pagination.showing', {
+        from: props.paginator.from,
+        to: props.paginator.to,
+        total: props.paginator.total,
+        name: translatedName,
+    });
+});
+
 const isPrevious = (label: string) =>
-    label.includes(t('layout.pagination.previous'));
-const isNext = (label: string) => label.includes(t('layout.pagination.next'));
-const isEllipsis = (label: string) => label.includes('...');
-const fakePaginator = {
-    links: [
-        { url: null, label: t('layout.pagination.previous'), active: false },
-        { url: 'http://example.com/items?page=1', label: '1', active: true },
-        { url: 'http://example.com/items?page=2', label: '2', active: false },
-        { url: 'http://example.com/items?page=3', label: '3', active: false },
+    label.includes('&laquo;') || label.toLowerCase().includes('previous');
+
+const isNext = (label: string) =>
+    label.includes('&raquo;') || label.toLowerCase().includes('next');
+
+const isEllipsis = (label: string) => label === '...';
+
+function handlePerPageChange(value: string | number | null | undefined) {
+    if (!value) {
+        return;
+    }
+
+    const newPerPage = Number(value);
+    selectedPerPage.value = newPerPage;
+
+    const currentParams = {};
+
+    router.get(
+        props.paginator.path,
         {
-            url: 'http://example.com/items?page=2',
-            label: t('layout.pagination.next'),
-            active: true,
+            ...currentParams,
+            per_page: newPerPage,
+            page: 1,
         },
-    ],
-};
-const links = computed(() => fakePaginator.links as PaginationLinkData[]);
+        {
+            preserveState: true,
+            preserveScroll: true,
+        },
+    );
+}
 </script>
 
 <template>
-    <Pagination
-        v-if="links.length > 3"
-        class="my-6"
-        :items-per-page="10"
-        :total="100"
-        :aria-label="t('layout.pagination.navigationAriaLabel')"
+    <div
+        class="flex flex-col flex-wrap items-center justify-between gap-4 py-4 md:flex-row"
     >
-        <PaginationContent>
-            <template v-for="(link, key) in links" :key="key">
-                <PaginationPrevious
-                    v-if="isPrevious(link.label)"
-                    :as-child="!!link.url"
-                    :disabled="!link.url"
-                >
-                    <Link v-if="link.url" :href="link.url" preserve-scroll />
-                </PaginationPrevious>
+        <div class="text-sm text-muted-foreground">
+            {{ paginationInfo }}
+        </div>
 
-                <PaginationNext
-                    v-else-if="isNext(link.label)"
-                    :as-child="!!link.url"
-                    :disabled="!link.url"
-                >
-                    <Link v-if="link.url" :href="link.url" preserve-scroll />
-                </PaginationNext>
+        <Pagination
+            v-if="links.length > 3"
+            :total="paginator.total"
+            :items-per-page="paginator.per_page"
+            :page="paginator.current_page"
+            :aria-label="t('common.pagination.ariaLabel')"
+            class="flex-1 justify-center"
+        >
+            <PaginationContent>
+                <template v-for="(link, key) in links" :key="key">
+                    <PaginationPrevious
+                        v-if="isPrevious(link.label)"
+                        :as-child="!!link.url"
+                        :disabled="!link.url"
+                    >
+                        <Link
+                            v-if="link.url"
+                            :href="link.url"
+                            preserve-scroll
+                        />
+                    </PaginationPrevious>
 
-                <PaginationEllipsis v-else-if="isEllipsis(link.label)" />
+                    <PaginationNext
+                        v-else-if="isNext(link.label)"
+                        :as-child="!!link.url"
+                        :disabled="!link.url"
+                    >
+                        <Link
+                            v-if="link.url"
+                            :href="link.url"
+                            preserve-scroll
+                        />
+                    </PaginationNext>
 
-                <PaginationItem
-                    v-else
-                    :as-child="!!link.url"
-                    :value="Number(link.label)"
-                    :is-active="link.active"
-                    :disabled="!link.url"
-                >
-                    <Link v-if="link.url" :href="link.url" preserve-scroll>{{
-                        link.label
-                    }}</Link>
-                    <span v-else v-html="link.label" />
-                </PaginationItem>
-            </template>
-        </PaginationContent>
-    </Pagination>
+                    <PaginationEllipsis v-else-if="isEllipsis(link.label)" />
+
+                    <PaginationItem
+                        v-else
+                        :as-child="!!link.url"
+                        :value="Number(link.label)"
+                        :is-active="link.active"
+                        :disabled="!link.url"
+                    >
+                        <Link v-if="link.url" :href="link.url" preserve-scroll>
+                            {{ link.label }}
+                        </Link>
+                        <span v-else v-html="link.label" />
+                    </PaginationItem>
+                </template>
+            </PaginationContent>
+        </Pagination>
+
+        <div v-else class="flex-1"></div>
+
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <Select
+                :model-value="String(selectedPerPage)"
+                @update:model-value="handlePerPageChange"
+            >
+                <SelectTrigger class="w-[80px] bg-background">
+                    <SelectValue :placeholder="selectedPerPage" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem
+                        v-for="step in perPageSteps"
+                        :key="step"
+                        :value="String(step)"
+                    >
+                        {{ step }}
+                    </SelectItem>
+                </SelectContent>
+            </Select>
+            <span>
+                {{
+                    t('common.pagination.perPageName', {
+                        name: t(props.name),
+                    })
+                }}
+            </span>
+        </div>
+    </div>
 </template>

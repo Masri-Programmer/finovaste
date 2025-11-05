@@ -81,6 +81,11 @@ export type AppPageProps<
     sidebarOpen: boolean;
     listings: PaginatedResponse<Listing>;
     categories: Category[];
+    listing: ListingData;
+    locale: 'en' | 'de';
+    errors: object;
+    user: User;
+    category: Category;
 };
 
 export interface LocaleString {
@@ -104,10 +109,6 @@ export interface Category {
     updated_at: string;
     deleted_at: string | null;
 }
-
-// Listable Types
-
-// Inertia Paginated Response
 export interface PaginatedResponse<T> {
     current_page: number;
     data: T[];
@@ -115,15 +116,34 @@ export interface PaginatedResponse<T> {
     from: number;
     last_page: number;
     last_page_url: string;
-    links: {
-        url: string | null;
-        label: string;
-        active: boolean;
-    }[];
+    links: Link[];
     next_page_url: string | null;
     path: string;
     per_page: number;
     prev_page_url: string | null;
     to: number;
+    total: number;
+}
+
+export interface Link {
+    url: string | null;
+    label: string;
+    page: number | null;
+    active: boolean;
+}
+
+interface Paginator {
+    current_page: number;
+    data: unknown[];
+    first_page_url: string;
+    from: number | null;
+    last_page: number;
+    last_page_url: string;
+    links: Link[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number | null;
     total: number;
 }

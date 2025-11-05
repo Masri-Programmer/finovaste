@@ -11,8 +11,8 @@ import {
 } from '@/components/listings/show/Review';
 import ReviewsList from '@/components/listings/show/ReviewsList.vue';
 import { show } from '@/routes/listings';
-import { PageProps } from '@/types/listings';
-const props = defineProps<PageProps>();
+import { AppPageProps } from '@/types';
+const props = defineProps<AppPageProps>();
 </script>
 
 <template>

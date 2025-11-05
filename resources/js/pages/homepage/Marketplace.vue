@@ -51,6 +51,6 @@ const filters = ref({
             </div>
         </section>
 
-        <Pagination :links="listingsResponse.links" class="mt-8" />
+        <Pagination :paginator="listingsResponse" class="mt-8" />
     </div>
 </template>
