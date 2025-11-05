@@ -1,4 +1,13 @@
 import { Category, LocaleString, User } from './../index.d';
+
+export interface PageProps {
+    listing: ListingData;
+    locale: 'en' | 'de';
+    errors: object;
+    user: User;
+    category: Category;
+}
+
 export interface Listing {
     id: number;
     uuid: string;
