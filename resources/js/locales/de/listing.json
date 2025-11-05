@@ -107,5 +107,33 @@
             "success": "Inserat erfolgreich erstellt! Es wird nun überprüft.",
             "error": "Fehler beim Erstellen des Inserats. Bitte überprüfen Sie Ihre Eingaben."
         }
+    },
+    "listing_details": {
+        "reviews": "Bewertungen",
+        "capital_raised": "Kapital gesammelt",
+        "key_features": "Key Features",
+        "faq_title": "Häufig gestellte Fragen",
+        "faq_subtitle": "Common questions about this listing",
+        "boxes": {
+            "roi": "Expected ROI",
+            "duration": "Duration",
+            "investors": "Investoren"
+        },
+        "features": {
+            "verified": "Verified Listing",
+            "secure": "Secure Payments",
+            "support": "Professional Support",
+            "growth": "Growth Potential"
+        },
+        "faq": {
+            "q1": "What are the payment terms?",
+            "a1": "Payment terms are detailed in the investment prospectus. Typically, funds are due within 5 business days of commitment.",
+            "q2": "How long does the investment period last?",
+            "a2": "The investment period is 24 months, as outlined in the 'Duration' section.",
+            "q3": "What documentation is provided?",
+            "a3": "You will receive a full investment prospectus, subscription agreement, and regular quarterly reports.",
+            "q4": "Is this investment insured?",
+            "a4": "No, like all investments, this carries risk and is not insured by any government agency. Please review the risk factors."
+        }
     }
 }

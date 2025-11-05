@@ -34,17 +34,19 @@ import {
 } from 'lucide-vue-next';
 
 import Pagination from '@/components/layout/Pagination.vue';
-import { AppPageProps, Listing } from '@/types';
+import { AppPageProps } from '@/types';
+import { Listing } from '@/types/listings';
 import MarketplaceCategoryFilters from './Filters.vue';
 
 import { show } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const toast = useToast();
 const { copy } = useClipboard();
 const page = usePage<AppPageProps>();
 
+const locale = computed(() => page.props.locale);
 const listingsResponse = computed(() => page.props.listings);
 const listings = computed(() => listingsResponse.value.data);
 const categories = computed(() => page.props.categories);
@@ -250,7 +252,7 @@ function shareListing(uuid: string) {
                             <div
                                 v-if="
                                     listing.listable_type ===
-                                        'App\Models\InvestmentListing' &&
+                                        'App\\Models\\InvestmentListing' &&
                                     typeof listing.listable === 'object' &&
                                     'investment_goal' in listing.listable
                                 "
@@ -321,7 +323,7 @@ function shareListing(uuid: string) {
                             <div
                                 v-if="
                                     listing.listable_type ===
-                                        'App\Models\AuctionListing' &&
+                                        'App\\Models\\AuctionListing' &&
                                     typeof listing.listable === 'object' &&
                                     'ends_at' in listing.listable
                                 "
@@ -384,9 +386,7 @@ function shareListing(uuid: string) {
                             <div
                                 v-if="
                                     listing.listable_type ===
-                                        'App\Models\BuyNowListing' &&
-                                    typeof listing.listable === 'object' &&
-                                    'price' in listing.listable
+                                    'App\\Models\\BuyNowListing'
                                 "
                                 class="mt-4 space-y-3"
                             >
@@ -426,7 +426,7 @@ function shareListing(uuid: string) {
                             <div
                                 v-if="
                                     listing.listable_type ===
-                                        'App\Models\DonationListing' &&
+                                        'App\\Models\\DonationListing' &&
                                     typeof listing.listable === 'object' &&
                                     'donation_goal' in listing.listable
                                 "
@@ -493,7 +493,7 @@ function shareListing(uuid: string) {
                             <Button
                                 v-if="
                                     listing.listable_type ===
-                                    'App\Models\InvestmentListing'
+                                    'App\\Models\\InvestmentListing'
                                 "
                                 class="w-full"
                             >
@@ -503,7 +503,7 @@ function shareListing(uuid: string) {
                             <Button
                                 v-if="
                                     listing.listable_type ===
-                                    'App\Models\AuctionListing'
+                                    'App\\Models\\AuctionListing'
                                 "
                                 class="w-full"
                                 variant="outline"
@@ -514,7 +514,7 @@ function shareListing(uuid: string) {
                             <Button
                                 v-if="
                                     listing.listable_type ===
-                                    'App\Models\BuyNowListing'
+                                    'App\\Models\\BuyNowListing'
                                 "
                                 class="w-full"
                             >
@@ -524,7 +524,7 @@ function shareListing(uuid: string) {
                             <Button
                                 v-if="
                                     listing.listable_type ===
-                                    'App\Models\DonationListing'
+                                    'App\\Models\\DonationListing'
                                 "
                                 class="w-full"
                                 variant="destructive"
