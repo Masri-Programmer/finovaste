@@ -96,7 +96,7 @@ watch(listingType, (newType) => {
 const submit = () => {
     form.post(store.url(), {
         onSuccess: () => {
-            toast.success(trans('listing.createListing.notifications.success'));
+            toast.success(trans('createListing.notifications.success'));
             form.reset();
             mediaUploadRef.value?.reset();
         },

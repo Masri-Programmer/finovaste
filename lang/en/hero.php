@@ -7,7 +7,7 @@ return [
         'primary' => 'Marktplatz erkunden',
         'secondary' => 'So funktioniert\'s'
     ],
-    'headline' => 'Lorem Ipsulum',
+    'headline' => 'Ihr Tor zu exklusiven Vermögenswerten & Investitionen',
     'notifications' => [
         'learnMoreClicked' => 'Lade Details zur Funktionsweise von Finovaste...',
         'navigating' => 'Lade Marktplatz...'

@@ -79,7 +79,7 @@ const locale = ref(getActiveLanguage());
 const formattedExpiresAt = computed(() => {
     return props.expires_at
         ? format(props.expires_at, 'PPP', { locale: de })
-        : trans('listing.createListing.fields.expires_at.placeholder');
+        : trans('createListing.fields.expires_at.placeholder');
 });
 
 // --- HANDLERS for translated fields ---
@@ -136,9 +136,7 @@ const updateDescription = (newDescription: string) => {
                         )
                     "
                     :placeholder="
-                        $t(
-                            'listing.createListing.fields.description.placeholder',
-                        )
+                        $t('createlisting.fields.description.placeholder')
                     "
                     class="min-h-[120px]"
                 />
@@ -171,9 +169,7 @@ const updateDescription = (newDescription: string) => {
                     <SelectTrigger>
                         <SelectValue
                             :placeholder="
-                                $t(
-                                    'listing.createListing.fields.category.placeholder',
-                                )
+                                $t('createlisting.fields.category.placeholder')
                             "
                         />
                     </SelectTrigger>

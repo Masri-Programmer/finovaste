@@ -1,7 +1,5 @@
 <?php
 
-
-
 return [
     'buttons' => [
         'submit' => 'Inserat erstellen',

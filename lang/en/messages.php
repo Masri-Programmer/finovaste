@@ -1,6 +1,6 @@
 <?php
-// resources/lang/en/messages.php
+// resources/lang/de/messages.php
 return [
-    'welcome' => 'Welcome to our application',
-    'user'    => 'User',
+    'welcome' => 'Willkommen bei unserer Anwendung',
+    'user'    => 'Benutzer',
 ];

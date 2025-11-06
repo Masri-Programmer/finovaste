@@ -49,7 +49,6 @@ class ListingController extends Controller
      */
     public function create()
     {
-        dd(1);
         return Inertia::render('listings/Create', [
             'categories' => $this->getCategoriesForForm(),
         ]);

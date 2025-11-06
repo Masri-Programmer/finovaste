@@ -57,23 +57,15 @@ defineProps({
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="new">
-                        {{
-                            $t(
-                                'listing.createListing.fields.condition.options.new',
-                            )
-                        }}
+                        {{ $t('createlisting.fields.condition.options.new') }}
                     </SelectItem>
                     <SelectItem value="used">
-                        {{
-                            $t(
-                                'listing.createListing.fields.condition.options.used',
-                            )
-                        }}
+                        {{ $t('createlisting.fields.condition.options.used') }}
                     </SelectItem>
                     <SelectItem value="refurbished">
                         {{
                             $t(
-                                'listing.createListing.fields.condition.options.refurbished',
+                                'createlisting.fields.condition.options.refurbished',
                             )
                         }}
                     </SelectItem>

@@ -21,11 +21,11 @@ Route::get('language/{locale}', [LanguageController::class, 'switch'])
     ->name('language.switch');
 
 Route::get('listings', [ListingController::class, 'index'])->name('listings.index');
-Route::get('listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
-
 Route::resource('listings', ListingController::class)
     ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
+Route::get('listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
+
 Route::resource('categories', CategoryController::class)->only([
     'index',
     'show'
