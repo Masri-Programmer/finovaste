@@ -25,7 +25,7 @@ defineProps<Props>();
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('settings.profile.breadcrumb'),
+        title: trans('profile.breadcrumb'),
         href: edit().url,
     },
 ];
@@ -36,12 +36,12 @@ const user = page.props.auth.user;
 
 <template>
     <Layout :breadcrumbs="breadcrumbItems">
-        <Head :title="$t('settings.profile.headTitle')" />
+        <Head :title="$t('profile.headTitle')" />
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall
-                    :title="$t('settings.profile.title')"
-                    :description="$t('settings.profile.description')"
+                    :title="$t('profile.title')"
+                    :description="$t('profile.description')"
                 />
 
                 <Form
@@ -50,9 +50,7 @@ const user = page.props.auth.user;
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
                     <div class="grid gap-2">
-                        <Label for="name">{{
-                            $t('settings.profile.name')
-                        }}</Label>
+                        <Label for="name">{{ $t('profile.name') }}</Label>
                         <Input
                             id="name"
                             class="mt-1 block w-full"
@@ -60,17 +58,13 @@ const user = page.props.auth.user;
                             :default-value="user.name"
                             required
                             autocomplete="name"
-                            :placeholder="
-                                $t('settings.profile.fullNamePlaceholder')
-                            "
+                            :placeholder="$t('profile.fullNamePlaceholder')"
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="email">{{
-                            $t('settings.profile.email')
-                        }}</Label>
+                        <Label for="email">{{ $t('profile.email') }}</Label>
                         <Input
                             id="email"
                             type="email"
@@ -79,22 +73,20 @@ const user = page.props.auth.user;
                             :default-value="user.email"
                             required
                             autocomplete="username"
-                            :placeholder="
-                                $t('settings.profile.emailPlaceholder')
-                            "
+                            :placeholder="$t('profile.emailPlaceholder')"
                         />
                         <InputError class="mt-2" :message="errors.email" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
-                            {{ $t('settings.profile.unverifiedEmailP1') }}
+                            {{ $t('profile.unverifiedEmailP1') }}
                             <Link
                                 :href="send()"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             >
-                                {{ $t('settings.profile.unverifiedEmailLink') }}
+                                {{ $t('profile.unverifiedEmailLink') }}
                             </Link>
                         </p>
 
@@ -102,7 +94,7 @@ const user = page.props.auth.user;
                             v-if="status === 'verification-link-sent'"
                             class="mt-2 text-sm font-medium text-green-600"
                         >
-                            {{ $t('settings.profile.verificationLinkSent') }}
+                            {{ $t('profile.verificationLinkSent') }}
                         </div>
                     </div>
 
@@ -110,7 +102,7 @@ const user = page.props.auth.user;
                         <Button
                             :disabled="processing"
                             data-test="update-profile-button"
-                            >{{ $t('settings.profile.button') }}</Button
+                            >{{ $t('profile.button') }}</Button
                         >
 
                         <Transition
@@ -123,7 +115,7 @@ const user = page.props.auth.user;
                                 v-show="recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
-                                {{ $t('settings.saved') }}
+                                {{ $t('saved') }}
                             </p>
                         </Transition>
                     </div>

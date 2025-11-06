@@ -31,7 +31,7 @@ const displayedFaqs = props.faqs.slice(0, 3);
 <template>
     <div v-if="faqs.length > 0" class="mt-4 border-t border-border pt-4">
         <h4 class="mb-2 text-base font-semibold text-foreground">
-            {{ $t('homepage.faqs.title') }}
+            {{ $t('faqs.title') }}
         </h4>
 
         <Accordion type="single" class="w-full" collapsible>
@@ -41,10 +41,10 @@ const displayedFaqs = props.faqs.slice(0, 3);
                 :value="`item-${index}`"
             >
                 <AccordionTrigger class="py-2 text-left text-sm">
-                    {{ $t(`homepage.${faq.questionKey}`) }}
+                    {{ $t(`${faq.questionKey}`) }}
                 </AccordionTrigger>
                 <AccordionContent class="pb-2 text-sm text-muted-foreground">
-                    {{ $t(`homepage.${faq.answerKey}`) }}
+                    {{ $t(`${faq.answerKey}`) }}
                 </AccordionContent>
             </AccordionItem>
         </Accordion>
@@ -59,13 +59,11 @@ const displayedFaqs = props.faqs.slice(0, 3);
                     @click="toggleDialog(true)"
                 >
                     <MessageSquare class="mr-1 h-3 w-3" />
-                    {{ $t('homepage.faqs.showAll') }} ({{ faqs.length }})
+                    {{ $t('faqs.showAll') }} ({{ faqs.length }})
                 </Button>
             </DialogTrigger>
             <DialogContent class="sm:max-w-[425px]">
-                <DialogTitle>{{
-                    $t('homepage.faqs.allFaqsTitle')
-                }}</DialogTitle>
+                <DialogTitle>{{ $t('faqs.allFaqsTitle') }}</DialogTitle>
                 <div class="max-h-[70vh] overflow-y-auto">
                     <Accordion type="single" class="w-full" collapsible>
                         <AccordionItem
@@ -74,12 +72,12 @@ const displayedFaqs = props.faqs.slice(0, 3);
                             :value="`full-item-${index}`"
                         >
                             <AccordionTrigger class="text-left text-sm">
-                                {{ $t(`homepage.${faq.questionKey}`) }}
+                                {{ $t(`${faq.questionKey}`) }}
                             </AccordionTrigger>
                             <AccordionContent
                                 class="text-sm text-muted-foreground"
                             >
-                                {{ $t(`homepage.${faq.answerKey}`) }}
+                                {{ $t(`${faq.answerKey}`) }}
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>

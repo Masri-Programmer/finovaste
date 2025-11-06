@@ -90,7 +90,7 @@ watchDebounced(
                     class="flex-shrink-0 rounded-full"
                     @click="selectCategory('all')"
                 >
-                    {{ $t('homepage.categories.all') }}
+                    {{ $t('categories.all') }}
                 </Button>
 
                 <Button
@@ -113,7 +113,7 @@ watchDebounced(
                 <Input
                     v-model="searchTerm"
                     type="search"
-                    :placeholder="$t('homepage.marketplace.searchPlaceholder')"
+                    :placeholder="$t('marketplace.searchPlaceholder')"
                     class="rounded-full pl-9"
                 />
             </div>

@@ -14,7 +14,7 @@ const { formatCurrency, getProgress } = useFormatting();
     <div class="mt-4 space-y-3">
         <div>
             <div class="mb-1 flex justify-between text-sm font-medium">
-                <span>{{ $t('homepage.listings.donationsRaised') }}</span>
+                <span>{{ $t('listings.donationsRaised') }}</span>
                 <span class="text-foreground">
                     {{ formatCurrency(listable.amount_raised) }} /
                     {{ formatCurrency(listable.donation_goal) }}
@@ -31,14 +31,14 @@ const { formatCurrency, getProgress } = useFormatting();
             <span class="flex items-center gap-1 text-muted-foreground">
                 <Users class="h-4 w-4" />
                 {{ listable.donors_count }}
-                {{ $t('homepage.listings.donors') }}
+                {{ $t('listings.donors') }}
             </span>
             <span
                 v-if="listable.is_goal_flexible"
                 class="flex items-center gap-1 text-muted-foreground"
             >
                 <Target class="h-4 w-4" />
-                {{ $t('homepage.listings.flexibleGoal') }}
+                {{ $t('listings.flexibleGoal') }}
             </span>
         </div>
     </div>

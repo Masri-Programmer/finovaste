@@ -32,7 +32,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="edit()" as="button">
                 <Scroll class="mr-2 h-4 w-4" />
-                {{ $t('auth.menu.listings') }}
+                {{ $t('menu.listings') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -40,7 +40,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="edit()" as="button">
                 <UserIcon class="mr-2 h-4 w-4" />
-                {{ $t('auth.menu.profile') }}
+                {{ $t('menu.profile') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -48,7 +48,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="dashboard()" as="button">
                 <Settings class="mr-2 h-4 w-4" />
-                {{ $t('auth.menu.settings') }}
+                {{ $t('menu.settings') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -64,7 +64,7 @@ defineProps<Props>();
             data-test="logout-button"
         >
             <LogOut class="mr-2 h-4 w-4" />
-            {{ $t('auth.menu.logout') }}
+            {{ $t('menu.logout') }}
         </Link>
     </DropdownMenuItem>
 </template>

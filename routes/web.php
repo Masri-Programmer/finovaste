@@ -24,7 +24,7 @@ Route::get('listings', [ListingController::class, 'index'])->name('listings.inde
 Route::get('listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
 
 Route::resource('listings', ListingController::class)
-    ->only(['create', 'store', 'edit', 'update', 'destroy']) // Only register these routes
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 Route::resource('categories', CategoryController::class)->only([
     'index',

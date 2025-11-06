@@ -51,7 +51,7 @@ const codeValue = computed<string>(() => code.value.join(''));
         :title="$t(authConfigContent.titleKey)"
         :description="$t(authConfigContent.descriptionKey)"
     >
-        <Head :title="$t('auth.twoFactor.headTitle')" />
+        <Head :title="$t('twoFactor.headTitle')" />
 
         <div class="space-y-6">
             <template v-if="!showRecoveryInput">
@@ -88,10 +88,10 @@ const codeValue = computed<string>(() => code.value.join(''));
                         <InputError :message="errors.code" />
                     </div>
                     <Button type="submit" class="w-full" :disabled="processing">
-                        {{ $t('auth.twoFactor.continueButton') }}
+                        {{ $t('twoFactor.continueButton') }}
                     </Button>
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>{{ $t('auth.twoFactor.orYouCan') }}</span>
+                        <span>{{ $t('twoFactor.orYouCan') }}</span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
@@ -113,19 +113,17 @@ const codeValue = computed<string>(() => code.value.join(''));
                     <Input
                         name="recovery_code"
                         type="text"
-                        :placeholder="
-                            $t('auth.twoFactor.recoveryInputPlaceholder')
-                        "
+                        :placeholder="$t('twoFactor.recoveryInputPlaceholder')"
                         :autofocus="showRecoveryInput"
                         required
                     />
                     <InputError :message="errors.recovery_code" />
                     <Button type="submit" class="w-full" :disabled="processing">
-                        {{ $t('auth.twoFactor.continueButton') }}
+                        {{ $t('twoFactor.continueButton') }}
                     </Button>
 
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>{{ $t('auth.twoFactor.orYouCan') }}</span>
+                        <span>{{ $t('twoFactor.orYouCan') }}</span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

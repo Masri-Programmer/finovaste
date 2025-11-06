@@ -54,7 +54,7 @@
                     }}</span>
                     <span class="text-base text-muted-foreground">
                         ({{ listing.reviews_count }}
-                        {{ $t('listing.listing_details.reviews') }})
+                        {{ $t('listing_details.reviews') }})
                     </span>
                 </div>
             </div>
@@ -63,10 +63,9 @@
         <div class="flex items-center space-x-4 text-muted-foreground">
             <div class="flex items-center space-x-1">
                 <MapPin class="h-4 w-4" />
-                <span
+                <!-- <span
                     >{{ listing.address.city }},
-                    {{ listing.address.state }}</span
-                >
+                    {{ listing.address.state }}</span > -->
             </div>
             <span>•</span>
             <span>{{ localizedCategoryName }}</span>

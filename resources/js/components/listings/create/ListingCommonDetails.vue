@@ -98,13 +98,13 @@ const updateDescription = (newDescription: string) => {
 <template>
     <div class="space-y-6">
         <h3 class="border-b pb-2 text-base font-semibold">
-            {{ $t('listing.createListing.sections.core') }}
+            {{ $t('createListing.sections.core') }}
         </h3>
 
         <div class="mt-6 space-y-4">
             <div class="space-y-2">
                 <Label for="title">
-                    {{ $t('listing.createListing.fields.title.label') }}
+                    {{ $t('createListing.fields.title.label') }}
                 </Label>
                 <Input
                     id="title"
@@ -112,9 +112,7 @@ const updateDescription = (newDescription: string) => {
                     @input="
                         updateTitle(($event.target as HTMLInputElement).value)
                     "
-                    :placeholder="
-                        $t('listing.createListing.fields.title.placeholder')
-                    "
+                    :placeholder="$t('createListing.fields.title.placeholder')"
                     required
                 />
                 <span
@@ -127,7 +125,7 @@ const updateDescription = (newDescription: string) => {
 
             <div class="space-y-2">
                 <Label for="description">
-                    {{ $t('listing.createListing.fields.description.label') }}
+                    {{ $t('createListing.fields.description.label') }}
                 </Label>
                 <Textarea
                     id="description"
@@ -162,7 +160,7 @@ const updateDescription = (newDescription: string) => {
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div class="space-y-2">
                 <Label for="category_id">
-                    {{ $t('listing.createListing.fields.category.label') }}
+                    {{ $t('createListing.fields.category.label') }}
                 </Label>
                 <Select
                     id="category_id"
@@ -204,21 +202,21 @@ const updateDescription = (newDescription: string) => {
 
             <div class="space-y-2">
                 <Label for="location_text">
-                    {{ $t('listing.createListing.fields.location.label') }}
+                    {{ $t('createListing.fields.location.label') }}
                 </Label>
                 <Input
                     id="location_text"
                     :model-value="props.location_text"
                     @update:model-value="emit('update:location_text', $event)"
                     :placeholder="
-                        $t('listing.createListing.fields.location.placeholder')
+                        $t('createListing.fields.location.placeholder')
                     "
                 />
             </div>
 
             <div class="space-y-2">
                 <Label for="expires_at">
-                    {{ $t('listing.createListing.fields.expires_at.label') }}
+                    {{ $t('createListing.fields.expires_at.label') }}
                 </Label>
                 <Popover>
                     <PopoverTrigger as-child>

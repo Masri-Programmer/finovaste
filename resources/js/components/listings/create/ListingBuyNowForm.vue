@@ -23,22 +23,20 @@ defineProps({
     <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
         <div class="space-y-2">
             <Label for="price">
-                {{ $t('listing.createListing.fields.price.label') }}
+                {{ $t('createListing.fields.price.label') }}
             </Label>
             <Input
                 id="price"
                 v-model.number="form.price"
                 type="number"
                 step="0.01"
-                :placeholder="
-                    $t('listing.createListing.fields.price.placeholder')
-                "
+                :placeholder="$t('createListing.fields.price.placeholder')"
                 required
             />
         </div>
         <div class="space-y-2">
             <Label for="quantity">
-                {{ $t('listing.createListing.fields.quantity.label') }}
+                {{ $t('createListing.fields.quantity.label') }}
             </Label>
             <Input
                 id="quantity"
@@ -51,7 +49,7 @@ defineProps({
         </div>
         <div class="space-y-2">
             <Label for="condition">
-                {{ $t('listing.createListing.fields.condition.label') }}
+                {{ $t('createListing.fields.condition.label') }}
             </Label>
             <Select v-model="form.condition">
                 <SelectTrigger>

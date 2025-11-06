@@ -13,10 +13,10 @@ import { LoaderCircle } from 'lucide-vue-next';
 
 <template>
     <AuthBase
-        :title="$t('auth.register.title')"
-        :description="$t('auth.register.description')"
+        :title="$t('register.title')"
+        :description="$t('register.description')"
     >
-        <Head :title="$t('auth.register.headTitle')" />
+        <Head :title="$t('register.headTitle')" />
 
         <Form
             v-bind="RegisteredUserController.store.form()"
@@ -26,7 +26,7 @@ import { LoaderCircle } from 'lucide-vue-next';
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">{{ $t('auth.register.name') }}</Label>
+                    <Label for="name">{{ $t('register.name') }}</Label>
                     <Input
                         id="name"
                         type="text"
@@ -35,13 +35,13 @@ import { LoaderCircle } from 'lucide-vue-next';
                         :tabindex="1"
                         autocomplete="name"
                         name="name"
-                        :placeholder="$t('auth.register.fullNamePlaceholder')"
+                        :placeholder="$t('register.fullNamePlaceholder')"
                     />
                     <InputError :message="errors.name" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">{{ $t('auth.register.email') }}</Label>
+                    <Label for="email">{{ $t('register.email') }}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -55,9 +55,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">{{
-                        $t('auth.register.password')
-                    }}</Label>
+                    <Label for="password">{{ $t('register.password') }}</Label>
                     <Input
                         id="password"
                         type="password"
@@ -65,14 +63,14 @@ import { LoaderCircle } from 'lucide-vue-next';
                         :tabindex="3"
                         autocomplete="new-password"
                         name="password"
-                        :placeholder="$t('auth.register.password')"
+                        :placeholder="$t('register.password')"
                     />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="password_confirmation">{{
-                        $t('auth.register.confirmPassword')
+                        $t('register.confirmPassword')
                     }}</Label>
                     <Input
                         id="password_confirmation"
@@ -81,7 +79,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         :tabindex="4"
                         autocomplete="new-password"
                         name="password_confirmation"
-                        :placeholder="$t('auth.register.confirmPassword')"
+                        :placeholder="$t('register.confirmPassword')"
                     />
                     <InputError :message="errors.password_confirmation" />
                 </div>
@@ -97,17 +95,17 @@ import { LoaderCircle } from 'lucide-vue-next';
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    {{ $t('auth.register.button') }}
+                    {{ $t('register.button') }}
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                {{ $t('auth.register.alreadyHaveAccount') }}
+                {{ $t('register.alreadyHaveAccount') }}
                 <TextLink
                     :href="login()"
                     class="underline underline-offset-4"
                     :tabindex="6"
-                    >{{ $t('auth.register.loginLink') }}</TextLink
+                    >{{ $t('register.loginLink') }}</TextLink
                 >
             </div>
         </Form>

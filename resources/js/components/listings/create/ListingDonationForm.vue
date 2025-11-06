@@ -17,7 +17,7 @@ defineProps({
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="space-y-2">
             <Label for="donation_goal">
-                {{ $t('listing.createListing.fields.donation_goal.label') }}
+                {{ $t('createListing.fields.donation_goal.label') }}
             </Label>
             <Input
                 id="donation_goal"
@@ -25,7 +25,7 @@ defineProps({
                 type="number"
                 step="1"
                 :placeholder="
-                    $t('listing.createListing.fields.donation_goal.placeholder')
+                    $t('createListing.fields.donation_goal.placeholder')
                 "
                 required
             />
@@ -33,7 +33,7 @@ defineProps({
         <div class="flex items-center space-x-2 pt-6">
             <Switch id="is_goal_flexible" v-model="form.is_goal_flexible" />
             <Label for="is_goal_flexible">
-                {{ $t('listing.createListing.fields.is_goal_flexible.label') }}
+                {{ $t('createListing.fields.is_goal_flexible.label') }}
             </Label>
         </div>
     </div>

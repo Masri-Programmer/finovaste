@@ -22,7 +22,7 @@ const listingType = computed({
 <template>
     <div class="space-y-4">
         <Label class="text-base font-semibold">
-            {{ $t('listing.createListing.sections.type') }}
+            {{ $t('createListing.sections.type') }}
         </Label>
         <RadioGroup
             v-model="listingType"
@@ -33,10 +33,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="buy_now" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('listing.createListing.types.buy_now.title') }}
+                    {{ $t('createListing.types.buy_now.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('listing.createListing.types.buy_now.description') }}
+                    {{ $t('createListing.types.buy_now.description') }}
                 </span>
             </Label>
             <Label
@@ -44,10 +44,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="auction" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('listing.createListing.types.auction.title') }}
+                    {{ $t('createListing.types.auction.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('listing.createListing.types.auction.description') }}
+                    {{ $t('createListing.types.auction.description') }}
                 </span>
             </Label>
             <Label
@@ -55,10 +55,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="donation" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('listing.createListing.types.donation.title') }}
+                    {{ $t('createListing.types.donation.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('listing.createListing.types.donation.description') }}
+                    {{ $t('createListing.types.donation.description') }}
                 </span>
             </Label>
         </RadioGroup>

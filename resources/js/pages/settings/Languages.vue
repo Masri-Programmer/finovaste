@@ -13,7 +13,7 @@ import { trans } from 'laravel-vue-i18n';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('settings.languages.breadcrumb'),
+        title: trans('languages.breadcrumb'),
         href: edit().url,
     },
 ];
@@ -21,13 +21,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 <template>
     <Layout :breadcrumbs="breadcrumbItems">
-        <Head :title="$t('settings.languages.headTitle')" />
+        <Head :title="$t('languages.headTitle')" />
 
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    :title="$t('settings.languages.title')"
-                    :description="$t('settings.languages.description')"
+                    :title="$t('languages.title')"
+                    :description="$t('languages.description')"
                 />
                 <LocaleSelector />
 

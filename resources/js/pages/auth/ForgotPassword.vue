@@ -17,10 +17,10 @@ defineProps<{
 
 <template>
     <AuthLayout
-        :title="$t('auth.forgotPassword.title')"
-        :description="$t('auth.forgotPassword.description')"
+        :title="$t('forgotPassword.title')"
+        :description="$t('forgotPassword.description')"
     >
-        <Head :title="$t('auth.forgotPassword.title')" />
+        <Head :title="$t('forgotPassword.title')" />
 
         <div
             v-if="status"
@@ -35,9 +35,7 @@ defineProps<{
                 v-slot="{ errors, processing }"
             >
                 <div class="grid gap-2">
-                    <Label for="email">{{
-                        $t('auth.forgotPassword.email')
-                    }}</Label>
+                    <Label for="email">{{ $t('forgotPassword.email') }}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -59,15 +57,15 @@ defineProps<{
                             v-if="processing"
                             class="h-4 w-4 animate-spin"
                         />
-                        {{ $t('auth.forgotPassword.button') }}
+                        {{ $t('forgotPassword.button') }}
                     </Button>
                 </div>
             </Form>
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
-                <span>{{ $t('auth.forgotPassword.orReturnTo') }}</span>
+                <span>{{ $t('forgotPassword.orReturnTo') }}</span>
                 <TextLink :href="login()">{{
-                    $t('auth.forgotPassword.loginLink')
+                    $t('forgotPassword.loginLink')
                 }}</TextLink>
             </div>
         </div>

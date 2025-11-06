@@ -28,7 +28,7 @@ const props = withDefaults(
         steps?: number[];
     }>(),
     {
-        name: 'common.pagination.defaultName',
+        name: 'pagination.defaultName',
         steps: () => [12, 25, 50, 100],
     },
 );
@@ -50,9 +50,9 @@ const paginationInfo = computed(() => {
         !props.paginator.to ||
         props.paginator.total === 0
     ) {
-        return trans('common.pagination.noResults', { name: translatedName });
+        return trans('pagination.noResults', { name: translatedName });
     }
-    return trans('common.pagination.showing', {
+    return trans('pagination.showing', {
         from: props.paginator.from,
         to: props.paginator.to,
         total: props.paginator.total,
@@ -106,7 +106,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
             :total="paginator.total"
             :items-per-page="paginator.per_page"
             :page="paginator.current_page"
-            :aria-label="$t('common.pagination.ariaLabel')"
+            :aria-label="$t('pagination.ariaLabel')"
             class="flex-1 justify-center"
         >
             <PaginationContent>
@@ -175,7 +175,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
             </Select>
             <span>
                 {{
-                    $t('common.pagination.perPageName', {
+                    $t('pagination.perPageName', {
                         name: $t(props.name),
                     })
                 }}

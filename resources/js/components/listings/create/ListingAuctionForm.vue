@@ -39,7 +39,7 @@ const formattedEndsAt = computed(() => {
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="space-y-2">
             <Label for="start_price">
-                {{ $t('listing.createListing.fields.start_price.label') }}
+                {{ $t('createListing.fields.start_price.label') }}
             </Label>
             <Input
                 id="start_price"
@@ -47,14 +47,14 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    $t('listing.createListing.fields.start_price.placeholder')
+                    $t('createListing.fields.start_price.placeholder')
                 "
                 required
             />
         </div>
         <div class="space-y-2">
             <Label for="reserve_price">
-                {{ $t('listing.createListing.fields.reserve_price.label') }}
+                {{ $t('createListing.fields.reserve_price.label') }}
             </Label>
             <Input
                 id="reserve_price"
@@ -62,13 +62,13 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    $t('listing.createListing.fields.reserve_price.placeholder')
+                    $t('createListing.fields.reserve_price.placeholder')
                 "
             />
         </div>
         <div class="space-y-2">
             <Label for="buy_it_now_price">
-                {{ $t('listing.createListing.fields.buy_it_now_price.label') }}
+                {{ $t('createListing.fields.buy_it_now_price.label') }}
             </Label>
             <Input
                 id="buy_it_now_price"
@@ -85,7 +85,7 @@ const formattedEndsAt = computed(() => {
         <div></div>
         <div class="space-y-2">
             <Label for="starts_at">
-                {{ $t('listing.createListing.fields.starts_at.label') }}
+                {{ $t('createListing.fields.starts_at.label') }}
             </Label>
             <Popover>
                 <PopoverTrigger as-child>
@@ -109,7 +109,7 @@ const formattedEndsAt = computed(() => {
         </div>
         <div class="space-y-2">
             <Label for="ends_at">
-                {{ $t('listing.createListing.fields.ends_at.label') }}
+                {{ $t('createListing.fields.ends_at.label') }}
                 <span class="text-destructive">*</span>
             </Label>
             <Popover>

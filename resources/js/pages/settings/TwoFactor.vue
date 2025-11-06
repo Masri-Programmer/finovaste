@@ -27,7 +27,7 @@ withDefaults(defineProps<Props>(), {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: trans('settings.twoFactor.breadcrumb'),
+        title: trans('twoFactor.breadcrumb'),
         href: show.url(),
     },
 ];
@@ -42,12 +42,12 @@ onUnmounted(() => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Head :title="$t('settings.twoFactor.headTitle')" />
+        <Head :title="$t('twoFactor.headTitle')" />
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    :title="$t('settings.twoFactor.title')"
-                    :description="$t('settings.twoFactor.description')"
+                    :title="$t('twoFactor.title')"
+                    :description="$t('twoFactor.description')"
                 />
 
                 <div
@@ -55,11 +55,11 @@ onUnmounted(() => {
                     class="flex flex-col items-start justify-start space-y-4"
                 >
                     <Badge variant="destructive">{{
-                        $t('settings.twoFactor.disabled')
+                        $t('twoFactor.disabled')
                     }}</Badge>
 
                     <p class="text-muted-foreground">
-                        {{ $t('settings.twoFactor.disabledExplanation') }}
+                        {{ $t('twoFactor.disabledExplanation') }}
                     </p>
 
                     <div>
@@ -68,7 +68,7 @@ onUnmounted(() => {
                             @click="showSetupModal = true"
                         >
                             <ShieldCheck class="mr-2 h-4 w-4" />{{
-                                $t('settings.twoFactor.continueSetup')
+                                $t('twoFactor.continueSetup')
                             }}
                         </Button>
                         <Form
@@ -79,7 +79,7 @@ onUnmounted(() => {
                         >
                             <Button type="submit" :disabled="processing">
                                 <ShieldCheck class="mr-2 h-4 w-4" />{{
-                                    $t('settings.twoFactor.enableButton')
+                                    $t('twoFactor.enableButton')
                                 }}</Button
                             ></Form
                         >
@@ -91,11 +91,11 @@ onUnmounted(() => {
                     class="flex flex-col items-start justify-start space-y-4"
                 >
                     <Badge variant="default">{{
-                        $t('settings.twoFactor.enabled')
+                        $t('twoFactor.enabled')
                     }}</Badge>
 
                     <p class="text-muted-foreground">
-                        {{ $t('settings.twoFactor.enabledExplanation') }}
+                        {{ $t('twoFactor.enabledExplanation') }}
                     </p>
 
                     <TwoFactorRecoveryCodes />
@@ -108,7 +108,7 @@ onUnmounted(() => {
                                 :disabled="processing"
                             >
                                 <ShieldBan class="mr-2 h-4 w-4" />
-                                {{ $t('settings.twoFactor.disableButton') }}
+                                {{ $t('twoFactor.disableButton') }}
                             </Button>
                         </Form>
                     </div>

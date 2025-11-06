@@ -14,16 +14,16 @@ defineProps<{
 
 <template>
     <AuthLayout
-        :title="$t('auth.verifyEmail.title')"
-        :description="$t('auth.verifyEmail.description')"
+        :title="$t('verifyEmail.title')"
+        :description="$t('verifyEmail.description')"
     >
-        <Head :title="$t('auth.verifyEmail.headTitle')" />
+        <Head :title="$t('verifyEmail.headTitle')" />
 
         <div
             v-if="status === 'verification-link-sent'"
             class="mb-4 text-center text-sm font-medium text-green-600"
         >
-            {{ $t('auth.verifyEmail.successMessage') }}
+            {{ $t('verifyEmail.successMessage') }}
         </div>
 
         <Form
@@ -33,7 +33,7 @@ defineProps<{
         >
             <Button :disabled="processing" variant="secondary">
                 <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-                {{ $t('auth.verifyEmail.button') }}
+                {{ $t('verifyEmail.button') }}
             </Button>
 
             <TextLink
@@ -41,7 +41,7 @@ defineProps<{
                 as="button"
                 class="mx-auto block text-sm"
             >
-                {{ $t('auth.verifyEmail.logoutLink') }}
+                {{ $t('verifyEmail.logoutLink') }}
             </TextLink>
         </Form>
     </AuthLayout>

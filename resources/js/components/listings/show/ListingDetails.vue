@@ -2,19 +2,19 @@
     <section class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <InfoBox
             :icon="TrendingUp"
-            :title="$t('listing.listing_details.boxes.roi')"
+            :title="$t('listing_details.boxes.roi')"
             value="12-15%"
             icon-bg-class="bg-blue-100 text-blue-700"
         />
         <InfoBox
             :icon="CalendarDays"
-            :title="$t('listing.listing_details.boxes.duration')"
+            :title="$t('listing_details.boxes.duration')"
             value="24 months"
             icon-bg-class="bg-green-100 text-green-700"
         />
         <InfoBox
             :icon="Users"
-            :title="$t('listing.listing_details.boxes.investors')"
+            :title="$t('listing_details.boxes.investors')"
             :value="investorCount.toString()"
             icon-bg-class="bg-purple-100 text-purple-700"
         />
@@ -23,7 +23,7 @@
     <section class="space-y-3">
         <div class="flex justify-between text-sm font-medium">
             <span class="text-muted-foreground">{{
-                $t('listing.listing_details.capital_raised')
+                $t('listing_details.capital_raised')
             }}</span>
             <span class="text-foreground">
                 {{ formattedCurrentCapital }} / {{ formattedTotalCapital }}
@@ -34,7 +34,7 @@
 
     <section>
         <h2 class="mb-4 text-lg font-semibold text-foreground">
-            {{ $t('listing.listing_details.key_features') }}
+            {{ $t('listing_details.key_features') }}
         </h2>
         <div class="grid grid-cols-2 gap-x-8 gap-y-3">
             <div
@@ -55,10 +55,10 @@
 
     <section>
         <h2 class="mb-4 text-lg font-semibold text-foreground">
-            {{ $t('listing.listing_details.faq_title') }}
+            {{ $t('listing_details.faq_title') }}
         </h2>
         <p class="mb-6 text-sm text-muted-foreground">
-            {{ $t('listing.listing_details.faq_subtitle') }}
+            {{ $t('listing_details.faq_subtitle') }}
         </p>
         <Accordion type="single" class="w-full" collapsible>
             <AccordionItem

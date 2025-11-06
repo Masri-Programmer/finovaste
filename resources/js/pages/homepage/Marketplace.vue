@@ -25,7 +25,7 @@ const filters = ref({
     <div class="min-h-screen bg-background text-foreground">
         <header class="mb-4 flex items-center justify-between">
             <h1 class="text-3xl font-bold text-foreground">
-                {{ $t('homepage.marketplace.title') }}
+                {{ $t('marketplace.title') }}
             </h1>
         </header>
 
@@ -36,7 +36,7 @@ const filters = ref({
 
         <section class="mt-6">
             <h2 class="mb-4 text-2xl font-semibold">
-                {{ $t('homepage.marketplace.featuredListings') }}
+                {{ $t('marketplace.featuredListings') }}
             </h2>
 
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">

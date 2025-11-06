@@ -33,7 +33,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="home()" prefetch as="button">
                 <Home class="mr-2 h-4 w-4" />
-                {{ $t('auth.menu.home') }}
+                {{ $t('menu.home') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -47,7 +47,7 @@ defineProps<Props>();
             data-test="logout-button"
         >
             <LogOut class="mr-2 h-4 w-4" />
-            {{ $t('auth.menu.logout') }}
+            {{ $t('menu.logout') }}
         </Link>
     </DropdownMenuItem>
 </template>

@@ -22,7 +22,7 @@ const menuSections = [];
 
 <template>
     <Head>
-        <!-- <title>{{ head ?? t('homepage.meta_title') }}</title>
+        <!-- <title>{{ head ?? t('meta_title') }}</title>
         <link rel="preconnect" :href="customProps.app.url + link" />
         <link rel="canonical" :href="customProps.app.url + link" />
         <link
@@ -33,19 +33,19 @@ const menuSections = [];
         <meta
             head-key="description"
             name="description"
-            :content="description ?? t('homepage.meta_description')"
+            :content="description ?? t('meta_description')"
         />
         <meta
             name="twitter:description"
-            :content="description ?? t('homepage.meta_description')"
+            :content="description ?? t('meta_description')"
         />
         <meta
             property="og:description"
-            :content="description ?? t('homepage.meta_description')"
+            :content="description ?? t('meta_description')"
         />
         <meta
             name="Keywords"
-            :content="keywords ?? t('homepage.meta_keywords')"
+            :content="keywords ?? t('meta_keywords')"
         />
         <component :is="'script'" type="application/ld+json">
             {{ jsonLdSchema }}

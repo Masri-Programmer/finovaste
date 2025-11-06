@@ -2,13 +2,12 @@ import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { i18nVue } from 'laravel-vue-i18n';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import Toast, { PluginOptions } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import { initializeTheme } from './composables/useAppearance';
-// import i18n from './plugins/i18n';
-import { i18nVue } from 'laravel-vue-i18n';
 const options: PluginOptions = {
     timeout: 5000,
     closeOnClick: true,

@@ -26,18 +26,18 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
 <template>
     <div class="space-y-6">
         <HeadingSmall
-            :title="$t('settings.deleteAccount.title')"
-            :description="$t('settings.deleteAccount.description')"
+            :title="$t('deleteAccount.title')"
+            :description="$t('deleteAccount.description')"
         />
         <div
             class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
         >
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
                 <p class="font-medium">
-                    {{ $t('settings.deleteAccount.warning') }}
+                    {{ $t('deleteAccount.warning') }}
                 </p>
                 <p class="text-sm">
-                    {{ $t('settings.deleteAccount.caution') }}
+                    {{ $t('deleteAccount.caution') }}
                 </p>
             </div>
             <Dialog>
@@ -45,7 +45,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                     <Button
                         variant="destructive"
                         data-test="delete-user-button"
-                        >{{ $t('settings.deleteAccount.button') }}</Button
+                        >{{ $t('deleteAccount.button') }}</Button
                     >
                 </DialogTrigger>
                 <DialogContent>
@@ -61,20 +61,16 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                     >
                         <DialogHeader class="space-y-3">
                             <DialogTitle>{{
-                                $t('settings.deleteAccount.modalTitle')
+                                $t('deleteAccount.modalTitle')
                             }}</DialogTitle>
                             <DialogDescription>
-                                {{
-                                    $t(
-                                        'settings.deleteAccount.modalDescription',
-                                    )
-                                }}
+                                {{ $t('deleteAccount.modalDescription') }}
                             </DialogDescription>
                         </DialogHeader>
 
                         <div class="grid gap-2">
                             <Label for="password" class="sr-only">{{
-                                $t('settings.deleteAccount.passwordLabel')
+                                $t('deleteAccount.passwordLabel')
                             }}</Label>
                             <Input
                                 id="password"
@@ -82,9 +78,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                 name="password"
                                 ref="passwordInput"
                                 :placeholder="
-                                    $t(
-                                        'settings.deleteAccount.passwordPlaceholder',
-                                    )
+                                    $t('deleteAccount.passwordPlaceholder')
                                 "
                             />
                             <InputError :message="errors.password" />
@@ -101,11 +95,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                         }
                                     "
                                 >
-                                    {{
-                                        $t(
-                                            'settings.deleteAccount.cancelButton',
-                                        )
-                                    }}
+                                    {{ $t('deleteAccount.cancelButton') }}
                                 </Button>
                             </DialogClose>
 
@@ -115,7 +105,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                 :disabled="processing"
                                 data-test="confirm-delete-user-button"
                             >
-                                {{ $t('settings.deleteAccount.confirmButton') }}
+                                {{ $t('deleteAccount.confirmButton') }}
                             </Button>
                         </DialogFooter>
                     </Form>

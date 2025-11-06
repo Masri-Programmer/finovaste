@@ -12,7 +12,7 @@ import { trans } from 'laravel-vue-i18n';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('settings.appearance.breadcrumb'),
+        title: trans('appearance.breadcrumb'),
         href: edit().url,
     },
 ];
@@ -20,13 +20,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 <template>
     <Layout :breadcrumbs="breadcrumbItems">
-        <Head :title="$t('settings.appearance.headTitle')" />
+        <Head :title="$t('appearance.headTitle')" />
 
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    :title="$t('settings.appearance.title')"
-                    :description="$t('settings.appearance.description')"
+                    :title="$t('appearance.title')"
+                    :description="$t('appearance.description')"
                 />
                 <AppearanceTabs />
             </div>

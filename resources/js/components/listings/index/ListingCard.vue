@@ -55,22 +55,22 @@ function getListingType(type: Listing['listable_type'] | string): {
     switch (type) {
         case 'App\\Models\\InvestmentListing':
             return {
-                text: trans('homepage.listingTypes.investment'),
+                text: trans('listingTypes.investment'),
                 variant: 'default',
             };
         case 'App\\Models\\AuctionListing':
             return {
-                text: trans('homepage.listingTypes.auction'),
+                text: trans('listingTypes.auction'),
                 variant: 'secondary',
             };
         case 'App\\Models\\BuyNowListing':
             return {
-                text: trans('homepage.listingTypes.buyNow'),
+                text: trans('listingTypes.buyNow'),
                 variant: 'default',
             };
         case 'App\\Models\\DonationListing':
             return {
-                text: trans('homepage.listingTypes.donation'),
+                text: trans('listingTypes.donation'),
                 variant: 'destructive',
             };
         default:
@@ -88,16 +88,16 @@ function addToWishlist(uuid: string) {
     // {
     // preserveScroll: true,
     // onSuccess: () => {
-    // toast.success(t('homepage.notifications.wishlistAdded')); // 🔔 Success toast
+    // toast.success(t('notifications.wishlistAdded')); // 🔔 Success toast
     // },
     // onError: (errors) => {
     // const errorMsg =
-    // errors.message || t('homepage.notifications.errorGeneric');
+    // errors.message || t('notifications.errorGeneric');
     // toast.error(errorMsg); // 🔔 Error toast
     // },
     // },
     // );
-    // toast.success(t('homepage.notifications.wishlistAdded')); // Mocked
+    // toast.success(t('notifications.wishlistAdded')); // Mocked
 }
 
 // 🛠 Using VueUse's useClipboard
@@ -106,10 +106,10 @@ function shareListing(uuid: string) {
     // const listingUrl = route('marketplace.show', { uuid }); // 🔄 Laravel Typed Wayfinder
     // copy(listingUrl)
     // .then(() => {
-    // toast.info(t('homepage.notifications.linkCopied')); // 🔔 Info toast
+    // toast.info(t('notifications.linkCopied')); // 🔔 Info toast
     // })
     // .catch(() => {
-    // toast.error(t('homepage.notifications.copyFailed'));
+    // toast.error(t('notifications.copyFailed'));
     // });
 }
 // Computed property to check listable validity (optional but good)
@@ -190,7 +190,7 @@ const listable = computed(() => {
                 >
                     <div class="flex items-center gap-1">
                         <MapPin class="h-4 w-4" />
-                        <span>{{ $t('homepage.locations.generic') }}</span>
+                        <span>{{ $t('locations.generic') }}</span>
                     </div>
                     <div class="flex items-center gap-1">
                         <Star class="h-4 w-4 text-yellow-500" />
@@ -198,7 +198,7 @@ const listable = computed(() => {
                             >{{ listing.average_rating }} ({{
                                 listing.reviews_count
                             }}
-                            {{ $t('homepage.reviews.label') }})</span
+                            {{ $t('reviews.label') }})</span
                         >
                     </div>
                 </div>
@@ -243,7 +243,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <CircleDollarSign class="mr-2 h-4 w-4" />
-                    {{ $t('homepage.listings.investNow') }}
+                    {{ $t('listings.investNow') }}
                 </Button>
                 <Button
                     v-if="
@@ -254,7 +254,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <Gavel class="mr-2 h-4 w-4" />
-                    {{ $t('homepage.listings.placeBid') }}
+                    {{ $t('listings.placeBid') }}
                 </Button>
                 <Button
                     v-if="
@@ -264,7 +264,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <BadgeDollarSign class="mr-2 h-4 w-4" />
-                    {{ $t('homepage.listings.buyNow') }}
+                    {{ $t('listings.buyNow') }}
                 </Button>
                 <Button
                     v-if="
@@ -275,7 +275,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <HandHeart class="mr-2 h-4 w-4" />
-                    {{ $t('homepage.listings.donateNow') }}
+                    {{ $t('listings.donateNow') }}
                 </Button>
 
                 <div
@@ -288,7 +288,7 @@ const listable = computed(() => {
                         as-child
                     >
                         <a href="#" target="_blank" @click.stop>
-                            {{ $t('homepage.links.details') }}
+                            {{ $t('links.details') }}
                             <ExternalLink class="ml-1 h-3 w-3" />
                         </a>
                     </Button>

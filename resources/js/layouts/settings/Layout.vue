@@ -13,23 +13,23 @@ import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 const sidebarNavItems: NavItem[] = [
     {
-        title: trans('settings.layout.profile'),
+        title: trans('layout.profile'),
         href: editProfile(),
     },
     {
-        title: trans('settings.layout.password'),
+        title: trans('layout.password'),
         href: editPassword(),
     },
     {
-        title: trans('settings.layout.twoFactor'),
+        title: trans('layout.twoFactor'),
         href: show(),
     },
     {
-        title: trans('settings.layout.appearance'),
+        title: trans('layout.appearance'),
         href: editAppearance(),
     },
     {
-        title: trans('settings.layout.languages'),
+        title: trans('layout.languages'),
         href: editLanguages(),
     },
 ];
@@ -39,8 +39,8 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
 
 <template>
     <Heading
-        :title="$t('settings.layout.title')"
-        :description="$t('settings.layout.description')"
+        :title="$t('layout.title')"
+        :description="$t('layout.description')"
     />
 
     <div class="flex min-h-[40vh] flex-col lg:flex-row lg:space-x-12">

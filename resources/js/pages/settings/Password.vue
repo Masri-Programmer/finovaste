@@ -16,7 +16,7 @@ import { trans } from 'laravel-vue-i18n';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('settings.password.breadcrumb'),
+        title: trans('password.breadcrumb'),
         href: edit().url,
     },
 ];
@@ -27,13 +27,13 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
 
 <template>
     <Layout :breadcrumbs="breadcrumbItems">
-        <Head :title="$t('settings.password.headTitle')" />
+        <Head :title="$t('password.headTitle')" />
 
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    :title="$t('settings.password.title')"
-                    :description="$t('settings.password.description')"
+                    :title="$t('password.title')"
+                    :description="$t('password.description')"
                 />
 
                 <Form
@@ -52,7 +52,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                 >
                     <div class="grid gap-2">
                         <Label for="current_password">{{
-                            t('settings.password.currentPassword')
+                            $t('password.currentPassword')
                         }}</Label>
                         <Input
                             id="current_password"
@@ -61,16 +61,14 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             type="password"
                             class="mt-1 block w-full"
                             autocomplete="current-password"
-                            :placeholder="
-                                t('settings.password.currentPassword')
-                            "
+                            :placeholder="$t('password.currentPassword')"
                         />
                         <InputError :message="errors.current_password" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="password">{{
-                            t('settings.password.newPassword')
+                            $t('password.newPassword')
                         }}</Label>
                         <Input
                             id="password"
@@ -79,14 +77,14 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             type="password"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
-                            :placeholder="$t('settings.password.newPassword')"
+                            :placeholder="$t('password.newPassword')"
                         />
                         <InputError :message="errors.password" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="password_confirmation">{{
-                            t('settings.password.confirmPassword')
+                            $t('password.confirmPassword')
                         }}</Label>
                         <Input
                             id="password_confirmation"
@@ -94,9 +92,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             type="password"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
-                            :placeholder="
-                                t('settings.password.confirmPassword')
-                            "
+                            :placeholder="$t('password.confirmPassword')"
                         />
                         <InputError :message="errors.password_confirmation" />
                     </div>
@@ -105,7 +101,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                         <Button
                             :disabled="processing"
                             data-test="update-password-button"
-                            >{{ $t('settings.password.button') }}</Button
+                            >{{ $t('password.button') }}</Button
                         >
 
                         <Transition
@@ -118,7 +114,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                                 v-show="recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
-                                {{ $t('settings.saved') }}
+                                {{ $t('saved') }}
                             </p>
                         </Transition>
                     </div>

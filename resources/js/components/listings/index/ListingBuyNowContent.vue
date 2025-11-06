@@ -16,7 +16,7 @@ const { formatCurrency } = useFormatting();
         >
             <span class="flex items-center gap-1 text-secondary-foreground">
                 <CircleDollarSign class="h-4 w-4" />
-                {{ $t('homepage.listings.price') }}
+                {{ $t('listings.price') }}
             </span>
             <span class="text-lg font-bold text-secondary-foreground">
                 {{ formatCurrency(listable.price) }}
@@ -25,7 +25,7 @@ const { formatCurrency } = useFormatting();
         <div class="flex items-center justify-between text-sm">
             <span class="flex items-center gap-1 text-muted-foreground">
                 <Package class="h-4 w-4" />
-                {{ $t('homepage.listings.quantity') }}:
+                {{ $t('listings.quantity') }}:
             </span>
             <span class="font-medium text-foreground">
                 {{ listable.quantity }}

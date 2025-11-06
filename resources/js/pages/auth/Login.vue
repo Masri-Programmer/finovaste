@@ -19,11 +19,8 @@ defineProps<{
 </script>
 
 <template>
-    <AuthBase
-        :title="$t('auth.login.title')"
-        :description="$t('auth.login.description')"
-    >
-        <Head :title="$t('auth.login.title')" />
+    <AuthBase :title="$t('login.title')" :description="$t('login.description')">
+        <Head :title="$t('login.title')" />
 
         <div
             v-if="status"
@@ -40,7 +37,7 @@ defineProps<{
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">{{ $t('auth.login.email') }}</Label>
+                    <Label for="email">{{ $t('login.email') }}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -56,16 +53,14 @@ defineProps<{
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="password">{{
-                            $t('auth.login.password')
-                        }}</Label>
+                        <Label for="password">{{ $t('login.password') }}</Label>
                         <TextLink
                             v-if="canResetPassword"
                             :href="request()"
                             class="text-sm"
                             :tabindex="5"
                         >
-                            {{ $t('auth.login.forgotPassword') }}
+                            {{ $t('login.forgotPassword') }}
                         </TextLink>
                     </div>
                     <Input
@@ -75,7 +70,7 @@ defineProps<{
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        :placeholder="$t('auth.login.password')"
+                        :placeholder="$t('login.password')"
                     />
                     <InputError :message="errors.password" />
                 </div>
@@ -83,7 +78,7 @@ defineProps<{
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
                         <Checkbox id="remember" name="remember" :tabindex="3" />
-                        <span>{{ $t('auth.login.rememberMe') }}</span>
+                        <span>{{ $t('login.rememberMe') }}</span>
                     </Label>
                 </div>
 
@@ -98,14 +93,14 @@ defineProps<{
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    {{ $t('auth.login.button') }}
+                    {{ $t('login.button') }}
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                {{ $t('auth.login.noAccount') }}
+                {{ $t('login.noAccount') }}
                 <TextLink :href="register()" :tabindex="5">{{
-                    $t('auth.login.signUp')
+                    $t('login.signUp')
                 }}</TextLink>
             </div>
         </Form>

@@ -11,7 +11,7 @@
                     </div>
 
                     <p class="mt-4 text-base text-muted-foreground">
-                        {{ $t('layout.footer.description') }}
+                        {{ $t('footer.description') }}
                     </p>
 
                     <div class="mt-6 space-y-4">
@@ -20,39 +20,37 @@
                             @click="
                                 copyToClipboard(
                                     'xxxx',
-                                    $t('layout.footer.contact.emailLabel'),
+                                    $t('footer.contact.emailLabel'),
                                 )
                             "
                         >
                             <Mail class="h-5 w-5 flex-shrink-0" />
-                            <span>{{ $t('layout.footer.contact.email') }}</span>
+                            <span>{{ $t('footer.contact.email') }}</span>
                         </div>
                         <div
                             class="flex cursor-pointer items-center space-x-3 text-muted-foreground transition-colors hover:text-primary"
                             @click="
                                 copyToClipboard(
                                     '+1 (555) 123-4567',
-                                    $t('layout.footer.contact.phoneLabel'),
+                                    $t('footer.contact.phoneLabel'),
                                 )
                             "
                         >
                             <Phone class="h-5 w-5 flex-shrink-0" />
-                            <span>{{ $t('layout.footer.contact.phone') }}</span>
+                            <span>{{ $t('footer.contact.phone') }}</span>
                         </div>
                         <div
                             class="flex items-center space-x-3 text-muted-foreground"
                         >
                             <MapPin class="h-5 w-5 flex-shrink-0" />
-                            <span>{{
-                                $t('layout.footer.contact.address')
-                            }}</span>
+                            <span>{{ $t('footer.contact.address') }}</span>
                         </div>
                     </div>
                 </div>
 
                 <div>
                     <h4 class="font-semibold text-foreground">
-                        {{ $t('layout.footer.company.title') }}
+                        {{ $t('footer.company.title') }}
                     </h4>
                     <ul class="mt-4 space-y-3">
                         <li>
@@ -60,7 +58,7 @@
                                 :href="footerRoutes.company.about"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.company.about') }}
+                                {{ $t('footer.company.about') }}
                             </Link>
                         </li>
                         <li>
@@ -68,7 +66,7 @@
                                 :href="footerRoutes.company.contact"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.company.contact') }}
+                                {{ $t('footer.company.contact') }}
                             </Link>
                         </li>
                         <li>
@@ -76,7 +74,7 @@
                                 :href="footerRoutes.company.careers"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.company.careers') }}
+                                {{ $t('footer.company.careers') }}
                             </Link>
                         </li>
                         <li>
@@ -84,7 +82,7 @@
                                 :href="footerRoutes.company.press"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.company.press') }}
+                                {{ $t('footer.company.press') }}
                             </Link>
                         </li>
                     </ul>
@@ -92,7 +90,7 @@
 
                 <div>
                     <h4 class="font-semibold text-foreground">
-                        {{ $t('layout.footer.support.title') }}
+                        {{ $t('footer.support.title') }}
                     </h4>
                     <ul class="mt-4 space-y-3">
                         <li>
@@ -100,7 +98,7 @@
                                 :href="footerRoutes.support.faq"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.support.faq') }}
+                                {{ $t('footer.support.faq') }}
                             </Link>
                         </li>
                         <li>
@@ -108,7 +106,7 @@
                                 :href="footerRoutes.support.help"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.support.help') }}
+                                {{ $t('footer.support.help') }}
                             </Link>
                         </li>
                         <li>
@@ -116,7 +114,7 @@
                                 :href="footerRoutes.support.safety"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.support.safety') }}
+                                {{ $t('footer.support.safety') }}
                             </Link>
                         </li>
                         <li>
@@ -124,7 +122,7 @@
                                 :href="footerRoutes.support.community"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.support.community') }}
+                                {{ $t('footer.support.community') }}
                             </Link>
                         </li>
                     </ul>
@@ -132,7 +130,7 @@
 
                 <div>
                     <h4 class="font-semibold text-foreground">
-                        {{ $t('layout.footer.legal.title') }}
+                        {{ $t('footer.legal.title') }}
                     </h4>
                     <ul class="mt-4 space-y-3">
                         <li>
@@ -140,7 +138,7 @@
                                 :href="footerRoutes.legal.termsGeneral"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.legal.agb') }}
+                                {{ $t('footer.legal.agb') }}
                             </Link>
                         </li>
                         <li>
@@ -148,7 +146,7 @@
                                 :href="footerRoutes.legal.privacy"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.legal.privacy') }}
+                                {{ $t('footer.legal.privacy') }}
                             </Link>
                         </li>
                         <li>
@@ -156,7 +154,7 @@
                                 :href="footerRoutes.legal.termsService"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.legal.terms') }}
+                                {{ $t('footer.legal.terms') }}
                             </Link>
                         </li>
                         <li>
@@ -164,7 +162,7 @@
                                 :href="footerRoutes.legal.imprint"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.legal.imprint') }}
+                                {{ $t('footer.legal.imprint') }}
                             </Link>
                         </li>
                     </ul>
@@ -172,7 +170,7 @@
 
                 <div>
                     <h4 class="font-semibold text-foreground">
-                        {{ $t('layout.footer.marketplace.title') }}
+                        {{ $t('footer.marketplace.title') }}
                     </h4>
                     <ul class="mt-4 space-y-3">
                         <li>
@@ -180,7 +178,7 @@
                                 :href="footerRoutes.marketplace.properties"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.marketplace.properties') }}
+                                {{ $t('footer.marketplace.properties') }}
                             </Link>
                         </li>
                         <li>
@@ -188,7 +186,7 @@
                                 :href="footerRoutes.marketplace.vehicles"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.marketplace.vehicles') }}
+                                {{ $t('footer.marketplace.vehicles') }}
                             </Link>
                         </li>
                         <li>
@@ -196,9 +194,7 @@
                                 :href="footerRoutes.marketplace.investments"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{
-                                    $t('layout.footer.marketplace.investments')
-                                }}
+                                {{ $t('footer.marketplace.investments') }}
                             </Link>
                         </li>
                         <li>
@@ -206,7 +202,7 @@
                                 :href="footerRoutes.marketplace.auctions"
                                 class="text-muted-foreground transition-colors hover:text-primary"
                             >
-                                {{ $t('layout.footer.marketplace.auctions') }}
+                                {{ $t('footer.marketplace.auctions') }}
                             </Link>
                         </li>
                     </ul>
@@ -217,7 +213,7 @@
                 class="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-border pt-8 sm:flex-row"
             >
                 <p class="text-sm text-muted-foreground">
-                    {{ $t('layout.footer.copyright') }}
+                    {{ $t('footer.copyright') }}
                 </p>
 
                 <div class="flex space-x-5">
@@ -319,10 +315,10 @@ const { copy } = useClipboard();
 const copyToClipboard = (text: string, type: string) => {
     copy(text)
         .then(() => {
-            toast.success(trans('layout.footer.copied', { type: type }));
+            toast.success(trans('footer.copied', { type: type }));
         })
         .catch(() => {
-            toast.error(trans('layout.footer.copyFailed'));
+            toast.error(trans('footer.copyFailed'));
         });
 };
 </script>

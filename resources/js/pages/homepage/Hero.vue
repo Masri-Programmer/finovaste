@@ -11,12 +11,12 @@ function handleGetStarted() {
     router.visit(login(), {
         method: 'get',
         onStart: () => {
-            toast.info(trans('homepage.hero.notifications.navigating'));
+            toast.info(trans('hero.notifications.navigating'));
         },
     });
 }
 function handleLearnMore() {
-    toast.success(trans('homepage.hero.notifications.learnMoreClicked'));
+    toast.success(trans('hero.notifications.learnMoreClicked'));
 }
 </script>
 
