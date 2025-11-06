@@ -11,13 +11,10 @@ import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { LogOut, Scroll, Settings, User as UserIcon } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
 interface Props {
     user: User;
     roles: Array<string>;
 }
-const { t } = useI18n();
-
 const handleLogout = () => {
     router.flushAll();
 };
@@ -35,7 +32,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="edit()" as="button">
                 <Scroll class="mr-2 h-4 w-4" />
-                {{ t('auth.menu.listings') }}
+                {{ $t('auth.menu.listings') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -43,7 +40,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="edit()" as="button">
                 <UserIcon class="mr-2 h-4 w-4" />
-                {{ t('auth.menu.profile') }}
+                {{ $t('auth.menu.profile') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -51,7 +48,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="dashboard()" as="button">
                 <Settings class="mr-2 h-4 w-4" />
-                {{ t('auth.menu.settings') }}
+                {{ $t('auth.menu.settings') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -67,7 +64,7 @@ defineProps<Props>();
             data-test="logout-button"
         >
             <LogOut class="mr-2 h-4 w-4" />
-            {{ t('auth.menu.logout') }}
+            {{ $t('auth.menu.logout') }}
         </Link>
     </DropdownMenuItem>
 </template>

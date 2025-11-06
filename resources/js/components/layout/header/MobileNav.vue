@@ -1,21 +1,35 @@
 <template>
     <div class="lg:hidden">
-        <Sheet :open="isSheetOpen" @update:open="$emit('update:isSheetOpen', $event)">
+        <Sheet
+            :open="isSheetOpen"
+            @update:open="$emit('update:isSheetOpen', $event)"
+        >
             <SheetTrigger as-child>
                 <Button variant="ghost" size="icon">
                     <Menu class="h-8 w-8" />
                     <span class="sr-only">Toggle Menu</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="right" class="flex w-[300px] flex-col bg-sidebar text-sidebar-foreground sm:w-[400px]">
+            <SheetContent
+                side="right"
+                class="flex w-[300px] flex-col bg-sidebar text-sidebar-foreground sm:w-[400px]"
+            >
                 <SheetHeader class="p-4 pb-0 text-left">
-                    <SheetTitle class="tracking-tighter">Masri Programmer</SheetTitle>
+                    <SheetTitle class="tracking-tighter"
+                        >Masri Programmer</SheetTitle
+                    >
                 </SheetHeader>
 
                 <div class="grow space-y-3 overflow-y-auto p-4 text-left">
                     <Accordion type="single" collapsible class="w-full">
-                        <AccordionItem v-for="section in menuSections" :key="section.value" :value="section.value">
-                            <AccordionTrigger>{{ t(section.titleKey) }}</AccordionTrigger>
+                        <AccordionItem
+                            v-for="section in menuSections"
+                            :key="section.value"
+                            :value="section.value"
+                        >
+                            <AccordionTrigger>{{
+                                $t(section.titleKey)
+                            }}</AccordionTrigger>
                             <AccordionContent class="pl-4">
                                 <div class="flex flex-col space-y-2">
                                     <NavItem
@@ -31,13 +45,15 @@
                     </Accordion>
 
                     <span class="flex items-center pt-4 text-muted-foreground">
-                        {{ t('header.donationMessage') }}
+                        {{ $t('header.donationMessage') }}
                         <HandHeart class="mr-1.5 h-4 w-4 text-pink-500" />
                     </span>
                     <DonationBtns />
                 </div>
 
-                <div class="shrink-0 space-y-4 border-t border-sidebar-border p-4">
+                <div
+                    class="shrink-0 space-y-4 border-t border-sidebar-border p-4"
+                >
                     <div class="flex justify-center">
                         <AppLogoIcon />
                     </div>
@@ -57,11 +73,21 @@ import AppearanceIcon from '@/components/AppearanceIcon.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import CurrencySwitch from '@/components/CurrencySwitch.vue';
 import LanguageSwitch from '@/components/LanguageSwitch.vue';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
 import { HandHeart, Menu } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
 import DonationBtns from './DonationBtns.vue';
 import NavItem from './NavItem.vue';
 
@@ -71,7 +97,6 @@ defineProps<{
 }>();
 
 const emit = defineEmits(['update:isSheetOpen']);
-const { t } = useI18n();
 
 const closeSheet = () => {
     emit('update:isSheetOpen', false);

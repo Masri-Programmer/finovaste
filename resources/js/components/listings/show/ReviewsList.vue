@@ -3,13 +3,13 @@
         <Tabs default-value="reviews" class="w-full">
             <TabsList class="grid w-full grid-cols-3">
                 <TabsTrigger value="reviews">
-                    {{ t('reviews.tabs.reviews') }} ({{ reviews.length }})
+                    {{ $t('reviews.tabs.reviews') }} ({{ reviews.length }})
                 </TabsTrigger>
                 <TabsTrigger value="documents">
-                    {{ t('reviews.tabs.documents') }}
+                    {{ $t('reviews.tabs.documents') }}
                 </TabsTrigger>
                 <TabsTrigger value="updates">
-                    {{ t('reviews.tabs.updates') }}
+                    {{ $t('reviews.tabs.updates') }}
                 </TabsTrigger>
             </TabsList>
 
@@ -42,7 +42,7 @@
                                     variant="outline"
                                     class="border-green-600 text-green-700"
                                 >
-                                    {{ t('reviews.verified_investor') }}
+                                    {{ $t('reviews.verified_investor') }}
                                 </Badge>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -76,19 +76,19 @@
                         variant="outline"
                         class="w-full"
                     >
-                        {{ t('reviews.load_more_button') }}
+                        {{ $t('reviews.load_more_button') }}
                     </Button>
                 </div>
             </TabsContent>
 
             <TabsContent value="documents" class="mt-6">
                 <p class="text-center text-muted-foreground">
-                    {{ t('reviews.tabs.documents_empty') }}
+                    {{ $t('reviews.tabs.documents_empty') }}
                 </p>
             </TabsContent>
             <TabsContent value="updates" class="mt-6">
                 <p class="text-center text-muted-foreground">
-                    {{ t('reviews.tabs.updates_empty') }}
+                    {{ $t('reviews.tabs.updates_empty') }}
                 </p>
             </TabsContent>
         </Tabs>
@@ -129,7 +129,6 @@ const props = defineProps<{
 }>();
 
 // --- Mocks (replace with your actual data/helpers) ---
-// const { t } = useI18n();
 const t = (key: string) => {
     const keys: Record<string, string> = {
         'reviews.tabs.reviews': 'Reviews',
@@ -145,7 +144,6 @@ const t = (key: string) => {
 
 // --- Composables ---
 // Use i18n
-// const { t } = useI18n();
 
 // Use VueUse useTimeAgo for relative timestamps
 const timeAgo = (date: string | Date) => useTimeAgo(date).value;

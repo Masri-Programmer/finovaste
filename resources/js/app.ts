@@ -7,8 +7,8 @@ import { createApp, h } from 'vue';
 import Toast, { PluginOptions } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import { initializeTheme } from './composables/useAppearance';
-import i18n from './plugins/i18n';
-
+// import i18n from './plugins/i18n';
+import { i18nVue } from 'laravel-vue-i18n';
 const options: PluginOptions = {
     timeout: 5000,
     closeOnClick: true,
@@ -34,8 +34,15 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(i18n)
             .use(Toast, options)
+            .use(i18nVue, {
+                fallbackLang: 'de',
+                lang: 'de',
+                resolve: async (lang) => {
+                    const langs = import.meta.glob('../../lang/*.json');
+                    return await langs[`../../lang/${lang}.json`]();
+                },
+            })
             .mount(el);
     },
     progress: {

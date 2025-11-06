@@ -26,13 +26,13 @@ import {
     Star,
 } from 'lucide-vue-next';
 import { computed, PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
 import ListingAuctionContent from '@/components/listings/index/ListingAuctionContent.vue';
 import ListingBuyNowContent from '@/components/listings/index/ListingBuyNowContent.vue';
 import ListingDonationContent from '@/components/listings/index/ListingDonationContent.vue';
 import ListingInvestmentContent from '@/components/listings/index/ListingInvestmentContent.vue';
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
     listing: {
@@ -45,7 +45,6 @@ const props = defineProps({
     },
 });
 
-const { t } = useI18n();
 const toast = useToast();
 const { copy } = useClipboard();
 
@@ -56,22 +55,22 @@ function getListingType(type: Listing['listable_type'] | string): {
     switch (type) {
         case 'App\\Models\\InvestmentListing':
             return {
-                text: t('homepage.listingTypes.investment'),
+                text: trans('homepage.listingTypes.investment'),
                 variant: 'default',
             };
         case 'App\\Models\\AuctionListing':
             return {
-                text: t('homepage.listingTypes.auction'),
+                text: trans('homepage.listingTypes.auction'),
                 variant: 'secondary',
             };
         case 'App\\Models\\BuyNowListing':
             return {
-                text: t('homepage.listingTypes.buyNow'),
+                text: trans('homepage.listingTypes.buyNow'),
                 variant: 'default',
             };
         case 'App\\Models\\DonationListing':
             return {
-                text: t('homepage.listingTypes.donation'),
+                text: trans('homepage.listingTypes.donation'),
                 variant: 'destructive',
             };
         default:
@@ -191,7 +190,7 @@ const listable = computed(() => {
                 >
                     <div class="flex items-center gap-1">
                         <MapPin class="h-4 w-4" />
-                        <span>{{ t('homepage.locations.generic') }}</span>
+                        <span>{{ $t('homepage.locations.generic') }}</span>
                     </div>
                     <div class="flex items-center gap-1">
                         <Star class="h-4 w-4 text-yellow-500" />
@@ -199,7 +198,7 @@ const listable = computed(() => {
                             >{{ listing.average_rating }} ({{
                                 listing.reviews_count
                             }}
-                            {{ t('homepage.reviews.label') }})</span
+                            {{ $t('homepage.reviews.label') }})</span
                         >
                     </div>
                 </div>
@@ -244,7 +243,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <CircleDollarSign class="mr-2 h-4 w-4" />
-                    {{ t('homepage.listings.investNow') }}
+                    {{ $t('homepage.listings.investNow') }}
                 </Button>
                 <Button
                     v-if="
@@ -255,7 +254,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <Gavel class="mr-2 h-4 w-4" />
-                    {{ t('homepage.listings.placeBid') }}
+                    {{ $t('homepage.listings.placeBid') }}
                 </Button>
                 <Button
                     v-if="
@@ -265,7 +264,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <BadgeDollarSign class="mr-2 h-4 w-4" />
-                    {{ t('homepage.listings.buyNow') }}
+                    {{ $t('homepage.listings.buyNow') }}
                 </Button>
                 <Button
                     v-if="
@@ -276,7 +275,7 @@ const listable = computed(() => {
                     @click.prevent
                 >
                     <HandHeart class="mr-2 h-4 w-4" />
-                    {{ t('homepage.listings.donateNow') }}
+                    {{ $t('homepage.listings.donateNow') }}
                 </Button>
 
                 <div
@@ -289,7 +288,7 @@ const listable = computed(() => {
                         as-child
                     >
                         <a href="#" target="_blank" @click.stop>
-                            {{ t('homepage.links.details') }}
+                            {{ $t('homepage.links.details') }}
                             <ExternalLink class="ml-1 h-3 w-3" />
                         </a>
                     </Button>

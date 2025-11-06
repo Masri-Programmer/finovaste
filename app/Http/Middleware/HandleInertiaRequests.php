@@ -54,6 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'addresses' => $user?->addresses ?? [],
             ],
             'locale' => fn() => App::getLocale(),
+            // 'locale' => $request->user()->locale ?? $request->getPreferredLanguage(),
             'supported_locales' => fn() => config('app.supported_locales'),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'navigation' => $componentService->getStructuredComponent('main_navigation'),

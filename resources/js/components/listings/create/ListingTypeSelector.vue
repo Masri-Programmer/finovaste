@@ -2,7 +2,6 @@
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 type ListingType = 'buy_now' | 'auction' | 'donation';
 
@@ -14,8 +13,6 @@ const emit = defineEmits<{
     (e: 'update:modelValue', value: ListingType): void;
 }>();
 
-const { t } = useI18n();
-
 const listingType = computed({
     get: () => props.modelValue,
     set: (value) => emit('update:modelValue', value),
@@ -25,7 +22,7 @@ const listingType = computed({
 <template>
     <div class="space-y-4">
         <Label class="text-base font-semibold">
-            {{ t('listing.createListing.sections.type') }}
+            {{ $t('listing.createListing.sections.type') }}
         </Label>
         <RadioGroup
             v-model="listingType"
@@ -36,10 +33,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="buy_now" class="sr-only" />
                 <span class="font-semibold">
-                    {{ t('listing.createListing.types.buy_now.title') }}
+                    {{ $t('listing.createListing.types.buy_now.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ t('listing.createListing.types.buy_now.description') }}
+                    {{ $t('listing.createListing.types.buy_now.description') }}
                 </span>
             </Label>
             <Label
@@ -47,10 +44,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="auction" class="sr-only" />
                 <span class="font-semibold">
-                    {{ t('listing.createListing.types.auction.title') }}
+                    {{ $t('listing.createListing.types.auction.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ t('listing.createListing.types.auction.description') }}
+                    {{ $t('listing.createListing.types.auction.description') }}
                 </span>
             </Label>
             <Label
@@ -58,10 +55,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="donation" class="sr-only" />
                 <span class="font-semibold">
-                    {{ t('listing.createListing.types.donation.title') }}
+                    {{ $t('listing.createListing.types.donation.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ t('listing.createListing.types.donation.description') }}
+                    {{ $t('listing.createListing.types.donation.description') }}
                 </span>
             </Label>
         </RadioGroup>

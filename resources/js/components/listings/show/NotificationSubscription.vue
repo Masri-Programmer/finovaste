@@ -4,23 +4,23 @@
             <div class="flex items-center space-x-3">
                 <Mail class="h-6 w-6 text-muted-foreground" />
                 <h2 class="text-2xl font-semibold text-foreground">
-                    {{ t('notifications.title') }}
+                    {{ $t('notifications.title') }}
                 </h2>
             </div>
             <p class="text-sm text-muted-foreground">
-                {{ t('notifications.subtitle') }}
+                {{ $t('notifications.subtitle') }}
             </p>
         </div>
 
         <div>
             <Label for="email" class="text-sm font-medium">{{
-                t('notifications.email_label')
+                $t('notifications.email_label')
             }}</Label>
             <Input
                 id="email"
                 type="email"
                 vFoc.auto
-                :placeholder="t('notifications.email_placeholder')"
+                :placeholder="$t('notifications.email_placeholder')"
                 v-model="form.email"
                 class="mt-2"
                 required
@@ -29,7 +29,7 @@
 
         <fieldset class="space-y-3">
             <legend class="text-sm font-medium text-foreground">
-                {{ t('notifications.categories_title') }}
+                {{ $t('notifications.categories_title') }}
             </legend>
             <div class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
                 <div
@@ -49,7 +49,7 @@
                         :for="category.id"
                         class="text-sm leading-none font-medium text-muted-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
-                        {{ t(category.labelKey) }}
+                        {{ $t(category.labelKey) }}
                     </label>
                 </div>
             </div>
@@ -57,7 +57,7 @@
 
         <fieldset class="space-y-3">
             <legend class="text-sm font-medium text-foreground">
-                {{ t('notifications.organizations_title') }}
+                {{ $t('notifications.organizations_title') }}
             </legend>
             <div class="space-y-2">
                 <div
@@ -92,13 +92,13 @@
                 </div>
             </div>
             <p class="text-xs text-muted-foreground">
-                {{ t('notifications.priority_helper') }}
+                {{ $t('notifications.priority_helper') }}
             </p>
         </fieldset>
 
         <Button type="submit" class="w-full" :disabled="form.processing">
             <Loader2 v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
-            {{ t('notifications.subscribe_button') }}
+            {{ $t('notifications.subscribe_button') }}
         </Button>
     </form>
 </template>
@@ -116,8 +116,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 // --- Mocks (replace with your actual data/helpers) ---
-// Mock i18n
-// const { t } = useI18n();
 const t = (key: string) => {
     const keys: Record<string, string> = {
         'notifications.title': 'Bleiben Sie auf dem Laufenden',

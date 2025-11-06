@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import '../../../../css/filepond.css';
 
 import type { FilePondFile } from 'filepond';
@@ -16,8 +15,6 @@ const FilePond = vueFilePond(
     // FilePondPluginImagePreview,
     // FilePondPluginMediaPreview,
 );
-
-const { t } = useI18n();
 
 defineProps({
     images: {
@@ -89,12 +86,12 @@ defineExpose({
     <div class="space-y-6">
         <div class="space-y-2">
             <Label>
-                {{ t('listing.createListing.fields.media.images') }}
+                {{ $t('listing.createListing.fields.media.images') }}
             </Label>
             <FilePond
                 ref="imagePond"
                 name="images"
-                :label-idle="t('listing.createListing.fields.media.dropzone')"
+                :label-idle="$t('listing.createListing.fields.media.dropzone')"
                 :allow-multiple="true"
                 :accepted-file-types="'image/jpeg, image/png, image/webp'"
                 @updatefiles="handleImagesUpdate"
@@ -107,12 +104,12 @@ defineExpose({
 
         <div class="space-y-2">
             <Label>
-                {{ t('listing.createListing.fields.media.documents') }}
+                {{ $t('listing.createListing.fields.media.documents') }}
             </Label>
             <FilePond
                 ref="documentPond"
                 name="documents"
-                :label-idle="t('listing.createListing.fields.media.dropzone')"
+                :label-idle="$t('listing.createListing.fields.media.dropzone')"
                 :allow-multiple="true"
                 :accepted-file-types="'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'"
                 @updatefiles="handleDocumentsUpdate"
@@ -125,12 +122,12 @@ defineExpose({
 
         <div class="space-y-2">
             <Label>
-                {{ t('listing.createListing.fields.media.videos') }}
+                {{ $t('listing.createListing.fields.media.videos') }}
             </Label>
             <FilePond
                 ref="videoPond"
                 name="videos"
-                :label-idle="t('listing.createListing.fields.media.dropzone')"
+                :label-idle="$t('listing.createListing.fields.media.dropzone')"
                 :allow-multiple="true"
                 :accepted-file-types="'video/mp4, video/quicktime'"
                 @updatefiles="handleVideosUpdate"

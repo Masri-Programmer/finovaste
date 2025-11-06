@@ -4,17 +4,17 @@
             v-if="isDesktop"
             class="text-sm leading-tight font-medium capitalize"
         >
-            {{ t(item.i18nKey) }}
+            {{ $t(item.i18nKey) }}
         </div>
-        <template v-else>{{ t(item.i18nKey) }}</template>
+        <template v-else>{{ $t(item.i18nKey) }}</template>
     </component>
 </template>
 
 <script setup lang="ts">
 import { useScrollSpy } from '@/composables/useScrollSpy';
 import { Link } from '@inertiajs/vue3';
+import { trans } from 'laravel-vue-i18n';
 import { computed, type Component } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
     item: {
@@ -25,8 +25,6 @@ const props = defineProps<{
     onNavigate?: () => void;
     context: 'desktop' | 'mobile';
 }>();
-
-const { t } = useI18n();
 
 const { activeSection, handleScroll } = useScrollSpy();
 const isDesktop = computed(() => props.context === 'desktop');
@@ -67,7 +65,7 @@ const componentAttrs = computed(() => {
 
     switch (props.item.type) {
         case 'scroll':
-            attrs['aria-label'] = t(props.item.i18nKey);
+            attrs['aria-label'] = trans(props.item.i18nKey);
             attrs.onClick = handleScrollClick;
             break;
         case 'link':

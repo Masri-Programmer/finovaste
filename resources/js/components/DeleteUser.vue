@@ -2,7 +2,6 @@
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { Form } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 // Components
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -21,26 +20,24 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const { t } = useI18n();
-
 const passwordInput = ref<InstanceType<typeof Input> | null>(null);
 </script>
 
 <template>
     <div class="space-y-6">
         <HeadingSmall
-            :title="t('settings.deleteAccount.title')"
-            :description="t('settings.deleteAccount.description')"
+            :title="$t('settings.deleteAccount.title')"
+            :description="$t('settings.deleteAccount.description')"
         />
         <div
             class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
         >
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
                 <p class="font-medium">
-                    {{ t('settings.deleteAccount.warning') }}
+                    {{ $t('settings.deleteAccount.warning') }}
                 </p>
                 <p class="text-sm">
-                    {{ t('settings.deleteAccount.caution') }}
+                    {{ $t('settings.deleteAccount.caution') }}
                 </p>
             </div>
             <Dialog>
@@ -48,7 +45,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                     <Button
                         variant="destructive"
                         data-test="delete-user-button"
-                        >{{ t('settings.deleteAccount.button') }}</Button
+                        >{{ $t('settings.deleteAccount.button') }}</Button
                     >
                 </DialogTrigger>
                 <DialogContent>
@@ -64,18 +61,20 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                     >
                         <DialogHeader class="space-y-3">
                             <DialogTitle>{{
-                                t('settings.deleteAccount.modalTitle')
+                                $t('settings.deleteAccount.modalTitle')
                             }}</DialogTitle>
                             <DialogDescription>
                                 {{
-                                    t('settings.deleteAccount.modalDescription')
+                                    $t(
+                                        'settings.deleteAccount.modalDescription',
+                                    )
                                 }}
                             </DialogDescription>
                         </DialogHeader>
 
                         <div class="grid gap-2">
                             <Label for="password" class="sr-only">{{
-                                t('settings.deleteAccount.passwordLabel')
+                                $t('settings.deleteAccount.passwordLabel')
                             }}</Label>
                             <Input
                                 id="password"
@@ -83,7 +82,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                 name="password"
                                 ref="passwordInput"
                                 :placeholder="
-                                    t(
+                                    $t(
                                         'settings.deleteAccount.passwordPlaceholder',
                                     )
                                 "
@@ -103,7 +102,9 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                     "
                                 >
                                     {{
-                                        t('settings.deleteAccount.cancelButton')
+                                        $t(
+                                            'settings.deleteAccount.cancelButton',
+                                        )
                                     }}
                                 </Button>
                             </DialogClose>
@@ -114,7 +115,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                 :disabled="processing"
                                 data-test="confirm-delete-user-button"
                             >
-                                {{ t('settings.deleteAccount.confirmButton') }}
+                                {{ $t('settings.deleteAccount.confirmButton') }}
                             </Button>
                         </DialogFooter>
                     </Form>

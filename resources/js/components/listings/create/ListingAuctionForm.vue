@@ -12,9 +12,9 @@ import { cn } from '@/lib/utils';
 import { type UseForm } from '@inertiajs/vue3';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { trans } from 'laravel-vue-i18n';
 import { Calendar as CalendarIcon } from 'lucide-vue-next';
 import { computed, PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
     form: {
@@ -23,17 +23,15 @@ const props = defineProps({
     },
 });
 
-const { t } = useI18n();
-
 const formattedStartsAt = computed(() => {
     return props.form.starts_at
         ? format(props.form.starts_at, 'PPP', { locale: de })
-        : t('listing.createListing.fields.starts_at.placeholder');
+        : trans('listing.createListing.fields.starts_at.placeholder');
 });
 const formattedEndsAt = computed(() => {
     return props.form.ends_at
         ? format(props.form.ends_at, 'PPP', { locale: de })
-        : t('listing.createListing.fields.ends_at.placeholder');
+        : trans('listing.createListing.fields.ends_at.placeholder');
 });
 </script>
 
@@ -41,7 +39,7 @@ const formattedEndsAt = computed(() => {
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="space-y-2">
             <Label for="start_price">
-                {{ t('listing.createListing.fields.start_price.label') }}
+                {{ $t('listing.createListing.fields.start_price.label') }}
             </Label>
             <Input
                 id="start_price"
@@ -49,14 +47,14 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    t('listing.createListing.fields.start_price.placeholder')
+                    $t('listing.createListing.fields.start_price.placeholder')
                 "
                 required
             />
         </div>
         <div class="space-y-2">
             <Label for="reserve_price">
-                {{ t('listing.createListing.fields.reserve_price.label') }}
+                {{ $t('listing.createListing.fields.reserve_price.label') }}
             </Label>
             <Input
                 id="reserve_price"
@@ -64,13 +62,13 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    t('listing.createListing.fields.reserve_price.placeholder')
+                    $t('listing.createListing.fields.reserve_price.placeholder')
                 "
             />
         </div>
         <div class="space-y-2">
             <Label for="buy_it_now_price">
-                {{ t('listing.createListing.fields.buy_it_now_price.label') }}
+                {{ $t('listing.createListing.fields.buy_it_now_price.label') }}
             </Label>
             <Input
                 id="buy_it_now_price"
@@ -78,7 +76,7 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    t(
+                    $t(
                         'listing.createListing.fields.buy_it_now_price.placeholder',
                     )
                 "
@@ -87,7 +85,7 @@ const formattedEndsAt = computed(() => {
         <div></div>
         <div class="space-y-2">
             <Label for="starts_at">
-                {{ t('listing.createListing.fields.starts_at.label') }}
+                {{ $t('listing.createListing.fields.starts_at.label') }}
             </Label>
             <Popover>
                 <PopoverTrigger as-child>
@@ -111,7 +109,7 @@ const formattedEndsAt = computed(() => {
         </div>
         <div class="space-y-2">
             <Label for="ends_at">
-                {{ t('listing.createListing.fields.ends_at.label') }}
+                {{ $t('listing.createListing.fields.ends_at.label') }}
                 <span class="text-destructive">*</span>
             </Label>
             <Popover>

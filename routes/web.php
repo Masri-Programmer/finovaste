@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\Settings\SetLocaleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -29,6 +30,7 @@ Route::resource('categories', CategoryController::class)->only([
     'index',
     'show'
 ]);
+// Route::resource('language', SetLocaleController::class);
 
 Route::resource('categories', CategoryController::class)->except([
     'index',

@@ -5,7 +5,6 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import Layout from '@/components/layout/Layout.vue';
@@ -13,12 +12,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type BreadcrumbItem } from '@/types';
-
-const { t } = useI18n();
+import { trans } from 'laravel-vue-i18n';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: t('settings.password.breadcrumb'),
+        title: trans('settings.password.breadcrumb'),
         href: edit().url,
     },
 ];
@@ -29,13 +27,13 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
 
 <template>
     <Layout :breadcrumbs="breadcrumbItems">
-        <Head :title="t('settings.password.headTitle')" />
+        <Head :title="$t('settings.password.headTitle')" />
 
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    :title="t('settings.password.title')"
-                    :description="t('settings.password.description')"
+                    :title="$t('settings.password.title')"
+                    :description="$t('settings.password.description')"
                 />
 
                 <Form
@@ -81,7 +79,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             type="password"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
-                            :placeholder="t('settings.password.newPassword')"
+                            :placeholder="$t('settings.password.newPassword')"
                         />
                         <InputError :message="errors.password" />
                     </div>
@@ -107,7 +105,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                         <Button
                             :disabled="processing"
                             data-test="update-password-button"
-                            >{{ t('settings.password.button') }}</Button
+                            >{{ $t('settings.password.button') }}</Button
                         >
 
                         <Transition
@@ -120,7 +118,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                                 v-show="recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
-                                {{ t('settings.saved') }}
+                                {{ $t('settings.saved') }}
                             </p>
                         </Transition>
                     </div>

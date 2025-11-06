@@ -6,27 +6,24 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { logout } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
 
 defineProps<{
     status?: string;
 }>();
-
-const { t } = useI18n();
 </script>
 
 <template>
     <AuthLayout
-        :title="t('auth.verifyEmail.title')"
-        :description="t('auth.verifyEmail.description')"
+        :title="$t('auth.verifyEmail.title')"
+        :description="$t('auth.verifyEmail.description')"
     >
-        <Head :title="t('auth.verifyEmail.headTitle')" />
+        <Head :title="$t('auth.verifyEmail.headTitle')" />
 
         <div
             v-if="status === 'verification-link-sent'"
             class="mb-4 text-center text-sm font-medium text-green-600"
         >
-            {{ t('auth.verifyEmail.successMessage') }}
+            {{ $t('auth.verifyEmail.successMessage') }}
         </div>
 
         <Form
@@ -36,7 +33,7 @@ const { t } = useI18n();
         >
             <Button :disabled="processing" variant="secondary">
                 <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-                {{ t('auth.verifyEmail.button') }}
+                {{ $t('auth.verifyEmail.button') }}
             </Button>
 
             <TextLink
@@ -44,7 +41,7 @@ const { t } = useI18n();
                 as="button"
                 class="mx-auto block text-sm"
             >
-                {{ t('auth.verifyEmail.logoutLink') }}
+                {{ $t('auth.verifyEmail.logoutLink') }}
             </TextLink>
         </Form>
     </AuthLayout>

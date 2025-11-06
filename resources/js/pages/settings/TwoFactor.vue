@@ -2,7 +2,6 @@
 import { Form, Head } from '@inertiajs/vue3';
 import { ShieldBan, ShieldCheck } from 'lucide-vue-next';
 import { onUnmounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import TwoFactorRecoveryCodes from '@/components/TwoFactorRecoveryCodes.vue';
@@ -14,6 +13,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { disable, enable, show } from '@/routes/two-factor';
 import { BreadcrumbItem } from '@/types';
+import { trans } from 'laravel-vue-i18n';
 
 interface Props {
     requiresConfirmation?: boolean;
@@ -25,11 +25,9 @@ withDefaults(defineProps<Props>(), {
     twoFactorEnabled: false,
 });
 
-const { t } = useI18n();
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: t('settings.twoFactor.breadcrumb'),
+        title: trans('settings.twoFactor.breadcrumb'),
         href: show.url(),
     },
 ];
@@ -44,12 +42,12 @@ onUnmounted(() => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Head :title="t('settings.twoFactor.headTitle')" />
+        <Head :title="$t('settings.twoFactor.headTitle')" />
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    :title="t('settings.twoFactor.title')"
-                    :description="t('settings.twoFactor.description')"
+                    :title="$t('settings.twoFactor.title')"
+                    :description="$t('settings.twoFactor.description')"
                 />
 
                 <div
@@ -57,11 +55,11 @@ onUnmounted(() => {
                     class="flex flex-col items-start justify-start space-y-4"
                 >
                     <Badge variant="destructive">{{
-                        t('settings.twoFactor.disabled')
+                        $t('settings.twoFactor.disabled')
                     }}</Badge>
 
                     <p class="text-muted-foreground">
-                        {{ t('settings.twoFactor.disabledExplanation') }}
+                        {{ $t('settings.twoFactor.disabledExplanation') }}
                     </p>
 
                     <div>
@@ -70,7 +68,7 @@ onUnmounted(() => {
                             @click="showSetupModal = true"
                         >
                             <ShieldCheck class="mr-2 h-4 w-4" />{{
-                                t('settings.twoFactor.continueSetup')
+                                $t('settings.twoFactor.continueSetup')
                             }}
                         </Button>
                         <Form
@@ -81,7 +79,7 @@ onUnmounted(() => {
                         >
                             <Button type="submit" :disabled="processing">
                                 <ShieldCheck class="mr-2 h-4 w-4" />{{
-                                    t('settings.twoFactor.enableButton')
+                                    $t('settings.twoFactor.enableButton')
                                 }}</Button
                             ></Form
                         >
@@ -93,11 +91,11 @@ onUnmounted(() => {
                     class="flex flex-col items-start justify-start space-y-4"
                 >
                     <Badge variant="default">{{
-                        t('settings.twoFactor.enabled')
+                        $t('settings.twoFactor.enabled')
                     }}</Badge>
 
                     <p class="text-muted-foreground">
-                        {{ t('settings.twoFactor.enabledExplanation') }}
+                        {{ $t('settings.twoFactor.enabledExplanation') }}
                     </p>
 
                     <TwoFactorRecoveryCodes />
@@ -110,7 +108,7 @@ onUnmounted(() => {
                                 :disabled="processing"
                             >
                                 <ShieldBan class="mr-2 h-4 w-4" />
-                                {{ t('settings.twoFactor.disableButton') }}
+                                {{ $t('settings.twoFactor.disableButton') }}
                             </Button>
                         </Form>
                     </div>

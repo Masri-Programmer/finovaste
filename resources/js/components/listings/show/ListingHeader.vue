@@ -5,7 +5,7 @@
             class="flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
         >
             <ArrowLeft class="mr-2 h-4 w-4" />
-            {{ t('listings_show.backToMarketplace') }}
+            {{ $t('listings_show.backToMarketplace') }}
         </Link>
         <div class="flex items-center space-x-2">
             <Button variant="ghost" size="icon">
@@ -23,9 +23,6 @@ import Button from '@/components/ui/button/Button.vue';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/vue3';
 import { ArrowLeft, Heart, Share2 } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 </script>
 
 <style scoped></style>

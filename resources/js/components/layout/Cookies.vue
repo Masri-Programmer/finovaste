@@ -2,7 +2,6 @@
 import { useLocalStorage } from '@vueuse/core';
 import { Cookie } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 // Import shadcn/ui components
 import { Button } from '@/components/ui/button';
@@ -18,9 +17,6 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-
-const { t } = useI18n();
-// const toast = useToast();
 
 const consent = useLocalStorage('cookie_consent', null);
 
@@ -95,11 +91,13 @@ const handleSaveCustom = () => {
                             />
                             <div>
                                 <h3 class="font-semibold">
-                                    {{ t('layout.cookieConsent.banner.title') }}
+                                    {{
+                                        $t('layout.cookieConsent.banner.title')
+                                    }}
                                 </h3>
                                 <p class="text-sm text-muted-foreground">
                                     {{
-                                        t(
+                                        $t(
                                             'layout.cookieConsent.banner.description',
                                         )
                                     }}
@@ -114,7 +112,9 @@ const handleSaveCustom = () => {
                                 class="w-full sm:w-auto"
                                 @click="handleAcceptAll"
                             >
-                                {{ t('layout.cookieConsent.banner.acceptAll') }}
+                                {{
+                                    $t('layout.cookieConsent.banner.acceptAll')
+                                }}
                             </Button>
                             <Button
                                 class="w-full sm:w-auto"
@@ -122,7 +122,7 @@ const handleSaveCustom = () => {
                                 @click="handleNecessaryOnly"
                             >
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.banner.necessaryOnly',
                                     )
                                 }}
@@ -133,7 +133,7 @@ const handleSaveCustom = () => {
                                     variant="outline"
                                 >
                                     {{
-                                        t(
+                                        $t(
                                             'layout.cookieConsent.banner.customize',
                                         )
                                     }}
@@ -147,10 +147,10 @@ const handleSaveCustom = () => {
             <DialogContent class="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{{
-                        t('layout.cookieConsent.modal.title')
+                        $t('layout.cookieConsent.modal.title')
                     }}</DialogTitle>
                     <DialogDescription>
-                        {{ t('layout.cookieConsent.modal.description') }}
+                        {{ $t('layout.cookieConsent.modal.description') }}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -162,7 +162,7 @@ const handleSaveCustom = () => {
                         >
                             <span class="font-medium">
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.necessary.title',
                                     )
                                 }}
@@ -171,7 +171,7 @@ const handleSaveCustom = () => {
                                 class="text-sm font-normal text-muted-foreground"
                             >
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.necessary.description',
                                     )
                                 }}
@@ -191,7 +191,7 @@ const handleSaveCustom = () => {
                         >
                             <span class="font-medium">
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.analytics.title',
                                     )
                                 }}
@@ -200,7 +200,7 @@ const handleSaveCustom = () => {
                                 class="text-sm font-normal text-muted-foreground"
                             >
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.analytics.description',
                                     )
                                 }}
@@ -219,7 +219,7 @@ const handleSaveCustom = () => {
                         >
                             <span class="font-medium">
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.marketing.title',
                                     )
                                 }}
@@ -228,7 +228,7 @@ const handleSaveCustom = () => {
                                 class="text-sm font-normal text-muted-foreground"
                             >
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.marketing.description',
                                     )
                                 }}
@@ -247,7 +247,7 @@ const handleSaveCustom = () => {
                         >
                             <span class="font-medium">
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.preference.title',
                                     )
                                 }}
@@ -256,7 +256,7 @@ const handleSaveCustom = () => {
                                 class="text-sm font-normal text-muted-foreground"
                             >
                                 {{
-                                    t(
+                                    $t(
                                         'layout.cookieConsent.modal.preference.description',
                                     )
                                 }}
@@ -276,10 +276,10 @@ const handleSaveCustom = () => {
                         variant="outline"
                         @click="isCustomizeModalOpen = false"
                     >
-                        {{ t('layout.cookieConsent.modal.cancel') }}
+                        {{ $t('layout.cookieConsent.modal.cancel') }}
                     </Button>
                     <Button @click="handleSaveCustom">
-                        {{ t('layout.cookieConsent.modal.save') }}
+                        {{ $t('layout.cookieConsent.modal.save') }}
                     </Button>
                 </DialogFooter>
             </DialogContent>

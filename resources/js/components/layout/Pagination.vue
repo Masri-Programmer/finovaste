@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import {
     Pagination,
@@ -20,6 +19,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Paginator } from '@/types';
+import { trans } from 'laravel-vue-i18n';
 
 const props = withDefaults(
     defineProps<{
@@ -33,8 +33,6 @@ const props = withDefaults(
     },
 );
 
-const { t } = useI18n();
-
 const selectedPerPage = ref(props.paginator.per_page);
 
 const perPageSteps = computed(() => {
@@ -46,15 +44,15 @@ const perPageSteps = computed(() => {
 const links = computed(() => props.paginator.links);
 
 const paginationInfo = computed(() => {
-    const translatedName = t(props.name);
+    const translatedName = trans(props.name);
     if (
         !props.paginator.from ||
         !props.paginator.to ||
         props.paginator.total === 0
     ) {
-        return t('common.pagination.noResults', { name: translatedName });
+        return trans('common.pagination.noResults', { name: translatedName });
     }
-    return t('common.pagination.showing', {
+    return trans('common.pagination.showing', {
         from: props.paginator.from,
         to: props.paginator.to,
         total: props.paginator.total,
@@ -108,7 +106,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
             :total="paginator.total"
             :items-per-page="paginator.per_page"
             :page="paginator.current_page"
-            :aria-label="t('common.pagination.ariaLabel')"
+            :aria-label="$t('common.pagination.ariaLabel')"
             class="flex-1 justify-center"
         >
             <PaginationContent>
@@ -177,8 +175,8 @@ function handlePerPageChange(value: string | number | null | undefined) {
             </Select>
             <span>
                 {{
-                    t('common.pagination.perPageName', {
-                        name: t(props.name),
+                    $t('common.pagination.perPageName', {
+                        name: $t(props.name),
                     })
                 }}
             </span>

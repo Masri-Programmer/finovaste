@@ -13,12 +13,12 @@
                 class="absolute right-4 bottom-4 shadow-md"
             >
                 <Video class="mr-2 h-4 w-4" />
-                {{ t('listings_show.watchVideo') }}
+                {{ $t('listings_show.watchVideo') }}
             </Button>
             <span
                 class="absolute top-4 left-4 rounded-full bg-primary/80 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur-sm"
             >
-                {{ t('listings_show.investmentTag') }}
+                {{ $t('listings_show.investmentTag') }}
             </span>
         </div>
         <div class="mt-2 grid grid-cols-4 gap-2">
@@ -54,7 +54,7 @@
                     }}</span>
                     <span class="text-base text-muted-foreground">
                         ({{ listing.reviews_count }}
-                        {{ t('listing.listing_details.reviews') }})
+                        {{ $t('listing.listing_details.reviews') }})
                     </span>
                 </div>
             </div>
@@ -79,19 +79,15 @@
 
 <script setup lang="ts">
 import Button from '@/components/ui/button/Button.vue';
-import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { LocaleString } from '@/types';
 import { Listing } from '@/types/listings';
+import { getActiveLanguage } from 'laravel-vue-i18n';
 import { MapPin, Star } from 'lucide-vue-next';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
+import { computed, ref } from 'vue';
 const props = defineProps<{
     listing: Listing;
 }>();
-const { locale } = useLanguageSwitcher();
-const { t } = useI18n();
-
+const locale = ref(getActiveLanguage());
 const getLocalizedString = (field: LocaleString) => {
     return field[locale.value] || field.en;
 };

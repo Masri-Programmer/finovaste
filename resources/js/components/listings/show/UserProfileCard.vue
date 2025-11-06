@@ -2,7 +2,7 @@
     <Card>
         <CardHeader>
             <CardTitle class="text-base font-medium text-muted-foreground">
-                {{ t('user_card.listed_by') }}
+                {{ $t('user_card.listed_by') }}
             </CardTitle>
         </CardHeader>
         <CardContent class="space-y-6">
@@ -26,7 +26,7 @@
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between">
                     <span class="text-muted-foreground">{{
-                        t('user_card.member_since')
+                        $t('user_card.member_since')
                     }}</span>
                     <span class="font-medium text-foreground">{{
                         memberSince
@@ -34,7 +34,7 @@
                 </div>
                 <div v-if="address" class="flex justify-between">
                     <span class="text-muted-foreground">{{
-                        t('user_card.location')
+                        $t('user_card.location')
                     }}</span>
                     <span class="font-medium text-foreground"
                         >{{ address.city }}, {{ address.country }}</span
@@ -42,7 +42,7 @@
                 </div>
                 <div v-if="userRole" class="flex justify-between">
                     <span class="text-muted-foreground">{{
-                        t('user_card.role')
+                        $t('user_card.role')
                     }}</span>
                     <span class="font-medium text-foreground capitalize">{{
                         userRole
@@ -53,7 +53,7 @@
             <Button as-child class="w-full" size="lg">
                 <!-- <Link :href="route('user.contact', user.id)">
                 </Link> -->
-                {{ t('user_card.contact_button') }}
+                {{ $t('user_card.contact_button') }}
             </Button>
         </CardContent>
     </Card>
@@ -66,13 +66,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Address, User } from '@/types';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
     user: User;
 }>();
-
-const { t } = useI18n();
 
 const address = computed<Address | null>(() => {
     return props.user.addresses?.length > 0 ? props.user.addresses[0] : null;

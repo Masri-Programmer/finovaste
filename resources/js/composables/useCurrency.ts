@@ -3,7 +3,6 @@
 import { useStorage } from '@vueuse/core';
 import axios from 'axios';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 export type Currency = 'eur' | 'usd';
 
@@ -26,14 +25,19 @@ const localeMap: Record<Currency, string> = {
 
 async function fetchRates() {
     const oneDay = 24 * 60 * 60 * 1000;
-    if (Date.now() - rates.value.lastUpdated < oneDay && rates.value.values.usd) {
+    if (
+        Date.now() - rates.value.lastUpdated < oneDay &&
+        rates.value.values.usd
+    ) {
         return;
     }
 
     isLoading.value = true;
     try {
         // Make a real API call
-        const response = await axios.get('https://raw.githubusercontent.com/WoXy-Sensei/currency-api/main/api/USD_EUR.json');
+        const response = await axios.get(
+            'https://raw.githubusercontent.com/WoXy-Sensei/currency-api/main/api/USD_EUR.json',
+        );
         rates.value.values.usd = response.data.rate;
         rates.value.lastUpdated = Date.now();
     } catch (error) {
@@ -65,10 +69,13 @@ export function useCurrency() {
     };
 
     const toggleCurrency = () => {
-        selectedCurrency.value = selectedCurrency.value === 'eur' ? 'usd' : 'eur';
+        selectedCurrency.value =
+            selectedCurrency.value === 'eur' ? 'usd' : 'eur';
     };
 
-    const currencySymbol = computed(() => (selectedCurrency.value === 'eur' ? '€' : '$'));
+    const currencySymbol = computed(() =>
+        selectedCurrency.value === 'eur' ? '€' : '$',
+    );
 
     return {
         selectedCurrency,

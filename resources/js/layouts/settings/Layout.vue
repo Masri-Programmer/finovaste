@@ -10,29 +10,26 @@ import { edit as editProfile } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
-
+import { trans } from 'laravel-vue-i18n';
 const sidebarNavItems: NavItem[] = [
     {
-        title: t('settings.layout.profile'),
+        title: trans('settings.layout.profile'),
         href: editProfile(),
     },
     {
-        title: t('settings.layout.password'),
+        title: trans('settings.layout.password'),
         href: editPassword(),
     },
     {
-        title: t('settings.layout.twoFactor'),
+        title: trans('settings.layout.twoFactor'),
         href: show(),
     },
     {
-        title: t('settings.layout.appearance'),
+        title: trans('settings.layout.appearance'),
         href: editAppearance(),
     },
     {
-        title: t('settings.layout.languages'),
+        title: trans('settings.layout.languages'),
         href: editLanguages(),
     },
 ];
@@ -42,8 +39,8 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
 
 <template>
     <Heading
-        :title="t('settings.layout.title')"
-        :description="t('settings.layout.description')"
+        :title="$t('settings.layout.title')"
+        :description="$t('settings.layout.description')"
     />
 
     <div class="flex min-h-[40vh] flex-col lg:flex-row lg:space-x-12">

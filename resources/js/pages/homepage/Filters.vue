@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useWindowScroll, watchDebounced } from '@vueuse/core';
-import { PropType, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-// import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useWindowScroll, watchDebounced } from '@vueuse/core';
+import { PropType, ref, watch } from 'vue';
 
+import { getActiveLanguage } from 'laravel-vue-i18n';
 import { Search } from 'lucide-vue-next';
 
 interface Category {
@@ -31,8 +29,7 @@ const props = defineProps({
     },
 });
 
-const { t, locale } = useI18n();
-
+const locale = ref(getActiveLanguage());
 const activeCategory = ref(props.currentFilters.category || 'all');
 const searchTerm = ref(props.currentFilters.search || '');
 
@@ -93,7 +90,7 @@ watchDebounced(
                     class="flex-shrink-0 rounded-full"
                     @click="selectCategory('all')"
                 >
-                    {{ t('homepage.categories.all') }}
+                    {{ $t('homepage.categories.all') }}
                 </Button>
 
                 <Button
@@ -116,7 +113,7 @@ watchDebounced(
                 <Input
                     v-model="searchTerm"
                     type="search"
-                    :placeholder="t('homepage.marketplace.searchPlaceholder')"
+                    :placeholder="$t('homepage.marketplace.searchPlaceholder')"
                     class="rounded-full pl-9"
                 />
             </div>

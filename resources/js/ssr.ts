@@ -1,13 +1,12 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import createServer from '@inertiajs/vue3/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { i18nVue } from 'laravel-vue-i18n';
 import { createSSRApp, DefineComponent, h } from 'vue';
 import Toast, { PluginOptions } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import { renderToString } from 'vue/server-renderer';
-import i18n from './plugins/i18n';
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
+const appName = import.meta.env.VITE_APP_NAME || 'Finovaste';
 const options: PluginOptions = {
     timeout: 5000,
     closeOnClick: true,
@@ -35,7 +34,16 @@ createServer(
             setup: ({ App, props, plugin }) =>
                 createSSRApp({ render: () => h(App, props) })
                     .use(plugin)
-                    .use(i18n)
+                    .use(i18nVue, {
+                        lang: 'pt',
+                        resolve: (lang) => {
+                            const langs = import.meta.glob(
+                                '../../lang/*.json',
+                                { eager: true },
+                            );
+                            return langs[`../../lang/${lang}.json`].default;
+                        },
+                    })
                     .use(Toast, options),
         }),
     { cluster: true },

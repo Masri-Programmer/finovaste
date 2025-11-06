@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/select';
 import { type UseForm } from '@inertiajs/vue3';
 import { PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 defineProps({
     form: {
@@ -18,15 +17,13 @@ defineProps({
         required: true,
     },
 });
-
-const { t } = useI18n();
 </script>
 
 <template>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
         <div class="space-y-2">
             <Label for="price">
-                {{ t('listing.createListing.fields.price.label') }}
+                {{ $t('listing.createListing.fields.price.label') }}
             </Label>
             <Input
                 id="price"
@@ -34,14 +31,14 @@ const { t } = useI18n();
                 type="number"
                 step="0.01"
                 :placeholder="
-                    t('listing.createListing.fields.price.placeholder')
+                    $t('listing.createListing.fields.price.placeholder')
                 "
                 required
             />
         </div>
         <div class="space-y-2">
             <Label for="quantity">
-                {{ t('listing.createListing.fields.quantity.label') }}
+                {{ $t('listing.createListing.fields.quantity.label') }}
             </Label>
             <Input
                 id="quantity"
@@ -54,7 +51,7 @@ const { t } = useI18n();
         </div>
         <div class="space-y-2">
             <Label for="condition">
-                {{ t('listing.createListing.fields.condition.label') }}
+                {{ $t('listing.createListing.fields.condition.label') }}
             </Label>
             <Select v-model="form.condition">
                 <SelectTrigger>
@@ -63,21 +60,21 @@ const { t } = useI18n();
                 <SelectContent>
                     <SelectItem value="new">
                         {{
-                            t(
+                            $t(
                                 'listing.createListing.fields.condition.options.new',
                             )
                         }}
                     </SelectItem>
                     <SelectItem value="used">
                         {{
-                            t(
+                            $t(
                                 'listing.createListing.fields.condition.options.used',
                             )
                         }}
                     </SelectItem>
                     <SelectItem value="refurbished">
                         {{
-                            t(
+                            $t(
                                 'listing.createListing.fields.condition.options.refurbished',
                             )
                         }}

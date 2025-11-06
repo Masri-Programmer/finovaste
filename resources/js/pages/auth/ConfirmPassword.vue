@@ -7,17 +7,14 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { store } from '@/routes/password/confirm';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 </script>
 
 <template>
     <AuthLayout
-        :title="t('auth.confirmPassword.title')"
-        :description="t('auth.confirmPassword.description')"
+        :title="$t('auth.confirmPassword.title')"
+        :description="$t('auth.confirmPassword.description')"
     >
-        <Head :title="t('auth.confirmPassword.headTitle')" />
+        <Head :title="$t('auth.confirmPassword.headTitle')" />
 
         <Form
             v-bind="store.form()"
@@ -27,7 +24,7 @@ const { t } = useI18n();
             <div class="space-y-6">
                 <div class="grid gap-2">
                     <Label htmlFor="password">{{
-                        t('auth.confirmPassword.password')
+                        $t('auth.confirmPassword.password')
                     }}</Label>
                     <Input
                         id="password"
@@ -52,7 +49,7 @@ const { t } = useI18n();
                             v-if="processing"
                             class="h-4 w-4 animate-spin"
                         />
-                        {{ t('auth.confirmPassword.button') }}
+                        {{ $t('auth.confirmPassword.button') }}
                     </Button>
                 </div>
             </div>

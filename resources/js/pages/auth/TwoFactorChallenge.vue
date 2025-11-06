@@ -11,9 +11,6 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { store } from '@/routes/two-factor/login';
 import { Form, Head } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n'; // 🌐 Added useI18n
-
-const { t } = useI18n(); // 🌐 Initialize i18n
 
 interface AuthConfigContent {
     titleKey: string; // Use keys instead of hardcoded strings
@@ -51,10 +48,10 @@ const codeValue = computed<string>(() => code.value.join(''));
 
 <template>
     <AuthLayout
-        :title="t(authConfigContent.titleKey)"
-        :description="t(authConfigContent.descriptionKey)"
+        :title="$t(authConfigContent.titleKey)"
+        :description="$t(authConfigContent.descriptionKey)"
     >
-        <Head :title="t('auth.twoFactor.headTitle')" />
+        <Head :title="$t('auth.twoFactor.headTitle')" />
 
         <div class="space-y-6">
             <template v-if="!showRecoveryInput">
@@ -91,16 +88,16 @@ const codeValue = computed<string>(() => code.value.join(''));
                         <InputError :message="errors.code" />
                     </div>
                     <Button type="submit" class="w-full" :disabled="processing">
-                        {{ t('auth.twoFactor.continueButton') }}
+                        {{ $t('auth.twoFactor.continueButton') }}
                     </Button>
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>{{ t('auth.twoFactor.orYouCan') }}</span>
+                        <span>{{ $t('auth.twoFactor.orYouCan') }}</span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             @click="() => toggleRecoveryMode(clearErrors)"
                         >
-                            {{ t(authConfigContent.toggleTextKey) }}
+                            {{ $t(authConfigContent.toggleTextKey) }}
                         </button>
                     </div>
                 </Form>
@@ -117,24 +114,24 @@ const codeValue = computed<string>(() => code.value.join(''));
                         name="recovery_code"
                         type="text"
                         :placeholder="
-                            t('auth.twoFactor.recoveryInputPlaceholder')
+                            $t('auth.twoFactor.recoveryInputPlaceholder')
                         "
                         :autofocus="showRecoveryInput"
                         required
                     />
                     <InputError :message="errors.recovery_code" />
                     <Button type="submit" class="w-full" :disabled="processing">
-                        {{ t('auth.twoFactor.continueButton') }}
+                        {{ $t('auth.twoFactor.continueButton') }}
                     </Button>
 
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>{{ t('auth.twoFactor.orYouCan') }}</span>
+                        <span>{{ $t('auth.twoFactor.orYouCan') }}</span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             @click="() => toggleRecoveryMode(clearErrors)"
                         >
-                            {{ t(authConfigContent.toggleTextKey) }}
+                            {{ $t(authConfigContent.toggleTextKey) }}
                         </button>
                     </div>
                 </Form>

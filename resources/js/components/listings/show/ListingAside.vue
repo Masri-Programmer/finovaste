@@ -11,11 +11,11 @@
             <DialogContent class="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{{
-                        t('listings_show.dialog.title')
+                        $t('listings_show.dialog.title')
                     }}</DialogTitle>
                     <DialogDescription>
                         {{
-                            t('listings_show.dialog.description', {
+                            $t('listings_show.dialog.description', {
                                 amount: investmentAmount.toLocaleString(
                                     'de-DE',
                                     {
@@ -34,7 +34,7 @@
                 >
                     <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="amount" class="text-right">
-                            {{ t('listings_show.amount') }}
+                            {{ $t('listings_show.amount') }}
                         </Label>
                         <Input
                             id="amount"
@@ -59,8 +59,8 @@
                     >
                         {{
                             investForm.processing
-                                ? t('listings_show.dialog.processing')
-                                : t('listings_show.dialog.confirmButton')
+                                ? $t('listings_show.dialog.processing')
+                                : $t('listings_show.dialog.confirmButton')
                         }}
                     </Button>
                 </form>
@@ -83,12 +83,10 @@ import { Listing } from '@/types/listings';
 import { useForm, usePage } from '@inertiajs/vue3';
 
 import { useToggle } from '@vueuse/core';
-import { useI18n } from 'vue-i18n';
 
 import { computed, ref, watch } from 'vue';
 import ListingCard from './ListingCard.vue';
 import UserProfileCard from './UserProfileCard.vue';
-const { t } = useI18n();
 const page = usePage();
 const listing = computed<Listing>(() => {
     return page.props.listing as Listing;

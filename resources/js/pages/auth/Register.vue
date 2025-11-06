@@ -9,17 +9,14 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 </script>
 
 <template>
     <AuthBase
-        :title="t('auth.register.title')"
-        :description="t('auth.register.description')"
+        :title="$t('auth.register.title')"
+        :description="$t('auth.register.description')"
     >
-        <Head :title="t('auth.register.headTitle')" />
+        <Head :title="$t('auth.register.headTitle')" />
 
         <Form
             v-bind="RegisteredUserController.store.form()"
@@ -29,7 +26,7 @@ const { t } = useI18n();
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">{{ t('auth.register.name') }}</Label>
+                    <Label for="name">{{ $t('auth.register.name') }}</Label>
                     <Input
                         id="name"
                         type="text"
@@ -38,13 +35,13 @@ const { t } = useI18n();
                         :tabindex="1"
                         autocomplete="name"
                         name="name"
-                        :placeholder="t('auth.register.fullNamePlaceholder')"
+                        :placeholder="$t('auth.register.fullNamePlaceholder')"
                     />
                     <InputError :message="errors.name" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">{{ t('auth.register.email') }}</Label>
+                    <Label for="email">{{ $t('auth.register.email') }}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -59,7 +56,7 @@ const { t } = useI18n();
 
                 <div class="grid gap-2">
                     <Label for="password">{{
-                        t('auth.register.password')
+                        $t('auth.register.password')
                     }}</Label>
                     <Input
                         id="password"
@@ -68,14 +65,14 @@ const { t } = useI18n();
                         :tabindex="3"
                         autocomplete="new-password"
                         name="password"
-                        :placeholder="t('auth.register.password')"
+                        :placeholder="$t('auth.register.password')"
                     />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="password_confirmation">{{
-                        t('auth.register.confirmPassword')
+                        $t('auth.register.confirmPassword')
                     }}</Label>
                     <Input
                         id="password_confirmation"
@@ -84,7 +81,7 @@ const { t } = useI18n();
                         :tabindex="4"
                         autocomplete="new-password"
                         name="password_confirmation"
-                        :placeholder="t('auth.register.confirmPassword')"
+                        :placeholder="$t('auth.register.confirmPassword')"
                     />
                     <InputError :message="errors.password_confirmation" />
                 </div>
@@ -100,17 +97,17 @@ const { t } = useI18n();
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    {{ t('auth.register.button') }}
+                    {{ $t('auth.register.button') }}
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                {{ t('auth.register.alreadyHaveAccount') }}
+                {{ $t('auth.register.alreadyHaveAccount') }}
                 <TextLink
                     :href="login()"
                     class="underline underline-offset-4"
                     :tabindex="6"
-                    >{{ t('auth.register.loginLink') }}</TextLink
+                    >{{ $t('auth.register.loginLink') }}</TextLink
                 >
             </div>
         </Form>

@@ -3,7 +3,6 @@ import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileCo
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
-import { useI18n } from 'vue-i18n';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -15,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import Layout from '@/components/layout/Layout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
+import { trans } from 'laravel-vue-i18n';
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -23,10 +23,9 @@ interface Props {
 
 defineProps<Props>();
 
-const { t } = useI18n();
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: t('settings.profile.breadcrumb'),
+        title: trans('settings.profile.breadcrumb'),
         href: edit().url,
     },
 ];
@@ -37,12 +36,12 @@ const user = page.props.auth.user;
 
 <template>
     <Layout :breadcrumbs="breadcrumbItems">
-        <Head :title="t('settings.profile.headTitle')" />
+        <Head :title="$t('settings.profile.headTitle')" />
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall
-                    :title="t('settings.profile.title')"
-                    :description="t('settings.profile.description')"
+                    :title="$t('settings.profile.title')"
+                    :description="$t('settings.profile.description')"
                 />
 
                 <Form
@@ -52,7 +51,7 @@ const user = page.props.auth.user;
                 >
                     <div class="grid gap-2">
                         <Label for="name">{{
-                            t('settings.profile.name')
+                            $t('settings.profile.name')
                         }}</Label>
                         <Input
                             id="name"
@@ -62,7 +61,7 @@ const user = page.props.auth.user;
                             required
                             autocomplete="name"
                             :placeholder="
-                                t('settings.profile.fullNamePlaceholder')
+                                $t('settings.profile.fullNamePlaceholder')
                             "
                         />
                         <InputError class="mt-2" :message="errors.name" />
@@ -70,7 +69,7 @@ const user = page.props.auth.user;
 
                     <div class="grid gap-2">
                         <Label for="email">{{
-                            t('settings.profile.email')
+                            $t('settings.profile.email')
                         }}</Label>
                         <Input
                             id="email"
@@ -81,7 +80,7 @@ const user = page.props.auth.user;
                             required
                             autocomplete="username"
                             :placeholder="
-                                t('settings.profile.emailPlaceholder')
+                                $t('settings.profile.emailPlaceholder')
                             "
                         />
                         <InputError class="mt-2" :message="errors.email" />
@@ -89,13 +88,13 @@ const user = page.props.auth.user;
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
-                            {{ t('settings.profile.unverifiedEmailP1') }}
+                            {{ $t('settings.profile.unverifiedEmailP1') }}
                             <Link
                                 :href="send()"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             >
-                                {{ t('settings.profile.unverifiedEmailLink') }}
+                                {{ $t('settings.profile.unverifiedEmailLink') }}
                             </Link>
                         </p>
 
@@ -103,7 +102,7 @@ const user = page.props.auth.user;
                             v-if="status === 'verification-link-sent'"
                             class="mt-2 text-sm font-medium text-green-600"
                         >
-                            {{ t('settings.profile.verificationLinkSent') }}
+                            {{ $t('settings.profile.verificationLinkSent') }}
                         </div>
                     </div>
 
@@ -111,7 +110,7 @@ const user = page.props.auth.user;
                         <Button
                             :disabled="processing"
                             data-test="update-profile-button"
-                            >{{ t('settings.profile.button') }}</Button
+                            >{{ $t('settings.profile.button') }}</Button
                         >
 
                         <Transition
@@ -124,7 +123,7 @@ const user = page.props.auth.user;
                                 v-show="recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
-                                {{ t('settings.saved') }}
+                                {{ $t('settings.saved') }}
                             </p>
                         </Transition>
                     </div>

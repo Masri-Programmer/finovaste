@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { imprint, privacyPolicy } from '@/routes';
 import { StorageSerializers, useScroll, useStorage } from '@vueuse/core';
 import { Cookie } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-declare function gtag(command: 'consent', action: 'update', params: Record<string, 'granted' | 'denied'>): void;
-
-const { t } = useI18n();
+declare function gtag(
+    command: 'consent',
+    action: 'update',
+    params: Record<string, 'granted' | 'denied'>,
+): void;
 
 const isMounted = ref(false);
 const userHasScrolled = ref(false);
@@ -31,8 +38,16 @@ interface ConsentState {
     expires?: number;
 }
 
-const cookieConsent = useStorage<ConsentState | null>('cookie-consent', null, undefined, { serializer: StorageSerializers.object });
-const savePreference = useStorage<boolean>('cookie-consent-save-preference', false);
+const cookieConsent = useStorage<ConsentState | null>(
+    'cookie-consent',
+    null,
+    undefined,
+    { serializer: StorageSerializers.object },
+);
+const savePreference = useStorage<boolean>(
+    'cookie-consent-save-preference',
+    false,
+);
 
 watch(
     cookieConsent,
@@ -43,7 +58,8 @@ watch(
                 return;
             }
 
-            const consentState = val.status === 'accepted' ? 'granted' : 'denied';
+            const consentState =
+                val.status === 'accepted' ? 'granted' : 'denied';
             gtag('consent', 'update', {
                 ad_storage: consentState,
                 ad_user_data: consentState,
@@ -59,7 +75,10 @@ const showBanner = computed(() => {
     if (!cookieConsent.value) {
         return true;
     }
-    if (cookieConsent.value.expires && cookieConsent.value.expires < Date.now()) {
+    if (
+        cookieConsent.value.expires &&
+        cookieConsent.value.expires < Date.now()
+    ) {
         return true;
     }
     return false;
@@ -97,7 +116,10 @@ function declineCookies() {
 </script>
 
 <template>
-    <transition enter-active-class="animate-duration-500 animate-fade-in-up" leave-active-class="animate-duration-300 animate-fade-out-down">
+    <transition
+        enter-active-class="animate-duration-500 animate-fade-in-up"
+        leave-active-class="animate-duration-300 animate-fade-out-down"
+    >
         <div
             v-if="isMounted && showBanner && userHasScrolled"
             class="fixed right-0 bottom-0 left-0 z-50 p-4 sm:right-8 sm:bottom-4 sm:left-auto"
@@ -108,38 +130,60 @@ function declineCookies() {
             <Card class="w-full max-w-md shadow-2xl">
                 <CardHeader>
                     <div class="flex items-center justify-between">
-                        <CardTitle>{{ t('cookieBanner.title') }}</CardTitle>
+                        <CardTitle>{{ $t('cookieBanner.title') }}</CardTitle>
                         <Cookie class="h-6 w-6" />
                     </div>
                 </CardHeader>
                 <CardContent class="space-y-4">
-                    <i18n-t keypath="cookieBanner.description" tag="p" class="text-sm text-muted-foreground">
+                    <i18n-t
+                        keypath="cookieBanner.description"
+                        tag="p"
+                        class="text-sm text-muted-foreground"
+                    >
                         <template #privacyLink>
-                            <a :href="privacyPolicy.url()" class="underline transition-colors hover:text-foreground">
-                                {{ t('cookieBanner.privacyPolicy') }}
+                            <a
+                                :href="privacyPolicy.url()"
+                                class="underline transition-colors hover:text-foreground"
+                            >
+                                {{ $t('cookieBanner.privacyPolicy') }}
                             </a>
                         </template>
                     </i18n-t>
                     <div class="flex items-center space-x-2">
-                        <Checkbox id="save-preference" :checked="savePreference" @click="savePreference = !savePreference" />
+                        <Checkbox
+                            id="save-preference"
+                            :checked="savePreference"
+                            @click="savePreference = !savePreference"
+                        />
                         <label
                             for="save-preference"
                             class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
-                            {{ t('cookieBanner.save') }}
+                            {{ $t('cookieBanner.save') }}
                         </label>
                     </div>
                 </CardContent>
-                <CardFooter class="flex flex-col items-stretch gap-3 sm:flex-row sm:justify-between">
+                <CardFooter
+                    class="flex flex-col items-stretch gap-3 sm:flex-row sm:justify-between"
+                >
                     <div class="flex justify-end gap-x-3">
-                        <Button variant="link" as-child class="h-auto grow p-0 text-start underline">
-                            <a :href="imprint.url()" target="_blank" rel="noopener noreferrer">{{ t('cookieBanner.imprint') }}</a>
+                        <Button
+                            variant="link"
+                            as-child
+                            class="h-auto grow p-0 text-start underline"
+                        >
+                            <a
+                                :href="imprint.url()"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >{{ $t('cookieBanner.imprint') }}</a
+                            >
                         </Button>
                         <Button variant="outline" @click="declineCookies">
-                            {{ t('cookieBanner.decline') }}
+                            {{ $t('cookieBanner.decline') }}
                         </Button>
                         <Button @click="acceptCookies">
-                            {{ t('cookieBanner.accept') }}
+                            {{ $t('cookieBanner.accept') }}
                         </Button>
                     </div>
                 </CardFooter>

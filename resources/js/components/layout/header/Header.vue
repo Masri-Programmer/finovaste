@@ -74,13 +74,13 @@
                                         :href="login()"
                                         class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                     >
-                                        {{ t('auth.login.button') }}
+                                        {{ $t('auth.login.button') }}
                                     </Link>
                                     <!-- <Link
                                         :href="register()"
                                         class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                     >
-                                        {{ t('auth.register.button') }}
+                                        {{ $t('auth.register.button') }}
                                     </Link> -->
                                 </template>
                             </nav>
@@ -110,8 +110,6 @@ import { home, login } from '@/routes';
 import { create } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 defineProps<{
     menuSections: Array<any>;

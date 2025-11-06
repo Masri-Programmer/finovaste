@@ -11,22 +11,19 @@ import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
 
 defineProps<{
     status?: string;
     canResetPassword: boolean;
 }>();
-
-const { t } = useI18n();
 </script>
 
 <template>
     <AuthBase
-        :title="t('auth.login.title')"
-        :description="t('auth.login.description')"
+        :title="$t('auth.login.title')"
+        :description="$t('auth.login.description')"
     >
-        <Head :title="t('auth.login.title')" />
+        <Head :title="$t('auth.login.title')" />
 
         <div
             v-if="status"
@@ -43,7 +40,7 @@ const { t } = useI18n();
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">{{ t('auth.login.email') }}</Label>
+                    <Label for="email">{{ $t('auth.login.email') }}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -60,7 +57,7 @@ const { t } = useI18n();
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="password">{{
-                            t('auth.login.password')
+                            $t('auth.login.password')
                         }}</Label>
                         <TextLink
                             v-if="canResetPassword"
@@ -68,7 +65,7 @@ const { t } = useI18n();
                             class="text-sm"
                             :tabindex="5"
                         >
-                            {{ t('auth.login.forgotPassword') }}
+                            {{ $t('auth.login.forgotPassword') }}
                         </TextLink>
                     </div>
                     <Input
@@ -78,7 +75,7 @@ const { t } = useI18n();
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        :placeholder="t('auth.login.password')"
+                        :placeholder="$t('auth.login.password')"
                     />
                     <InputError :message="errors.password" />
                 </div>
@@ -86,7 +83,7 @@ const { t } = useI18n();
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
                         <Checkbox id="remember" name="remember" :tabindex="3" />
-                        <span>{{ t('auth.login.rememberMe') }}</span>
+                        <span>{{ $t('auth.login.rememberMe') }}</span>
                     </Label>
                 </div>
 
@@ -101,14 +98,14 @@ const { t } = useI18n();
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    {{ t('auth.login.button') }}
+                    {{ $t('auth.login.button') }}
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                {{ t('auth.login.noAccount') }}
+                {{ $t('auth.login.noAccount') }}
                 <TextLink :href="register()" :tabindex="5">{{
-                    t('auth.login.signUp')
+                    $t('auth.login.signUp')
                 }}</TextLink>
             </div>
         </Form>

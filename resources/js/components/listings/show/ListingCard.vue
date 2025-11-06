@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Slider } from '@/components/ui/slider';
-
-const { t } = useI18n();
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps<{
     modelValue: number;
@@ -61,12 +59,12 @@ const capitalShare = computed(() => {
 const summaryDetails = computed(() => [
     {
         key: 'amount',
-        label: t('listings_show.amount'),
+        label: trans('listings_show.amount'),
         value: formattedInvestmentAmount.value,
     },
     {
         key: 'share',
-        label: t('listings_show.share'),
+        label: trans('listings_show.share'),
         value: `${capitalShare.value}%`,
     },
 ]);
@@ -76,14 +74,14 @@ const summaryDetails = computed(() => [
     <Card>
         <CardContent class="space-y-4 p-6">
             <div class="text-sm font-medium text-muted-foreground">
-                {{ t('listings_show.min') }}
+                {{ $t('listings_show.min') }}
             </div>
             <div class="flex items-baseline justify-between">
                 <span class="text-lg font-semibold">
                     {{ formattedMinAmount }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ t('listings_show.minimum') }}
+                    {{ $t('listings_show.minimum') }}
                 </span>
             </div>
             <Separator class="my-2" />
@@ -93,7 +91,7 @@ const summaryDetails = computed(() => [
                     for="investment-slider"
                     class="text-sm font-medium text-muted-foreground"
                 >
-                    {{ t('listings_show.your') }}
+                    {{ $t('listings_show.your') }}
                 </Label>
                 <Slider
                     id="investment-slider"
@@ -124,10 +122,10 @@ const summaryDetails = computed(() => [
                 @click="emit('invest')"
                 class="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90"
             >
-                {{ t('listings_show.button.invest') }}
+                {{ $t('listings_show.button.invest') }}
             </Button>
             <p class="mt-2 text-center text-xs text-muted-foreground">
-                {{ t('listings_show.securePayment') }}
+                {{ $t('listings_show.securePayment') }}
             </p>
         </CardContent>
     </Card>

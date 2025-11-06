@@ -9,21 +9,18 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n';
 
 defineProps<{
     status?: string;
 }>();
-
-const { t } = useI18n();
 </script>
 
 <template>
     <AuthLayout
-        :title="t('auth.forgotPassword.title')"
-        :description="t('auth.forgotPassword.description')"
+        :title="$t('auth.forgotPassword.title')"
+        :description="$t('auth.forgotPassword.description')"
     >
-        <Head :title="t('auth.forgotPassword.title')" />
+        <Head :title="$t('auth.forgotPassword.title')" />
 
         <div
             v-if="status"
@@ -39,7 +36,7 @@ const { t } = useI18n();
             >
                 <div class="grid gap-2">
                     <Label for="email">{{
-                        t('auth.forgotPassword.email')
+                        $t('auth.forgotPassword.email')
                     }}</Label>
                     <Input
                         id="email"
@@ -62,15 +59,15 @@ const { t } = useI18n();
                             v-if="processing"
                             class="h-4 w-4 animate-spin"
                         />
-                        {{ t('auth.forgotPassword.button') }}
+                        {{ $t('auth.forgotPassword.button') }}
                     </Button>
                 </div>
             </Form>
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
-                <span>{{ t('auth.forgotPassword.orReturnTo') }}</span>
+                <span>{{ $t('auth.forgotPassword.orReturnTo') }}</span>
                 <TextLink :href="login()">{{
-                    t('auth.forgotPassword.loginLink')
+                    $t('auth.forgotPassword.loginLink')
                 }}</TextLink>
             </div>
         </div>

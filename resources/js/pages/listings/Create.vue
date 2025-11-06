@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { useStorage } from '@vueuse/core';
-import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
 // Layout & UI
@@ -24,9 +23,9 @@ import {
 import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 
 // Composables, Types, etc.
-import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { create, store } from '@/routes/listings';
 import { type BreadcrumbItem } from '@/types';
+import { getActiveLanguage, trans } from 'laravel-vue-i18n';
 import { PropType, ref, watch } from 'vue';
 
 const props = defineProps({
@@ -40,9 +39,8 @@ const props = defineProps({
         required: true,
     },
 });
-
-const { locale, availableLanguages } = useLanguageSwitcher();
-const { t, fallbackLocale } = useI18n();
+const availableLanguages = ['en', 'de'];
+const locale = ref(getActiveLanguage());
 const toast = useToast();
 
 const mediaUploadRef = ref<InstanceType<typeof ListingMediaUpload> | null>(
@@ -92,18 +90,15 @@ const form = useForm({
     is_goal_flexible: false,
 });
 
-// --- LOGIC ---
-
 watch(listingType, (newType) => {
     form.listing_type = newType;
     form.clearErrors();
 });
 
-// Submit handler
 const submit = () => {
     form.post(store.url(), {
         onSuccess: () => {
-            toast.success(t('listing.createListing.notifications.success'));
+            toast.success($t('listing.createListing.notifications.success'));
             form.reset();
             mediaUploadRef.value?.reset();
         },
@@ -122,7 +117,7 @@ const submit = () => {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: t('settings.profile.breadcrumb'),
+        title: trans('settings.profile.breadcrumb'),
         href: '#',
     },
 ];
@@ -134,10 +129,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <Card>
                 <CardHeader>
                     <CardTitle class="text-2xl font-bold">
-                        {{ t('listing.createListing.title') }}
+                        {{ $t('listing.createListing.title') }}
                     </CardTitle>
                     <CardDescription>
-                        {{ t('listing.createListing.description') }}
+                        {{ $t('listing.createListing.description') }}
                     </CardDescription>
                 </CardHeader>
 
@@ -152,7 +147,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         v-model:expires_at="form.expires_at"
                         :categories="props.categories"
                         :locale="locale"
-                        :fallback-locale="fallbackLocale as string"
+                        :fallback-locale="'de'"
                         :errors="form.errors"
                     />
 
@@ -168,7 +163,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                     <div class="space-y-6">
                         <h3 class="border-b pb-2 text-base font-semibold">
-                            {{ t('listing.createListing.sections.details') }}
+                            {{ $t('listing.createListing.sections.details') }}
                         </h3>
 
                         <ListingBuyNowForm
@@ -189,10 +184,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <CardFooter>
                     <Button type="submit" :disabled="form.processing">
                         <span v-if="form.processing">
-                            {{ t('listing.createListing.buttons.submitting') }}
+                            {{ $t('listing.createListing.buttons.submitting') }}
                         </span>
                         <span v-else>
-                            {{ t('listing.createListing.buttons.submit') }}
+                            {{ $t('listing.createListing.buttons.submit') }}
                         </span>
                     </Button>
                 </CardFooter>
