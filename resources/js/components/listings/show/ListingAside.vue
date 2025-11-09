@@ -6,7 +6,7 @@
             :total-capital-goal="totalCapitalGoal"
             @invest="toggleDialog(true)"
         />
-        <UserProfileCard :user="user" />
+        <UserProfileCard :user="user" v-if="user" />
         <Dialog :open="isDialogOpen" @update:open="toggleDialog">
             <DialogContent class="sm:max-w-[425px]">
                 <DialogHeader>
@@ -93,7 +93,7 @@ const listing = computed<Listing>(() => {
 });
 
 const user = computed<User>(() => {
-    return page.props.auth.user as User;
+    return page.props.listing.user as User;
 });
 const [isDialogOpen, toggleDialog] = useToggle(false);
 

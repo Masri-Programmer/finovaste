@@ -1,134 +1,142 @@
 <script setup lang="ts">
-import { useLocalStorage } from '@vueuse/core';
-import { Cookie } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { Cookie, Settings, X } from 'lucide-vue-next';
+import { onMounted, ref } from 'vue';
 
-// Import shadcn/ui components
+// Assuming you are using shadcn-vue, the Vue port of shadcn/ui
+// The import paths might be slightly different based on your project setup
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 
-const consent = useLocalStorage('cookie_consent', null);
+const showBanner = ref(false);
+const showSettings = ref(false);
+const preferences = ref({
+    necessary: true,
+    analytics: false,
+    marketing: false,
+    preferences: false,
+});
 
-const isCustomizeModalOpen = ref(false);
-const analyticsCookies = ref(false);
-const marketingCookies = ref(false);
-const preferenceCookies = ref(false);
-
-const savePreferences = (preferences: object) => {
-    // const saveRoute = 'cookies.preferences.save';
-    isCustomizeModalOpen.value = false;
-    consent.value = preferences;
-    // toast.success(t('cookieConsent.toast.success'));
-    // router.post(saveRoute, preferences, {
-    //     preserveState: true,
-    //     preserveScroll: true,
-    //     onSuccess: () => {
-    //         consent.value = preferences;
-    //         isCustomizeModalOpen.value = false; // Close modal if open
-    //         toast.success(t('cookieConsent.toast.success'));
-    //     },
-    //     onError: (errors) => {
-    //         console.error('Failed to save cookie preferences:', errors);
-    //         toast.error(t('cookieConsent.toast.error'));
-    //     },
-    // });
-};
+onMounted(() => {
+    const consent = localStorage.getItem('finovaste-cookie-consent');
+    if (!consent) {
+        showBanner.value = true;
+    }
+});
 
 const handleAcceptAll = () => {
-    analyticsCookies.value = true;
-    marketingCookies.value = true;
-    preferenceCookies.value = true;
-
-    savePreferences({
+    const allAccepted = {
         necessary: true,
         analytics: true,
         marketing: true,
-        preference: true,
-    });
+        preferences: true,
+    };
+    preferences.value = allAccepted;
+    localStorage.setItem(
+        'finovaste-cookie-consent',
+        JSON.stringify(allAccepted),
+    );
+    showBanner.value = false;
 };
 
-const handleNecessaryOnly = () => {
-    savePreferences({
+const handleAcceptNecessary = () => {
+    const necessaryOnly = {
         necessary: true,
         analytics: false,
         marketing: false,
-        preference: false,
-    });
+        preferences: false,
+    };
+    preferences.value = necessaryOnly;
+    localStorage.setItem(
+        'finovaste-cookie-consent',
+        JSON.stringify(necessaryOnly),
+    );
+    showBanner.value = false;
 };
 
-const handleSaveCustom = () => {
-    savePreferences({
-        necessary: true,
-        analytics: analyticsCookies.value,
-        marketing: marketingCookies.value,
-        preference: preferenceCookies.value,
-    });
+const handleSavePreferences = () => {
+    localStorage.setItem(
+        'finovaste-cookie-consent',
+        JSON.stringify(preferences.value),
+    );
+    showSettings.value = false;
+    showBanner.value = false;
 };
 </script>
 
 <template>
-    <div v-if="!consent">
-        <Dialog v-model:open="isCustomizeModalOpen">
-            <Card
-                class="fixed right-0 bottom-4 z-50 m-4 max-w-none shadow-lg sm:left-auto sm:max-w-3xl"
-            >
-                <CardContent class="p-4 sm:p-6">
-                    <div class="flex flex-col sm:items-center sm:gap-6">
-                        <div class="flex flex-grow items-center gap-4">
+    <template v-if="showBanner">
+        <div class="fixed right-0 bottom-0 left-0 z-50 p-4 md:p-6">
+            <Card class="mx-auto max-w-4xl border-2 shadow-xl">
+                <CardContent class="p-6">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900"
+                        >
                             <Cookie
-                                class="h-10 w-10 flex-shrink-0 text-primary"
+                                class="h-6 w-6 text-blue-600 dark:text-blue-400"
                             />
-                            <div>
-                                <h3 class="font-semibold">
-                                    {{ $t('cookieConsent.banner.title') }}
-                                </h3>
-                                <p class="text-sm text-muted-foreground">
-                                    {{ $t('cookieConsent.banner.description') }}
-                                </p>
+                        </div>
+
+                        <div class="flex-1">
+                            <h3 class="mb-2">
+                                {{ $t('cookieConsent.banner.title') }}
+                            </h3>
+                            <p
+                                class="mb-4 text-sm text-gray-600 dark:text-gray-400"
+                            >
+                                {{ $t('cookieConsent.banner.description') }}
+                            </p>
+
+                            <div class="flex flex-wrap gap-3">
+                                <Button
+                                    @click="handleAcceptAll"
+                                    class="bg-blue-600 hover:bg-blue-700"
+                                >
+                                    {{ $t('cookieConsent.banner.acceptAll') }}
+                                </Button>
+                                <Button
+                                    @click="handleAcceptNecessary"
+                                    variant="outline"
+                                >
+                                    {{
+                                        $t('cookieConsent.banner.necessaryOnly')
+                                    }}
+                                </Button>
+                                <Button
+                                    @click="showSettings = true"
+                                    variant="outline"
+                                    class="gap-2"
+                                >
+                                    <Settings class="h-4 w-4" />
+                                    {{ $t('cookieConsent.banner.customize') }}
+                                </Button>
                             </div>
                         </div>
 
-                        <div
-                            class="mt-4 flex w-full flex-shrink-0 flex-col gap-2 sm:mt-0 sm:flex-row sm:items-center"
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            @click="showBanner = false"
+                            class="flex-shrink-0"
                         >
-                            <Button
-                                class="w-full sm:w-auto"
-                                @click="handleAcceptAll"
-                            >
-                                {{ $t('cookieConsent.banner.acceptAll') }}
-                            </Button>
-                            <Button
-                                class="w-full sm:w-auto"
-                                variant="outline"
-                                @click="handleNecessaryOnly"
-                            >
-                                {{ $t('cookieConsent.banner.necessaryOnly') }}
-                            </Button>
-                            <DialogTrigger as-child>
-                                <Button
-                                    class="w-full sm:w-auto"
-                                    variant="outline"
-                                >
-                                    {{ $t('cookieConsent.banner.customize') }}
-                                </Button>
-                            </DialogTrigger>
-                        </div>
+                            <X class="h-4 w-4" />
+                        </Button>
                     </div>
                 </CardContent>
             </Card>
+        </div>
 
-            <DialogContent class="sm:max-w-lg">
+        <Dialog :open="showSettings" @update:open="showSettings = $event">
+            <DialogContent class="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>{{
                         $t('cookieConsent.modal.title')
@@ -138,119 +146,96 @@ const handleSaveCustom = () => {
                     </DialogDescription>
                 </DialogHeader>
 
-                <div class="space-y-6 py-2 pr-2">
-                    <div class="flex items-center justify-between space-x-4">
-                        <Label
-                            for="necessary-cookies"
-                            class="flex-grow space-y-1"
-                        >
-                            <span class="font-medium">
-                                {{ $t('cookieConsent.modal.necessary.title') }}
-                            </span>
-                            <p
-                                class="text-sm font-normal text-muted-foreground"
-                            >
+                <div class="space-y-6 py-4">
+                    <!-- Necessary Cookies -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="mb-2 flex items-center gap-2">
+                                <Label class="font-semibold">{{
+                                    $t('cookieConsent.modal.necessary.title')
+                                }}</Label>
+                                <span
+                                    class="rounded bg-gray-200 px-2 py-1 text-xs dark:bg-gray-700"
+                                    >Immer aktiv</span
+                                >
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
                                         'cookieConsent.modal.necessary.description',
                                     )
                                 }}
                             </p>
-                        </Label>
+                        </div>
                         <Switch
-                            id="necessary-cookies"
-                            :default-checked="true"
-                            :disabled="true"
+                            v-model:checked="preferences.necessary"
+                            disabled
                         />
                     </div>
 
-                    <div class="flex items-center justify-between space-x-4">
-                        <Label
-                            for="analytics-cookies"
-                            class="flex-grow space-y-1"
-                        >
-                            <span class="font-medium">
-                                {{ $t('cookieConsent.modal.analytics.title') }}
-                            </span>
-                            <p
-                                class="text-sm font-normal text-muted-foreground"
-                            >
+                    <!-- Analytics Cookies -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <Label class="mb-2 block font-semibold">{{
+                                $t('cookieConsent.modal.analytics.title')
+                            }}</Label>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
                                         'cookieConsent.modal.analytics.description',
                                     )
                                 }}
                             </p>
-                        </Label>
-                        <Switch
-                            id="analytics-cookies"
-                            v-model:checked="analyticsCookies"
-                        />
+                        </div>
+                        <Switch v-model:checked="preferences.analytics" />
                     </div>
 
-                    <div class="flex items-center justify-between space-x-4">
-                        <Label
-                            for="marketing-cookies"
-                            class="flex-grow space-y-1"
-                        >
-                            <span class="font-medium">
-                                {{ $t('cookieConsent.modal.marketing.title') }}
-                            </span>
-                            <p
-                                class="text-sm font-normal text-muted-foreground"
-                            >
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <Label class="mb-2 block font-semibold">{{
+                                $t('cookieConsent.modal.marketing.title')
+                            }}</Label>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
                                         'cookieConsent.modal.marketing.description',
                                     )
                                 }}
                             </p>
-                        </Label>
-                        <Switch
-                            id="marketing-cookies"
-                            v-model:checked="marketingCookies"
-                        />
+                        </div>
+                        <Switch v-model:checked="preferences.marketing" />
                     </div>
 
-                    <div class="flex items-center justify-between space-x-4">
-                        <Label
-                            for="preference-cookies"
-                            class="flex-grow space-y-1"
-                        >
-                            <span class="font-medium">
-                                {{ $t('cookieConsent.modal.preference.title') }}
-                            </span>
-                            <p
-                                class="text-sm font-normal text-muted-foreground"
-                            >
+                    <!-- Preference Cookies -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <Label class="mb-2 block font-semibold">{{
+                                $t('cookieConsent.modal.preference.title')
+                            }}</Label>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
                                         'cookieConsent.modal.preference.description',
                                     )
                                 }}
                             </p>
-                        </Label>
-                        <Switch
-                            id="preference-cookies"
-                            v-model:checked="preferenceCookies"
-                        />
+                        </div>
+                        <Switch v-model:checked="preferences.preferences" />
                     </div>
                 </div>
 
-                <DialogFooter
-                    class="mt-4 flex-col-reverse sm:flex-row sm:space-x-2"
-                >
-                    <Button
-                        variant="outline"
-                        @click="isCustomizeModalOpen = false"
-                    >
+                <div class="flex justify-end gap-3">
+                    <Button variant="outline" @click="showSettings = false">
                         {{ $t('cookieConsent.modal.cancel') }}
                     </Button>
-                    <Button @click="handleSaveCustom">
+                    <Button
+                        @click="handleSavePreferences"
+                        class="bg-blue-600 hover:bg-blue-700"
+                    >
                         {{ $t('cookieConsent.modal.save') }}
                     </Button>
-                </DialogFooter>
+                </div>
             </DialogContent>
         </Dialog>
-    </div>
+    </template>
 </template>

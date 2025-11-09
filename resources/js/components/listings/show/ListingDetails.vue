@@ -128,32 +128,32 @@ const formattedCurrentCapital = computed(() => formatCurrency(currentCapital));
 // --- Static Content ---
 
 const keyFeatures = [
-    { text: 'listing.listing_details.features.verified', icon: CheckCircle },
-    { text: 'listing.listing_details.features.secure', icon: ShieldCheck },
-    { text: 'listing.listing_details.features.support', icon: Users },
-    { text: 'listing.listing_details.features.growth', icon: BarChart },
+    { text: 'listing_details.features.verified', icon: CheckCircle },
+    { text: 'listing_details.features.secure', icon: ShieldCheck },
+    { text: 'listing_details.features.support', icon: Users },
+    { text: 'listing_details.features.growth', icon: BarChart },
 ];
 
 const faqItems = [
     {
         value: 'item-1',
-        question: 'listing.listing_details.faq.q1',
-        answer: 'listing.listing_details.faq.a1',
+        question: 'listing_details.faq.q1',
+        answer: 'listing_details.faq.a1',
     },
     {
         value: 'item-2',
-        question: 'listing.listing_details.faq.q2',
-        answer: 'listing.listing_details.faq.a2',
+        question: 'listing_details.faq.q2',
+        answer: 'listing_details.faq.a2',
     },
     {
         value: 'item-3',
-        question: 'listing.listing_details.faq.q3',
-        answer: 'listing.listing_details.faq.a3',
+        question: 'listing_details.faq.q3',
+        answer: 'listing_details.faq.a3',
     },
     {
         value: 'item-4',
-        question: 'listing.listing_details.faq.q4',
-        answer: 'listing.listing_details.faq.a4',
+        question: 'listing_details.faq.q4',
+        answer: 'listing_details.faq.a4',
     },
 ];
 </script>
