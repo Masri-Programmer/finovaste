@@ -6,6 +6,7 @@ import ListingCard from '@/components/listings/index/ListingCard.vue';
 import { AppPageProps } from '@/types';
 import MarketplaceCategoryFilters from './Filters.vue';
 
+import SearchFilter from '@/components/SearchFilter.vue';
 import { usePage } from '@inertiajs/vue3';
 
 const page = usePage<AppPageProps>();
@@ -38,6 +39,7 @@ const filters = ref({
             <h2 class="mb-4 text-2xl font-semibold">
                 {{ $t('marketplace.featuredListings') }}
             </h2>
+            <SearchFilter />
 
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
                 <ListingCard
