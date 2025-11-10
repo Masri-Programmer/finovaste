@@ -4,5 +4,9 @@
 
 return [
     'logout' => 'Abmelden',
-    'settings' => 'Einstellungen'
+    'settings' => 'Einstellungen',
+    'listings' => 'Einträge',
+    'messages' => 'Nachrichten',
+    'profile' => 'Profil',
+    'marketplace' => 'Marktplatz'
 ];

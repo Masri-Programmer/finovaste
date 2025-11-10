@@ -13,12 +13,12 @@
                 class="absolute right-4 bottom-4 shadow-md"
             >
                 <Video class="mr-2 h-4 w-4" />
-                {{ $t('listings_show.watchVideo') }}
+                {{ $t('listings.watch_video') }}
             </Button>
             <span
                 class="absolute top-4 left-4 rounded-full bg-primary/80 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur-sm"
             >
-                {{ $t('listings_show.investmentTag') }}
+                {{ $t('listings.investment_tag') }}
             </span>
         </div>
         <div class="mt-2 grid grid-cols-4 gap-2">
@@ -54,7 +54,7 @@
                     }}</span>
                     <span class="text-base text-muted-foreground">
                         ({{ listing.reviews_count }}
-                        {{ $t('listing_details.reviews') }})
+                        {{ $t('listings.reviews') }})
                     </span>
                 </div>
             </div>
@@ -63,9 +63,6 @@
         <div class="flex items-center space-x-4 text-muted-foreground">
             <div class="flex items-center space-x-1">
                 <MapPin class="h-4 w-4" />
-                <!-- <span
-                    >{{ listing.address.city }},
-                    {{ listing.address.state }}</span > -->
             </div>
             <span>•</span>
             <span>{{ localizedCategoryName }}</span>
@@ -81,8 +78,9 @@ import Button from '@/components/ui/button/Button.vue';
 import { LocaleString } from '@/types';
 import { Listing } from '@/types/listings';
 import { getActiveLanguage } from 'laravel-vue-i18n';
-import { MapPin, Star } from 'lucide-vue-next';
+import { MapPin, Star, Video } from 'lucide-vue-next'; // Added Video icon
 import { computed, ref } from 'vue';
+
 const props = defineProps<{
     listing: Listing;
 }>();

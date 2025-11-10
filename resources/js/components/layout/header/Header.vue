@@ -34,6 +34,15 @@
                                             <Plus class="h-5 w-5" />
                                         </Button>
                                     </Link>
+                                    <Link :href="liked()" prefetch as="button">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            class="relative h-9 w-9 rounded-full"
+                                        >
+                                            <Heart class="h-5 w-5" />
+                                        </Button>
+                                    </Link>
                                     <Button
                                         variant="ghost"
                                         size="icon"
@@ -104,10 +113,10 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Plus } from 'lucide-vue-next';
+import { Bell, Heart, Plus } from 'lucide-vue-next';
 
 import { home, login } from '@/routes';
-import { create } from '@/routes/listings';
+import { create, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 

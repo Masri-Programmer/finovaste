@@ -10,12 +10,10 @@
         <Dialog :open="isDialogOpen" @update:open="toggleDialog">
             <DialogContent class="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{{
-                        $t('listings_show.dialog.title')
-                    }}</DialogTitle>
+                    <DialogTitle>{{ $t('listings.dialog.title') }}</DialogTitle>
                     <DialogDescription>
                         {{
-                            $t('listings_show.dialog.description', {
+                            $t('listings.dialog.description', {
                                 amount: investmentAmount.toLocaleString(
                                     'de-DE',
                                     {
@@ -34,7 +32,7 @@
                 >
                     <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="amount" class="text-right">
-                            {{ $t('listings_show.amount') }}
+                            {{ $t('listings.dialog.amount_label') }}
                         </Label>
                         <Input
                             id="amount"
@@ -59,8 +57,8 @@
                     >
                         {{
                             investForm.processing
-                                ? $t('listings_show.dialog.processing')
-                                : $t('listings_show.dialog.confirmButton')
+                                ? $t('listings.dialog.processing')
+                                : $t('listings.dialog.confirm_button')
                         }}
                     </Button>
                 </form>
@@ -81,13 +79,17 @@ import Label from '@/components/ui/label/Label.vue';
 import { User } from '@/types';
 import { Listing } from '@/types/listings';
 import { useForm, usePage } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 
 import { useToggle } from '@vueuse/core';
 
 import { computed, ref, watch } from 'vue';
 import ListingCard from './ListingCard.vue';
 import UserProfileCard from './UserProfileCard.vue';
+
 const page = usePage();
+const toast = useToast(); // Make sure toast is imported
+
 const listing = computed<Listing>(() => {
     return page.props.listing as Listing;
 });
@@ -107,28 +109,22 @@ const investForm = useForm({
 });
 
 const submitInvestment = () => {
-    // Use the Inertia form helper to send a POST request
-    // 'route' function generates the URL from Laravel Typed Wayfinder
+    // Note: The toast keys are also updated here
     // investForm.post(route('listings.invest', listing.value.uuid), {
-    //     // --- vue-toastification: onStart ---
     //     onStart: () => {
-    //         toast.info(t('listings_show.toast.starting'), {
-    //             id: 'invest-submit', // Use an ID to update the toast later
+    //         toast.info(trans('listings.toast.starting'), {
+    //             id: 'invest-submit',
     //         });
     //     },
-    //     // --- vue-toastification: onSuccess ---
     //     onSuccess: () => {
-    //         toggleDialog(false); // Close dialog on success
-    //         toast.success(t('listings_show.toast.success'), {
-    //             id: 'invest-submit', // This updates the 'starting' toast
+    //         toggleDialog(false);
+    //         toast.success(trans('listings.toast.success'), {
+    //             id: 'invest-submit',
     //         });
-    //         // Optionally reset slider
-    //         // investmentAmount.value = minInvestmentAmount;
     //     },
-    //     // --- vue-toastification: onError ---
     //     onError: (errors) => {
-    //         // Use the specific error from Inertia or a generic fallback
-    //         const errorMsg = errors.amount || t('listings_show.toast.failure');
+    //         const errorMsg =
+    //             errors.amount || trans('listings.toast.failure');
     //         toast.error(errorMsg, { id: 'invest-submit' });
     //     },
     // });

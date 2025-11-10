@@ -2,7 +2,7 @@
     <Card>
         <CardHeader>
             <CardTitle class="text-base font-medium text-muted-foreground">
-                {{ $t('user_card.listed_by') }}
+                {{ $t('listings.listed_by') }}
             </CardTitle>
         </CardHeader>
         <CardContent class="space-y-6">
@@ -18,6 +18,13 @@
                     <div class="text-xl font-semibold text-foreground">
                         {{ user.name }}
                     </div>
+                    <div class="flex items-center gap-1">
+                        <Star class="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span class="text-sm font-medium">4.9</span>
+                        <span class="text-sm text-muted-foreground"
+                            >(127 {{ $t('listings.reviews') }})</span
+                        >
+                    </div>
                 </div>
             </div>
 
@@ -26,34 +33,28 @@
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between">
                     <span class="text-muted-foreground">{{
-                        $t('user_card.member_since')
+                        $t('listings.member_since')
                     }}</span>
                     <span class="font-medium text-foreground">{{
                         memberSince
                     }}</span>
                 </div>
-                <div v-if="address" class="flex justify-between">
+                <div class="flex justify-between">
                     <span class="text-muted-foreground">{{
-                        $t('user_card.location')
+                        $t('listings.response_time')
                     }}</span>
-                    <span class="font-medium text-foreground"
-                        >{{ address.city }}, {{ address.country }}</span
-                    >
+                    <span class="font-medium text-foreground">~2 Stunden</span>
                 </div>
-                <div v-if="userRole" class="flex justify-between">
+                <div class="flex justify-between">
                     <span class="text-muted-foreground">{{
-                        $t('user_card.role')
+                        $t('listings.total_listings')
                     }}</span>
-                    <span class="font-medium text-foreground capitalize">{{
-                        userRole
-                    }}</span>
+                    <span class="font-medium text-foreground">24</span>
                 </div>
             </div>
 
             <Button as-child class="w-full" size="lg">
-                <!-- <Link :href="route('user.contact', user.id)">
-                </Link> -->
-                {{ $t('user_card.contact_button') }}
+                {{ $t('listings.contact_button') }}
             </Button>
         </CardContent>
     </Card>
@@ -65,6 +66,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Address, User } from '@/types';
+import { Star } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const props = defineProps<{

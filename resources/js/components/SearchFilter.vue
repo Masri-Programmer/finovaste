@@ -79,9 +79,6 @@ const sortOptions = [
     { id: 'roi', labelKey: 'filters.sortOptions.roi' },
 ];
 
-// 6. Methods
-
-// Helper to manage checkbox array
 function handleTypeChange(checked: boolean, typeId: string) {
     if (checked) {
         if (!form.listingTypes.includes(typeId)) {
@@ -92,18 +89,15 @@ function handleTypeChange(checked: boolean, typeId: string) {
     }
 }
 
-// Helper to remove a badge
 function removeType(typeId: string) {
     form.listingTypes = form.listingTypes.filter((t) => t !== typeId);
 }
 
-// Helper to get label for a badge
 function getListingTypeLabel(typeId: string): string {
     const type = listingTypes.find((t) => t.id === typeId);
     return type ? trans(type.labelKey) : '';
 }
 
-// 7. Inertia Request
 function applyFilters() {
     //   form.get(route('listings.index'), {
     //     preserveState: true,

@@ -8,5 +8,6 @@ return [
     'password' => 'Passwort',
     'profile' => 'Profil',
     'title' => 'Einstellungen',
-    'twoFactor' => 'Zwei-Faktor-Authentifizierung'
+    'twoFactor' => 'Zwei-Faktor-Authentifizierung',
+    'languages' => 'Sprache'
 ];

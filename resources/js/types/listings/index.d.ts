@@ -45,6 +45,8 @@ export interface Listing {
         | DonationListable;
     user: User;
     category: Category;
+    is_liked_by_current_user: boolean;
+    likers_count: number;
 }
 
 /**

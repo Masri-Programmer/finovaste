@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import LikeAction from '@/components/actions/LikeAction.vue';
+import ShareAction from '@/components/actions/ShareAction.vue';
+import ListingAuctionContent from '@/components/listings/index/ListingAuctionContent.vue';
+import ListingBuyNowContent from '@/components/listings/index/ListingBuyNowContent.vue';
+import ListingDonationContent from '@/components/listings/index/ListingDonationContent.vue';
+import ListingInvestmentContent from '@/components/listings/index/ListingInvestmentContent.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,27 +18,17 @@ import {
 import { show } from '@/routes/listings';
 import { Listing } from '@/types/listings';
 import { Link } from '@inertiajs/vue3';
-import { useClipboard } from '@vueuse/core';
+import { trans } from 'laravel-vue-i18n';
 import {
     BadgeDollarSign,
     CircleDollarSign,
     ExternalLink,
     Gavel,
     HandHeart,
-    Heart,
     MapPin,
-    MoreHorizontal,
-    Share2,
     Star,
 } from 'lucide-vue-next';
 import { computed, PropType } from 'vue';
-import { useToast } from 'vue-toastification';
-
-import ListingAuctionContent from '@/components/listings/index/ListingAuctionContent.vue';
-import ListingBuyNowContent from '@/components/listings/index/ListingBuyNowContent.vue';
-import ListingDonationContent from '@/components/listings/index/ListingDonationContent.vue';
-import ListingInvestmentContent from '@/components/listings/index/ListingInvestmentContent.vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
     listing: {
@@ -44,9 +40,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-const toast = useToast();
-const { copy } = useClipboard();
 
 function getListingType(type: Listing['listable_type'] | string): {
     text: string;
@@ -78,41 +71,6 @@ function getListingType(type: Listing['listable_type'] | string): {
     }
 }
 
-// --- Component Actions ---
-
-function addToWishlist(uuid: string) {
-    // 🔄 Inertia POST request
-    // router.post(
-    // route('wishlist.add', { uuid }), // 🔄 Using Typed Wayfinder
-    // {},
-    // {
-    // preserveScroll: true,
-    // onSuccess: () => {
-    // toast.success(t('notifications.wishlistAdded')); // 🔔 Success toast
-    // },
-    // onError: (errors) => {
-    // const errorMsg =
-    // errors.message || t('notifications.errorGeneric');
-    // toast.error(errorMsg); // 🔔 Error toast
-    // },
-    // },
-    // );
-    // toast.success(t('notifications.wishlistAdded')); // Mocked
-}
-
-// 🛠 Using VueUse's useClipboard
-
-function shareListing(uuid: string) {
-    // const listingUrl = route('marketplace.show', { uuid }); // 🔄 Laravel Typed Wayfinder
-    // copy(listingUrl)
-    // .then(() => {
-    // toast.info(t('notifications.linkCopied')); // 🔔 Info toast
-    // })
-    // .catch(() => {
-    // toast.error(t('notifications.copyFailed'));
-    // });
-}
-// Computed property to check listable validity (optional but good)
 const listable = computed(() => {
     if (
         typeof props.listing.listable === 'object' &&
@@ -121,6 +79,10 @@ const listable = computed(() => {
         return props.listing.listable;
     }
     return null;
+});
+
+const shareUrl = computed(() => {
+    return show.url(props.listing.id);
 });
 </script>
 
@@ -148,30 +110,11 @@ const listable = computed(() => {
                     </Badge>
                 </div>
                 <div class="absolute top-4 right-4 flex gap-2">
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        class="rounded-full bg-background/70 backdrop-blur-sm"
-                        @click.prevent="shareListing(listing.uuid)"
-                    >
-                        <Share2 class="h-5 w-5" />
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        class="rounded-full bg-background/70 backdrop-blur-sm"
-                        @click.prevent
-                    >
-                        <MoreHorizontal class="h-5 w-5" />
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        class="rounded-full bg-background/70 backdrop-blur-sm"
-                        @click.prevent="addToWishlist(listing.uuid)"
-                    >
-                        <Heart class="h-5 w-5" />
-                    </Button>
+                    <ShareAction
+                        :share-url="shareUrl"
+                        :listing-title="listing.title[locale]"
+                    />
+                    <LikeAction :listing="listing" />
                 </div>
             </CardHeader>
 
@@ -282,7 +225,7 @@ const listable = computed(() => {
                     class="flex w-full justify-between gap-2 border-t border-border pt-3"
                 >
                     <Button
-                        :variant="'ghost'"
+                        variant="ghost"
                         size="sm"
                         class="w-full justify-center text-xs"
                         as-child

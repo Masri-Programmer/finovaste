@@ -14,34 +14,52 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\ListingMediaService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use App\Services\ListingService;
+use Illuminate\Database\Eloquent\Model;
 use Inertia\Inertia;
 use Throwable;
+use Illuminate\Support\Facades\Cache;
 
 class ListingController extends Controller
 {
+    protected ListingService $listingService;
+    protected ListingMediaService $mediaService;
+
+    public function __construct(ListingService $listingService, ListingMediaService $mediaService)
+    {
+        $this->listingService = $listingService;
+        $this->mediaService = $mediaService;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->query();
         $listings = Listing::with(['listable', 'user', 'category'])
+            ->filter($filters)
             ->latest()
             ->paginate(50);
 
         return Inertia::render('listings/Index', [
             'listings' => $listings,
+            'filters' => $filters,
         ]);
     }
 
     private function getCategoriesForForm(): \Illuminate\Support\Collection
     {
-        return Category::orderBy('name')->get()->map(function ($category) {
-            return [
-                'id' => $category->id,
-                'name' => $category->getTranslations('name'),
-            ];
+        return Cache::remember('categories_for_form', 60 * 60, function () {
+            return Category::orderBy('name')->get()->map(function ($category) {
+                return [
+                    'id' => $category->id,
+                    'name' => $category->getTranslations('name'),
+                ];
+            });
         });
     }
     /**
@@ -62,7 +80,7 @@ class ListingController extends Controller
         $validatedData = $request->validated();
 
         // Log::info('ListingController@store: Request received.', [
-        //     'user_id' => auth()->id(),
+        //     'user_id' => Auth::id(),
         //     'listing_type' => $request->listing_type,
         //     'validated_data_keys' => array_keys($request->except(['images', 'documents', 'videos'])),
         // ]);
@@ -105,7 +123,7 @@ class ListingController extends Controller
             }
 
             $listing = $specificListing->listing()->create([
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'category_id' => $validatedData['category_id'],
                 'expires_at' => $validatedData['expires_at'],
                 'title' => $validatedData['title'],
@@ -128,7 +146,7 @@ class ListingController extends Controller
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error('CRITICAL: Failed to create listing.', [
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -144,6 +162,9 @@ class ListingController extends Controller
     public function show(Listing $listing)
     {
         $listing->load(['listable', 'user', 'category', 'address']);
+        $listing->loadCount(['likers as is_liked_by_current_user' => function ($query) {
+            $query->where('user_id', Auth::id());
+        }]);
 
         return Inertia::render('listings/Show', [
             'listing' => $listing,
@@ -214,5 +235,62 @@ class ListingController extends Controller
             DB::rollBack();
             return back()->with('error', 'Failed to delete listing: ' . $e->getMessage());
         }
+    }
+
+    public function like(Request $request, Listing $listing): RedirectResponse
+    {
+        if ($listing->isLikedByCurrentUser()) {
+            return redirect()->back();
+        }
+        try {
+            $listing->likers()->syncWithoutDetaching(Auth::id());
+            $listing->increment('likes_count');
+        } catch (\Exception $e) {
+            Log::error("Failed to like listing {$listing->id} for user " . Auth::id(), [
+                'message' => $e->getMessage()
+            ]);
+            return redirect()->back()->with('error');
+        }
+
+        return redirect()->back()->with('success', 'Listing liked!');
+    }
+
+    public function unlike(Request $request, Listing $listing): RedirectResponse
+    {
+        try {
+            $detached = $listing->likers()->detach(Auth::id());
+            if ($detached) {
+                $listing->decrement('likes_count');
+            }
+        } catch (\Exception $e) {
+            Log::error("Failed to unlike listing {$listing->id} for user " . Auth::id(), [
+                'message' => $e->getMessage()
+            ]);
+            return redirect()->back()->with('error',);
+        }
+
+        return redirect()->back()->with('success', 'Listing unliked.');
+    }
+
+    public function liked(Request $request)
+    {
+        $user = $request->user();
+
+        $listings = $user->likedListings()
+            ->with(['listable', 'user', 'category', 'media'])
+            ->latest('listing_user.created_at')
+            ->paginate(12)
+            ->withQueryString();
+
+        $listings->getCollection()->transform(function ($listing) {
+            $listing->append('is_liked_by_current_user');
+            $listing->image_url = $listing->getFirstMediaUrl('images');
+            unset($listing->media);
+            return $listing;
+        });
+
+        return Inertia::render('listings/Liked', [
+            'listings' => $listings,
+        ]);
     }
 }

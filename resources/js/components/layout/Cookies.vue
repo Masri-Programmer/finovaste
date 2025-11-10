@@ -88,12 +88,12 @@ const handleSavePreferences = () => {
 
                         <div class="flex-1">
                             <h3 class="mb-2">
-                                {{ $t('cookieConsent.banner.title') }}
+                                {{ $t('cookieconsent.banner.title') }}
                             </h3>
                             <p
                                 class="mb-4 text-sm text-gray-600 dark:text-gray-400"
                             >
-                                {{ $t('cookieConsent.banner.description') }}
+                                {{ $t('cookieconsent.banner.description') }}
                             </p>
 
                             <div class="flex flex-wrap gap-3">
@@ -101,14 +101,14 @@ const handleSavePreferences = () => {
                                     @click="handleAcceptAll"
                                     class="bg-blue-600 hover:bg-blue-700"
                                 >
-                                    {{ $t('cookieConsent.banner.acceptAll') }}
+                                    {{ $t('cookieconsent.banner.acceptAll') }}
                                 </Button>
                                 <Button
                                     @click="handleAcceptNecessary"
                                     variant="outline"
                                 >
                                     {{
-                                        $t('cookieConsent.banner.necessaryOnly')
+                                        $t('cookieconsent.banner.necessaryOnly')
                                     }}
                                 </Button>
                                 <Button
@@ -117,7 +117,7 @@ const handleSavePreferences = () => {
                                     class="gap-2"
                                 >
                                     <Settings class="h-4 w-4" />
-                                    {{ $t('cookieConsent.banner.customize') }}
+                                    {{ $t('cookieconsent.banner.customize') }}
                                 </Button>
                             </div>
                         </div>
@@ -139,10 +139,10 @@ const handleSavePreferences = () => {
             <DialogContent class="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>{{
-                        $t('cookieConsent.modal.title')
+                        $t('cookieconsent.modal.title')
                     }}</DialogTitle>
                     <DialogDescription>
-                        {{ $t('cookieConsent.modal.description') }}
+                        {{ $t('cookieconsent.modal.description') }}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -152,7 +152,7 @@ const handleSavePreferences = () => {
                         <div class="flex-1">
                             <div class="mb-2 flex items-center gap-2">
                                 <Label class="font-semibold">{{
-                                    $t('cookieConsent.modal.necessary.title')
+                                    $t('cookieconsent.modal.necessary.title')
                                 }}</Label>
                                 <span
                                     class="rounded bg-gray-200 px-2 py-1 text-xs dark:bg-gray-700"
@@ -162,7 +162,7 @@ const handleSavePreferences = () => {
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
-                                        'cookieConsent.modal.necessary.description',
+                                        'cookieconsent.modal.necessary.description',
                                     )
                                 }}
                             </p>
@@ -177,12 +177,12 @@ const handleSavePreferences = () => {
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <Label class="mb-2 block font-semibold">{{
-                                $t('cookieConsent.modal.analytics.title')
+                                $t('cookieconsent.modal.analytics.title')
                             }}</Label>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
-                                        'cookieConsent.modal.analytics.description',
+                                        'cookieconsent.modal.analytics.description',
                                     )
                                 }}
                             </p>
@@ -193,12 +193,12 @@ const handleSavePreferences = () => {
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <Label class="mb-2 block font-semibold">{{
-                                $t('cookieConsent.modal.marketing.title')
+                                $t('cookieconsent.modal.marketing.title')
                             }}</Label>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
-                                        'cookieConsent.modal.marketing.description',
+                                        'cookieconsent.modal.marketing.description',
                                     )
                                 }}
                             </p>
@@ -210,12 +210,12 @@ const handleSavePreferences = () => {
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <Label class="mb-2 block font-semibold">{{
-                                $t('cookieConsent.modal.preference.title')
+                                $t('cookieconsent.modal.preference.title')
                             }}</Label>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{
                                     $t(
-                                        'cookieConsent.modal.preference.description',
+                                        'cookieconsent.modal.preference.description',
                                     )
                                 }}
                             </p>
@@ -226,13 +226,13 @@ const handleSavePreferences = () => {
 
                 <div class="flex justify-end gap-3">
                     <Button variant="outline" @click="showSettings = false">
-                        {{ $t('cookieConsent.modal.cancel') }}
+                        {{ $t('cookieconsent.modal.cancel') }}
                     </Button>
                     <Button
                         @click="handleSavePreferences"
                         class="bg-blue-600 hover:bg-blue-700"
                     >
-                        {{ $t('cookieConsent.modal.save') }}
+                        {{ $t('cookieconsent.modal.save') }}
                     </Button>
                 </div>
             </DialogContent>

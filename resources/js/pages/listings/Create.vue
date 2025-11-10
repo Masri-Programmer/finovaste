@@ -23,6 +23,7 @@ import {
 import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
+import { home } from '@/routes';
 import { create, store } from '@/routes/listings';
 import { type BreadcrumbItem } from '@/types';
 import { trans } from 'laravel-vue-i18n';
@@ -115,7 +116,11 @@ const submit = () => {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('profile.breadcrumb'),
+        title: trans('marketplace.title'),
+        href: home.url(),
+    },
+    {
+        title: trans('createListing.title'),
         href: '#',
     },
 ];

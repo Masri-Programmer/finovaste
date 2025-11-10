@@ -58,6 +58,11 @@ class HomeController extends Controller
 
             return $listing;
         });
+
+        $listings->getCollection()->transform(function ($listing) {
+            $listing->append('is_liked_by_current_user');
+            return $listing;
+        });
         return Inertia::render('Homepage', [
             'categories' => $categories,
             'listings' => $listings,

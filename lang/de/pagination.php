@@ -10,5 +10,5 @@ return [
     'noResults' => 'Keine {name} gefunden.',
     'perPageName' => '{name} pro Seite',
     'previous' => 'Vorherige',
-    'showing' => 'Zeige {from} bis {to} von {total} {name}'
+    'showing' => 'Zeige :from bis :to von :total :name',
 ];

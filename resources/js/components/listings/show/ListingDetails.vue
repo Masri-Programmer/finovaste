@@ -2,19 +2,19 @@
     <section class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <InfoBox
             :icon="TrendingUp"
-            :title="$t('listing_details.boxes.roi')"
+            :title="$t('listingdetails.boxes.roi')"
             value="12-15%"
             icon-bg-class="bg-blue-100 text-blue-700"
         />
         <InfoBox
             :icon="CalendarDays"
-            :title="$t('listing_details.boxes.duration')"
+            :title="$t('listingdetails.boxes.duration')"
             value="24 months"
             icon-bg-class="bg-green-100 text-green-700"
         />
         <InfoBox
             :icon="Users"
-            :title="$t('listing_details.boxes.investors')"
+            :title="$t('listingdetails.boxes.investors')"
             :value="investorCount.toString()"
             icon-bg-class="bg-purple-100 text-purple-700"
         />
@@ -23,7 +23,7 @@
     <section class="space-y-3">
         <div class="flex justify-between text-sm font-medium">
             <span class="text-muted-foreground">{{
-                $t('listing_details.capital_raised')
+                $t('listingdetails.capital_raised')
             }}</span>
             <span class="text-foreground">
                 {{ formattedCurrentCapital }} / {{ formattedTotalCapital }}
@@ -34,7 +34,7 @@
 
     <section>
         <h2 class="mb-4 text-lg font-semibold text-foreground">
-            {{ $t('listing_details.key_features') }}
+            {{ $t('listingdetails.key_features') }}
         </h2>
         <div class="grid grid-cols-2 gap-x-8 gap-y-3">
             <div
@@ -55,10 +55,10 @@
 
     <section>
         <h2 class="mb-4 text-lg font-semibold text-foreground">
-            {{ $t('listing_details.faq_title') }}
+            {{ $t('listingdetails.faq_title') }}
         </h2>
         <p class="mb-6 text-sm text-muted-foreground">
-            {{ $t('listing_details.faq_subtitle') }}
+            {{ $t('listingdetails.faq_subtitle') }}
         </p>
         <Accordion type="single" class="w-full" collapsible>
             <AccordionItem
@@ -128,32 +128,32 @@ const formattedCurrentCapital = computed(() => formatCurrency(currentCapital));
 // --- Static Content ---
 
 const keyFeatures = [
-    { text: 'listing_details.features.verified', icon: CheckCircle },
-    { text: 'listing_details.features.secure', icon: ShieldCheck },
-    { text: 'listing_details.features.support', icon: Users },
-    { text: 'listing_details.features.growth', icon: BarChart },
+    { text: 'listingdetails.features.verified', icon: CheckCircle },
+    { text: 'listingdetails.features.secure', icon: ShieldCheck },
+    { text: 'listingdetails.features.support', icon: Users },
+    { text: 'listingdetails.features.growth', icon: BarChart },
 ];
 
 const faqItems = [
     {
         value: 'item-1',
-        question: 'listing_details.faq.q1',
-        answer: 'listing_details.faq.a1',
+        question: 'listingdetails.faq.q1',
+        answer: 'listingdetails.faq.a1',
     },
     {
         value: 'item-2',
-        question: 'listing_details.faq.q2',
-        answer: 'listing_details.faq.a2',
+        question: 'listingdetails.faq.q2',
+        answer: 'listingdetails.faq.a2',
     },
     {
         value: 'item-3',
-        question: 'listing_details.faq.q3',
-        answer: 'listing_details.faq.a3',
+        question: 'listingdetails.faq.q3',
+        answer: 'listingdetails.faq.a3',
     },
     {
         value: 'item-4',
-        question: 'listing_details.faq.q4',
-        answer: 'listing_details.faq.a4',
+        question: 'listingdetails.faq.q4',
+        answer: 'listingdetails.faq.a4',
     },
 ];
 </script>

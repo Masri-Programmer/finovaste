@@ -49,7 +49,6 @@ const formattedInvestmentAmount = computed(() =>
     formatCurrency(investmentAmount.value),
 );
 
-// This also remains correct
 const capitalShare = computed(() => {
     const goal = props.totalCapitalGoal || 1;
     const share = (investmentAmount.value / goal) * 100;
@@ -59,12 +58,12 @@ const capitalShare = computed(() => {
 const summaryDetails = computed(() => [
     {
         key: 'amount',
-        label: trans('listings_show.amount'),
+        label: trans('listings.amount'),
         value: formattedInvestmentAmount.value,
     },
     {
         key: 'share',
-        label: trans('listings_show.share'),
+        label: trans('listings.capital_share'),
         value: `${capitalShare.value}%`,
     },
 ]);
@@ -74,14 +73,14 @@ const summaryDetails = computed(() => [
     <Card>
         <CardContent class="space-y-4 p-6">
             <div class="text-sm font-medium text-muted-foreground">
-                {{ $t('listings_show.min') }}
+                {{ $t('listings.min_investment') }}
             </div>
             <div class="flex items-baseline justify-between">
                 <span class="text-lg font-semibold">
                     {{ formattedMinAmount }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('listings_show.minimum') }}
+                    {{ $t('listings.minimum') }}
                 </span>
             </div>
             <Separator class="my-2" />
@@ -91,7 +90,7 @@ const summaryDetails = computed(() => [
                     for="investment-slider"
                     class="text-sm font-medium text-muted-foreground"
                 >
-                    {{ $t('listings_show.your') }}
+                    {{ $t('listings.your_investment') }}
                 </Label>
                 <Slider
                     id="investment-slider"
@@ -122,10 +121,10 @@ const summaryDetails = computed(() => [
                 @click="emit('invest')"
                 class="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90"
             >
-                {{ $t('listings_show.button.invest') }}
+                {{ $t('listings.invest_button') }}
             </Button>
             <p class="mt-2 text-center text-xs text-muted-foreground">
-                {{ $t('listings_show.securePayment') }}
+                {{ $t('listings.secure_payment') }}
             </p>
         </CardContent>
     </Card>

@@ -17,6 +17,7 @@ use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -46,6 +47,7 @@ class Listing extends Model implements HasMedia
         'is_featured' => 'boolean',
         'published_at' => 'datetime',
         'expires_at' => 'datetime',
+        'is_liked_by_current_user' => 'boolean',
     ];
 
     /**
@@ -114,6 +116,24 @@ class Listing extends Model implements HasMedia
         return $this->hasMany(Review::class);
     }
 
+    public function likers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
+    public function isLikedByCurrentUser(): bool
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+
+        return $this->likers()->where('user_id', Auth::id())->exists();
+    }
+
+    public function getIsLikedByCurrentUserAttribute(): bool
+    {
+        return $this->isLikedByCurrentUser();
+    }
+
     public function registerMediaCollections(): void
     {
         $this
@@ -172,6 +192,27 @@ class Listing extends Model implements HasMedia
         }, function ($query) {
             // Default sort if 'sort' is not provided
             $query->latest(); // Sorts by created_at descending
+        });
+
+        $query->when($filters['min_price'] ?? null, function ($query, $minPrice) {
+            $query->whereHasMorph('listable', [BuyNowListing::class], function ($q) use ($minPrice) {
+                $q->where('price', '>=', $minPrice);
+            });
+        });
+
+        // 5. --- Price Filter (for BuyNowListings) ---
+        $query->when($filters['max_price'] ?? null, function ($query, $maxPrice) {
+            $query->whereHasMorph('listable', [BuyNowListing::class], function ($q) use ($maxPrice) {
+                $q->where('price', '<=', $maxPrice);
+            });
+        });
+
+        // 6. --- Location Filter (assumes city) ---
+        // (Note: Your Listing.php uses 'address_id', so it's a BelongsTo)
+        $query->when($filters['city'] ?? null, function ($query, $city) {
+            $query->whereHas('address', function ($q) use ($city) {
+                $q->where('city', 'like', '%' . $city . '%');
+            });
         });
 
         return $query;

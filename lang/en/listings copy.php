@@ -56,21 +56,4 @@ return [
     'watch_video' => 'Video ansehen',
     'investment_tag' => 'Investition',
     "backToMarketplace" => "Zurück zum Marktplatz",
-    'pagination_name' => 'Angebote',
-    'share' => [
-        'title'                     => 'Eintrag teilen',
-        'description'               => 'Teile diesen Eintrag mit deinem Netzwerk.',
-        'share_link_label'          => 'Link zum Teilen',
-        'copy_link'                 => 'Link kopieren',
-        'link_copied'               => 'Link in die Zwischenablage kopiert!',
-        'clipboard_not_supported'   => 'Die Zwischenablage wird von deinem Browser nicht unterstützt.',
-        'share_text'                => 'Sieh dir diesen Eintrag an: :title',
-    ],
-    'liked' => [
-        'title'                     => 'Beiträge mit „Gefällt mir“ markiert',
-        'description'               => '',
-        'empty' => 'Du hast noch keine Beiträge mit „Gefällt mir“ markiert.',
-        'share_link_label'          => 'Link zum Teilen',
-
-    ],
 ];

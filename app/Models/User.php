@@ -75,6 +75,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function likedListings(): BelongsToMany
+    {
+        return $this->belongsToMany(Listing::class)->withTimestamps();
+    }
     /**
      * Get all of the user's addresses.
      */

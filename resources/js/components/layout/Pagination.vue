@@ -52,10 +52,11 @@ const paginationInfo = computed(() => {
     ) {
         return trans('pagination.noResults', { name: translatedName });
     }
+
     return trans('pagination.showing', {
-        from: props.paginator.from,
-        to: props.paginator.to,
-        total: props.paginator.total,
+        from: String(props.paginator.from),
+        to: String(props.paginator.to),
+        total: String(props.paginator.total),
         name: translatedName,
     });
 });
@@ -76,6 +77,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
     const newPerPage = Number(value);
     selectedPerPage.value = newPerPage;
 
+    // A real implementation would merge existing query parameters
     const currentParams = {};
 
     router.get(
@@ -83,7 +85,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
         {
             ...currentParams,
             per_page: newPerPage,
-            page: 1,
+            page: 1, // Reset to page 1 when changing per_page
         },
         {
             preserveState: true,
@@ -104,7 +106,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
         <Pagination
             v-if="links.length > 3"
             :total="paginator.total"
-            :items-per-page="paginator.per_page"
+            :items-per-page="Number(paginator.per_page)"
             :page="paginator.current_page"
             :aria-label="$t('pagination.ariaLabel')"
             class="flex-1 justify-center"

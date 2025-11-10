@@ -4,16 +4,9 @@ import { Input } from '@/components/ui/input';
 import { useWindowScroll, watchDebounced } from '@vueuse/core';
 import { PropType, ref, watch } from 'vue';
 
+import { Category } from '@/types';
 import { getActiveLanguage } from 'laravel-vue-i18n';
 import { Search } from 'lucide-vue-next';
-
-interface Category {
-    id: number;
-    slug: string;
-    icon: string | null;
-    children: Category[];
-    name: { [key: string]: string };
-}
 
 const props = defineProps({
     categories: {
