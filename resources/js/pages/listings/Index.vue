@@ -1,7 +1,10 @@
 <template>
-    <div>listing index</div>
+    <Layout>
+        <Marketplace />
+    </Layout>
 </template>
 
-<script setup lang="ts"></script>
-
-<style scoped></style>
+<script setup lang="ts">
+import Layout from '@/components/layout/Layout.vue';
+import Marketplace from '../homepage/Marketplace.vue';
+</script>

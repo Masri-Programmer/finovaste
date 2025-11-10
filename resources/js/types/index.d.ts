@@ -87,6 +87,7 @@ export type AppPageProps<
     errors: object;
     user: User;
     category: Category;
+    breadcrumbs: BreadcrumbItem[];
 };
 
 export interface LocaleString {

@@ -57,7 +57,7 @@ const menuSections = [];
     </Head>
     <Header :menuSections="menuSections" />
     <main
-        class="container-custom mt-16 grid min-h-screen items-center gap-4 pt-4 sm:gap-6 sm:pt-6 md:gap-8 md:pt-8 lg:gap-10 lg:pt-10 xl:gap-12 xl:pt-12"
+        class="container-custom grid min-h-screen items-center gap-4 pt-4 sm:mt-20 sm:gap-6 sm:pt-6 md:mt-22 md:gap-8 md:pt-8 lg:mt-24 lg:gap-10 lg:pt-10 xl:mt-26 xl:gap-12 xl:pt-12"
     >
         <!-- <div v-if="flash?.success" class="alert alert-success">
             {{ flash?.success }}
@@ -71,11 +71,14 @@ const menuSections = [];
             Please correct the errors below.
         </div> -->
         <slot />
-        <Footer :menuSections="menuSections" />
-        <Cookies />
     </main>
+    <div
+        class="mt-4 border-t border-border bg-background pt-4 text-foreground sm:mt-6 md:mt-8 lg:mt-10 xl:mt-12"
+    >
+        <Footer :menuSections="menuSections" />
+    </div>
+    <Cookies />
     <!--
-    <RightSideNav />
     <ScrollTop />
      -->
 </template>

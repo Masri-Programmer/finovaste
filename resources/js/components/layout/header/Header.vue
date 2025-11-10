@@ -85,12 +85,12 @@
                                     >
                                         {{ $t('login.button') }}
                                     </Link>
-                                    <!-- <Link
+                                    <Link
                                         :href="register()"
                                         class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                     >
                                         {{ $t('register.button') }}
-                                    </Link> -->
+                                    </Link>
                                 </template>
                             </nav>
                         </div>
@@ -99,9 +99,14 @@
             </div>
         </div>
         <div
-            class="container-custom border-b border-secondary/20 bg-secondary/50 text-secondary-foreground shadow-sm backdrop-blur-xl"
+            class="border-b border-secondary/20 bg-secondary/50 text-secondary-foreground shadow-sm backdrop-blur-xl"
+            v-if="$page.props.breadcrumbs.length > 1"
         >
-            <Breadcrumbs />
+            <div
+                class="container-custom flex h-12 items-center !overflow-visible"
+            >
+                <Breadcrumbs />
+            </div>
         </div>
     </header>
 </template>
@@ -110,6 +115,7 @@
 // import AppearanceIcon from '@/components/AppearanceIcon.vue';
 // import LanguageSwitch from '@/components/LanguageSwitch.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import UserMenuContent from '@/components/header/UserMenuContent.vue';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -118,12 +124,10 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Heart, Plus } from 'lucide-vue-next';
-
-import Breadcrumbs from '@/components/Breadcrumbs.vue';
-import { home, login } from '@/routes';
+import { home, login, register } from '@/routes';
 import { create, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
+import { Bell, Heart, Plus } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 defineProps<{

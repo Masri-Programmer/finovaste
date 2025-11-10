@@ -7,25 +7,18 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import type { BreadcrumbItem as BreadcrumbItemType } from '@/types';
+
+import type {
+    AppPageProps,
+    BreadcrumbItem as BreadcrumbItemType,
+} from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-interface BreadcrumbsProps {
-    breadcrumbs?: BreadcrumbItemType[];
-}
-
-const props = withDefaults(defineProps<BreadcrumbsProps>(), {
-    breadcrumbs: () => [],
-});
+const page = usePage<AppPageProps>();
 
 const breadcrumbs = computed<BreadcrumbItemType[]>(() => {
-    if (props.breadcrumbs && props.breadcrumbs.length > 0) {
-        return props.breadcrumbs;
-    }
-
-    const page = usePage();
-    return (page.props.breadcrumbs as BreadcrumbItemType[] | undefined) ?? [];
+    return page.props.breadcrumbs ?? [];
 });
 </script>
 
