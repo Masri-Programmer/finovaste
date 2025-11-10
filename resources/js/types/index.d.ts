@@ -62,7 +62,8 @@ export interface Roles {
 
 export interface BreadcrumbItem {
     title: string;
-    href: string;
+    url: string;
+    current?: boolean;
 }
 
 export interface NavItem {

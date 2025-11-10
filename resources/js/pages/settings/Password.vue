@@ -2,7 +2,6 @@
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
 import InputError from '@/components/InputError.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -11,22 +10,13 @@ import Layout from '@/components/layout/Layout.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { type BreadcrumbItem } from '@/types';
-import { trans } from 'laravel-vue-i18n';
-
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: trans('password.breadcrumb'),
-        href: edit().url,
-    },
-];
 
 const passwordInput = ref<HTMLInputElement | null>(null);
 const currentPasswordInput = ref<HTMLInputElement | null>(null);
 </script>
 
 <template>
-    <Layout :breadcrumbs="breadcrumbItems">
+    <Layout>
         <Head :title="$t('password.headTitle')" />
 
         <SettingsLayout>

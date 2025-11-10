@@ -5,23 +5,11 @@ import { trans } from 'laravel-vue-i18n';
 import Layout from '@/components/layout/Layout.vue';
 import Pagination from '@/components/layout/Pagination.vue';
 import ListingCard from '@/components/listings/index/ListingCard.vue';
-import { home } from '@/routes';
-
-const breadcrumbItems = [
-    {
-        title: trans('marketplace.title'),
-        href: home.url(),
-    },
-    {
-        title: trans('listings.liked.title'),
-        href: home.url(),
-    },
-];
 </script>
 
 <template>
     <Head :title="trans('listings.liked.title')" />
-    <Layout :breadcrumbs="breadcrumbItems">
+    <Layout>
         <div class="min-h-screen bg-background text-foreground">
             <header class="mb-4 flex items-center justify-between">
                 <h1 class="text-3xl font-bold text-foreground">

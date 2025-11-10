@@ -98,6 +98,11 @@
                 </div>
             </div>
         </div>
+        <div
+            class="container-custom border-b border-secondary/20 bg-secondary/50 text-secondary-foreground shadow-sm backdrop-blur-xl"
+        >
+            <Breadcrumbs />
+        </div>
     </header>
 </template>
 
@@ -115,6 +120,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Bell, Heart, Plus } from 'lucide-vue-next';
 
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { home, login } from '@/routes';
 import { create, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';

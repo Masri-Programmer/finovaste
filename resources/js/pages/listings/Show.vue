@@ -20,7 +20,7 @@ const props = defineProps<PageProps>();
         <div
             class="relative grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start"
         >
-            <div class="col-span-2">
+            <div class="relative col-span-2">
                 <ListingHeader :listing="props.listing" />
                 <ListingSlide :listing="props.listing" />
             </div>

@@ -3,23 +3,13 @@ import { Head } from '@inertiajs/vue3';
 
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import { type BreadcrumbItem } from '@/types';
 
 import Layout from '@/components/layout/Layout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/appearance';
-import { trans } from 'laravel-vue-i18n';
-
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: trans('appearance.breadcrumb'),
-        href: edit().url,
-    },
-];
 </script>
 
 <template>
-    <Layout :breadcrumbs="breadcrumbItems">
+    <Layout>
         <Head :title="$t('appearance.headTitle')" />
 
         <SettingsLayout>

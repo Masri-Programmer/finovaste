@@ -23,9 +23,7 @@ import {
 import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
-import { home } from '@/routes';
 import { create, store } from '@/routes/listings';
-import { type BreadcrumbItem } from '@/types';
 import { trans } from 'laravel-vue-i18n';
 import { PropType, ref, watch } from 'vue';
 
@@ -113,21 +111,10 @@ const submit = () => {
         },
     });
 };
-
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: trans('marketplace.title'),
-        href: home.url(),
-    },
-    {
-        title: trans('createListing.title'),
-        href: '#',
-    },
-];
 </script>
 
 <template>
-    <Layout :link="create.url()" :breadcrumbs="breadcrumbItems">
+    <Layout :link="create.url()">
         <form @submit.prevent="submit">
             <Card>
                 <CardHeader>

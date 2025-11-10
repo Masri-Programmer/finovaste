@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 
@@ -13,8 +12,6 @@ import { Label } from '@/components/ui/label';
 // import AppLayout from '@/layouts/AppLayout.vue';
 import Layout from '@/components/layout/Layout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { type BreadcrumbItem } from '@/types';
-import { trans } from 'laravel-vue-i18n';
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -23,19 +20,12 @@ interface Props {
 
 defineProps<Props>();
 
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: trans('profile.breadcrumb'),
-        href: edit().url,
-    },
-];
-
 const page = usePage();
 const user = page.props.auth.user;
 </script>
 
 <template>
-    <Layout :breadcrumbs="breadcrumbItems">
+    <Layout>
         <Head :title="$t('profile.headTitle')" />
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
