@@ -73,4 +73,16 @@ return [
         'share_link_label'          => 'Link zum Teilen',
 
     ],
+    'edit' => [
+        'title'  => 'Eintrag bearbeiten: :title',
+        'description' => '',
+        'empty' => 'Du hast noch keine Beiträge mit „Gefällt mir“ markiert.',
+        'share_link_label' => 'Link zum Teilen',
+        'actions' => [
+            'save' => 'Speichern',
+            'saving' => 'Wird gespeichert...',
+            'cancel' => 'Abbrechen',
+            'delete' => 'Löschen',
+        ]
+    ],
 ];

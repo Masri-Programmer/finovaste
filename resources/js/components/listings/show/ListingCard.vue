@@ -123,9 +123,9 @@ const summaryDetails = computed(() => [
             >
                 {{ $t('listings.invest_button') }}
             </Button>
-            <p class="mt-2 text-center text-xs text-muted-foreground">
+            <!-- <p class="mt-2 text-center text-xs text-muted-foreground">
                 {{ $t('listings.secure_payment') }}
-            </p>
+            </p> -->
         </CardContent>
     </Card>
 </template>

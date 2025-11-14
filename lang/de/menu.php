@@ -8,5 +8,6 @@ return [
     'listings' => 'Einträge',
     'messages' => 'Nachrichten',
     'profile' => 'Profil',
-    'marketplace' => 'Marktplatz'
+    'marketplace' => 'Marktplatz',
+    'home' => 'Marktplatz'
 ];

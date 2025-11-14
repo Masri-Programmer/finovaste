@@ -17,6 +17,8 @@ use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -108,6 +110,21 @@ class Listing extends Model implements HasMedia
         return $this->belongsTo(Address::class);
     }
 
+    public function ownerAddress(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Address::class,
+            User::class,
+            'id',
+            'addressable_id',
+            'user_id',
+            'id'
+        )->where('addressable_type', User::class);
+    }
+    public function primaryAddress(): MorphOne
+    {
+        return $this->morphOne(Address::class, 'addressable');
+    }
     /**
      * Get the reviews for the listing.
      */
@@ -147,6 +164,14 @@ class Listing extends Model implements HasMedia
         $this
             ->addMediaCollection('videos')
             ->acceptsMimeTypes(['video/mp4', 'video/quicktime']);
+    }
+    public function getPriceAttribute()
+    {
+        if ($this->listable && property_exists($this->listable, 'price')) {
+            return $this->listable->price;
+        }
+
+        return null;
     }
     public function scopeFilter(Builder $query, array $filters): Builder
     {

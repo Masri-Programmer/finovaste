@@ -100,7 +100,7 @@
         </div>
         <div
             class="border-b border-secondary/20 bg-secondary/50 text-secondary-foreground shadow-sm backdrop-blur-xl"
-            v-if="$page.props.breadcrumbs.length > 1"
+            v-if="$page.props.breadcrumbs?.length > 1"
         >
             <div
                 class="container-custom flex h-12 items-center !overflow-visible"

@@ -19,11 +19,8 @@ class UpdateListingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Get the 'listing' model being updated from the route
         $listing = $this->route('listing');
 
-        // Check if the authenticated user owns this listing
-        // You can make this more robust with a Policy if you have one.
         return $listing && $this->user()->id === $listing->user_id;
     }
 

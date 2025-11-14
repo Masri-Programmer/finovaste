@@ -3,13 +3,16 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { computed } from 'vue';
 
-type ListingType = 'buy_now' | 'auction' | 'donation';
+// --- 1. Add 'investment' to the type ---
+type ListingType = 'buy_now' | 'auction' | 'donation' | 'investment';
 
 const props = defineProps<{
     modelValue: ListingType;
+    disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
+    // --- 2. Add 'investment' to the emit definition ---
     (e: 'update:modelValue', value: ListingType): void;
 }>();
 
@@ -26,7 +29,8 @@ const listingType = computed({
         </Label>
         <RadioGroup
             v-model="listingType"
-            class="grid grid-cols-1 gap-4 md:grid-cols-3"
+            :disabled="disabled"
+            class="grid grid-cols-1 gap-4 md:grid-cols-4"
         >
             <Label
                 class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
@@ -59,6 +63,18 @@ const listingType = computed({
                 </span>
                 <span class="text-sm text-muted-foreground">
                     {{ $t('createListing.types.donation.description') }}
+                </span>
+            </Label>
+
+            <Label
+                class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
+            >
+                <RadioGroupItem value="investment" class="sr-only" />
+                <span class="font-semibold">
+                    {{ $t('createListing.types.investment.title') }}
+                </span>
+                <span class="text-sm text-muted-foreground">
+                    {{ $t('createListing.types.investment.description') }}
                 </span>
             </Label>
         </RadioGroup>

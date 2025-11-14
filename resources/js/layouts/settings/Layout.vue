@@ -43,7 +43,7 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
         :description="$t('layout.description')"
     />
 
-    <div class="flex min-h-[40vh] flex-col lg:flex-row lg:space-x-12">
+    <div class="flex min-h-[100vh] flex-col lg:flex-row lg:space-x-12">
         <aside class="w-full max-w-xl lg:w-48">
             <nav class="flex flex-col space-y-1 space-x-0">
                 <Button

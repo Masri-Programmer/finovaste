@@ -7,6 +7,7 @@ import {
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { dashboard, logout } from '@/routes';
+import { index } from '@/routes/listings/users';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
@@ -30,7 +31,11 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="edit()" as="button">
+            <Link
+                class="block w-full"
+                :href="index($page.props.auth.user.id)"
+                as="button"
+            >
                 <Scroll class="mr-2 h-4 w-4" />
                 {{ $t('menu.listings') }}
             </Link>

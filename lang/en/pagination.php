@@ -3,12 +3,12 @@
 
 
 return [
-    'ariaLabel' => 'Seitennavigation',
-    'defaultName' => 'Einträge',
-    'navigationAriaLabel' => 'Seitennavigation',
-    'next' => 'Nächste',
-    'noResults' => 'Keine {name} gefunden.',
-    'perPageName' => '{name} pro Seite',
-    'previous' => 'Vorherige',
-    'showing' => 'Zeige :from bis :to von :total :name',
+    'ariaLabel' => 'Page navigation',
+    'defaultName' => 'Entries',
+    'navigationAriaLabel' => 'Page navigation',
+    'next' => 'Next',
+    'noResults' => 'No :name found.',
+    'perPageName' => ':name per page',
+    'previous' => 'Previous',
+    'showing' => 'Show :from to :to from :total :name',
 ];

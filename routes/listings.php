@@ -22,6 +22,8 @@ Route::controller(ListingController::class)
             Route::get('/{listing}/edit', 'edit')->name('edit');
             Route::match(['put', 'patch'], '/{listing}', 'update')->name('update');
             Route::delete('/{listing}', 'destroy')->name('destroy');
+
+            Route::get('/users/{user}', 'userListings')->name('users.index');;
         });
 
         Route::get('/{listing}', 'show')->name('show');

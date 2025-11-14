@@ -45,7 +45,16 @@ return [
         'location' => [
             'label' => 'Standort',
             'placeholder' => 'z.B. „Berlin, Deutschland“'
-        ],
+        ], // Investment
+        'investment_goal' => 'Investitionsziel',
+        'minimum_investment' => 'Mindestinvestition',
+        'shares_offered' => 'Angebotene Anteile',
+        'share_price' => 'Preis pro Anteil',
+
+        // Media
+        'images' => 'Bilder',
+        'documents' => 'Dokumente',
+        'videos' => 'Videos',
         'media' => [
             'description' => 'Laden Sie ...',
             'documents' => 'Dokumente',
@@ -82,11 +91,6 @@ return [
         'error' => 'Fehler beim Erstellen des Inserats. Bitte überprüfen Sie Ihre Eingaben.',
         'success' => 'Inserat erfolgreich erstellt! Es wird nun überprüft.'
     ],
-    'sections' => [
-        'core' => 'Kerndetails',
-        'details' => 'Spezifische Details',
-        'type' => 'Inseratstyp auswählen'
-    ],
     'title' => 'Neues Inserat erstellen',
     'types' => [
         'auction' => [
@@ -100,6 +104,75 @@ return [
         'donation' => [
             'description' => 'Gelder für einen bestimmten Zweck sammeln.',
             'title' => 'Spendenaktion'
-        ]
-    ]
+        ],
+        'investment' =>  [
+            'title' => 'Investition',
+            'description' => 'Investieren Sie in Startups, Immobilien oder andere Projekte.'
+        ],
+    ],
+    'sections' => [
+        'common' => 'Allgemeine Details',
+        'media' => 'Medien (Bilder, Dokumente, Videos)',
+        'core' => 'Kerndetails',
+        'details' => 'Spezifische Details',
+        'type' => 'Inseratstyp auswählen'
+    ],
+
+    'placeholders' => [
+        // Common
+        'title' => 'z.B. "Vintage Lederjacke"',
+        'description' => 'Beschreiben Sie Ihren Artikel, Ihr Projekt oder Ihr Ziel im Detail...',
+        'category' => 'Wählen Sie eine Kategorie',
+        'location' => 'z.B. "Berlin, Deutschland"',
+
+        // Buy Now
+        'price' => 'z.B. 99,50',
+
+        // Auction
+        'start_price' => 'z.B. 10,00',
+        'reserve_price' => 'z.B. 50,00',
+        'buy_it_now_price' => 'z.B. 150,00',
+
+        // Donation
+        'donation_goal' => 'z.B. 5000',
+
+        // Investment
+        'investment_goal' => 'z.B. 50000',
+        'minimum_investment' => 'z.B. 500',
+        'shares_offered' => 'z.B. 1000',
+        'share_price' => 'z.B. 50',
+    ],
+
+    'conditions' => [
+        'new' => 'Neu',
+        'used' => 'Gebraucht',
+        'refurbished' => 'Überholt',
+    ],
+
+    'tooltips' => [
+        'is_goal_flexible' => 'Wenn aktiviert, können Spenden auch nach Erreichen des Ziels fortgesetzt werden.',
+    ],
+
+    'media' => [
+        'dropzone' => 'Dateien hier ablegen oder zum Durchsuchen klicken',
+        'remove' => 'Entfernen',
+        'existing' => 'Vorhandene Medien',
+    ],
+
+    'listings' => [
+        'edit' => [
+            'title' => '"{title}" bearbeiten',
+            'description' => 'Aktualisieren Sie unten Ihre Inseratsdetails, Medien und spezifischen Einstellungen.',
+            'actions' => [
+                'save' => 'Änderungen speichern',
+                'saving' => 'Speichert...',
+            ],
+        ],
+    ],
+
+    'edit' => [
+        'notifications' => [
+            'success' => 'Inserat erfolgreich aktualisiert.',
+        ],
+    ],
 ];

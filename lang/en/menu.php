@@ -3,10 +3,11 @@
 
 
 return [
-    'logout' => 'Abmelden',
-    'settings' => 'Einstellungen',
-    'listings' => 'Einträge',
-    'messages' => 'Nachrichten',
-    'profile' => 'Profil',
-    'marketplace' => 'Marktplatz'
+    'logout' => 'Log out',
+    'settings' => 'Settings',
+    'listings' => 'Entries',
+    'messages' => 'Messages',
+    'profile' => 'Profile',
+    'marketplace' => 'Marketplace',
+    'home' => 'Marketplace'
 ];

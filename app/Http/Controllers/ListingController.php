@@ -10,6 +10,7 @@ use App\Models\DonationListing;
 use App\Models\BuyNowListing;
 use App\Models\InvestmentListing;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\ListingMediaService;
@@ -176,7 +177,7 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-        $listing->load('listable');
+        $listing->load(['listable', 'media']);
 
         $allCategories = Category::orderBy('name')->get();
 
@@ -184,6 +185,9 @@ class ListingController extends Controller
         $listingData['listable'] = $listing->listable;
         $listingData['title'] = $listing->getTranslations('title');
         $listingData['description'] = $listing->getTranslations('description');
+
+        // Pass the loaded media data to the frontend
+        $listingData['media'] = $listing->media;
 
         return Inertia::render('listings/Edit', [
             'listing' => $listingData,
@@ -291,6 +295,25 @@ class ListingController extends Controller
 
         return Inertia::render('listings/Liked', [
             'listings' => $listings,
+        ]);
+    }
+
+
+    public function userListings(Request $request, User $user)
+    {
+        $filters = $request->query();
+
+        $listings = $user->listings()
+            ->filter($filters)
+            ->with(['listable', 'user', 'category'])
+            ->latest()
+            ->paginate(50);
+
+        return Inertia::render('listings/Users/Index', [
+            'listings' => $listings,
+            'filters' => $filters,
+            'user' => $user->only('id', 'name'),
+            'hide_filters' => true,
         ]);
     }
 }

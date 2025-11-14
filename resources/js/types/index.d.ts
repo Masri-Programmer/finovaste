@@ -149,3 +149,10 @@ interface Paginator {
     to: number | null;
     total: number;
 }
+
+interface Filters {
+    category: string | null;
+    search: string | null;
+    type: string | null;
+    sort: string | null;
+}

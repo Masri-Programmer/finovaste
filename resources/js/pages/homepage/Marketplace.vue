@@ -21,12 +21,8 @@ const filters = ref({
         </header>
 
         <section class="mt-6">
-            <h2 class="mb-4 text-2xl font-semibold">
-                {{ $t('marketplace.featuredListings') }}
-            </h2>
-
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
-                <div class="lg:col-span-1">
+                <div class="lg:col-span-1" v-if="!$page.props?.hide_filters">
                     <SearchFilter />
                 </div>
 

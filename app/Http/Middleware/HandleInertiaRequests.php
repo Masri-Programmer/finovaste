@@ -59,6 +59,20 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'navigation' => $componentService->getStructuredComponent('main_navigation'),
             'footer' => $componentService->getStructuredComponent('site_footer'),
+            'page' => session(
+                'page_data',
+                [
+                    'title' => [
+                        'key' => 'app.name',
+                        'params' => []
+                    ],
+                    'description' => [
+                        'key' => 'app.description',
+                        'params' => [],
+                    ],
+                    'keywords' => 'app.keywords',
+                ]
+            ),
         ];
     }
 }

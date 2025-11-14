@@ -8,11 +8,13 @@
                 :listing-title="`Check out this listing:`"
             />
             <LikeAction :listing="$page.props.listing" />
+            <EditAction :listing="$page.props.listing" />
         </div>
     </header>
 </template>
 
 <script setup lang="ts">
+import EditAction from '@/components/actions/EditAction.vue';
 import LikeAction from '@/components/actions/LikeAction.vue';
 import ShareAction from '@/components/actions/ShareAction.vue';
 import { usePage } from '@inertiajs/vue3';

@@ -101,3 +101,13 @@ export interface DonationListable {
     created_at: string;
     updated_at: string;
 }
+
+export interface Media {
+    id: number;
+    collection_name: 'images' | 'documents' | 'videos';
+    file_name: string;
+    original_url: string;
+    mime_type: string;
+    model_id: number;
+    model_type: string;
+}
