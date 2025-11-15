@@ -7,6 +7,7 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\App;
+use App\Settings\GeneralSettings;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -50,7 +51,8 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $user,
-                'roles' => $user?->roles->pluck('slug') ?? [],
+                'roles' => $request->user()?->getRoleNames() ?? [],
+                'permissions' => $request->user()?->getAllPermissions()->pluck('name'),
                 'addresses' => $user?->addresses ?? [],
             ],
             'locale' => fn() => App::getLocale(),
@@ -73,6 +75,15 @@ class HandleInertiaRequests extends Middleware
                     'keywords' => 'app.keywords',
                 ]
             ),
+            'settings' => function () use ($request) {
+                if ($request->routeIs('admin.*')) {
+                    return [
+                        'general' => app(GeneralSettings::class)->toArray(),
+                    ];
+                }
+
+                return null;
+            }
         ];
     }
 }

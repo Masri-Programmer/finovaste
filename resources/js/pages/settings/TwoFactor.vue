@@ -11,9 +11,7 @@ import { Button } from '@/components/ui/button';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { disable, enable, show } from '@/routes/two-factor';
-import { BreadcrumbItem } from '@/types';
-import { trans } from 'laravel-vue-i18n';
+import { disable, enable } from '@/routes/two-factor';
 
 interface Props {
     requiresConfirmation?: boolean;
@@ -25,13 +23,6 @@ withDefaults(defineProps<Props>(), {
     twoFactorEnabled: false,
 });
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: trans('twoFactor.breadcrumb'),
-        href: show.url(),
-    },
-];
-
 const { hasSetupData, clearTwoFactorAuthData } = useTwoFactorAuth();
 const showSetupModal = ref<boolean>(false);
 
@@ -41,7 +32,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <Head :title="$t('twoFactor.headTitle')" />
         <SettingsLayout>
             <div class="space-y-6">

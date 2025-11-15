@@ -88,6 +88,9 @@ export type AppPageProps<
     user: User;
     category: Category;
     breadcrumbs: BreadcrumbItem[];
+    settings: {
+        general: GeneralSettings;
+    } | null;
 };
 
 export interface LocaleString {
@@ -155,4 +158,12 @@ interface Filters {
     search: string | null;
     type: string | null;
     sort: string | null;
+}
+
+export interface GeneralSettings {
+    site_name: string;
+    site_active: boolean;
+    logo_url: string | null;
+    per_page: number | null;
+    contact_email: string | null;
 }

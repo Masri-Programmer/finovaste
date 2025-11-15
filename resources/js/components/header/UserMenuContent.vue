@@ -6,7 +6,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { dashboard, logout } from '@/routes';
+import { logout } from '@/routes';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/listings/users';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';

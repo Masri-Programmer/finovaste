@@ -309,7 +309,7 @@ class ListingController extends Controller
             ->latest()
             ->paginate(50);
 
-        return Inertia::render('listings/Users/Index', [
+        return Inertia::render('listings/users/Index', [
             'listings' => $listings,
             'filters' => $filters,
             'user' => $user->only('id', 'name'),

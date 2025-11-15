@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
     //  MustVerifyEmail,
     //  TwoFactorAuthenticatable;
 
@@ -68,13 +69,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
-    /**
-     * The roles that belong to the user.
-     */
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class);
-    }
 
     public function likedListings(): BelongsToMany
     {
@@ -91,15 +85,5 @@ class User extends Authenticatable
     public function primaryAddress(): MorphOne
     {
         return $this->morphOne(Address::class, 'addressable');
-    }
-    /**
-     * Check if the user has a specific role.
-     *
-     * @param string $roleSlug
-     * @return bool
-     */
-    public function hasRole(string $roleSlug): bool
-    {
-        return $this->roles()->where('slug', $roleSlug)->exists();
     }
 }

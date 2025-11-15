@@ -11,10 +11,22 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard } from '@/routes/admin';
+import { index as categories } from '@/routes/admin/categories';
+import { index } from '@/routes/admin/listings';
+import { show } from '@/routes/admin/settings';
+import { index as users } from '@/routes/admin/users';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import {
+    BookOpen,
+    ChartBarStacked,
+    Folder,
+    LayoutGrid,
+    List,
+    Settings,
+    User,
+} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -22,6 +34,26 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Einträge',
+        href: index(),
+        icon: List,
+    },
+    {
+        title: 'Nutzereinstellungen',
+        href: users(),
+        icon: User,
+    },
+    {
+        title: 'Kategorienverwaltung',
+        href: categories(),
+        icon: ChartBarStacked,
+    },
+    {
+        title: 'Einstellungen',
+        href: show(),
+        icon: Settings,
     },
 ];
 

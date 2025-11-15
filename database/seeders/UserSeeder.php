@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+// Important: Make sure your App\Models\Role extends Spatie\Permission\Models\Role
+// and your App\Models\User uses Spatie\Permission\Traits\HasRoles
 use App\Models\Role;
 use App\Models\User;
 use Database\Factories\AddressFactory;
@@ -15,40 +17,36 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::firstWhere('slug', 'admin');
-        $userRole = Role::firstWhere('slug', 'user');
+        $adminRole = Role::firstWhere('name', 'admin');
+        $userRole = Role::firstWhere('name', 'user');
 
-        // Use updateOrCreate to find the user by email, or create them if they don't exist
         $admin = User::updateOrCreate(
-            ['email' => 'admin@example.com'], // Attributes to find by
-            [                                 // Attributes to update or create with
+            ['email' => 'admin@example.com'],
+            [
                 'name' => 'Admin User',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
         );
 
-        // Only create an address if the user doesn't have one
         if ($admin->addresses()->count() === 0) {
             $admin->addresses()->create(
                 AddressFactory::new()->make()->toArray()
             );
         }
 
-        // Only attach the role if the user doesn't already have it
-        if ($adminRole && !$admin->roles->contains($adminRole)) {
-            $admin->roles()->attach($adminRole);
+        if ($adminRole && !$admin->hasRole($adminRole)) {
+            $admin->assignRole($adminRole);
         }
 
-        // Create 20 new users and attach the user role
         User::factory(20)->create()->each(function ($user) use ($userRole) {
+
             $user->addresses()->create(
                 AddressFactory::new()->make()->toArray()
             );
 
-            // Also add a check here to be safe
-            if ($userRole && !$user->roles->contains($userRole)) {
-                $user->roles()->attach($userRole);
+            if ($userRole && !$user->hasRole($userRole)) {
+                $user->assignRole($userRole);
             }
         });
     }
