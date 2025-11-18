@@ -16,8 +16,6 @@
                     {{ $page.props.name }}
                 </Link>
 
-                <div class="hidden lg:block"></div>
-
                 <div class="flex flex-1 justify-end">
                     <div class="flex items-center gap-x-2">
                         <div class="hidden items-center gap-x-4 lg:flex">
@@ -96,6 +94,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="mr-2 lg:hidden">
+                    <MobileHeader :menu-sections="menuSections" />
+                </div>
             </div>
         </div>
         <div
@@ -129,6 +130,7 @@ import { create, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Bell, Heart, Plus } from 'lucide-vue-next';
 import { computed } from 'vue';
+import MobileHeader from './MobileHeader.vue';
 
 defineProps<{
     menuSections: Array<any>;

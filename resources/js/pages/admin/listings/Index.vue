@@ -4,6 +4,7 @@ import { useToast } from 'vue-toastification';
 
 import ResourceIndex from '@/components/resource/Index.vue';
 import { Badge } from '@/components/ui/badge';
+import { create, destroy, edit, show } from '@/routes/admin/listings';
 
 interface TranslatableString {
     en: string;
@@ -120,34 +121,20 @@ const filteredListings = computed(() =>
                 .includes(listingSearch.value.toLowerCase()),
     ),
 );
-
-const handleCreateListing = () => {
-    toast.info('Create listing form logic goes here.');
-};
-
-const handleEditListing = (listing: Listing) => {
-    toast.info(`Editing: ${listing.title.de}. Form logic goes here.`);
-};
-
-const handleDeleteListing = (id: number) => {
-    toast.warning(`Confirm delete for ID: ${id}. Confirm logic goes here.`);
-};
 </script>
 
 <template>
     <ResourceIndex
-        pageTitle="Manage Listings"
-        :title="$t('admin.dashboard.listings_title')"
-        :description="$t('admin.dashboard.listings_desc')"
-        :search-placeholder="$t('admin.dashboard.search_listings_placeholder')"
-        :empty-state-message="$t('admin.dashboard.no_listings_found')"
+        resource="listings"
+        resource-singular="listing"
         :columns="columns"
         :items="filteredListings"
         :pagination-links="props.listings.links"
         v-model="listingSearch"
-        @create="handleCreateListing"
-        @edit="handleEditListing"
-        @delete="handleDeleteListing"
+        :create-route="create.url()"
+        :view-route="(listing) => show.url(listing.id)"
+        :edit-route="(listing) => edit.url(listing.id)"
+        :delete-route="(listing) => destroy.url(listing.id)"
     >
         <template #cell-type="{ item }">
             <Badge variant="outline">

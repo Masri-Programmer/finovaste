@@ -5,6 +5,7 @@ import { useToast } from 'vue-toastification';
 // The new reusable component
 import ResourceIndex from '@/components/resource/Index.vue';
 import { Badge } from '@/components/ui/badge';
+import { create, destroy, edit, show } from '@/routes/admin/categories';
 
 // --- Types (Copied from your old Category Index) ---
 interface TranslatableString {
@@ -67,37 +68,20 @@ const filteredCategories = computed(() =>
                     .includes(categorySearch.value.toLowerCase())),
     ),
 );
-
-// --- CRUD Handlers (Stubs) ---
-const handleCreateCategory = () => {
-    toast.info('Create category form logic goes here.');
-};
-
-const handleEditCategory = (category: Category) => {
-    toast.info(`Editing: ${category.name.de}. Form logic goes here.`);
-};
-
-const handleDeleteCategory = (id: number) => {
-    toast.warning(`Confirm delete for ID: ${id}. Confirm logic goes here.`);
-};
 </script>
 
 <template>
     <ResourceIndex
-        pageTitle="Manage Categories"
-        :title="$t('admin.dashboard.categories_title')"
-        :description="$t('admin.dashboard.categories_desc')"
-        :search-placeholder="
-            $t('admin.dashboard.search_categories_placeholder')
-        "
-        :empty-state-message="$t('admin.dashboard.no_categories_found')"
+        resource="categories"
+        resource-singular="category"
         :columns="columns"
         :items="filteredCategories"
         :pagination-links="props.categories.links"
         v-model="categorySearch"
-        @create="handleCreateCategory"
-        @edit="handleEditCategory"
-        @delete="handleDeleteCategory"
+        :create-route="create.url()"
+        :view-route="(category) => show.url(category.id)"
+        :edit-route="(category) => edit.url(category.id)"
+        :delete-route="(category) => destroy.url(category.id)"
     >
         <template #cell-parent="{ item }">
             <span v-if="item.parent" class="text-muted-foreground">
@@ -117,10 +101,10 @@ const handleDeleteCategory = (id: number) => {
         <template #cell-is_active="{ item }">
             <Badge :variant="item.is_active ? 'secondary' : 'outline'">
                 <span v-if="item.is_active">
-                    {{ $t('admin.dashboard.active') }}
+                    {{ $t('admin.dashboard.states.active') }}
                 </span>
                 <span v-else>
-                    {{ $t('admin.dashboard.inactive') }}
+                    {{ $t('admin.dashboard.states.inactive') }}
                 </span>
             </Badge>
         </template>

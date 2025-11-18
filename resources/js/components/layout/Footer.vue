@@ -1,9 +1,7 @@
 <template>
-    <footer
-        class="container-custom mx-auto flex items-center !overflow-visible py-12"
-    >
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-5">
-            <div class="md:col-span-3 lg:col-span-2">
+    <footer class="container-custom mx-auto px-4 py-12 md:px-6">
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
+            <div class="col-span-1 sm:col-span-2 lg:col-span-2">
                 <div class="flex items-center space-x-3">
                     <AppLogoIcon class="size-6 fill-current" />
                     <span class="text-2xl font-bold text-foreground">
@@ -11,7 +9,7 @@
                     </span>
                 </div>
 
-                <p class="mt-4 text-base text-muted-foreground">
+                <p class="mt-4 max-w-xs text-base text-muted-foreground">
                     {{ $t('footer.description') }}
                 </p>
 
@@ -213,7 +211,7 @@
         <div
             class="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-border pt-8 sm:flex-row"
         >
-            <p class="text-sm text-muted-foreground">
+            <p class="text-center text-sm text-muted-foreground sm:text-left">
                 {{ $t('footer.copyright') }}
             </p>
 

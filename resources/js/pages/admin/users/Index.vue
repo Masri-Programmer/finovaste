@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useToast } from 'vue-toastification';
-
 // The new reusable component
 import ResourceIndex from '@/components/resource/Index.vue';
 import { Badge } from '@/components/ui/badge';
+import { create, destroy, edit, show } from '@/routes/admin/users';
+import { Check, Clock3 } from 'lucide-vue-next';
 
 // --- Types (Copied from your old User Index) ---
 interface UserRole {
@@ -62,39 +63,21 @@ const formatDate = (dateString: string | null) => {
     return new Date(dateString).toLocaleDateString('de-DE');
 };
 const isEmailVerified = (dateString: string | null) => !!dateString;
-
-// --- CRUD Handlers (Stubs) ---
-const handleCreateUser = () => {
-    toast.info('Create user form logic goes here.');
-    // router.get(route('web.admin.users.create'));
-};
-
-const handleEditUser = (user: User) => {
-    toast.info(`Editing: ${user.name}. Form logic goes here.`);
-    // router.get(route('web.admin.users.edit', user.id));
-};
-
-const handleDeleteUser = (id: number) => {
-    toast.warning(`Confirm delete for ID: ${id}. Confirm logic goes here.`);
-    // Show delete confirmation modal...
-    // router.delete(route('web.admin.users.destroy', id), { ... });
-};
 </script>
 
 <template>
     <ResourceIndex
-        pageTitle="Manage Users"
-        :title="$t('admin.dashboard.users_title')"
-        :description="$t('admin.dashboard.users_desc')"
-        :search-placeholder="$t('admin.dashboard.search_users_placeholder')"
-        :empty-state-message="$t('admin.dashboard.no_users_found')"
+        resource="users"
+        resource-singular="user"
         :columns="columns"
         :items="filteredUsers"
         :pagination-links="props.users.links"
         v-model="userSearch"
-        @create="handleCreateUser"
-        @edit="handleEditUser"
-        @delete="handleDeleteUser"
+        delete-label-key="name"
+        :create-route="create.url()"
+        :view-route="(user) => show.url(user.id)"
+        :edit-route="(user) => edit.url(user.id)"
+        :delete-route="(user) => destroy.url(user.id)"
     >
         <template #cell-roles="{ item }">
             <div v-if="item.roles.length > 0" class="flex flex-wrap gap-1">
@@ -118,10 +101,10 @@ const handleDeleteUser = (id: number) => {
                 "
             >
                 <span v-if="isEmailVerified(item.email_verified_at)">
-                    {{ $t('admin.dashboard.verified') }}
+                    <Check color="green" />
                 </span>
                 <span v-else>
-                    {{ $t('admin.dashboard.pending') }}
+                    <Clock3 color="yellow" />
                 </span>
             </Badge>
         </template>

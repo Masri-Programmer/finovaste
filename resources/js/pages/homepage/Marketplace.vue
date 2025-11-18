@@ -20,24 +20,17 @@ const filters = ref({
             </h1>
         </header>
 
-        <section class="mt-6">
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
-                <div class="lg:col-span-1" v-if="!$page.props?.hide_filters">
-                    <SearchFilter />
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div
-                        class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2"
-                    >
-                        <ListingCard
-                            v-for="listing in $page.props.listings.data"
-                            :key="listing.uuid"
-                            :listing="listing"
-                            :locale="$page.props.locale"
-                        />
-                    </div>
-                </div>
+        <section>
+            <SearchFilter v-if="!$page.props?.hide_filters" />
+            <div
+                class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3"
+            >
+                <ListingCard
+                    v-for="listing in $page.props.listings.data"
+                    :key="listing.uuid"
+                    :listing="listing"
+                    :locale="$page.props.locale"
+                />
             </div>
         </section>
 

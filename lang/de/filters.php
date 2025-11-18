@@ -2,6 +2,8 @@
 
 return [
     "searchPlaceholder" => "Angebote durchsuchen...",
+    "advancedTitle" => "Erweiterte Filter",
+    "advancedDescription" => "Passen Sie Ihre Suche an, um genau das zu finden, wonach Sie suchen.",
     "category" => "Kategorie",
     "allCategories" => "Alle Kategorien",
     "listingType" => "Angebotsart",

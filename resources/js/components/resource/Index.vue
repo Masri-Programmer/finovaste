@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
-
-// Layout
-import AppLayout from '@/layouts/AppLayout.vue';
-
-// UI Components
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -24,90 +27,98 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { Eye, Pencil, Plus, Search, Trash2 } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 
-// --- Types ---
-
+// --- Types & Props ---
 interface Column {
     key: string;
     label: string;
     class?: string;
 }
-
 interface PaginationLink {
     url: string | null;
     label: string;
     active: boolean;
 }
 
-// --- Props ---
-
 const props = withDefaults(
     defineProps<{
-        // --- Page & Card ---
-        pageTitle: string;
-        title: string;
-        description: string;
-
-        // --- Search ---
-        modelValue: string; // For v-model:search
-        searchPlaceholder?: string;
-
-        // --- Table ---
+        resource: string; // e.g., 'Listings', 'Users'
         columns: Column[];
         items: any[];
-        emptyStateMessage?: string;
-
-        // --- Actions ---
+        paginationLinks: PaginationLink[];
+        modelValue: string;
+        createRoute?: string;
+        viewRoute?: (item: any) => string;
+        editRoute?: (item: any) => string;
+        deleteRoute?: (item: any) => string;
         showCreateButton?: boolean;
         showViewAction?: boolean;
         showEditAction?: boolean;
         showDeleteAction?: boolean;
-
-        // --- Pagination ---
-        paginationLinks: PaginationLink[];
+        deleteLabelKey?: string;
     }>(),
     {
-        // Default values
-        searchPlaceholder: 'Search items...',
-        emptyStateMessage: 'No items found.',
         showCreateButton: true,
-        showViewAction: false, // Defaulting to false as it's less common
+        showViewAction: true,
         showEditAction: true,
         showDeleteAction: true,
+        deleteLabelKey: 'id',
     },
 );
 
-// --- Emits ---
+const emit = defineEmits(['update:modelValue', 'delete-success']);
 
-const emit = defineEmits([
-    'update:modelValue', // For v-model:search
-    'create',
-    'view',
-    'edit',
-    'delete',
-]);
+// --- State & Logic ---
+const deleteDialogOpen = ref(false);
+const itemToDelete = ref<any | null>(null);
 
-// --- Computed ---
-
-/**
- * Computed property to proxy v-model for the search input.
- */
 const searchModel = computed({
     get: () => props.modelValue,
     set: (value) => emit('update:modelValue', value),
 });
 
-/**
- * Helper to get nested property values (e.g., 'name.de') for default cell rendering.
- */
-const getProperty = (item: any, path: string) => {
-    return path.split('.').reduce((acc, part) => acc && acc[part], item);
+// Singularize for the "Add" button (e.g. "Users" -> "User")
+const resourceSingular = computed(() => {
+    return props.resource.endsWith('s')
+        ? props.resource.slice(0, -1)
+        : props.resource;
+});
+
+const getProperty = (item: any, path: string) =>
+    path.split('.').reduce((acc, part) => acc && acc[part], item);
+
+const promptDelete = (item: any) => {
+    itemToDelete.value = item;
+    deleteDialogOpen.value = true;
+};
+
+const toggleDeleteDialog = (value: boolean) => {
+    deleteDialogOpen.value = value;
+    if (!value) setTimeout(() => (itemToDelete.value = null), 300);
+};
+
+const confirmDelete = () => {
+    if (itemToDelete.value && props.deleteRoute) {
+        router.delete(props.deleteRoute(itemToDelete.value), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toggleDeleteDialog(false);
+                emit('delete-success');
+            },
+            onFinish: () => toggleDeleteDialog(false),
+        });
+    } else {
+        toggleDeleteDialog(false);
+    }
 };
 </script>
 
 <template>
-    <Head :title="pageTitle" />
+    <Head :title="$t('admin.dashboard.index.title', { resource: resource })" />
 
     <AppLayout>
         <div
@@ -119,15 +130,37 @@ const getProperty = (item: any, path: string) => {
                         class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
                     >
                         <div>
-                            <CardTitle>{{ title }}</CardTitle>
+                            <CardTitle class="capitalize">
+                                {{
+                                    $t('admin.dashboard.index.title', {
+                                        resource: resource,
+                                    })
+                                }}
+                            </CardTitle>
                             <CardDescription>
-                                {{ description }}
+                                {{
+                                    $t('admin.dashboard.index.description', {
+                                        resource: resource,
+                                    })
+                                }}
                             </CardDescription>
                         </div>
-                        <Button v-if="showCreateButton" @click="emit('create')">
-                            <Plus class="mr-2 h-4 w-4" />
-                            {{ $t('admin.dashboard.add_new') }}
-                        </Button>
+
+                        <div v-if="showCreateButton">
+                            <Link v-if="createRoute" :href="createRoute">
+                                <Button>
+                                    <Plus class="mr-2 h-4 w-4" />
+                                    <span class="capitalize">
+                                        {{
+                                            $t(
+                                                'admin.dashboard.actions.add_resource',
+                                                { resource: resourceSingular },
+                                            )
+                                        }}
+                                    </span>
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -137,7 +170,12 @@ const getProperty = (item: any, path: string) => {
                         />
                         <Input
                             v-model="searchModel"
-                            :placeholder="searchPlaceholder"
+                            :placeholder="
+                                $t(
+                                    'admin.dashboard.actions.search_placeholder',
+                                    { resource: resource },
+                                )
+                            "
                             class="pl-10"
                         />
                     </div>
@@ -156,7 +194,7 @@ const getProperty = (item: any, path: string) => {
                                     <TableHead class="text-right">
                                         {{
                                             $t(
-                                                'admin.dashboard.table_header_actions',
+                                                'admin.dashboard.table.actions_header',
                                             )
                                         }}
                                     </TableHead>
@@ -180,43 +218,45 @@ const getProperty = (item: any, path: string) => {
                                                 {{ getProperty(item, col.key) }}
                                             </slot>
                                         </TableCell>
-
                                         <TableCell class="text-right">
                                             <slot name="actions" :item="item">
                                                 <div
                                                     class="flex justify-end gap-2"
                                                 >
-                                                    <Button
-                                                        v-if="showViewAction"
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        @click="
-                                                            emit('view', item)
+                                                    <Link
+                                                        v-if="
+                                                            showViewAction &&
+                                                            viewRoute
                                                         "
+                                                        :href="viewRoute(item)"
                                                     >
-                                                        <Eye class="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        v-if="showEditAction"
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        @click="
-                                                            emit('edit', item)
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            ><Eye
+                                                                class="h-4 w-4"
+                                                        /></Button>
+                                                    </Link>
+                                                    <Link
+                                                        v-if="
+                                                            showEditAction &&
+                                                            editRoute
                                                         "
+                                                        :href="editRoute(item)"
                                                     >
-                                                        <Pencil
-                                                            class="h-4 w-4"
-                                                        />
-                                                    </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            ><Pencil
+                                                                class="h-4 w-4"
+                                                        /></Button>
+                                                    </Link>
                                                     <Button
                                                         v-if="showDeleteAction"
                                                         variant="ghost"
                                                         size="sm"
                                                         @click="
-                                                            emit(
-                                                                'delete',
-                                                                item.id,
-                                                            )
+                                                            promptDelete(item)
                                                         "
                                                     >
                                                         <Trash2
@@ -233,14 +273,17 @@ const getProperty = (item: any, path: string) => {
                                         :col-span="columns.length + 1"
                                         class="py-8 text-center text-muted-foreground"
                                     >
-                                        {{ emptyStateMessage }}
+                                        {{
+                                            $t('admin.dashboard.states.empty', {
+                                                resource: resource,
+                                            })
+                                        }}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
                     </div>
                 </CardContent>
-
                 <CardFooter
                     v-if="paginationLinks.length > 3"
                     class="flex justify-center border-t pt-4"
@@ -256,7 +299,7 @@ const getProperty = (item: any, path: string) => {
                                     link.active,
                                 'text-muted-foreground hover:bg-accent':
                                     !link.active && link.url,
-                                'cursor-not-allowed opacity-50': !link.url,
+                                'opacity-50': !link.url,
                             }"
                             v-html="link.label"
                         />
@@ -264,5 +307,35 @@ const getProperty = (item: any, path: string) => {
                 </CardFooter>
             </Card>
         </div>
+
+        <AlertDialog :open="deleteDialogOpen" @update:open="toggleDeleteDialog">
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>{{
+                        $t('admin.dashboard.dialogs.delete.title')
+                    }}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        {{
+                            $t('admin.dashboard.dialogs.delete.description', {
+                                item: itemToDelete
+                                    ? getProperty(itemToDelete, deleteLabelKey)
+                                    : 'Item',
+                            })
+                        }}
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel @click="toggleDeleteDialog(false)">
+                        {{ $t('actions.cancel') }}
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                        @click="confirmDelete"
+                        class="bg-destructive hover:bg-destructive/90"
+                    >
+                        {{ $t('actions.delete') }}
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     </AppLayout>
 </template>
