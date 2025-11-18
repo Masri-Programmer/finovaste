@@ -68,7 +68,6 @@ const isEmailVerified = (dateString: string | null) => !!dateString;
 <template>
     <ResourceIndex
         resource="users"
-        resource-singular="user"
         :columns="columns"
         :items="filteredUsers"
         :pagination-links="props.users.links"

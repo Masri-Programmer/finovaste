@@ -39,7 +39,7 @@ const stats = computed(() => ({
                             class="flex flex-row items-center justify-between pb-2"
                         >
                             <CardTitle class="text-sm font-medium">
-                                {{ $t('admin.dashboard.stats_total_listings') }}
+                                {{ $t('admin.dashboard.stats.total_listings') }}
                             </CardTitle>
                             <Package class="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -48,7 +48,7 @@ const stats = computed(() => ({
                                 {{ stats.totalListings }}
                             </div>
                             <p class="mt-1 text-xs text-muted-foreground">
-                                {{ $t('admin.dashboard.stats_listings_desc') }}
+                                {{ $t('admin.dashboard.stats.listings_desc') }}
                             </p>
                         </CardContent>
                     </Card>
@@ -60,7 +60,7 @@ const stats = computed(() => ({
                             class="flex flex-row items-center justify-between pb-2"
                         >
                             <CardTitle class="text-sm font-medium">
-                                {{ $t('admin.dashboard.stats_total_users') }}
+                                {{ $t('admin.dashboard.stats.total_users') }}
                             </CardTitle>
                             <Users class="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -69,7 +69,7 @@ const stats = computed(() => ({
                                 {{ stats.totalUsers }}
                             </div>
                             <p class="mt-1 text-xs text-muted-foreground">
-                                {{ $t('admin.dashboard.stats_users_desc') }}
+                                {{ $t('admin.dashboard.stats.users_desc') }}
                             </p>
                         </CardContent>
                     </Card>
@@ -81,7 +81,7 @@ const stats = computed(() => ({
                             class="flex flex-row items-center justify-between pb-2"
                         >
                             <CardTitle class="text-sm font-medium">
-                                {{ $t('admin.dashboard.stats_total_revenue') }}
+                                {{ $t('admin.dashboard.stats.total_revenue') }}
                             </CardTitle>
                             <DollarSign class="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -90,7 +90,7 @@ const stats = computed(() => ({
                                 ${{ stats.totalRevenue.toLocaleString() }}
                             </div>
                             <p class="mt-1 text-xs text-muted-foreground">
-                                {{ $t('admin.dashboard.stats_revenue_desc') }}
+                                {{ $t('admin.dashboard.stats.revenue_desc') }}
                             </p>
                         </CardContent>
                     </Card>
@@ -103,7 +103,7 @@ const stats = computed(() => ({
                         >
                             <CardTitle class="text-sm font-medium">
                                 {{
-                                    $t('admin.dashboard.stats_active_listings')
+                                    $t('admin.dashboard.stats.active_listings')
                                 }}
                             </CardTitle>
                             <TrendingUp class="h-4 w-4 text-muted-foreground" />
@@ -113,7 +113,7 @@ const stats = computed(() => ({
                                 {{ stats.activeListings }}
                             </div>
                             <p class="mt-1 text-xs text-muted-foreground">
-                                {{ $t('admin.dashboard.stats_active_desc') }}
+                                {{ $t('admin.dashboard.stats.active_desc') }}
                             </p>
                         </CardContent>
                     </Card>

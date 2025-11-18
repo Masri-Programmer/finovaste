@@ -73,7 +73,6 @@ const filteredCategories = computed(() =>
 <template>
     <ResourceIndex
         resource="categories"
-        resource-singular="category"
         :columns="columns"
         :items="filteredCategories"
         :pagination-links="props.categories.links"

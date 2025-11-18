@@ -126,7 +126,6 @@ const filteredListings = computed(() =>
 <template>
     <ResourceIndex
         resource="listings"
-        resource-singular="listing"
         :columns="columns"
         :items="filteredListings"
         :pagination-links="props.listings.links"
