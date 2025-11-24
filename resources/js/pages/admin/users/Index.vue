@@ -9,6 +9,7 @@ import { useToast } from 'vue-toastification';
 interface UserRole {
     id: number;
     name: string;
+    guard_name: string;
 }
 interface User {
     id: number;
