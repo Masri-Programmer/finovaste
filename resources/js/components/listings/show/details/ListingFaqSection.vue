@@ -141,9 +141,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { destroy, store, update } from '@/routes/listings/faq';
+// import { destroy, store, update } from '@/routes/listings/faq';
 import type { ListingFaq } from '@/types';
-import { router, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -169,22 +169,20 @@ const processing = ref(false);
 const submitQuestion = () => {
     processing.value = true;
 
-    // 1. URL Generation: store.url(listingId)
-    // 2. Data: { question: ... }
-    router.post(
-        store.url(props.listingId),
-        {
-            question: newQuestion.value,
-        },
-        {
-            onSuccess: () => {
-                showAskForm.value = false;
-                newQuestion.value = '';
-                processing.value = false;
-            },
-            onError: () => (processing.value = false),
-        },
-    );
+    // router.post(
+    //     store.url(props.listingId),
+    //     {
+    //         question: newQuestion.value,
+    //     },
+    //     {
+    //         onSuccess: () => {
+    //             showAskForm.value = false;
+    //             newQuestion.value = '';
+    //             processing.value = false;
+    //         },
+    //         onError: () => (processing.value = false),
+    //     },
+    // );
 };
 
 // --- Owner Actions ---
@@ -199,27 +197,25 @@ const startEdit = (faq: ListingFaq) => {
 };
 
 const saveAnswer = (faq: ListingFaq) => {
-    // URL Generation: update.url([listingId, faqId])
-    editAnswerForm.patch(update.url([props.listingId, faq.id]), {
-        onSuccess: () => {
-            editingId.value = null;
-            // Auto approve on answer if currently hidden
-            if (!faq.is_visible) toggleVisibility(faq, true);
-        },
-    });
+    // editAnswerForm.patch(update.url([props.listingId, faq.id]), {
+    //     onSuccess: () => {
+    //         editingId.value = null;
+    //         // Auto approve on answer if currently hidden
+    //         if (!faq.is_visible) toggleVisibility(faq, true);
+    //     },
+    // });
 };
 
 const toggleVisibility = (faq: ListingFaq, forceState?: boolean) => {
     // URL Generation: update.url([listingId, faqId])
-    router.patch(update.url([props.listingId, faq.id]), {
-        is_visible: forceState !== undefined ? forceState : !faq.is_visible,
-    });
+    // router.patch(update.url([props.listingId, faq.id]), {
+    //     is_visible: forceState !== undefined ? forceState : !faq.is_visible,
+    // });
 };
 
 const deleteFaq = (faq: ListingFaq) => {
     if (confirm('Are you sure?')) {
-        // URL Generation: destroy.url([listingId, faqId])
-        router.delete(destroy.url([props.listingId, faq.id]));
+        // router.delete(destroy.url([props.listingId, faq.id]));
     }
 };
 </script>
