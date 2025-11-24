@@ -2,6 +2,10 @@
 #  chmod +x deploy.sh 
 set -e
 
+unset GIT_DIR
+unset GIT_WORK_TREE
+unset GIT_INDEX_FILE
+
 PM2_PROCESS_NAME="finovaste-ssr"
 
 echo "🚀 Starting deployment..."
