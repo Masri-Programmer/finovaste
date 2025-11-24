@@ -141,13 +141,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { ListingFaq } from '@/types'; // Ensure this matches your type file
+import { destroy, store, update } from '@/routes/listings/faq';
+import type { ListingFaq } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
-
-// --- Import Wayfinder Routes ---
-import { destroy, store, update } from '@/routes/listings/faq';
 
 const props = defineProps<{
     listingId: number;
@@ -164,7 +162,6 @@ const getTranslation = (field: any) => {
     return field[currentLocale] || field['en'] || Object.values(field)[0];
 };
 
-// --- Ask Question Logic ---
 const showAskForm = ref(false);
 const newQuestion = ref('');
 const processing = ref(false);
