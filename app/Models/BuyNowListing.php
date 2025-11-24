@@ -46,4 +46,8 @@ class BuyNowListing extends Model
     {
         return $this->morphOne(Listing::class, 'listable');
     }
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'payable');
+    }
 }

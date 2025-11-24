@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Providers\FakeMediaProvider;
+use Faker\Factory as FakerFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register custom Faker Provider for media URLs only when seeding
+        if ($this->app->environment('local', 'staging') && class_exists(FakerFactory::class)) {
+            $this->app->singleton(\Faker\Generator::class, function () {
+                $faker = FakerFactory::create();
+                $faker->addProvider(new FakeMediaProvider($faker));
+                return $faker;
+            });
+        }
     }
 }

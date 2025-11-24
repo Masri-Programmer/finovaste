@@ -173,10 +173,41 @@ class Listing extends Model implements HasMedia
 
         return null;
     }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->height(300)
+            ->sharpen(10);
+    }
+
+    public function bids()
+    {
+        return $this->hasMany(Bid::class)->orderBy('amount', 'desc');
+    }
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function highestBid()
+    {
+        return $this->hasOne(Bid::class)->ofMany('amount', 'max');
+    }
+
+    public function auctionDetails()
+    {
+        return $this->morphTo(__FUNCTION__, 'listable_type', 'listable_id');
+    }
+
+    public function faqs()
+    {
+        return $this->hasMany(ListingFaq::class);
+    }
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        // 1. --- Search Filter ---
-        // Searches title and description
+        // 1. Search
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('title', 'like', '%' . $search . '%')
@@ -184,61 +215,71 @@ class Listing extends Model implements HasMedia
             });
         });
 
-        // 2. --- Category Filter ---
-        // Assumes you are passing the category 'slug' in the URL
+        // 2. Category
         $query->when($filters['category'] ?? null, function ($query, $slug) {
-            $query->whereHas('category', function ($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
-        });
-
-        // 3. --- Listing Type Filter ---
-        // Filters by the polymorphic 'listable_type'
-        $query->when($filters['type'] ?? null, function ($query, $type) {
-            $listableModel = match ($type) {
-                'auction' => AuctionListing::class,
-                'buy_now' => BuyNowListing::class,
-                'investment' => InvestmentListing::class,
-                'donation' => DonationListing::class,
-                default => null,
-            };
-
-            if ($listableModel) {
-                $query->where('listable_type', $listableModel);
+            if ($slug !== 'all') {
+                $query->whereHas('category', function ($q) use ($slug) {
+                    $q->where('slug', $slug);
+                });
             }
         });
 
-        // 4. --- Sort Filter ---
-        $query->when($filters['sort'] ?? null, function ($query, $sort) {
-            if ($sort === 'oldest') {
-                $query->oldest(); // Sorts by created_at ascending
+        // 3. Types
+        $query->when($filters['types'] ?? null, function ($query, $types) {
+            $types = is_array($types) ? $types : [$types];
+
+            $mappedClasses = [];
+            foreach ($types as $type) {
+                match ($type) {
+                    'bid', 'auction' => $mappedClasses[] = AuctionListing::class,
+                    'buy', 'buy_now' => $mappedClasses[] = BuyNowListing::class,
+                    'invest', 'investment' => $mappedClasses[] = InvestmentListing::class,
+                    'donate', 'donation' => $mappedClasses[] = DonationListing::class,
+                    default => null,
+                };
             }
-            // Add more sorts like 'price_asc', 'price_desc' here
-        }, function ($query) {
-            // Default sort if 'sort' is not provided
-            $query->latest(); // Sorts by created_at descending
+
+            if (!empty($mappedClasses)) {
+                $query->whereIn('listable_type', $mappedClasses);
+            }
         });
 
-        $query->when($filters['min_price'] ?? null, function ($query, $minPrice) {
-            $query->whereHasMorph('listable', [BuyNowListing::class], function ($q) use ($minPrice) {
-                $q->where('price', '>=', $minPrice);
+        $hasPriceFilter = ($filters['min_price'] ?? null) !== null || ($filters['max_price'] ?? null) !== null;
+
+        $query->when($hasPriceFilter, function (Builder $query) use ($filters) {
+            $min = $filters['min_price'] ?? 0;
+            $max = $filters['max_price'] ?? 1000000;
+
+            $query->whereHasMorph('listable', [BuyNowListing::class, AuctionListing::class, InvestmentListing::class], function (Builder $sq) use ($min, $max) {
+                $sq->where(function (Builder $qq) use ($min, $max) {
+                    $qq->orWhereBetween('price', [$min, $max]);
+
+                    $qq->orWhereBetween('current_bid', [$min, $max]);
+
+                    $qq->orWhereBetween('investment_goal', [$min, $max]);
+                })
+                    ->where(function (Builder $qq) {
+                        $qq->whereNotNull('price')
+                            ->orWhereNotNull('current_bid')
+                            ->orWhereNotNull('investment_goal');
+                    });
             });
         });
 
-        // 5. --- Price Filter (for BuyNowListings) ---
-        $query->when($filters['max_price'] ?? null, function ($query, $maxPrice) {
-            $query->whereHasMorph('listable', [BuyNowListing::class], function ($q) use ($maxPrice) {
-                $q->where('price', '<=', $maxPrice);
-            });
-        });
-
-        // 6. --- Location Filter (assumes city) ---
-        // (Note: Your Listing.php uses 'address_id', so it's a BelongsTo)
+        // 5. Location
         $query->when($filters['city'] ?? null, function ($query, $city) {
             $query->whereHas('address', function ($q) use ($city) {
                 $q->where('city', 'like', '%' . $city . '%');
             });
         });
+
+        // 6. Sort
+        $query->when($filters['sort'] ?? null, function ($query, $sort) {
+            match ($sort) {
+                'oldest' => $query->oldest(),
+                default => $query->latest(),
+            };
+        }, fn($q) => $q->latest());
 
         return $query;
     }

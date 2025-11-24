@@ -1,7 +1,7 @@
 <template>
-    <div v-if="$page.props.auth.user.id === listing.user_id">
+    <div v-if="$page.props.auth.user?.id === listing.user_id">
         <Link
-            :href="edit($page.props.auth.user.id)"
+            :href="edit(listing.id)"
             method="delete"
             as="button"
             preserve-scroll

@@ -85,4 +85,58 @@ return [
             'delete' => 'Löschen',
         ]
     ],
+    'common' => [
+        'processing' => 'Verarbeitung...',
+        'amount' => 'Betrag',
+        'currency' => 'Währung',
+    ],
+
+    // Investment Specifics
+    'investment' => [
+        'tag' => 'Investment',
+        'invest_now' => 'Jetzt investieren',
+        'min_invest' => 'Mindestinvestition',
+        'goal' => 'Finanzierungsziel',
+        'dialog' => [
+            'title' => 'Investition bestätigen',
+            'description' => 'Sie sind dabei, :amount in dieses Projekt zu investieren. Bitte überprüfen Sie Ihre Eingabe.',
+            'amount_label' => 'Investitionsbetrag',
+            'confirm_button' => 'Zahlungspflichtig investieren',
+        ],
+        'toast' => [
+            'starting' => 'Investition wird vorbereitet...',
+            'success' => 'Investition erfolgreich!',
+            'failure' => 'Investition fehlgeschlagen. Bitte versuchen Sie es erneut.',
+        ],
+    ],
+
+    // Buy Now / E-commerce
+    'buy_now' => [
+        'tag' => 'Kaufen',
+        'purchase_details' => 'Kaufdetails',
+        'price' => 'Preis',
+        'condition' => 'Zustand',
+        'condition_new' => 'Neu',
+        'condition_used' => 'Gebraucht',
+        'available_qty' => 'Verfügbare Menge',
+        'action_btn' => 'In den Warenkorb / Jetzt kaufen',
+    ],
+
+    // Auction
+    'auction' => [
+        'tag' => 'Auction',
+        'current_bid' => 'Aktuelles Gebot',
+        'start_price' => 'Startpreis',
+        'ends_at' => 'Endet am',
+        'place_bid_label' => 'Gebot abgeben',
+        'bid_btn' => 'Bieten',
+    ],
+
+    // Donation
+    'donation' => [
+        'support_cause' => 'Dieses Projekt unterstützen',
+        'raised' => 'Gesammelt',
+        'goal' => 'Ziel',
+        'action_btn' => 'Jetzt spenden',
+    ],
 ];

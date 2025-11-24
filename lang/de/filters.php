@@ -12,6 +12,7 @@ return [
     "locationPlaceholder" => "Stadt, Land oder PLZ",
     "sortBy" => "Sortieren nach",
     "apply" => "Filter anwenden",
+    "reset" => "Filter Neustarten",
     "categories" => [
         "properties" => "Immobilien",
         "vehicles" => "Fahrzeuge",

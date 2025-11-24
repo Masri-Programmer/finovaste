@@ -2,67 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Listing;
+use App\Services\ListingService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomeController extends Controller
 {
-    /**
-     * Display the homepage with categories and filterable listings.
-     */
+    protected ListingService $listingService;
+
+    public function __construct(ListingService $listingService)
+    {
+        $this->listingService = $listingService;
+    }
+
     public function index(Request $request): Response
     {
-        $allCategories = Category::whereNull('parent_id')
-            ->with('children')
-            ->withCount('listings')
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
-
-        $categories = $allCategories->map(function ($category) {
-            return [
-                'id' => $category->id,
-                'slug' => $category->slug,
-                'icon' => $category->icon,
-
-                'name' => $category->getTranslations('name'),
-
-                'children' => $category->children->map(function ($child) {
-                    return [
-                        'id' => $child->id,
-                        'slug' => $child->slug,
-                        'name' => $child->getTranslations('name'),
-                    ];
-                })
-            ];
-        });
-
         $filters = $request->validate([
-            'search' => 'nullable|string|max:100',
-            'category' => 'nullable|string|max:100',
-            'type' => 'nullable|string|in:auction,donation,buy_now,investment',
-            'sort' => 'nullable|string|in:latest,oldest',
+            'search'    => 'nullable|string|max:100',
+            'category'  => 'nullable|string|max:100',
+            'types'     => 'nullable|string',
+            'min_price' => 'nullable|numeric',
+            'max_price' => 'nullable|numeric',
+            'city'      => 'nullable|string|max:100',
+            'sort'      => 'nullable|string|in:latest,oldest,price-low,price-high,popular',
         ]);
-        $listings = Listing::query()
-            ->with(['listable', 'user', 'category', 'media'])
-            ->filter($filters)
-            ->paginate(12)
-            ->withQueryString();
 
-        $listings->getCollection()->transform(function ($listing) {
-            $listing->image_url = $listing->getFirstMediaUrl('images');
-            unset($listing->media);
+        // 2. Use the Service to get data
+        $categories = $this->listingService->getCategories();
+        $listings = $this->listingService->getListings($filters);
 
-            return $listing;
-        });
-
-        $listings->getCollection()->transform(function ($listing) {
-            $listing->append('is_liked_by_current_user');
-            return $listing;
-        });
         return Inertia::render('Homepage', [
             'categories' => $categories,
             'listings' => $listings,

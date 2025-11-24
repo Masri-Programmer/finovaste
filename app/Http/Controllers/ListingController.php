@@ -40,13 +40,21 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $filters = $request->query();
-        $listings = Listing::with(['listable', 'user', 'category'])
-            ->filter($filters)
-            ->latest()
-            ->paginate(50);
+        $filters = $request->validate([
+            'search'    => 'nullable|string|max:100',
+            'category'  => 'nullable|string|max:100',
+            'types'     => 'nullable|string',
+            'min_price' => 'nullable|numeric',
+            'max_price' => 'nullable|numeric',
+            'city'      => 'nullable|string|max:100',
+            'sort'      => 'nullable|string|in:latest,oldest,price-low,price-high,popular',
+        ]);
+
+        $categories = $this->listingService->getCategories();
+        $listings = $this->listingService->getListings($filters);
 
         return Inertia::render('listings/Index', [
+            'categories' => $categories,
             'listings' => $listings,
             'filters' => $filters,
         ]);
@@ -92,7 +100,6 @@ class ListingController extends Controller
         try {
             DB::beginTransaction();
 
-            // === STEP 1: Create the Specific Listing Type ===
             switch ($validatedData['listing_type']) {
                 case 'buy_now':
                     $specificListing = BuyNowListing::create([
@@ -160,15 +167,51 @@ class ListingController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show(Listing $listing)
     {
-        $listing->load(['listable', 'user', 'category', 'address']);
-        $listing->loadCount(['likers as is_liked_by_current_user' => function ($query) {
-            $query->where('user_id', Auth::id());
+        $listing->load(['listable' => function ($morph) {
+            $morph->withCount('transactions');
+        }, 'user', 'category', 'address', 'media']);
+
+        $listing->loadCount([
+            'likers as is_liked_by_current_user' => function ($query) {
+                $query->where('user_id', Auth::id());
+            },
+            'bids'
+        ]);
+
+        $listing->load(['faqs' => function ($q) use ($listing) {
+            if (Auth::id() !== $listing->user_id) {
+                $q->where('is_visible', true);
+            }
+            $q->with('user:id,name'); // Load asker name
         }]);
 
+        $mediaData = [
+            'images' => $listing->getMedia('images')->map(fn($item) => [
+                'id' => $item->id,
+                'url' => $item->getUrl(),
+                'thumbnail' => $item->getUrl('thumb'),
+                'mime_type' => $item->mime_type,
+            ]),
+            'videos' => $listing->getMedia('videos')->map(fn($item) => [
+                'id' => $item->id,
+                'url' => $item->getUrl(),
+                'mime_type' => $item->mime_type,
+            ]),
+            'documents' => $listing->getMedia('documents')->map(fn($item) => [
+                'id' => $item->id,
+                'url' => $item->getUrl(),
+                'file_name' => $item->file_name,
+                'size' => $item->human_readable_size,
+            ]),
+        ];
+        $listingArray = $listing->toArray();
+        $listingArray['media'] = $mediaData;
+
         return Inertia::render('listings/Show', [
-            'listing' => $listing,
+            'listing' => $listingArray,
         ]);
     }
 
@@ -288,7 +331,9 @@ class ListingController extends Controller
 
         $listings->getCollection()->transform(function ($listing) {
             $listing->append('is_liked_by_current_user');
-            $listing->image_url = $listing->getFirstMediaUrl('images');
+
+            $listing->image_url = $listing->getFirstMediaUrl('images', 'thumb');
+
             unset($listing->media);
             return $listing;
         });

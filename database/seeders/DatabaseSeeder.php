@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             SeedersComponentSeeder::class,
             CategorySeeder::class,
             ListingSeeder::class,
+            BidSeeder::class,
         ]);
     }
 }

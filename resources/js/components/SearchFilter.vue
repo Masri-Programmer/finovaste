@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import { useStorage, useToggle } from '@vueuse/core';
-import { trans } from 'laravel-vue-i18n';
-import { Search, SlidersHorizontal, X } from 'lucide-vue-next';
-import { watch } from 'vue';
-import { useToast } from 'vue-toastification';
-
-// Shadcn-Vue Components
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+// Removed Checkbox
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'; // Ensure you have this component
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
     Select,
@@ -30,50 +23,145 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { Slider } from '@/components/ui/slider';
+import { home } from '@/routes';
+import { router, useForm, usePage } from '@inertiajs/vue3';
+import { useStorage, useToggle } from '@vueuse/core';
+import { Search, SlidersHorizontal, X } from 'lucide-vue-next';
+import { computed, watch } from 'vue';
 
-// 1. Define Props & Emits
 const emit = defineEmits<{
     (e: 'filterChange', filters: Record<string, any>): void;
 }>();
 
-// 2. Setup Hooks
-const toast = useToast();
-
-// 3. VueUse: useToggle
+const page = usePage();
+const currentLocale = computed(() => (page.props.locale as string) || 'en');
 const [showAdvanced, toggleAdvanced] = useToggle(false);
 
-// 4. VueUse: useStorage
-const storedSearchTerm = useStorage('global-search-filter', '');
-
-// 5. State Management
-const form = useForm({
-    search: storedSearchTerm.value,
-    category: 'all',
-    listingTypes: [] as string[],
-    priceRange: [0, 1000000],
-    location: '',
-    sortBy: 'recent',
+const formattedCategories = computed(() => {
+    return page.props.categories.map((category: any) => ({
+        id: category.id,
+        slug: category.slug,
+        name:
+            category.name[currentLocale.value] ||
+            category.name['en'] ||
+            'Unknown Category',
+    }));
+});
+const filters = computed(() => {
+    return (page.props.filters || {}) as ServerFilters;
 });
 
+const DEFAULT_MIN_PRICE = 0;
+const DEFAULT_MAX_PRICE = 1000000;
+
+// Define the structure of the form
+interface FormState {
+    search: string;
+    category: string;
+    listingTypes: string;
+    priceRange: number[];
+    location: string;
+    sortBy: string;
+}
+
+const defaultState = {
+    search: '',
+    category: 'all',
+    listingTypes: 'all',
+    priceRange: [DEFAULT_MIN_PRICE, DEFAULT_MAX_PRICE],
+    location: '',
+    sortBy: 'latest',
+};
+
+const storedFilters = useStorage('finovaste-filters', defaultState);
+interface ServerFilters {
+    search?: string;
+    category?: string;
+    types?: string | string[];
+    min_price?: string | number;
+    max_price?: string | number;
+    city?: string;
+    sort?: string;
+}
+
+const getInitialFormValues = () => {
+    const serverFilters = filters.value;
+
+    if (Object.keys(serverFilters).length > 0) {
+        let safeType = 'all';
+        if (serverFilters.types) {
+            safeType = Array.isArray(serverFilters.types)
+                ? serverFilters.types[0]
+                : serverFilters.types;
+        }
+
+        const newState = {
+            search: serverFilters.search || '',
+            category: serverFilters.category || 'all',
+            listingTypes: safeType,
+            priceRange: [
+                Number(serverFilters.min_price) || DEFAULT_MIN_PRICE,
+                Number(serverFilters.max_price) || DEFAULT_MAX_PRICE,
+            ],
+            location: serverFilters.city || '',
+            sortBy: serverFilters.sort || 'latest',
+        };
+
+        storedFilters.value = newState;
+        return newState;
+    }
+
+    const cleanState = { ...defaultState };
+    storedFilters.value = cleanState;
+
+    return cleanState;
+};
+
+const form = useForm(getInitialFormValues());
+
 watch(
-    () => form.search,
-    (newSearch) => {
-        storedSearchTerm.value = newSearch;
+    () => form.data(),
+    (newData) => {
+        storedFilters.value = newData;
     },
+    { deep: true },
 );
 
-// Static data
-const categories = [
-    'filters.categories.properties',
-    'filters.categories.vehicles',
-    'filters.categories.furniture',
-    'filters.categories.electronics',
-    'filters.categories.art',
-    'filters.categories.businesses',
-    'filters.categories.startups',
-];
+watch(
+    () => filters.value,
+    (newFilters) => {
+        // If the server props are empty (e.g. cleared filters), reset to defaults
+        // But if they are just missing specific keys, be careful not to kill local state aggressively
 
+        const defaults = { ...defaultState };
+
+        // Extract type safely
+        let incomingType = defaults.listingTypes;
+        if (newFilters?.types) {
+            incomingType = Array.isArray(newFilters.types)
+                ? newFilters.types[0]
+                : newFilters.types;
+        } else {
+            // If server doesn't return 'types', we usually assume 'all'.
+            // However, to prevent UI flickering if backend is inconsistent,
+            // strictly set to 'all' only if other filters are present or it's a clear reset.
+            incomingType = 'all';
+        }
+
+        form.search = newFilters?.search || defaults.search;
+        form.category = newFilters?.category || defaults.category;
+        form.listingTypes = incomingType; // Update the form
+        form.priceRange = [
+            Number(newFilters?.min_price) || defaults.priceRange[0],
+            Number(newFilters?.max_price) || defaults.priceRange[1],
+        ];
+        form.location = newFilters?.city || defaults.location;
+        form.sortBy = newFilters?.sort || defaults.sortBy;
+    },
+    { deep: true },
+);
 const listingTypes = [
+    { id: 'all', labelKey: 'filters.all' },
     { id: 'buy', labelKey: 'filters.types.buy' },
     { id: 'invest', labelKey: 'filters.types.invest' },
     { id: 'bid', labelKey: 'filters.types.bid' },
@@ -81,42 +169,75 @@ const listingTypes = [
 ];
 
 const sortOptions = [
-    { id: 'recent', labelKey: 'filters.sortOptions.recent' },
+    { id: 'latest', labelKey: 'filters.sortOptions.recent' },
+    { id: 'oldest', labelKey: 'filters.sortOptions.oldest' },
     { id: 'price-low', labelKey: 'filters.sortOptions.priceLow' },
     { id: 'price-high', labelKey: 'filters.sortOptions.priceHigh' },
     { id: 'popular', labelKey: 'filters.sortOptions.popular' },
     { id: 'roi', labelKey: 'filters.sortOptions.roi' },
 ];
 
-function handleTypeChange(checked: boolean, typeId: string) {
-    if (checked) {
-        if (!form.listingTypes.includes(typeId)) {
-            form.listingTypes.push(typeId);
-        }
-    } else {
-        form.listingTypes = form.listingTypes.filter((t) => t !== typeId);
-    }
-}
-
-function removeType(typeId: string) {
-    form.listingTypes = form.listingTypes.filter((t) => t !== typeId);
-}
-
-function getListingTypeLabel(typeId: string): string {
+function getListingTypeLabel(typeId: string) {
     const type = listingTypes.find((t) => t.id === typeId);
-    return type ? trans(type.labelKey) : '';
+    return type ? type.labelKey : typeId;
+}
+
+function removeType() {
+    form.listingTypes = 'all';
+}
+
+function clearFilters() {
+    form.defaults(defaultState);
+    form.reset();
+    storedFilters.value = defaultState;
+    applyFilters();
 }
 
 function applyFilters() {
-    emit('filterChange', form.data());
-    toggleAdvanced(false);
-    // Optional: toast.success(trans('filters.toast.applied'));
+    const isDefaultMinPrice = form.priceRange[0] === DEFAULT_MIN_PRICE;
+    const isDefaultMaxPrice = form.priceRange[1] === DEFAULT_MAX_PRICE;
+    const isDefaultPriceRange = isDefaultMinPrice && isDefaultMaxPrice;
+    const isPriceSort =
+        form.sortBy === 'price-low' || form.sortBy === 'price-high';
+
+    const typeParam = form.listingTypes === 'all' ? null : form.listingTypes;
+
+    const queryParams = {
+        search: form.search,
+        category: form.category === 'all' ? null : form.category,
+        types: typeParam,
+        min_price:
+            isDefaultPriceRange && !isPriceSort ? null : form.priceRange[0],
+        max_price:
+            isDefaultPriceRange && !isPriceSort ? null : form.priceRange[1],
+        city: form.location,
+        sort: form.sortBy === 'latest' ? null : form.sortBy,
+    };
+
+    // Clean null/empty values
+    const cleanParams = Object.fromEntries(
+        Object.entries(queryParams).filter(([_, v]) => v !== null && v !== ''),
+    );
+
+    router.get(home(), cleanParams, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+        onSuccess: () => {
+            toggleAdvanced(false);
+        },
+    });
+
+    emit('filterChange', cleanParams);
 }
 </script>
 
 <template>
     <div class="mb-4 rounded-lg border bg-card p-4 shadow-sm">
-        <div class="relative flex items-center gap-2">
+        <form
+            @submit.prevent="applyFilters"
+            class="relative flex items-center gap-2"
+        >
             <div class="relative flex-1">
                 <Search
                     class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -128,9 +249,19 @@ function applyFilters() {
                 />
             </div>
 
+            <Button
+                type="submit"
+                variant="outline"
+                size="icon"
+                :aria-label="$t('filters.search')"
+            >
+                <Search class="h-4 w-4" />
+            </Button>
+
             <Sheet v-model:open="showAdvanced">
                 <SheetTrigger as-child>
                     <Button
+                        type="button"
                         variant="outline"
                         size="icon"
                         :class="{
@@ -176,11 +307,11 @@ function applyFilters() {
                                             $t('filters.allCategories')
                                         }}</SelectItem>
                                         <SelectItem
-                                            v-for="catKey in categories"
-                                            :key="catKey"
-                                            :value="catKey"
+                                            v-for="catKey in formattedCategories"
+                                            :key="catKey.id"
+                                            :value="catKey.slug"
                                         >
-                                            {{ $t(catKey) }}
+                                            {{ catKey.name }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -190,35 +321,33 @@ function applyFilters() {
                                 <Label class="text-sm font-semibold">{{
                                     $t('filters.listingType')
                                 }}</Label>
-                                <div class="grid grid-cols-2 gap-3">
+                                <RadioGroup
+                                    v-model="form.listingTypes"
+                                    class="grid grid-cols-2 gap-3"
+                                >
                                     <div
                                         v-for="type in listingTypes"
                                         :key="type.id"
                                         class="flex items-center space-x-2"
                                     >
-                                        <Checkbox
+                                        <RadioGroupItem
                                             :id="type.id"
-                                            :checked="
-                                                form.listingTypes.includes(
-                                                    type.id,
-                                                )
-                                            "
-                                            @update:checked="
-                                                (checked) =>
-                                                    handleTypeChange(
-                                                        checked,
-                                                        type.id,
-                                                    )
-                                            "
+                                            :value="type.id"
                                         />
-                                        <label
+                                        <Label
                                             :for="type.id"
-                                            class="cursor-pointer text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            class="cursor-pointer text-sm leading-none font-normal"
                                         >
-                                            {{ $t(type.labelKey) }}
-                                        </label>
+                                            {{
+                                                type.id === 'all'
+                                                    ? $t(
+                                                          'filters.allCategories',
+                                                      )
+                                                    : $t(type.labelKey)
+                                            }}
+                                        </Label>
                                     </div>
-                                </div>
+                                </RadioGroup>
                             </div>
 
                             <div class="space-y-4">
@@ -272,9 +401,9 @@ function applyFilters() {
                                     >{{ $t('filters.sortBy') }}</Label
                                 >
                                 <Select id="sort-by" v-model="form.sortBy">
-                                    <SelectTrigger>
-                                        <SelectValue />
-                                    </SelectTrigger>
+                                    <SelectTrigger
+                                        ><SelectValue
+                                    /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
                                             v-for="opt in sortOptions"
@@ -288,19 +417,23 @@ function applyFilters() {
                             </div>
 
                             <div
-                                v-if="form.listingTypes.length > 0"
+                                v-if="form.listingTypes !== 'all'"
                                 class="flex flex-wrap gap-2 pt-2"
                             >
                                 <Badge
-                                    v-for="typeId in form.listingTypes"
-                                    :key="typeId"
                                     variant="secondary"
                                     class="gap-1.5 px-2 py-1"
                                 >
-                                    {{ getListingTypeLabel(typeId) }}
+                                    {{
+                                        $t(
+                                            getListingTypeLabel(
+                                                form.listingTypes,
+                                            ),
+                                        )
+                                    }}
                                     <X
                                         class="h-3 w-3 cursor-pointer transition-colors hover:text-destructive"
-                                        @click="removeType(typeId)"
+                                        @click="removeType()"
                                     />
                                 </Badge>
                             </div>
@@ -318,9 +451,16 @@ function applyFilters() {
                         >
                             {{ $t('filters.apply') }}
                         </Button>
+                        <Button
+                            variant="outline"
+                            class="flex-1"
+                            @click="clearFilters"
+                        >
+                            {{ $t('filters.reset') }}
+                        </Button>
                     </SheetFooter>
                 </SheetContent>
             </Sheet>
-        </div>
+        </form>
     </div>
 </template>

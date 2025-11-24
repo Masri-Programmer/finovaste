@@ -48,22 +48,22 @@ function getListingType(type: Listing['listable_type'] | string): {
     switch (type) {
         case 'App\\Models\\InvestmentListing':
             return {
-                text: trans('listingTypes.investment'),
+                text: trans('filters.types.invest'),
                 variant: 'default',
             };
         case 'App\\Models\\AuctionListing':
             return {
-                text: trans('listingTypes.auction'),
+                text: trans('filters.types.bid'),
                 variant: 'secondary',
             };
         case 'App\\Models\\BuyNowListing':
             return {
-                text: trans('listingTypes.buyNow'),
+                text: trans('filters.types.buy'),
                 variant: 'default',
             };
         case 'App\\Models\\DonationListing':
             return {
-                text: trans('listingTypes.donation'),
+                text: trans('filters.types.donate'),
                 variant: 'destructive',
             };
         default:

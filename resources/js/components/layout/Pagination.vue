@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next'; // Import Icons
 import { computed, ref } from 'vue';
 
 import {
@@ -77,7 +78,6 @@ function handlePerPageChange(value: string | number | null | undefined) {
     const newPerPage = Number(value);
     selectedPerPage.value = newPerPage;
 
-    // A real implementation would merge existing query parameters
     const currentParams = {};
 
     router.get(
@@ -85,7 +85,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
         {
             ...currentParams,
             per_page: newPerPage,
-            page: 1, // Reset to page 1 when changing per_page
+            page: 1,
         },
         {
             preserveState: true,
@@ -122,7 +122,11 @@ function handlePerPageChange(value: string | number | null | undefined) {
                             v-if="link.url"
                             :href="link.url"
                             preserve-scroll
-                        />
+                            :aria-label="$t('pagination.previous')"
+                        >
+                            <ChevronLeft class="h-4 w-4" />
+                        </Link>
+                        <ChevronLeft v-else class="h-4 w-4" />
                     </PaginationPrevious>
 
                     <PaginationNext
@@ -134,7 +138,11 @@ function handlePerPageChange(value: string | number | null | undefined) {
                             v-if="link.url"
                             :href="link.url"
                             preserve-scroll
-                        />
+                            :aria-label="$t('pagination.next')"
+                        >
+                            <ChevronRight class="h-4 w-4" />
+                        </Link>
+                        <ChevronRight v-else class="h-4 w-4" />
                     </PaginationNext>
 
                     <PaginationEllipsis v-else-if="isEllipsis(link.label)" />
@@ -154,8 +162,6 @@ function handlePerPageChange(value: string | number | null | undefined) {
                 </template>
             </PaginationContent>
         </Pagination>
-
-        <div v-else class="flex-1"></div>
 
         <div class="flex items-center gap-2 text-sm text-muted-foreground">
             <Select

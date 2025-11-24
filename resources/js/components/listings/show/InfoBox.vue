@@ -27,6 +27,6 @@ defineProps<{
     icon: FunctionalComponent;
     title: string;
     value: string;
-    iconBgClass: string; // e.g., 'bg-blue-100 text-blue-700'
+    iconBgClass: string;
 }>();
 </script>

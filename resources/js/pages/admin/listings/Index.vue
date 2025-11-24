@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useToast } from 'vue-toastification';
-
 import ResourceIndex from '@/components/resource/Index.vue';
 import { Badge } from '@/components/ui/badge';
-import { create, destroy, edit, show } from '@/routes/admin/listings';
+import { destroy, show } from '@/routes/admin/listings';
+import { create, edit } from '@/routes/listings';
+import { computed, ref } from 'vue';
 
 interface TranslatableString {
     en: string;
@@ -36,8 +35,6 @@ const props = defineProps<{
         links: PaginationLink[];
     };
 }>();
-
-const toast = useToast();
 
 const listingSearch = ref('');
 

@@ -86,4 +86,13 @@ class User extends Authenticatable
     {
         return $this->morphOne(Address::class, 'addressable');
     }
+    public function bids(): HasMany
+    {
+        return $this->hasMany(Bid::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

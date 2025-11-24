@@ -7,7 +7,7 @@ export interface Address {
     addressable_id: number;
     street: string;
     city: string;
-    state: string;
+    state: string | null;
     zip: string;
     country: string;
     latitude: number | null;

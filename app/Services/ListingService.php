@@ -11,17 +11,62 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Listings\StoreListingRequest;
 use App\Http\Requests\Listings\UpdateListingRequest;
 use Throwable;
+use App\Models\Category;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ListingService
 {
     protected $mediaService;
 
-    // Inject the media service here
-    public function __construct(ListingMediaService $mediaService)
+    /**
+     * Fetch the category tree with counts.
+     */
+    public function getCategories(): \Illuminate\Support\Collection
     {
-        $this->mediaService = $mediaService;
+        $allCategories = Category::whereNull('parent_id')
+            ->with('children')
+            ->withCount('listings')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return $allCategories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'slug' => $category->slug,
+                'icon' => $category->icon,
+                'name' => $category->getTranslations('name'),
+                'children' => $category->children->map(function ($child) {
+                    return [
+                        'id' => $child->id,
+                        'slug' => $child->slug,
+                        'name' => $child->getTranslations('name'),
+                    ];
+                })
+            ];
+        });
     }
 
+    /**
+     * Filter and paginate listings.
+     */
+    public function getListings(array $filters): LengthAwarePaginator
+    {
+        $listings = Listing::query()
+            ->with(['listable', 'user', 'category', 'media'])
+            ->filter($filters)
+            ->paginate(12)
+            ->withQueryString();
+
+        $listings->getCollection()->transform(function ($listing) {
+            $listing->image_url = $listing->getFirstMediaUrl('images');
+            unset($listing->media);
+            $listing->append('is_liked_by_current_user');
+            return $listing;
+        });
+
+        return $listings;
+    }
     /**
      * Create a new listing.
      * @throws \Exception

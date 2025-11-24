@@ -12,6 +12,7 @@ return [
     "locationPlaceholder" => "City, Country or Zip Code",
     "sortBy" => "Sort by",
     "apply" => "Apply filter",
+    "reset" => "Restart filter",
     "categories" => [
         "properties" => "real estate",
         "vehicles" => "vehicles",
