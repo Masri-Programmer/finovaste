@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useToast } from 'vue-toastification';
-// The new reusable component
 import ResourceIndex from '@/components/resource/Index.vue';
 import { Badge } from '@/components/ui/badge';
 import { create, destroy, edit, show } from '@/routes/admin/users';
 import { Check, Clock3 } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import { useToast } from 'vue-toastification';
 
-// --- Types (Copied from your old User Index) ---
 interface UserRole {
     id: number;
     name: string;
