@@ -14,10 +14,10 @@ php artisan down || true
 
 git pull
 # echo "📦 Installing Composer (PHP) dependencies..."
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+# composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 # echo "📦 Installing npm dependencies..."
-npm ci
+# npm ci
 
 echo "🛠️ Building assets for production (SSR)..."
 # NODE_OPTIONS=--max-old-space-size=4096 npm run build:ssr
