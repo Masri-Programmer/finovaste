@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingFaqController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\BidController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,16 @@ Route::controller(ListingController::class)
             Route::post('/{listing}/faq', [ListingFaqController::class, 'store'])->name('faq.store');
             Route::patch('/{listing}/faq/{faq}', [ListingFaqController::class, 'update'])->name('faq.update');
             Route::delete('/{listing}/faq/{faq}', [ListingFaqController::class, 'destroy'])->name('faq.destroy');
+
+    
+            Route::post('{listing}/reviews', [ReviewController::class, 'store'])
+                ->name('reviews.store');
+
+            Route::put('/reviews/{review}', [ReviewController::class, 'update'])
+                ->name('reviews.update');
+        
+            Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])
+                ->name('reviews.destroy');
         });
 
         Route::get('/{listing}', 'show')->name('show');

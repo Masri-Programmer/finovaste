@@ -13,6 +13,7 @@ return [
     'back' => 'Zurück',
     'next' => 'Weiter',
     'submit' => 'Absenden',
+    'approve' => 'Freigeben',
     'close' => 'Schließen',
     'view' => 'Ansehen',
     'show' => 'Anzeigen',

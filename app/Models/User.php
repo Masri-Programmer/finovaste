@@ -54,6 +54,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'notification_settings' => 'array',
         ];
     }
 
@@ -95,4 +96,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+    public function wantsNotification($type): bool
+{
+    if (is_null($this->notification_settings)) {
+        return true;
+    }
+
+    return $this->notification_settings[$type] ?? true;
+}
 }

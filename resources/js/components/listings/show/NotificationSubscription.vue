@@ -16,18 +16,27 @@
             <Label for="email" class="text-sm font-medium">{{
                 $t('notifications.email_label')
             }}</Label>
-            <Input
-                id="email"
-                type="email"
-                vFoc.auto
-                :placeholder="$t('notifications.email_placeholder')"
-                v-model="form.email"
-                class="mt-2"
-                required
-            />
+            <div class="mt-2 flex items-center space-x-2">
+                <Input
+                    id="email"
+                    type="email"
+                    vFoc.auto
+                    :placeholder="$t('notifications.email_placeholder')"
+                    v-model="form.email"
+                    class="w-full grow"
+                    required
+                />
+                <Button type="submit" :disabled="form.processing">
+                    <Loader2
+                        v-if="form.processing"
+                        class="ml-2 h-4 w-4 animate-spin"
+                    />
+                    {{ $t('notifications.subscribe_button') }}
+                </Button>
+            </div>
         </div>
 
-        <fieldset class="space-y-3">
+        <!-- <fieldset class="space-y-3">
             <legend class="text-sm font-medium text-foreground">
                 {{ $t('notifications.categories_title') }}
             </legend>
@@ -53,9 +62,9 @@
                     </label>
                 </div>
             </div>
-        </fieldset>
+        </fieldset> -->
 
-        <fieldset class="space-y-3">
+        <!-- <fieldset class="space-y-3">
             <legend class="text-sm font-medium text-foreground">
                 {{ $t('notifications.organizations_title') }}
             </legend>
@@ -94,24 +103,18 @@
             <p class="text-xs text-muted-foreground">
                 {{ $t('notifications.priority_helper') }}
             </p>
-        </fieldset>
-
-        <Button type="submit" class="w-full" :disabled="form.processing">
-            <Loader2 v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
-            {{ $t('notifications.subscribe_button') }}
-        </Button>
+        </fieldset> -->
     </form>
 </template>
 
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { Loader2, Mail, Star } from 'lucide-vue-next';
+import { Loader2, Mail } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 
 // Shadcn-vue components
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 

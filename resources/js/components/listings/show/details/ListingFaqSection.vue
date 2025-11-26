@@ -2,29 +2,29 @@
     <div class="space-y-6">
         <div class="flex items-center justify-between">
             <h3 class="text-xl font-semibold">
-                {{ $t('listing.faq.title', 'Häufig gestellte Fragen') }}
+                {{ $t('listings.faq.title') }}
             </h3>
             <Button
                 v-if="!isOwner && !showAskForm"
                 @click="showAskForm = true"
                 variant="outline"
             >
-                {{ $t('listing.faq.ask_question', 'Ask a Question') }}
+                {{ $t('listings.faq.ask_question') }}
             </Button>
         </div>
 
-        <Card v-if="showAskForm" class="bg-slate-50">
+        <Card v-if="showAskForm">
             <CardContent class="space-y-4 pt-6">
                 <div class="space-y-2">
-                    <Label>{{ $t('listing.faq.your_question') }}</Label>
+                    <Label>{{ $t('listings.faq.your_question') }}</Label>
                     <Textarea v-model="newQuestion" rows="2" />
                 </div>
                 <div class="flex justify-end gap-2">
                     <Button variant="ghost" @click="showAskForm = false">
-                        {{ $t('common.cancel') }}
+                        {{ $t('actions.cancel') }}
                     </Button>
                     <Button @click="submitQuestion" :disabled="processing">
-                        {{ $t('common.submit') }}
+                        {{ $t('actions.submit') }}
                     </Button>
                 </div>
             </CardContent>
@@ -58,25 +58,25 @@
                         {{ getTranslation(faq.answer) }}
                     </div>
                     <div v-else-if="!isOwner" class="text-sm italic">
-                        {{ $t('listing.faq.waiting_for_answer') }}
+                        {{ $t('listings.faq.waiting_for_answer') }}
                     </div>
 
                     <div v-if="isOwner" class="mt-2 border-t pt-2">
                         <div v-if="editingId === faq.id" class="space-y-3">
                             <Textarea
                                 v-model="editAnswerForm.answer"
-                                :placeholder="$t('listing.faq.write_answer')"
+                                :placeholder="$t('listings.faq.write_answer')"
                             />
                             <div class="flex gap-2">
                                 <Button size="sm" @click="saveAnswer(faq)">
-                                    {{ $t('common.save') }}
+                                    {{ $t('actions.save') }}
                                 </Button>
                                 <Button
                                     size="sm"
                                     variant="ghost"
                                     @click="editingId = null"
                                 >
-                                    {{ $t('common.cancel') }}
+                                    {{ $t('actions.cancel') }}
                                 </Button>
                             </div>
                         </div>
@@ -90,8 +90,8 @@
                                 <Pencil class="mr-1 h-3 w-3" />
                                 {{
                                     faq.answer
-                                        ? $t('common.edit')
-                                        : $t('listing.faq.answer')
+                                        ? $t('actions.edit')
+                                        : $t('listings.faq.answer')
                                 }}
                             </Button>
 
@@ -103,8 +103,8 @@
                                 <Eye class="mr-1 h-3 w-3" />
                                 {{
                                     faq.is_visible
-                                        ? $t('common.hide')
-                                        : $t('common.approve')
+                                        ? $t('actions.hide')
+                                        : $t('actions.approve')
                                 }}
                             </Button>
 
@@ -125,7 +125,7 @@
             v-if="faqs.length === 0"
             class="py-8 text-center text-muted-foreground"
         >
-            {{ $t('listing.faq.no_questions_yet') }}
+            {{ $t('listings.faq.no_questions_yet') }}
         </div>
     </div>
 </template>

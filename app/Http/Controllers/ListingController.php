@@ -168,11 +168,18 @@ class ListingController extends Controller
      * Display the specified resource.
      */
 
-    public function show(Listing $listing)
+public function show(Listing $listing)
     {
-        $listing->load(['listable' => function ($morph) {
-            $morph->withCount('transactions');
-        }, 'user', 'category', 'address', 'media']);
+        $listing->load([
+            'listable' => function ($morph) {
+                $morph->withCount('transactions');
+            }, 
+            'user', 
+            'category', 
+            'address', 
+            'media',
+            'reviews.user'
+        ]);
 
         $listing->loadCount([
             'likers as is_liked_by_current_user' => function ($query) {
@@ -181,13 +188,15 @@ class ListingController extends Controller
             'bids'
         ]);
 
+        // Existing FAQ loading logic
         $listing->load(['faqs' => function ($q) use ($listing) {
             if (Auth::id() !== $listing->user_id) {
                 $q->where('is_visible', true);
             }
-            $q->with('user:id,name'); // Load asker name
+            $q->with('user:id,name');
         }]);
 
+        // 2. Prepare Media Data (Existing logic)
         $mediaData = [
             'images' => $listing->getMedia('images')->map(fn($item) => [
                 'id' => $item->id,
@@ -207,8 +216,27 @@ class ListingController extends Controller
                 'size' => $item->human_readable_size,
             ]),
         ];
+
         $listingArray = $listing->toArray();
         $listingArray['media'] = $mediaData;
+
+        // 3. Format Reviews for the UI
+        $listingArray['reviews'] = $listing->reviews->sortByDesc('created_at')->values()->map(function ($review) {
+            return [
+                'id' => $review->id,
+                'user' => [
+                    'id' => $review->user->id,
+                    'name' => $review->user->name,
+                    // Assuming you might have a profile_photo_url or similar
+                    'profile_photo_url' => $review->user->profile_photo_url ?? null, 
+                ],
+                'rating' => $review->rating,
+                'body' => $review->body,
+                'created_at' => $review->created_at,
+                'time_ago' => $review->created_at->diffForHumans(),
+                'can_edit' => Auth::id() === $review->user_id,
+            ];
+        });
 
         return Inertia::render('listings/Show', [
             'listing' => $listingArray,

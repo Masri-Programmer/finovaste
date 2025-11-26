@@ -4,12 +4,7 @@ import ListingAside from '@/components/listings/show/ListingAside.vue';
 import ListingDetails from '@/components/listings/show/ListingDetails.vue';
 import ListingHeader from '@/components/listings/show/ListingHeader.vue';
 import ListingSlide from '@/components/listings/show/ListingSlide.vue';
-import NotificationSubscription from '@/components/listings/show/NotificationSubscription.vue';
-import {
-    mockNextPageUrl,
-    mockReviews,
-} from '@/components/listings/show/Review';
-import ReviewsList from '@/components/listings/show/ReviewsList.vue';
+
 import { show } from '@/routes/listings';
 import { PageProps } from '@/types/listings';
 const props = defineProps<PageProps>();
@@ -27,7 +22,5 @@ const props = defineProps<PageProps>();
             <ListingAside :listing="props.listing" />
         </div>
         <ListingDetails :listing="props.listing" />
-        <NotificationSubscription :listing="props.listing" />
-        <ReviewsList :reviews="mockReviews" :next-page-url="mockNextPageUrl" />
     </Layout>
 </template>

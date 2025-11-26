@@ -6,24 +6,19 @@ use App\Models\AuctionListing;
 use App\Models\BuyNowListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
+use App\Models\Listing;
+use App\Models\ListingFaq;
+use App\Models\Review; // Import Review
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Factories\AddressFactory;
-use Illuminate\Support\Collection;
 
 class ListingSeeder extends Seeder
 {
-    /**
-     * The number of listings to create for each type.
-     */
     protected int $count = 5;
 
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Check for dependencies first (Users and Categories)
         if (!User::count() || !\App\Models\Category::count()) {
             $this->command->error('Please seed users and categories before seeding listings.');
             return;
@@ -38,25 +33,28 @@ class ListingSeeder extends Seeder
             DonationListing::class,
         ];
 
-        // 2. Create a collection of tasks
         $tasks = collect();
 
         foreach ($listingTypes as $type) {
-            // For each type, add it to the list $count times
             for ($i = 0; $i < $this->count; $i++) {
                 $tasks->push($type);
             }
         }
 
-        // 3. Shuffle the tasks and execute them
-        // This interleaves the IDs and Created_at timestamps in the database
         $bar = $this->command->getOutput()->createProgressBar($tasks->count());
         $bar->start();
 
         $tasks->shuffle()->each(function ($class) use ($bar) {
-            $class::factory()
-                ->withListing() // Your custom trait
+            // 1. Create the Specific Listing (Auction, BuyNow, etc)
+            $specificModel = $class::factory()
+                ->withListing()
                 ->create();
+            
+            // 2. Access the parent Listing model to attach FAQs and Reviews
+            if ($specificModel->listing) {
+                $this->seedFaqs($specificModel->listing);
+                $this->seedReviews($specificModel->listing); // <--- Add Reviews
+            }
 
             $bar->advance();
         });
@@ -65,19 +63,14 @@ class ListingSeeder extends Seeder
         $this->command->newLine();
         $this->command->info('Randomized listings seeded successfully.');
 
-        // Restore original specific listings
         $this->seedOriginalListings();
     }
 
-    /**
-     * Recreates the four specific listings from your original seeder logic.
-     */
     protected function seedOriginalListings(): void
     {
         $user = User::first();
         $category = \App\Models\Category::first();
 
-        // Ensure user has an address for the manual seeding
         $address = $user->addresses()->first();
         if (! $address) {
             $address = $user->addresses()->create(
@@ -92,7 +85,7 @@ class ListingSeeder extends Seeder
             'shares_offered' => 1000,
             'share_price' => 150,
         ]);
-        $investment->listing()->create([
+        $listing = $investment->listing()->create([
             'user_id' => $user->id,
             'category_id' => $category->id,
             'address_id' => $address->id,
@@ -100,10 +93,12 @@ class ListingSeeder extends Seeder
             'title' => ['en' => 'Sustainable Tech Startup Investment', 'de' => 'Investition in nachhaltiges Tech-Startup'],
             'description' => ['en' => 'Invest in a promising tech startup...', 'de' => 'Investieren Sie in ein vielversprechendes Tech-Startup...'],
         ]);
+        $this->seedFaqs($listing);
+        $this->seedReviews($listing); // <--- Add Reviews
 
         // Buy Now Listing
-        $buyNow = BuyNowListing::create(['price' => 45000, 'quantity' => 1, 'condition' => 'new']); // Added missing fillable values
-        $buyNow->listing()->create([
+        $buyNow = BuyNowListing::create(['price' => 45000, 'quantity' => 1, 'condition' => 'new']);
+        $listing = $buyNow->listing()->create([
             'user_id' => $user->id,
             'category_id' => $category->id,
             'address_id' => $address->id,
@@ -111,13 +106,15 @@ class ListingSeeder extends Seeder
             'title' => ['en' => 'Luxury Apartment Downtown', 'de' => 'Luxuswohnung in der Innenstadt'],
             'description' => ['en' => 'A beautiful luxury apartment...', 'de' => 'Eine wunderschöne Luxuswohnung...'],
         ]);
+        $this->seedFaqs($listing);
+        $this->seedReviews($listing);
 
         // Auction Listing
         $auction = AuctionListing::create([
             'start_price' => 75000,
             'ends_at' => now()->addWeeks(2),
         ]);
-        $auction->listing()->create([
+        $listing = $auction->listing()->create([
             'user_id' => $user->id,
             'category_id' => $category->id,
             'address_id' => $address->id,
@@ -125,10 +122,12 @@ class ListingSeeder extends Seeder
             'title' => ['en' => 'Rare Collectible Art Auction', 'de' => 'Auktion für seltene Sammlerkunst'],
             'description' => ['en' => 'Bidding starts now...', 'de' => 'Das Bieten für dieses einzigartige Kunstwerk...'],
         ]);
+        $this->seedFaqs($listing);
+        $this->seedReviews($listing);
 
         // Donation Listing
         $donation = DonationListing::create(['donation_goal' => 25000]);
-        $donation->listing()->create([
+        $listing = $donation->listing()->create([
             'user_id' => $user->id,
             'category_id' => $category->id,
             'address_id' => $address->id,
@@ -136,6 +135,42 @@ class ListingSeeder extends Seeder
             'title' => ['en' => 'Community Park Renovation Fund', 'de' => 'Spendenfonds für die Renovierung des Gemeindeparks'],
             'description' => ['en' => 'Help us renovate the local community park...', 'de' => 'Helfen Sie uns, den örtlichen Gemeindepark zu renovieren...'],
         ]);
-        $this->command->info('Original listings re-seeded.');
+        $this->seedFaqs($listing);
+        $this->seedReviews($listing);
+
+        $this->command->info('Original listings re-seeded with FAQs and Reviews.');
+    }
+
+    /**
+     * Helper to create 2 FAQs for a given listing.
+     */
+    private function seedFaqs(Listing $listing): void
+    {
+        ListingFaq::factory()
+            ->count(2)
+            ->create([
+                'listing_id' => $listing->id,
+                'user_id' => User::where('id', '!=', $listing->user_id)->inRandomOrder()->first()->id 
+                             ?? User::factory(),
+            ]);
+    }
+
+    private function seedReviews(Listing $listing): void
+    {
+        $potentialReviewers = User::where('id', '!=', $listing->user_id)
+            ->inRandomOrder()
+            ->take(rand(1, 4))
+            ->get();
+
+        if ($potentialReviewers->isEmpty()) {
+            $potentialReviewers = collect([User::factory()->create()]);
+        }
+
+        foreach ($potentialReviewers as $reviewer) {
+            Review::factory()->create([
+                'listing_id' => $listing->id,
+                'user_id' => $reviewer->id,
+            ]);
+        }
     }
 }

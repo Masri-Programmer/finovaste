@@ -139,4 +139,13 @@ return [
         'goal' => 'Ziel',
         'action_btn' => 'Jetzt spenden',
     ],
+    'faq' => [
+        'title' => 'Häufig gestellte Fragen',
+        'ask_question' => 'Frage stellen',
+        'your_question' => 'Deine Frage',
+        'waiting_for_answer' => 'Wartet auf Antwort',
+        'write_answer' => 'Antwort schreiben...',
+        'answer' => 'Antworten',
+        'no_questions_yet' => 'Noch keine Fragen vorhanden',
+    ],
 ];

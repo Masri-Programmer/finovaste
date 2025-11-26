@@ -5,6 +5,13 @@
         :faqs="listing.faqs || []"
         :is-owner="$page.props.auth.user?.id === listing.user_id"
     />
+    <NotificationSubscription :listing="listing" />
+    <ListingTabs
+        :reviews="listing.reviews"
+        :next-page-url="mockNextPageUrl"
+        :media="listing.media"
+        :listing-id="listing.id"
+    />
     <!-- 
     <section>
         <h2 class="mb-4 text-lg font-semibold text-foreground">
@@ -29,12 +36,15 @@
 </template>
 
 <script setup lang="ts">
+import { mockNextPageUrl } from '@/components/listings/show/Review';
 import { formatCurrency } from '@/composables/useCurrency';
 import { Listing } from '@/types/listings';
 import { BarChart, CheckCircle, ShieldCheck, Users } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AuctionStatsGrid from './details/AuctionStatsGrid.vue';
 import ListingFaqSection from './details/ListingFaqSection.vue';
+import ListingTabs from './ListingTabs.vue';
+import NotificationSubscription from './NotificationSubscription.vue';
 defineProps<{
     listing: Listing;
 }>();

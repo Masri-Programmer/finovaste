@@ -11,8 +11,6 @@ return [
         'documents_empty' => 'Keine Dokumente verfügbar.',
         'updates_empty' => 'Keine Updates verfügbar.',
     ],
-    'verified_investor' => 'Verifizierter Investor',
-    'load_more_button' => 'Weitere Bewertungen laden',
 
     'documents' => [
         'download_button' => 'Herunterladen',
@@ -28,4 +26,12 @@ return [
         'download_start' => 'Download für :name gestartet.',
         'download_error' => 'Fehler beim Download.',
     ],
+    'write_review' => 'Bewertung schreiben',
+    'rating' => 'Bewertung',
+    'comment' => 'Kommentar',
+    'placeholder' => 'Teilen Sie Ihre Erfahrungen mit uns...',
+    'submit' => 'Bewertung absenden',
+    'verified_investor' => 'Verifizierter Investor',
+    'load_more_button' => 'Mehr laden',
+    'reviews_empty' => 'Noch keine Bewertungen vorhanden.',
 ];

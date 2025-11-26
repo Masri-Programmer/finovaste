@@ -36,25 +36,26 @@
                         $t('listings.member_since')
                     }}</span>
                     <span class="font-medium text-foreground">{{
-                        memberSince
+                        day + ' - ' + month + ' - ' + year
                     }}</span>
                 </div>
-                <div class="flex justify-between">
+                <!-- <div class="flex justify-between">
                     <span class="text-muted-foreground">{{
                         $t('listings.response_time')
                     }}</span>
-                    <span class="font-medium text-foreground">~2 Stunden</span>
-                </div>
-                <div class="flex justify-between">
+                   <span class="font-medium text-foreground">~2 Stunden</span
+                </div> -->
+                <div class="mb-3 flex justify-between">
                     <span class="text-muted-foreground">{{
                         $t('listings.total_listings')
                     }}</span>
-                    <span class="font-medium text-foreground">24</span>
+                    <span class="font-medium text-foreground">XZ</span>
                 </div>
             </div>
 
             <Button as-child class="w-full" size="lg">
-                {{ $t('listings.contact_button') }}
+                {{ $t('listings.contact_button') }} &nbsp;
+                {{ user.email }}
             </Button>
         </CardContent>
     </Card>
@@ -80,9 +81,14 @@ const address = computed<Address | null>(() => {
 const userRole = computed<string | null>(() => {
     return props.user.roles?.length > 0 ? props.user.roles[0].name : null;
 });
-const memberSince = computed<number>(() => {
-    return new Date(props.user.created_at).getFullYear();
+const memberSince = computed<Date>(() => {
+    return new Date(props.user.created_at);
 });
+
+const year = memberSince.value.getFullYear();
+const month = memberSince.value.getMonth() + 1;
+const day = memberSince.value.getDate();
+
 const userInitials = computed<string>(() => {
     const names = props.user.name.split(' ');
     if (names.length > 1) {

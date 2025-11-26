@@ -61,7 +61,6 @@ export interface Transaction {
     updated_at: string;
 
     user?: User;
-    faqs?: ListingFaq[];
 }
 
 export type BidStatus = 'active' | 'retracted' | 'outbid' | 'won';
@@ -140,6 +139,7 @@ export interface Listing {
     is_liked_by_current_user: boolean;
 
     likers_count?: number;
+    faqs?: ListingFaq[];
 }
 
 // ... [Rest of your existing Listable/Media interfaces remain the same] ...
@@ -228,4 +228,27 @@ export interface ListingFaq {
     updated_at: string;
 
     user?: User; // The user who asked the question
+}
+
+export interface ReviewUser {
+    id: number;
+    name: string;
+    profile_photo_url: string | null;
+    is_verified?: boolean;
+}
+
+export interface Review {
+    id: number;
+    rating: number;
+    body: string;
+    created_at: string;
+    time_ago: string;
+    can_edit: boolean;
+    user: ReviewUser;
+}
+
+export interface Update {
+    id: number;
+    text: string;
+    createdAt: string | Date;
 }
