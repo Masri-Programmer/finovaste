@@ -11,4 +11,24 @@ return [
     'listing_delete_failed' => 'Failed to delete listing: ',
     'listing_liked' => 'Listing liked!',
     'listing_unliked' => 'Listing unliked.',
+      'titles' => [
+        'success' => 'Success',
+        'error' => 'Error',
+        'warning' => 'Attention',
+        'info' => 'Information',
+    ],
+
+    'success' => [
+        'created' => 'The :model has been created successfully.',
+        'updated' => 'The :model has been updated successfully.',
+        'deleted' => 'The :model has been deleted successfully.',
+        'restored' => 'The :model has been restored successfully.',
+        'generic' => 'Action completed successfully.',
+    ],
+
+    'errors' => [
+        'generic_user' => 'Something went wrong. Please try again later.',
+        'not_found' => 'The requested :model could not be found.',
+        'unauthorized' => 'You are not authorized to perform this action.',
+    ],
 ];

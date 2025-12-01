@@ -74,6 +74,23 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'default';
+
+export interface DevDetails {
+    error?: string;
+    file: string;
+    line: number;
+    trace?: string[];
+}
+export interface AppNotification {
+    id?: number;
+    type: ToastType;
+    title: string;
+    message: string;
+    duration?: number;
+    dev_details?: DevDetails | null;
+}
+
 export type AppPageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -92,6 +109,9 @@ export type AppPageProps<
     settings: {
         general: GeneralSettings;
     } | null;
+    flash: {
+        notification: AppNotification | null;
+    };
 };
 
 export interface LocaleString {

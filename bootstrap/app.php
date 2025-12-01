@@ -10,6 +10,7 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Routing\Route;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -42,4 +43,34 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {})->create();
+    ->withExceptions(function (Exceptions $exceptions) {
+                $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->inertia()) {
+                return back()->with('notification', [
+                    'type' => 'error',
+                    'title' => 'Not Found',
+                    'message' => __('messages.errors.not_found', ['model' => 'Resource']),
+                ]);
+            }
+        });
+
+        // Handle General Exceptions
+        $exceptions->render(function (\Throwable $e, Request $request) {
+            if ($request->inertia() && !$e instanceof \Illuminate\Validation\ValidationException) {
+                
+                $isDebug = config('app.debug');
+                
+                return back()->with('notification', [
+                    'type' => 'error',
+                    'title' => $isDebug ? get_class($e) : __('messages.titles.error'),
+                    'message' => $isDebug ? $e->getMessage() : __('messages.errors.generic_user'),
+                    'dev_details' => $isDebug ? [
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                        'trace' => collect($e->getTrace())->take(3)->toArray()
+                    ] : null,
+                    'duration' => 0
+                ]);
+            }
+        });
+    })->create();

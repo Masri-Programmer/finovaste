@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Traits;
+
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+
+trait HasAppMessages
+{
+    /**
+     * Handle a successful action for a specific model.
+     *
+     * @param string|object $model The model instance or class name
+     * @param string $action The action performed (created, updated, deleted, restored)
+     * @param string|null $route The route to redirect to (optional)
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function checkSuccess($model, string $action = 'created', ?string $route = null)
+    {
+        $modelName = $this->getReadableModelName($model);
+        
+        // Construct the translation key (e.g., 'messages.success.created')
+        $message = __('messages.success.' . $action, ['model' => $modelName]);
+
+        $response = $route ? to_route($route) : back();
+
+        return $response->with('notification', [
+            'type' => 'success',
+            'title' => __('messages.titles.success'),
+            'message' => $message,
+            'duration' => 3000
+        ]);
+    }
+
+    /**
+     * Handle a specific error manually.
+     *
+     * @param string $message Custom message or translation key
+     * @param \Throwable|null $exception Optional exception for logging/dev output
+     */
+    protected function checkError(string $message, ?\Throwable $exception = null)
+    {
+        $devDetails = null;
+
+        // If in debug mode and exception exists, provide technical details
+        if (config('app.debug') && $exception) {
+            $devDetails = [
+                'error' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+            ];
+            // Also log it
+            Log::error($exception->getMessage(), $devDetails);
+        }
+
+        return back()->with('notification', [
+            'type' => 'error',
+            'title' => __('messages.titles.error'),
+            'message' => __($message),
+            'dev_details' => $devDetails,
+            'duration' => 5000
+        ]);
+    }
+
+    /**
+     * Helper to get a human-readable model name.
+     * Checks for a 'getModelLabel' method on the model, otherwise uses class basename.
+     */
+    private function getReadableModelName($model): string
+    {
+        if (is_object($model)) {
+            if (method_exists($model, 'getModelLabel')) {
+                return $model->getModelLabel();
+            }
+            $class = get_class($model);
+        } else {
+            $class = $model;
+        }
+
+        return Str::headline(class_basename($class));
+    }
+}
