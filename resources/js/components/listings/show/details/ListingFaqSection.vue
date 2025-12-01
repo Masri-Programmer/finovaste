@@ -37,13 +37,77 @@
                 :value="'item-' + faq.id"
             >
                 <AccordionTrigger class="text-left hover:no-underline">
-                    <div class="flex flex-col items-start gap-1 text-left">
-                        <span class="font-medium">
-                            {{ getTranslation(faq.question) }}
-                        </span>
+                    <div
+                        class="flex w-full flex-col items-start gap-1 text-left"
+                    >
+                        <!-- Question Display / Edit Form -->
+                        <div
+                            v-if="editingQuestionId === faq.id"
+                            class="w-full pr-4"
+                            @click.stop
+                        >
+                            <div class="space-y-2">
+                                <Textarea
+                                    v-model="editQuestionForm.question"
+                                    rows="2"
+                                />
+                                <div class="flex gap-2">
+                                    <Button
+                                        size="sm"
+                                        @click="saveQuestion(faq)"
+                                    >
+                                        {{ $t('actions.save') }}
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        @click="editingQuestionId = null"
+                                    >
+                                        {{ $t('actions.cancel') }}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-else
+                            class="flex w-full items-start justify-between"
+                        >
+                            <span class="font-medium">
+                                {{ getTranslation(faq.question) }}
+                            </span>
+
+                            <!-- Question Actions (Edit/Delete for Asker) -->
+                            <div
+                                v-if="
+                                    currentUser &&
+                                    currentUser.id === faq.user_id &&
+                                    !isOwner
+                                "
+                                class="ml-2 flex gap-1"
+                                @click.stop
+                            >
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    class="h-6 w-6"
+                                    @click="startEditQuestion(faq)"
+                                >
+                                    <Pencil class="h-3 w-3" />
+                                </Button>
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    class="h-6 w-6 text-destructive"
+                                    @click="deleteFaq(faq)"
+                                >
+                                    <Trash2 class="h-3 w-3" />
+                                </Button>
+                            </div>
+                        </div>
+
                         <span
                             v-if="isOwner && !faq.is_visible"
-                            class="rounded bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800"
+                            class="mt-1 rounded bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800"
                         >
                             {{ $t('status.pending_approval') }}
                         </span>
@@ -51,18 +115,26 @@
                 </AccordionTrigger>
 
                 <AccordionContent class="space-y-4 text-muted-foreground">
+                    <!-- Answer Display -->
                     <div
-                        v-if="faq.answer && !editingId"
+                        v-if="faq.answer && editingAnswerId !== faq.id"
                         class="prose dark:prose-invert"
                     >
                         {{ getTranslation(faq.answer) }}
                     </div>
-                    <div v-else-if="!isOwner" class="text-sm italic">
+                    <div
+                        v-else-if="!isOwner && !faq.answer"
+                        class="text-sm italic"
+                    >
                         {{ $t('listings.faq.waiting_for_answer') }}
                     </div>
 
+                    <!-- Owner Actions (Answer/Edit Answer) -->
                     <div v-if="isOwner" class="mt-2 border-t pt-2">
-                        <div v-if="editingId === faq.id" class="space-y-3">
+                        <div
+                            v-if="editingAnswerId === faq.id"
+                            class="space-y-3"
+                        >
                             <Textarea
                                 v-model="editAnswerForm.answer"
                                 :placeholder="$t('listings.faq.write_answer')"
@@ -74,7 +146,7 @@
                                 <Button
                                     size="sm"
                                     variant="ghost"
-                                    @click="editingId = null"
+                                    @click="editingAnswerId = null"
                                 >
                                     {{ $t('actions.cancel') }}
                                 </Button>
@@ -85,7 +157,7 @@
                             <Button
                                 size="sm"
                                 variant="outline"
-                                @click="startEdit(faq)"
+                                @click="startEditAnswer(faq)"
                             >
                                 <Pencil class="mr-1 h-3 w-3" />
                                 {{
@@ -141,81 +213,107 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-// import { destroy, store, update } from '@/routes/listings/faq';
-import type { ListingFaq } from '@/types';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { destroy, store, update } from '@/routes/listings/faq';
+import { User } from '@/types';
+import { ListingFaq } from '@/types/listings';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
     listingId: number;
-    faqs: ListingFaq[];
     isOwner: boolean;
+    faqs: ListingFaq[];
 }>();
 
 const page = usePage();
-const currentLocale = page.props.locale || 'de';
+const currentLocale = computed(() => page.props.locale || 'de');
+const currentUser = computed(() => page.props.auth.user as User);
 
 const getTranslation = (field: any) => {
     if (typeof field === 'string') return field;
     if (!field) return '';
-    return field[currentLocale] || field['en'] || Object.values(field)[0];
+    // @ts-ignore
+    return field[currentLocale.value] || field['en'] || Object.values(field)[0];
 };
 
+// --- Ask Question ---
 const showAskForm = ref(false);
 const newQuestion = ref('');
 const processing = ref(false);
 
 const submitQuestion = () => {
-    processing.value = true;
+    if (!newQuestion.value.trim()) return;
 
-    // router.post(
-    //     store.url(props.listingId),
-    //     {
-    //         question: newQuestion.value,
-    //     },
-    //     {
-    //         onSuccess: () => {
-    //             showAskForm.value = false;
-    //             newQuestion.value = '';
-    //             processing.value = false;
-    //         },
-    //         onError: () => (processing.value = false),
-    //     },
-    // );
+    processing.value = true;
+    router.post(
+        store.url({ listing: props.listingId }),
+        {
+            question: newQuestion.value,
+        },
+        {
+            onSuccess: () => {
+                showAskForm.value = false;
+                newQuestion.value = '';
+                processing.value = false;
+            },
+            onError: () => (processing.value = false),
+        },
+    );
 };
 
-// --- Owner Actions ---
-const editingId = ref<number | null>(null);
+// --- Edit Question (Asker) ---
+const editingQuestionId = ref<number | null>(null);
+const editQuestionForm = useForm({
+    question: '',
+});
+
+const startEditQuestion = (faq: ListingFaq) => {
+    editingQuestionId.value = faq.id;
+    editQuestionForm.question = getTranslation(faq.question);
+};
+
+const saveQuestion = (faq: ListingFaq) => {
+    editQuestionForm.patch(
+        update.url({ listing: props.listingId, faq: faq.id }),
+        {
+            onSuccess: () => {
+                editingQuestionId.value = null;
+            },
+        },
+    );
+};
+
+const editingAnswerId = ref<number | null>(null);
 const editAnswerForm = useForm({
     answer: '',
 });
 
-const startEdit = (faq: ListingFaq) => {
-    editingId.value = faq.id;
+const startEditAnswer = (faq: ListingFaq) => {
+    editingAnswerId.value = faq.id;
     editAnswerForm.answer = getTranslation(faq.answer);
 };
 
 const saveAnswer = (faq: ListingFaq) => {
-    // editAnswerForm.patch(update.url([props.listingId, faq.id]), {
-    //     onSuccess: () => {
-    //         editingId.value = null;
-    //         // Auto approve on answer if currently hidden
-    //         if (!faq.is_visible) toggleVisibility(faq, true);
-    //     },
-    // });
+    editAnswerForm.patch(
+        update.url({ listing: props.listingId, faq: faq.id }),
+        {
+            onSuccess: () => {
+                editingAnswerId.value = null;
+            },
+        },
+    );
 };
 
-const toggleVisibility = (faq: ListingFaq, forceState?: boolean) => {
-    // URL Generation: update.url([listingId, faqId])
-    // router.patch(update.url([props.listingId, faq.id]), {
-    //     is_visible: forceState !== undefined ? forceState : !faq.is_visible,
-    // });
+const toggleVisibility = (faq: ListingFaq) => {
+    router.patch(update.url({ listing: props.listingId, faq: faq.id }), {
+        is_visible: !faq.is_visible,
+    });
 };
 
 const deleteFaq = (faq: ListingFaq) => {
-    if (confirm('Are you sure?')) {
-        // router.delete(destroy.url([props.listingId, faq.id]));
+    if (confirm('Are you sure you want to delete this?')) {
+        router.delete(destroy.url({ listing: props.listingId, faq: faq.id }));
     }
 };
 </script>

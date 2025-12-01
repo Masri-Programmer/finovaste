@@ -136,4 +136,13 @@ return [
         'goal' => 'goal',
         'action_btn' => 'Donate now',
     ],
+    'faq' => [
+        'title' => 'Frequently Asked Questions',
+        'ask_question' => 'Ask a question',
+        'your_question' => 'Your question',
+        'waiting_for_answer' => 'Waiting for answer',
+        'write_answer' => 'Write answer...',
+        'answer' => 'Answer',
+        'no_questions_yet' => 'No questions yet',
+    ],
 ];

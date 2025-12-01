@@ -30,25 +30,43 @@ class ListingFaqController extends Controller
         return back()->with('success', 'Question submitted!');
     }
 
-    // Owner answers or verifies
+    // Owner answers or verifies, User edits question
     public function update(Request $request, Listing $listing, ListingFaq $faq)
     {
-        // Security check
-        if (Auth::id() !== $listing->user_id) {
+        $user = Auth::user();
+        
+        // Authorization: Must be owner or the asker
+        if ($user->id !== $listing->user_id && $user->id !== $faq->user_id) {
             abort(403);
         }
 
         $validated = $request->validate([
+            'question' => 'nullable|string|max:500',
             'answer' => 'nullable|string',
             'is_visible' => 'boolean'
         ]);
 
-        if ($request->has('answer')) {
-            $faq->setTranslation('answer', app()->getLocale(), $validated['answer']);
+        // If Asker (and not owner), can only edit question
+        if ($user->id === $faq->user_id && $user->id !== $listing->user_id) {
+            if ($request->has('question')) {
+                $faq->setTranslation('question', app()->getLocale(), $validated['question']);
+            }
+            // Asker cannot change answer or visibility
         }
 
-        if ($request->has('is_visible')) {
-            $faq->is_visible = $validated['is_visible'];
+        // If Owner, can edit answer and visibility
+        if ($user->id === $listing->user_id) {
+            if ($request->has('answer')) {
+                $faq->setTranslation('answer', app()->getLocale(), $validated['answer']);
+                // Auto-approve if answering
+                if (!$faq->is_visible) {
+                    $faq->is_visible = true;
+                }
+            }
+            
+            if ($request->has('is_visible')) {
+                $faq->is_visible = $validated['is_visible'];
+            }
         }
 
         $faq->save();
@@ -58,8 +76,15 @@ class ListingFaqController extends Controller
 
     public function destroy(Listing $listing, ListingFaq $faq)
     {
-        if (Auth::id() !== $listing->user_id) abort(403);
+        $user = Auth::user();
+        
+        // Authorization: Owner can delete any, Asker can delete their own
+        if ($user->id !== $listing->user_id && $user->id !== $faq->user_id) {
+            abort(403);
+        }
+
         $faq->delete();
-        return back();
+        
+        return back()->with('success', 'Question deleted.');
     }
 }

@@ -188,11 +188,25 @@ public function show(Listing $listing)
             'bids'
         ]);
 
-        // Existing FAQ loading logic
         $listing->load(['faqs' => function ($q) use ($listing) {
-            if (Auth::id() !== $listing->user_id) {
-                $q->where('is_visible', true);
+            $userId = Auth::id();
+            
+            // If owner, show all. Otherwise filter.
+            if ($userId !== $listing->user_id) {
+                $q->where(function ($query) use ($userId) {
+                    // Public: Show if answered AND visible
+                    $query->where(function ($sub) {
+                        $sub->whereNotNull('answer')
+                            ->where('is_visible', true);
+                    });
+                    
+                    // Asker: Also show their own questions (even if unanswered/hidden)
+                    if ($userId) {
+                        $query->orWhere('user_id', $userId);
+                    }
+                });
             }
+            
             $q->with('user:id,name');
         }]);
 
