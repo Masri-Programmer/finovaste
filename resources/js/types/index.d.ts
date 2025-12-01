@@ -54,6 +54,7 @@ export interface Auth {
     roles: string[];
     permissions: string[];
     addresses: Address[];
+    listings_count: number;
 }
 
 export interface Roles {

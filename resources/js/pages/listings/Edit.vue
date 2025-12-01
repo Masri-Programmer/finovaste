@@ -11,6 +11,17 @@ import ListingDonationForm from '@/components/listings/create/ListingDonationFor
 import ListingInvestmentForm from '@/components/listings/create/ListingInvestmentForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
 import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -23,7 +34,7 @@ import {
 import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
-import { update } from '@/routes/listings';
+import { destroy, update } from '@/routes/listings';
 import { Category } from '@/types';
 import {
     AuctionListable,
@@ -215,6 +226,17 @@ const submit = () => {
 function handleMediaDelete(mediaIds: number[]) {
     form.media_to_delete = mediaIds;
 }
+
+const deleteListing = () => {
+    form.delete(destroy.url({ listing: props.listing.id }), {
+        onSuccess: () => {
+            toast.success(trans('listings.notifications.deleted'));
+        },
+        onError: () => {
+            toast.error(trans('listings.notifications.delete_failed'));
+        },
+    });
+};
 </script>
 
 <template>
@@ -288,7 +310,49 @@ function handleMediaDelete(mediaIds: number[]) {
                     </div>
                 </CardContent>
 
-                <CardFooter>
+                <CardFooter class="flex justify-between">
+                    <AlertDialog>
+                        <AlertDialogTrigger as-child>
+                            <Button variant="destructive" type="button">
+                                {{ $t('listings.edit.actions.delete') }}
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    {{
+                                        $t(
+                                            'listings.edit.delete_confirmation.title',
+                                        )
+                                    }}
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    {{
+                                        $t(
+                                            'listings.edit.delete_confirmation.description',
+                                        )
+                                    }}
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>
+                                    {{
+                                        $t(
+                                            'listings.edit.delete_confirmation.cancel',
+                                        )
+                                    }}
+                                </AlertDialogCancel>
+                                <AlertDialogAction @click="deleteListing">
+                                    {{
+                                        $t(
+                                            'listings.edit.delete_confirmation.confirm',
+                                        )
+                                    }}
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
                     <Button type="submit" :disabled="form.processing">
                         <span v-if="form.processing">
                             {{ $t('listings.edit.actions.saving') }}
