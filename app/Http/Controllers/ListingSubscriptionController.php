@@ -20,6 +20,6 @@ public function store(Request $request, Listing $listing)
         ['locale' => $locale] // Only sets this on creation
     );
 
-    return back()->with('success', __('notifications.subscribe_success'));
+    return $this->checkSuccess(ListingSubscription::class,);
 }
 }

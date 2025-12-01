@@ -7,22 +7,23 @@
             <div class="flex items-center space-x-3">
                 <Mail class="h-6 w-6 text-muted-foreground" />
                 <h2 class="text-xl font-semibold text-foreground">
-                    Get Updates
+                    {{ $t('notifications.title') }}
                 </h2>
             </div>
             <p class="text-sm text-muted-foreground">
-                Enter your email to receive notifications when this listing is
-                updated.
+                {{ $t('notifications.subtitle') }}
             </p>
         </div>
 
         <div>
-            <Label for="email" class="text-sm font-medium">Email Address</Label>
+            <Label for="email" class="text-sm font-medium">
+                {{ $t('notifications.email_label') }}
+            </Label>
             <div class="mt-2 flex items-center space-x-2">
                 <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    :placeholder="$t('notifications.email_placeholder')"
                     v-model="form.email"
                     class="w-full grow"
                     required
@@ -32,7 +33,7 @@
                         v-if="form.processing"
                         class="mr-2 h-4 w-4 animate-spin"
                     />
-                    Subscribe
+                    {{ $t('notifications.subscribe_button') }}
                 </Button>
             </div>
             <p v-if="form.errors.email" class="mt-1 text-sm text-red-500">

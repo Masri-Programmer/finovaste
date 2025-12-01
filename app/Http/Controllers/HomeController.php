@@ -28,7 +28,6 @@ class HomeController extends Controller
             'sort'      => 'nullable|string|in:latest,oldest,price-low,price-high,popular',
         ]);
 
-        // 2. Use the Service to get data
         $categories = $this->listingService->getCategories();
         $listings = $this->listingService->getListings($filters);
 
