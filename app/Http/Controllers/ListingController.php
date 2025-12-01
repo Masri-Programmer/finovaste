@@ -167,7 +167,8 @@ class ListingController extends Controller
             'category', 
             'address', 
             'media',
-            'reviews.user'
+            'reviews.user',
+            'updates',
         ]);
 
         $listing->loadCount([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use App\Models\Bid;
 use App\Models\AuctionListing; // Assuming this is your auction model
+use App\Services\ListingUpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -88,6 +89,10 @@ class BidController extends Controller
                 //     $auctionData->update(['ends_at' => $auctionData->ends_at->addMinutes(5)]);
                 // }
 
+                 // Updates for system
+         ListingUpdateService::system($listing, 'updates.bid_new', [
+    'amount' => number_format($incomingBid, 2) . '€'
+]);
                 return response()->json([
                     'success' => true,
                     'message' => 'Bid placed successfully!',

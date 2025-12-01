@@ -5,7 +5,7 @@
         :faqs="listing.faqs || []"
         :is-owner="$page.props.auth.user?.id === listing.user_id"
     />
-    <NotificationSubscription :listing="listing" />
+    <NotificationSubscription :listing-id="listing.id" />
     <ListingTabs
         :reviews="listing.reviews"
         :next-page-url="mockNextPageUrl"

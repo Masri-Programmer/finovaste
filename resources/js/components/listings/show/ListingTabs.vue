@@ -33,7 +33,7 @@
             </TabsContent>
 
             <TabsContent value="updates" class="p-6">
-                <ListingUpdates :updates="updates" />
+                <ListingUpdates :updates="updates" :listing-id="listingId" />
             </TabsContent>
         </Tabs>
     </div>

@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ListingSubscription extends Model
+class ListingUpdate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['listing_id', 'email'];
+    protected $fillable = ['listing_id', 'title', 'content', 'type'];
 
-    public function listing(): BelongsTo
+    public function listing()
     {
         return $this->belongsTo(Listing::class);
     }

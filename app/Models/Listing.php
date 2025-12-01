@@ -205,6 +205,15 @@ class Listing extends Model implements HasMedia
     {
         return $this->hasMany(ListingFaq::class);
     }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(ListingSubscription::class);
+    }
+    public function updates()
+    {
+        return $this->hasMany(ListingUpdate::class)->latest();
+    }
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         // 1. Search

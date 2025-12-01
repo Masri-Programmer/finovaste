@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Providers\FakeMediaProvider;
 use Faker\Factory as FakerFactory;
-
+use App\Models\Listing;
+use App\Observers\ListingObserver;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -29,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
                 return $faker;
             });
         }
+        Listing::observe(ListingObserver::class);
     }
 }

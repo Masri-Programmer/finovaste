@@ -5,6 +5,7 @@ use App\Http\Controllers\ListingFaqController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\ListingSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(ListingController::class)
@@ -50,7 +51,12 @@ Route::controller(ListingController::class)
         
             Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])
                 ->name('reviews.destroy');
+
+            Route::post('/{listing}/subscribe', [ListingSubscriptionController::class, 'store'])
+                ->name('subscribe');
         });
+
+
 
         Route::get('/{listing}', 'show')->name('show');
     });

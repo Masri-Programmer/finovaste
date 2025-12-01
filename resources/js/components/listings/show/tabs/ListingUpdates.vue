@@ -23,13 +23,20 @@
             {{ $t('reviews.tabs.updates_empty') }}
         </p>
     </div>
+    <ListingTimeline
+        :listing-id="listingId"
+        :updates="updates"
+        :is-owner="$page.props.listing.user_id === $page.props.auth.user?.id"
+    />
 </template>
 
 <script setup lang="ts">
 import { Update } from '@/types/listings';
 import { useNow, useTimeAgo } from '@vueuse/core';
+import ListingTimeline from './ListingTimeline.vue';
 
-const props = defineProps<{
+defineProps<{
+    listingId: number;
     updates: Update[];
 }>();
 
