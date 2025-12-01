@@ -83,6 +83,12 @@ return [
             'saving' => 'Saving...',
             'cancel' => 'Cancel',
             'delete' => 'Delete',
+            'delete_confirmation' => [
+                'title' => 'Confirmation',
+                'description' => 'Are you sure you want to delete this entry?',
+                'cancel' => 'Cancel',
+                'confirm' => 'Delete',
+            ],
         ]
     ],
     'common' => [

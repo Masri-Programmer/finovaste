@@ -83,6 +83,12 @@ return [
             'saving' => 'Wird gespeichert...',
             'cancel' => 'Abbrechen',
             'delete' => 'Löschen',
+            'delete_confirmation' => [
+                'title' => 'Bestätigung',
+                'description' => 'Möchten Sie diesen Eintrag wirklich löschen?',
+                'cancel' => 'Abbrechen',
+                'confirm' => 'Löschen',
+            ],
         ]
     ],
     'common' => [

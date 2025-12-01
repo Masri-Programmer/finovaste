@@ -1,6 +1,6 @@
 import { InertiaLinkProps } from '@inertiajs/vue3';
 import type { LucideIcon } from 'lucide-vue-next';
-
+import { PluginOptions } from 'vue-toastification';
 export interface Address {
     id: number;
     addressable_type: string;
@@ -87,7 +87,7 @@ export interface AppNotification {
     type: ToastType;
     title: string;
     message: string;
-    duration?: number;
+    options: PluginOptions;
     dev_details?: DevDetails | null;
 }
 

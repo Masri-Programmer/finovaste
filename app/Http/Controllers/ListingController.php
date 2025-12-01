@@ -8,25 +8,22 @@ use App\Models\Listing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
 use App\Models\BuyNowListing;
-use App\Models\InvestmentListing;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Services\ListingMediaService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
 use App\Services\ListingService;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Throwable;
-use Illuminate\Support\Facades\Cache;
 
 class ListingController extends Controller
 {
+
     protected ListingService $listingService;
     protected ListingMediaService $mediaService;
 
@@ -35,6 +32,7 @@ class ListingController extends Controller
         $this->listingService = $listingService;
         $this->mediaService = $mediaService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -71,6 +69,7 @@ class ListingController extends Controller
             });
         });
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -87,12 +86,6 @@ class ListingController extends Controller
     public function store(StoreListingRequest $request, ListingMediaService $mediaService): RedirectResponse
     {
         $validatedData = $request->validated();
-
-        // Log::info('ListingController@store: Request received.', [
-        //     'user_id' => Auth::id(),
-        //     'listing_type' => $request->listing_type,
-        //     'validated_data_keys' => array_keys($request->except(['images', 'documents', 'videos'])),
-        // ]);
 
         $listing = null;
         $specificListing = null;
@@ -151,24 +144,20 @@ class ListingController extends Controller
 
             DB::commit();
             Log::info("SUCCESS: Transaction committed for listing ID: {$listing->id}");
+
+            return $this->checkSuccess($listing, 'created', 'home');
+
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error('CRITICAL: Failed to create listing.', [
-                'user_id' => Auth::id(),
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return redirect()->back()->withErrors(['error' => 'Could not save your listing.']);
+            
+            return $this->checkError('messages.errors.generic_user', $e);
         }
-
-        return redirect()->route('home');
     }
+
     /**
      * Display the specified resource.
      */
-
-public function show(Listing $listing)
+    public function show(Listing $listing)
     {
         $listing->load([
             'listable' => function ($morph) {
@@ -191,16 +180,13 @@ public function show(Listing $listing)
         $listing->load(['faqs' => function ($q) use ($listing) {
             $userId = Auth::id();
             
-            // If owner, show all. Otherwise filter.
             if ($userId !== $listing->user_id) {
                 $q->where(function ($query) use ($userId) {
-                    // Public: Show if answered AND visible
                     $query->where(function ($sub) {
                         $sub->whereNotNull('answer')
                             ->where('is_visible', true);
                     });
                     
-                    // Asker: Also show their own questions (even if unanswered/hidden)
                     if ($userId) {
                         $query->orWhere('user_id', $userId);
                     }
@@ -208,9 +194,8 @@ public function show(Listing $listing)
             }
             
             $q->with('user:id,name');
-        }]);
+         }]);
 
-        // 2. Prepare Media Data (Existing logic)
         $mediaData = [
             'images' => $listing->getMedia('images')->map(fn($item) => [
                 'id' => $item->id,
@@ -234,14 +219,12 @@ public function show(Listing $listing)
         $listingArray = $listing->toArray();
         $listingArray['media'] = $mediaData;
 
-        // 3. Format Reviews for the UI
         $listingArray['reviews'] = $listing->reviews->sortByDesc('created_at')->values()->map(function ($review) {
             return [
                 'id' => $review->id,
                 'user' => [
                     'id' => $review->user->id,
                     'name' => $review->user->name,
-                    // Assuming you might have a profile_photo_url or similar
                     'profile_photo_url' => $review->user->profile_photo_url ?? null, 
                 ],
                 'rating' => $review->rating,
@@ -264,14 +247,10 @@ public function show(Listing $listing)
     {
         $listing->load(['listable', 'media']);
 
-        $allCategories = Category::orderBy('name')->get();
-
         $listingData = $listing->toArray();
         $listingData['listable'] = $listing->listable;
         $listingData['title'] = $listing->getTranslations('title');
         $listingData['description'] = $listing->getTranslations('description');
-
-        // Pass the loaded media data to the frontend
         $listingData['media'] = $listing->media;
 
         return Inertia::render('listings/Edit', [
@@ -279,6 +258,7 @@ public function show(Listing $listing)
             'categories' => $this->getCategoriesForForm(),
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -301,10 +281,11 @@ public function show(Listing $listing)
 
             DB::commit();
 
-            return redirect()->route('listings.show', $listing)->with('success', 'Listing updated successfully.');
+            return $this->checkSuccess($listing, 'updated');
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Failed to update listing: ' . $e->getMessage());
+            return $this->checkError('messages.errors.generic_user', $e);
         }
     }
 
@@ -319,10 +300,11 @@ public function show(Listing $listing)
             $listing->delete();
             DB::commit();
 
-            return redirect()->route('listings.index')->with('success', 'Listing deleted successfully.');
+            return $this->checkSuccess($listing, 'deleted', 'listings.index');
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Failed to delete listing: ' . $e->getMessage());
+            return $this->checkError('messages.errors.generic_user', $e);
         }
     }
 
@@ -334,14 +316,12 @@ public function show(Listing $listing)
         try {
             $listing->likers()->syncWithoutDetaching(Auth::id());
             $listing->increment('likes_count');
-        } catch (\Exception $e) {
-            Log::error("Failed to like listing {$listing->id} for user " . Auth::id(), [
-                'message' => $e->getMessage()
-            ]);
-            return redirect()->back()->with('error');
-        }
+            
+            return $this->checkSuccess($listing, 'updated');
 
-        return redirect()->back()->with('success', 'Listing liked!');
+        } catch (\Exception $e) {
+            return $this->checkError('messages.errors.generic_user', $e);
+        }
     }
 
     public function unlike(Request $request, Listing $listing): RedirectResponse
@@ -351,14 +331,12 @@ public function show(Listing $listing)
             if ($detached) {
                 $listing->decrement('likes_count');
             }
-        } catch (\Exception $e) {
-            Log::error("Failed to unlike listing {$listing->id} for user " . Auth::id(), [
-                'message' => $e->getMessage()
-            ]);
-            return redirect()->back()->with('error',);
-        }
+            
+            return $this->checkSuccess($listing, 'updated');
 
-        return redirect()->back()->with('success', 'Listing unliked.');
+        } catch (\Exception $e) {
+            return $this->checkError('messages.errors.generic_user', $e);
+        }
     }
 
     public function liked(Request $request)
@@ -373,9 +351,7 @@ public function show(Listing $listing)
 
         $listings->getCollection()->transform(function ($listing) {
             $listing->append('is_liked_by_current_user');
-
             $listing->image_url = $listing->getFirstMediaUrl('images', 'thumb');
-
             unset($listing->media);
             return $listing;
         });
@@ -384,7 +360,6 @@ public function show(Listing $listing)
             'listings' => $listings,
         ]);
     }
-
 
     public function userListings(Request $request, User $user)
     {

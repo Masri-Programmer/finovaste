@@ -20,11 +20,9 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { create, store } from '@/routes/listings';
-import { trans } from 'laravel-vue-i18n';
 import { PropType, ref, watch } from 'vue';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
@@ -95,19 +93,12 @@ watch(listingType, (newType) => {
 const submit = () => {
     form.post(store.url(), {
         onSuccess: () => {
-            toast.success(trans('createListing.notifications.success'));
             form.reset();
             mediaUploadRef.value?.reset();
         },
         onError: (errors) => {
             const errorMessages = Object.values(errors);
             console.log(errors);
-            toast.error({
-                component: ValidationErrorToast,
-                props: {
-                    errors: errorMessages,
-                },
-            });
         },
     });
 };

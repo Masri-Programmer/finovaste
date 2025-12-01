@@ -12,23 +12,23 @@ return [
     'listing_liked' => 'Eintrag gefällt mir!',
     'listing_unliked' => 'Eintrag gefällt mir nicht.',
     'titles' => [
-        'success' => 'Erfolgreich',
+        'success' => 'Erfolg',
         'error' => 'Fehler',
-        'warning' => 'Aktion nicht autorisiert',
+        'warning' => 'Achtung',
         'info' => 'Information',
     ],
 
     'success' => [
-        'created' => 'Erfolgreich erstellt.',
-        'updated' => 'Erfolgreich aktualisiert.',
-        'deleted' => 'Erfolgreich gelöscht.',
-        'restored' => 'Erfolgreich wiederhergestellt.',
+        'created' => ' :model wurde erfolgreich erstellt.',
+        'updated' => ' :model wurde erfolgreich aktualisiert.',
+        'deleted' => ' :model wurde erfolgreich gelöscht.',
+        'restored' => ' :model wurde erfolgreich wiederhergestellt.',
         'generic' => 'Aktion erfolgreich abgeschlossen.',
     ],
 
     'errors' => [
-        'generic_user' => 'Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.',
-        'not_found' => 'Der angeforderte :model konnte nicht gefunden werden.',
-        'unauthorized' => 'Sie sind nicht autorisiert, diese Aktion auszuführen.',
+        'generic_user' => 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
+        'not_found' => 'Das angeforderte :model konnte nicht gefunden werden.',
+        'unauthorized' => 'Sie sind nicht berechtigt, diese Aktion durchzuführen.',
     ],
 ];

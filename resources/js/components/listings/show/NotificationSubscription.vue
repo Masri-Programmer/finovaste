@@ -224,19 +224,6 @@ function handleSubmit() {
 
     router.post(route('notifications.subscribe'), form.value, {
         preserveScroll: true,
-        onSuccess: () => {
-            toast.success(t('notifications.subscribe_success'));
-            // Reset form if needed
-            // form.value.email = '';
-            // form.value.categories = [];
-            // form.value.priorityOrg = null;
-        },
-        onError: (errors) => {
-            // This assumes a generic error. If you have specific
-            // field errors, you'd handle them differently.
-            toast.error(t('notifications.subscribe_error'));
-            console.error('Form Errors:', errors);
-        },
         onFinish: () => {
             form.value.processing = false;
         },

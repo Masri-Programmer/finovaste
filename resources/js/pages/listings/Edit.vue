@@ -31,7 +31,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import ValidationErrorToast from '@/components/ValidationErrorToast.vue';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { destroy, update } from '@/routes/listings';
@@ -44,7 +43,6 @@ import {
     Listing,
     Media,
 } from '@/types/listings';
-import { trans } from 'laravel-vue-i18n';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
 const props = defineProps({
@@ -205,21 +203,6 @@ const submit = () => {
         update.url({
             listing: props.listing.id,
         }),
-        {
-            onSuccess: () => {
-                toast.success(trans('edit.notifications.success'));
-            },
-            onError: (errors) => {
-                const errorMessages = Object.values(errors);
-                console.log(errors);
-                toast.error({
-                    component: ValidationErrorToast,
-                    props: {
-                        errors: errorMessages,
-                    },
-                });
-            },
-        },
     );
 };
 
@@ -228,14 +211,7 @@ function handleMediaDelete(mediaIds: number[]) {
 }
 
 const deleteListing = () => {
-    form.delete(destroy.url({ listing: props.listing.id }), {
-        onSuccess: () => {
-            toast.success(trans('listings.notifications.deleted'));
-        },
-        onError: () => {
-            toast.error(trans('listings.notifications.delete_failed'));
-        },
-    });
+    form.delete(destroy.url({ listing: props.listing.id }));
 };
 </script>
 

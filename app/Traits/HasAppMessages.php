@@ -14,9 +14,10 @@ trait HasAppMessages
      * @param string|object $model The model instance or class name
      * @param string $action The action performed (created, updated, deleted, restored)
      * @param string|null $route The route to redirect to (optional)
+     * @param array $options Extra options for vue-toastification (timeout, position, etc.)
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function checkSuccess($model, string $action = 'created', ?string $route = null)
+    protected function checkSuccess($model, string $action = 'created', ?string $route = null, array $options = [])
     {
         $modelName = $this->getReadableModelName($model);
         
@@ -29,7 +30,19 @@ trait HasAppMessages
             'type' => 'success',
             'title' => __('messages.titles.success'),
             'message' => $message,
-            'duration' => 3000
+           'options' => array_merge([
+               'timeout' => 5000,
+               'closeOnClick' => true,
+               'pauseOnFocusLoss' => true,
+               'pauseOnHover' => true,
+               'draggable' => true,
+               'draggablePercent' => 0.6,
+               'showCloseButtonOnHover' => false,
+               'hideProgressBar' => false,
+               'closeButton' => 'button',
+               'icon' => true,
+               'rtl' => false,
+            ], $options)
         ]);
     }
 
@@ -39,7 +52,7 @@ trait HasAppMessages
      * @param string $message Custom message or translation key
      * @param \Throwable|null $exception Optional exception for logging/dev output
      */
-    protected function checkError(string $message, ?\Throwable $exception = null)
+   protected function checkError(string $message, ?\Throwable $exception = null, array $options = [])
     {
         $devDetails = null;
 
@@ -50,8 +63,8 @@ trait HasAppMessages
                 'file' => $exception->getFile(),
                 'line' => $exception->getLine(),
             ];
-            // Also log it
             Log::error($exception->getMessage(), $devDetails);
+            $options['timeout'] = false; 
         }
 
         return back()->with('notification', [
@@ -59,7 +72,19 @@ trait HasAppMessages
             'title' => __('messages.titles.error'),
             'message' => __($message),
             'dev_details' => $devDetails,
-            'duration' => 5000
+            'options' => array_merge([
+'timeout' => 5000,
+'closeOnClick' => true,
+'pauseOnFocusLoss' => true,
+'pauseOnHover' => true,
+'draggable' => true,
+'draggablePercent' => 0.6,
+'showCloseButtonOnHover' => false,
+'hideProgressBar' => false,
+'closeButton' => 'button',
+'icon' => true,
+'rtl' => false,
+            ], $options)
         ]);
     }
 

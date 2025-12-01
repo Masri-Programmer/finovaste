@@ -8,6 +8,7 @@ import { createApp, h } from 'vue';
 import Toast, { PluginOptions } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import { initializeTheme } from './composables/useAppearance';
+
 const options: PluginOptions = {
     timeout: 5000,
     closeOnClick: true,
@@ -20,6 +21,7 @@ const options: PluginOptions = {
     closeButton: 'button',
     icon: true,
     rtl: false,
+    newestOnTop: true,
 };
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

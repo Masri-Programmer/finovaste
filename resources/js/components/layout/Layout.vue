@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useGlobalToast } from '@/composables/useGlobalToast';
 import { Head } from '@inertiajs/vue3';
 import { defineAsyncComponent } from 'vue';
 import Cookies from './Cookies.vue';
 import Header from './header/Header.vue';
-import ToastOverlay from './ToastOverlay.vue';
 const Footer = defineAsyncComponent(
     () => import('@/components/layout/Footer.vue'),
 );
@@ -23,6 +23,9 @@ defineProps<{
 }>();
 
 const menuSections = [];
+
+const { enableGlobalHandling } = useGlobalToast();
+enableGlobalHandling();
 </script>
 
 <template>
@@ -60,7 +63,7 @@ const menuSections = [];
     <main
         class="container-custom mt-30 grid min-h-screen items-center gap-4 pt-4 sm:mt-20 sm:gap-6 sm:pt-6 md:mt-22 md:gap-8 md:pt-8 lg:mt-24 lg:gap-10 lg:pt-10 xl:mt-26 xl:gap-12 xl:pt-12"
     >
-        <ToastOverlay />
+        <!-- <ToastOverlay /> -->
         <slot />
     </main>
     <div
