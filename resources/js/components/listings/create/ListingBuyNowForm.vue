@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { type UseForm } from '@inertiajs/vue3';
 import { PropType } from 'vue';
 
@@ -47,7 +40,7 @@ defineProps({
                 required
             />
         </div>
-        <div class="space-y-2">
+        <!-- <div class="space-y-2">
             <Label for="condition">
                 {{ $t('createListing.fields.condition.label') }}
             </Label>
@@ -71,6 +64,6 @@ defineProps({
                     </SelectItem>
                 </SelectContent>
             </Select>
-        </div>
+        </div> -->
     </div>
 </template>
