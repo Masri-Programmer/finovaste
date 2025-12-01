@@ -6,7 +6,7 @@
             </h3>
             <Button
                 v-if="!isOwner && !showAskForm"
-                @click="showAskForm = true"
+                @click="handleAskQuestion"
                 variant="outline"
             >
                 {{ $t('listings.faq.ask_question') }}
@@ -40,7 +40,6 @@
                     <div
                         class="flex w-full flex-col items-start gap-1 text-left"
                     >
-                        <!-- Question Display / Edit Form -->
                         <div
                             v-if="editingQuestionId === faq.id"
                             class="w-full pr-4"
@@ -109,7 +108,7 @@
                             v-if="isOwner && !faq.is_visible"
                             class="mt-1 rounded bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800"
                         >
-                            {{ $t('status.pending_approval') }}
+                            {{ $t('status.pending') }}
                         </span>
                     </div>
                 </AccordionTrigger>
@@ -213,6 +212,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { login } from '@/routes';
 import { destroy, store, update } from '@/routes/listings/faq/index';
 import { User } from '@/types';
 import { ListingFaq } from '@/types/listings';
@@ -241,6 +241,14 @@ const getTranslation = (field: any) => {
 const showAskForm = ref(false);
 const newQuestion = ref('');
 const processing = ref(false);
+
+const handleAskQuestion = () => {
+    if (currentUser.value) {
+        showAskForm.value = true;
+    } else {
+        router.visit(login());
+    }
+};
 
 const submitQuestion = () => {
     if (!newQuestion.value.trim()) return;
