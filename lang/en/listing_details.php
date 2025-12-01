@@ -6,7 +6,16 @@ return [
     'boxes' => [
         'duration' => 'Duration',
         'investors' => 'Investoren',
-        'roi' => 'Expected ROI'
+        'roi' => 'Expected ROI',
+       'category' => 'Category',
+        'time_left' => 'Remaining Time',
+        'total_bids' => 'Total bids',
+        'price' => 'price',
+        'quantity' => 'quantity',
+        'condition' => 'Condition',
+        'goal' => 'goal',
+        'raised' => 'Collected',
+        'donors' => 'donors',
     ],
     'capital_raised' => 'Kapital gesammelt',
     'faq' => [
@@ -28,5 +37,7 @@ return [
         'verified' => 'Verified Listing'
     ],
     'key_features' => 'Key Features',
-    'reviews' => 'Bewertungen'
+    'reviews' => 'Bewertungen',
+    'started' => 'Started',
+    'ending' => 'Ending'
 ];
