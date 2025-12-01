@@ -24,6 +24,8 @@ return [
         'deleted' => 'The :model has been deleted successfully.',
         'restored' => 'The :model has been restored successfully.',
         'generic' => 'Action completed successfully.',
+        'liked'   => ':model liked successfully.',
+        'unliked' => ':model unliked successfully.',
     ],
 
     'errors' => [

@@ -22,23 +22,22 @@ class ReviewController extends Controller
 
         // Optional: Prevent user from reviewing their own listing
         if ($listing->user_id === Auth::id()) {
-            return back()->with('error', 'You cannot review your own listing.');
+            return $this->checkError('You cannot review your own listing.');
         }
 
         // Optional: Check if user already reviewed this listing
         $existingReview = $listing->reviews()->where('user_id', Auth::id())->first();
         if ($existingReview) {
-            return back()->with('error', 'You have already reviewed this listing.');
+            return $this->checkError('You have already reviewed this listing.');
         }
 
         $listing->reviews()->create([
             'user_id' => Auth::id(),
             'rating' => $validated['rating'],
             'body' => $validated['body'],
-            // 'parent_id' => $request->parent_id // Uncomment if you implement replies later
         ]);
 
-        return back()->with('success', 'Review posted successfully.');
+        return $this->checkSuccess(Review::class, );
     }
 
     /**
@@ -58,7 +57,7 @@ class ReviewController extends Controller
 
         $review->update($validated);
 
-        return back()->with('success', 'Review updated successfully.');
+        return $this->checkSuccess($review, );
     }
 
     /**
@@ -73,6 +72,6 @@ class ReviewController extends Controller
 
         $review->delete();
 
-        return back()->with('success', 'Review deleted successfully.');
+        return $this->checkSuccess($review, );
     }
 }

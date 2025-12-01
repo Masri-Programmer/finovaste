@@ -169,10 +169,4 @@ return [
             ],
         ],
     ],
-
-    'edit' => [
-        'notifications' => [
-            'success' => 'Inserat erfolgreich aktualisiert.',
-        ],
-    ],
 ];

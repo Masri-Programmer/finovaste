@@ -9,17 +9,11 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * Renders the Index (Read) page.
-     */
     public function index(): Response
     {
-        // Fetch top-level categories with their children, ordered by sort_order
         $categories = Category::whereNull('parent_id')
             ->with('children')
             ->orderBy('sort_order')
@@ -31,13 +25,8 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * Renders the Create page.
-     */
     public function create(): Response
     {
-        // Get all categories to be used in a "Parent Category" dropdown
         $parentCategories = Category::orderBy('name')->get(['id', 'name']);
 
         return Inertia::render('Categories/Create', [
@@ -45,10 +34,6 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * Handles the Create logic.
-     */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -62,25 +47,17 @@ class CategoryController extends Controller
             'meta' => 'nullable|array',
         ]);
 
-        // Automatically create the slug
         $validated['slug'] = Str::slug($validated['name']);
-
-        // Set default values if not provided
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['type'] = $validated['type'] ?? 'default';
 
-        Category::create($validated);
+        $category = Category::create($validated);
 
-        return Redirect::route('categories.index')->with('success', 'Category created successfully.');
+        return $this->checkSuccess($category, 'created', 'categories.index');
     }
 
-    /**
-     * Display the specified resource.
-     * Renders the Show page (optional, as Edit is often used instead).
-     */
     public function show(Category $category): Response
     {
-        // Eager load relationships for display
         $category->load('parent', 'children');
 
         return Inertia::render('Categories/Show', [
@@ -88,14 +65,8 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * Renders the Edit page.
-     */
     public function edit(Category $category): Response
     {
-        // Get all categories for the dropdown,
-        // excluding the current category to prevent self-assignment.
         $parentCategories = Category::where('id', '!=', $category->id)
             ->orderBy('name')
             ->get(['id', 'name']);
@@ -106,10 +77,6 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * Handles the Update logic.
-     */
     public function update(Request $request, Category $category): RedirectResponse
     {
         $validated = $request->validate([
@@ -117,7 +84,7 @@ class CategoryController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories')->ignore($category->id), // Ignore self on unique check
+                Rule::unique('categories')->ignore($category->id),
             ],
             'description' => 'nullable|string',
             'is_active' => 'required|boolean',
@@ -128,27 +95,19 @@ class CategoryController extends Controller
             'meta' => 'nullable|array',
         ]);
 
-        // Automatically update the slug if the name has changed
         $validated['slug'] = Str::slug($validated['name']);
-
-        // Set default values if not provided
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['type'] = $validated['type'] ?? 'default';
 
         $category->update($validated);
 
-        return Redirect::route('categories.index')->with('success', 'Category updated successfully.');
+        return $this->checkSuccess($category, 'updated', 'categories.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * Handles the Delete logic.
-     */
     public function destroy(Category $category): RedirectResponse
     {
-        // This will trigger a soft delete because your model uses the SoftDeletes trait
         $category->delete();
 
-        return Redirect::route('categories.index')->with('success', 'Category deleted successfully.');
+        return $this->checkSuccess($category, 'deleted', 'categories.index');
     }
 }

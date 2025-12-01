@@ -24,6 +24,8 @@ return [
         'deleted' => ' :model wurde erfolgreich gelöscht.',
         'restored' => ' :model wurde erfolgreich wiederhergestellt.',
         'generic' => 'Aktion erfolgreich abgeschlossen.',
+        'liked'   => ':model liked erfolgreich.',
+        'unliked' => ':model unliked erfolgreich.',
     ],
 
     'errors' => [

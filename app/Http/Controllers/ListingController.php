@@ -281,7 +281,7 @@ class ListingController extends Controller
 
             DB::commit();
 
-            return $this->checkSuccess($listing, 'updated');
+            return $this->checkSuccess($listing, );
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -308,16 +308,18 @@ class ListingController extends Controller
         }
     }
 
-    public function like(Request $request, Listing $listing): RedirectResponse
+public function like(Request $request, Listing $listing): RedirectResponse
     {
         if ($listing->isLikedByCurrentUser()) {
             return redirect()->back();
         }
+
         try {
             $listing->likers()->syncWithoutDetaching(Auth::id());
             $listing->increment('likes_count');
             
-            return $this->checkSuccess($listing, 'updated');
+            // Pass 'liked' so the trait looks for messages.success.liked
+            return $this->checkSuccess($listing, 'liked');
 
         } catch (\Exception $e) {
             return $this->checkError('messages.errors.generic_user', $e);
@@ -328,11 +330,13 @@ class ListingController extends Controller
     {
         try {
             $detached = $listing->likers()->detach(Auth::id());
+            
             if ($detached) {
                 $listing->decrement('likes_count');
             }
             
-            return $this->checkSuccess($listing, 'updated');
+            // Pass 'unliked' so the trait looks for messages.success.unliked
+            return $this->checkSuccess($listing, 'unliked');
 
         } catch (\Exception $e) {
             return $this->checkError('messages.errors.generic_user', $e);

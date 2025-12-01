@@ -24,7 +24,10 @@ export function useGlobalToast() {
 
                 toast[method](message, options || {});
             },
-            { deep: true },
+            {
+                deep: true,
+                immediate: true,
+            },
         );
     };
 

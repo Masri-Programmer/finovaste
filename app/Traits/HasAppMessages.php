@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Lang;
 
 trait HasAppMessages
 {
@@ -17,12 +18,27 @@ trait HasAppMessages
      * @param array $options Extra options for vue-toastification (timeout, position, etc.)
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function checkSuccess($model, string $action = 'created', ?string $route = null, array $options = [])
+   protected function checkSuccess($model, ?string $action = null, ?string $route = null, array $options = [])
     {
         $modelName = $this->getReadableModelName($model);
-        
-        // Construct the translation key (e.g., 'messages.success.created')
-        $message = __('messages.success.' . $action, ['model' => $modelName]);
+
+        // --- AUTOMATIC DETECTION LOGIC ---
+        if (is_null($action)) {
+            if ($model instanceof Model && $model->wasRecentlyCreated) {
+                $action = 'created';
+            } elseif (request()->isMethod('DELETE')) {
+                $action = 'deleted';
+            } else {
+                $action = 'updated';
+            }
+        }
+        $standardActionKey = 'messages.success.' . $action;
+
+        if (Lang::has($standardActionKey)) {
+            $message = __($standardActionKey, ['model' => $modelName]);
+        } else {
+            $message = __($action, ['model' => $modelName]);
+        }
 
         $response = $route ? to_route($route) : back();
 
@@ -30,22 +46,21 @@ trait HasAppMessages
             'type' => 'success',
             'title' => __('messages.titles.success'),
             'message' => $message,
-           'options' => array_merge([
-               'timeout' => 5000,
-               'closeOnClick' => true,
-               'pauseOnFocusLoss' => true,
-               'pauseOnHover' => true,
-               'draggable' => true,
-               'draggablePercent' => 0.6,
-               'showCloseButtonOnHover' => false,
-               'hideProgressBar' => false,
-               'closeButton' => 'button',
-               'icon' => true,
-               'rtl' => false,
+            'options' => array_merge([
+                'timeout' => 5000,
+                'closeOnClick' => true,
+                'pauseOnFocusLoss' => true,
+                'pauseOnHover' => true,
+                'draggable' => true,
+                'draggablePercent' => 0.6,
+                'showCloseButtonOnHover' => false,
+                'hideProgressBar' => false,
+                'closeButton' => 'button',
+                'icon' => true,
+                'rtl' => false,
             ], $options)
         ]);
     }
-
     /**
      * Handle a specific error manually.
      *
@@ -56,7 +71,6 @@ trait HasAppMessages
     {
         $devDetails = null;
 
-        // If in debug mode and exception exists, provide technical details
         if (config('app.debug') && $exception) {
             $devDetails = [
                 'error' => $exception->getMessage(),
@@ -73,17 +87,17 @@ trait HasAppMessages
             'message' => __($message),
             'dev_details' => $devDetails,
             'options' => array_merge([
-'timeout' => 5000,
-'closeOnClick' => true,
-'pauseOnFocusLoss' => true,
-'pauseOnHover' => true,
-'draggable' => true,
-'draggablePercent' => 0.6,
-'showCloseButtonOnHover' => false,
-'hideProgressBar' => false,
-'closeButton' => 'button',
-'icon' => true,
-'rtl' => false,
+                'timeout' => 5000,
+                'closeOnClick' => true,
+                'pauseOnFocusLoss' => true,
+                'pauseOnHover' => true,
+                'draggable' => true,
+                'draggablePercent' => 0.6,
+                'showCloseButtonOnHover' => false,
+                'hideProgressBar' => false,
+                'closeButton' => 'button',
+                'icon' => true,
+                'rtl' => false,
             ], $options)
         ]);
     }
