@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'; // Import Icons
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 import {
@@ -62,28 +62,15 @@ const paginationInfo = computed(() => {
     });
 });
 
-const isPrevious = (label: string) =>
-    label.includes('&laquo;') || label.toLowerCase().includes('previous');
-
-const isNext = (label: string) =>
-    label.includes('&raquo;') || label.toLowerCase().includes('next');
-
-const isEllipsis = (label: string) => label === '...';
-
 function handlePerPageChange(value: string | number | null | undefined) {
-    if (!value) {
-        return;
-    }
+    if (!value) return;
 
     const newPerPage = Number(value);
     selectedPerPage.value = newPerPage;
 
-    const currentParams = {};
-
     router.get(
         props.paginator.path,
         {
-            ...currentParams,
             per_page: newPerPage,
             page: 1,
         },
@@ -112,52 +99,83 @@ function handlePerPageChange(value: string | number | null | undefined) {
             class="flex-1 justify-center"
         >
             <PaginationContent>
-                <template v-for="(link, key) in links" :key="key">
-                    <PaginationPrevious
-                        v-if="isPrevious(link.label)"
-                        :as-child="!!link.url"
-                        :disabled="!link.url"
-                    >
+                <!-- Iterate with index to safely identify First (Prev) and Last (Next) -->
+                <template v-for="(link, index) in links" :key="index">
+                    <!-- Previous Button (Always the first item) -->
+                    <PaginationItem v-if="index === 0">
+                        <PaginationPrevious
+                            :as-child="!!link.url"
+                            :class="{
+                                'pointer-events-none opacity-50': !link.url,
+                            }"
+                        >
+                            <Link
+                                v-if="link.url"
+                                :href="link.url"
+                                preserve-scroll
+                                :aria-label="$t('pagination.previous')"
+                            >
+                                <ChevronLeft class="h-4 w-4" />
+                            </Link>
+                            <span
+                                v-else
+                                class="flex h-9 w-9 items-center justify-center"
+                            >
+                                <ChevronLeft class="h-4 w-4" />
+                            </span>
+                        </PaginationPrevious>
+                    </PaginationItem>
+
+                    <!-- Next Button (Always the last item) -->
+                    <PaginationItem v-else-if="index === links.length - 1">
+                        <PaginationNext
+                            :as-child="!!link.url"
+                            :class="{
+                                'pointer-events-none opacity-50': !link.url,
+                            }"
+                        >
+                            <Link
+                                v-if="link.url"
+                                :href="link.url"
+                                preserve-scroll
+                                :aria-label="$t('pagination.next')"
+                            >
+                                <ChevronRight class="h-4 w-4" />
+                            </Link>
+                            <span
+                                v-else
+                                class="flex h-9 w-9 items-center justify-center"
+                            >
+                                <ChevronRight class="h-4 w-4" />
+                            </span>
+                        </PaginationNext>
+                    </PaginationItem>
+
+                    <!-- Ellipsis -->
+                    <PaginationEllipsis v-else-if="link.label === '...'" />
+
+                    <!-- Numbered Page Links -->
+                    <PaginationItem v-else>
+                        <!-- Using as-child pattern to avoid nesting buttons/links improperly -->
                         <Link
                             v-if="link.url"
                             :href="link.url"
                             preserve-scroll
-                            :aria-label="$t('pagination.previous')"
+                            class="inline-flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                            :class="
+                                link.active
+                                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                                    : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
+                            "
                         >
-                            <ChevronLeft class="h-4 w-4" />
-                        </Link>
-                        <ChevronLeft v-else class="h-4 w-4" />
-                    </PaginationPrevious>
-
-                    <PaginationNext
-                        v-else-if="isNext(link.label)"
-                        :as-child="!!link.url"
-                        :disabled="!link.url"
-                    >
-                        <Link
-                            v-if="link.url"
-                            :href="link.url"
-                            preserve-scroll
-                            :aria-label="$t('pagination.next')"
-                        >
-                            <ChevronRight class="h-4 w-4" />
-                        </Link>
-                        <ChevronRight v-else class="h-4 w-4" />
-                    </PaginationNext>
-
-                    <PaginationEllipsis v-else-if="isEllipsis(link.label)" />
-
-                    <PaginationItem
-                        v-else
-                        :as-child="!!link.url"
-                        :value="Number(link.label)"
-                        :is-active="link.active"
-                        :disabled="!link.url"
-                    >
-                        <Link v-if="link.url" :href="link.url" preserve-scroll>
                             {{ link.label }}
                         </Link>
-                        <span v-else v-html="link.label" />
+                        <!-- Current/Active Page (if URL is null/active) -->
+                        <span
+                            v-else
+                            class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-sm font-medium opacity-50"
+                            v-html="link.label"
+                        />
                     </PaginationItem>
                 </template>
             </PaginationContent>
@@ -169,7 +187,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
                 @update:model-value="handlePerPageChange"
             >
                 <SelectTrigger class="w-[80px] bg-background">
-                    <SelectValue :placeholder="selectedPerPage" />
+                    <SelectValue :placeholder="String(selectedPerPage)" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem
@@ -181,7 +199,7 @@ function handlePerPageChange(value: string | number | null | undefined) {
                     </SelectItem>
                 </SelectContent>
             </Select>
-            <span>
+            <span class="whitespace-nowrap">
                 {{
                     $t('pagination.perPageName', {
                         name: $t(props.name),
