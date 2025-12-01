@@ -49,7 +49,9 @@
                     <span class="text-muted-foreground">{{
                         $t('listings.total_listings')
                     }}</span>
-                    <span class="font-medium text-foreground">XZ</span>
+                    <span class="font-medium text-foreground">{{
+                        $page.props.auth.listings_count
+                    }}</span>
                 </div>
             </div>
 

@@ -22,7 +22,7 @@
                             controls
                             class="h-full w-full object-contain"
                             :src="slide.url"
-                            :poster="slide.thumbnail"
+                            :poster="slide.thumbnail || fallbackImage"
                         >
                             Your browser does not support the video tag.
                         </video>
@@ -41,9 +41,10 @@
                         @click="showLightbox(index)"
                     >
                         <img
-                            :src="slide.url"
+                            :src="slide.url || fallbackImage"
                             alt="Listing Media"
                             class="h-full w-full object-cover"
+                            @error="handleImageError"
                         />
                         <div
                             class="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all group-hover:bg-black/10 group-hover:opacity-100"
@@ -65,7 +66,13 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-2 sm:grid-cols-6">
+        <div
+            v-if="
+                allSlides.length > 1 ||
+                (allSlides.length === 1 && allSlides[0].id !== -1)
+            "
+            class="grid grid-cols-4 gap-2 sm:grid-cols-6"
+        >
             <button
                 v-for="(slide, index) in allSlides"
                 :key="slide.uniqueId"
@@ -82,10 +89,11 @@
                     :src="
                         slide.type === 'video'
                             ? 'https://placehold.co/1920x1080?text=Video+Placeholder'
-                            : slide.url
+                            : slide.url || fallbackImage
                     "
                     class="h-full w-full object-cover"
                     :class="{ 'scale-110': currentSlide === index }"
+                    @error="handleImageError"
                 />
                 <div
                     v-if="slide.type === 'video'"
@@ -120,7 +128,7 @@
 
                     <img
                         v-else
-                        :src="allSlides[index].url"
+                        :src="allSlides[index].url || fallbackImage"
                         class="max-h-[90vh] max-w-[90vw] object-contain"
                     />
                 </div>
@@ -136,8 +144,10 @@ import VueEasyLightbox from 'vue-easy-lightbox';
 import { Carousel, Navigation, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 
+const fallbackImage = 'https://placehold.co/600x400?text=No+Media+Available';
+
 const props = defineProps<{
-    media: {
+    media?: {
         images: Array<{
             id: number;
             url: string;
@@ -155,30 +165,50 @@ const props = defineProps<{
 
 const currentSlide = ref(0);
 const carousel = ref(null);
-
-// --- LIGHTBOX STATE ---
 const visibleRef = ref(false);
 const indexRef = ref(0);
 
-// Combine images and videos into one array with a 'type' identifier
+const handleImageError = (e: Event) => {
+    const target = e.target as HTMLImageElement;
+    target.src = fallbackImage;
+};
+
 const allSlides = computed(() => {
     const images =
-        props.media?.images.map((img) => ({
+        props.media?.images?.map((img) => ({
             ...img,
             type: 'image',
             uniqueId: `img-${img.id}`,
         })) || [];
+
     const videos =
-        props.media?.videos.map((vid) => ({
+        props.media?.videos?.map((vid) => ({
             ...vid,
             type: 'video',
             uniqueId: `vid-${vid.id}`,
         })) || [];
 
-    return [...images, ...videos];
+    const combined = [...images, ...videos];
+
+    if (combined.length === 0) {
+        return [
+            {
+                id: -1,
+                url: fallbackImage,
+                thumbnail: fallbackImage,
+                mime_type: 'image/png',
+                type: 'image',
+                uniqueId: 'placeholder-no-media',
+            },
+        ];
+    }
+
+    return combined;
 });
 
-const lightboxSources = computed(() => allSlides.value.map((s) => s.url));
+const lightboxSources = computed(() =>
+    allSlides.value.map((s) => s.url || fallbackImage),
+);
 
 const slideTo = (index: number) => {
     currentSlide.value = index;
@@ -195,7 +225,7 @@ const onHide = () => {
 };
 const onIndexChange = (oldIndex: number, newIndex: number) => {
     indexRef.value = newIndex;
-    currentSlide.value = newIndex; // Optional: Keeps the background carousel in sync
+    currentSlide.value = newIndex;
 };
 </script>
 
@@ -211,7 +241,6 @@ const onIndexChange = (oldIndex: number, newIndex: number) => {
     background-color: white;
 }
 
-/* Ensure Lightbox appears above everything */
 :deep(.vel-modal) {
     z-index: 9999;
 }
