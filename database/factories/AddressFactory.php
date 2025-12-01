@@ -18,12 +18,12 @@ class AddressFactory extends Factory
     {
         return [
             'street' => $this->faker->streetAddress(),
-            'city' => 'Oldenburg',
-            'state' => 'Lower Saxony',
+            'city' => $this->faker->city(),
+            'state' => $this->faker->state(),
             'zip' => $this->faker->postcode(),
-            'country' => 'Germany',
-            'latitude' => $this->faker->latitude(53.05, 53.25),
-            'longitude' => $this->faker->longitude(8.1, 8.3),
+            'country' => $this->faker->country(),
+            'latitude' => $this->faker->latitude(),
+            'longitude' => $this->faker->longitude(),
         ];
     }
 }

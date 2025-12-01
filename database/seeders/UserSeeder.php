@@ -29,16 +29,27 @@ class UserSeeder extends Seeder
             ]
         );
 
+       $testUser = User::updateOrCreate(
+            ['email' => 'user@example.com'],
+            [
+                'name' => 'User',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
         if ($admin->addresses()->count() === 0) {
             $admin->addresses()->create(
                 AddressFactory::new()->make()->toArray()
             );
         }
+        $testUser->addresses()->create(
+            AddressFactory::new()->make()->toArray()
+        );
 
         if ($adminRole && !$admin->hasRole($adminRole)) {
             $admin->assignRole($adminRole);
         }
-
+        $testUser->assignRole($userRole);
         User::factory(20)->create()->each(function ($user) use ($userRole) {
 
             $user->addresses()->create(
