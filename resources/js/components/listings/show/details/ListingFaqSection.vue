@@ -213,7 +213,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { destroy, store, update } from '@/routes/listings/faq';
+import { destroy, store, update } from '@/routes/listings/faq/index';
 import { User } from '@/types';
 import { ListingFaq } from '@/types/listings';
 import { router, useForm, usePage } from '@inertiajs/vue3';
