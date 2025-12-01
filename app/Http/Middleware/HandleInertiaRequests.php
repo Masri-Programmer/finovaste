@@ -54,6 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'roles' => $request->user()?->getRoleNames() ?? [],
                 'permissions' => $request->user()?->getAllPermissions()->pluck('name'),
                 'addresses' => $user?->addresses ?? [],
+                'listings_count' => $user?->listings->count() ?? 0,
             ],
             'locale' => fn() => App::getLocale(),
             // 'locale' => $request->user()->locale ?? $request->getPreferredLanguage(),
