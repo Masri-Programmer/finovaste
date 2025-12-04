@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { checkout } from '@/actions/App/Http/Controllers/PaymentController';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -70,7 +71,7 @@ import { InvestmentListable } from '@/types/listings';
 import { useForm } from '@inertiajs/vue3';
 import { useToggle } from '@vueuse/core';
 import { computed, ref, watch } from 'vue';
-import ListingCard from '../ListingCard.vue'; // Adjust path
+import ListingCard from '../ListingCard.vue';
 
 const props = defineProps<{
     data: InvestmentListable;
@@ -83,6 +84,7 @@ const investmentAmount = ref<number>(props.data.minimum_investment || 0);
 const investForm = useForm({
     amount: investmentAmount.value,
     listing_id: props.listingId,
+    shares: 1,
 });
 
 watch(investmentAmount, (newVal) => (investForm.amount = newVal));
@@ -96,8 +98,6 @@ const formattedAmount = computed(() => {
 });
 
 const submitInvestment = () => {
-    // investForm.post(route('invest.store'), { // Assuming route
-    //     onSuccess: () => toggleDialog(false),
-    // });
+    investForm.post(checkout.url(props.listingId));
 };
 </script>

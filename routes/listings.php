@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingFaqController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\BidController;
@@ -54,6 +55,9 @@ Route::controller(ListingController::class)
 
             Route::post('/{listing}/subscribe', [ListingSubscriptionController::class, 'store'])
                 ->name('subscribe');
+
+            Route::post('/{listing}/checkout', [PaymentController::class, 'checkout']);
+            Route::get('/{listing}/payment/success', [PaymentController::class, 'success'])->name('success');
         });
 
 

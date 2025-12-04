@@ -20,3 +20,4 @@ Route::resource('categories', CategoryController::class)->only([
 require __DIR__ . '/listings.php';
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
+require __DIR__ . '/api.php';
