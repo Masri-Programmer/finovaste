@@ -9,5 +9,6 @@ return [
     'messages' => 'Nachrichten',
     'profile' => 'Profil',
     'marketplace' => 'Marktplatz',
-    'home' => 'Marktplatz'
+    'home' => 'Marktplatz',
+    'transactions' => 'Transaktionen'
 ];

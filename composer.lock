@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48d261a6d4f8e56b54ed52bf17a94e5e",
+    "content-hash": "98b370bae88c765e4ed91f4a5b2d9cc9",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1539,16 +1539,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v16.0.6",
+            "version": "v16.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier-stripe.git",
-                "reference": "28b2a0f5ab85bcfc3926d6349bda61a49b390d9c"
+                "reference": "6d526c79ea0b0e664299e5a122811034fe75ece9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/28b2a0f5ab85bcfc3926d6349bda61a49b390d9c",
-                "reference": "28b2a0f5ab85bcfc3926d6349bda61a49b390d9c",
+                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/6d526c79ea0b0e664299e5a122811034fe75ece9",
+                "reference": "6d526c79ea0b0e664299e5a122811034fe75ece9",
                 "shasum": ""
             },
             "require": {
@@ -1623,7 +1623,7 @@
                 "issues": "https://github.com/laravel/cashier/issues",
                 "source": "https://github.com/laravel/cashier"
             },
-            "time": "2025-11-25T15:12:34+00:00"
+            "time": "2025-12-03T00:26:48+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -12265,5 +12265,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }

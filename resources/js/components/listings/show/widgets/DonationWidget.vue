@@ -21,22 +21,33 @@
             >
         </div>
 
-        <Button class="w-full" variant="default">
-            {{ $t('listings.donation.action_btn') }}
+        <div class="mb-4">
+            <Input v-model="amount" type="number" min="1" :placeholder="$t('listings.donation.amount_placeholder')" />
+        </div>
+
+        <Button class="w-full" variant="default" @click="donate" :disabled="!amount || processing">
+            <span v-if="processing">{{ $t('common.processing') }}</span>
+            <span v-else>{{ $t('listings.donation.action_btn') }}</span>
         </Button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { formatCurrency } from '@/composables/useCurrency';
 import { DonationListable } from '@/types/listings';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { router } from '@inertiajs/vue3';
+import {checkout} from '@/routes/listings'
 
 const props = defineProps<{
     data: DonationListable;
     listingId: number;
 }>();
+
+const amount = ref('');
+const processing = ref(false);
 
 const progressPercentage = computed(() => {
     const raised = parseFloat(props.data.amount_raised);
@@ -44,4 +55,13 @@ const progressPercentage = computed(() => {
     if (goal === 0) return 0;
     return Math.min((raised / goal) * 100, 100);
 });
+
+const donate = () => {
+    router.post(checkout.url(props.listingId), {
+        amount: amount.value
+    }, {
+        onStart: () => processing.value = true,
+        onFinish: () => processing.value = false,
+    });
+};
 </script>

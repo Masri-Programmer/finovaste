@@ -10,6 +10,7 @@
             v-else-if="isBuyNow && buyNowData"
             :data="buyNowData"
             :listing-id="listing.id"
+            :is-owner="isOwner"
         />
 
         <AuctionWidget
@@ -61,6 +62,11 @@ const isAuction = computed(
 const isDonation = computed(
     () => listing.value.listable_type === 'App\\Models\\DonationListing',
 );
+
+const isOwner = computed(() => {
+    const user = page.props.auth.user;
+    return user && user.id === listing.value.user_id;
+});
 
 // Data Extraction (Type Casting)
 const investmentData = computed(() =>

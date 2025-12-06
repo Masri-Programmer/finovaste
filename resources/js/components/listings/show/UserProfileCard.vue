@@ -18,13 +18,13 @@
                     <div class="text-xl font-semibold text-foreground">
                         {{ user.name }}
                     </div>
-                    <div class="flex items-center gap-1">
+                    <!-- <div class="flex items-center gap-1">
                         <Star class="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         <span class="text-sm font-medium">4.9</span>
                         <span class="text-sm text-muted-foreground"
                             >(127 {{ $t('listings.reviews') }})</span
                         >
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -53,12 +53,15 @@
                         $page.props.auth.listings_count
                     }}</span>
                 </div>
+                <div class="mb-3 flex justify-between">
+                    <span class="text-muted-foreground"> {{ $t('listings.contact_button') }}</span>
+                    <span class="font-medium text-foreground">{{
+                        user.email
+                    }}</span>
+                </div>
             </div>
 
-            <Button as-child class="w-full" size="lg">
-                {{ $t('listings.contact_button') }} &nbsp;
-                {{ user.email }}
-            </Button>
+           
         </CardContent>
     </Card>
 </template>

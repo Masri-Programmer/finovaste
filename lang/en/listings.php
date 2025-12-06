@@ -33,7 +33,7 @@ return [
     'total_listings' => 'Total Listings',
     'location' => 'Location',
     'role' => 'role',
-    'contact_button' => 'Contact seller',
+    'contact_button' => 'Contact',
     'dialogue' => [
         'title' => 'Confirm investment',
         'description' => 'You are about to invest :amount. Please confirm your entry.',
@@ -106,6 +106,7 @@ return [
             'title' => 'Confirm investment',
             'description' => 'You are about to invest :amount in this project. Please check your entry.',
             'amount_label' => 'investment amount',
+            'shares_label' => 'Shares',
             'confirm_button' => 'Invest with obligation to pay', // Legal standard for buy buttons in DE
         ],
         'toast' => [
@@ -141,6 +142,7 @@ return [
         'raised' => 'Collected',
         'goal' => 'goal',
         'action_btn' => 'Donate now',
+        'amount_placeholder' => 'Enter amount (€)',
     ],
     'faq' => [
         'title' => 'Frequently Asked Questions',

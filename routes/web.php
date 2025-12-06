@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -16,6 +17,9 @@ Route::resource('categories', CategoryController::class)->only([
     'show'
 ]);
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+});
 
 require __DIR__ . '/listings.php';
 require __DIR__ . '/settings.php';

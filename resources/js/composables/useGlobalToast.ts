@@ -10,7 +10,7 @@ export function useGlobalToast() {
 
     const enableGlobalHandling = () => {
         watch(
-            () => page.props.flash?.notification,
+            () => page.props?.flash?.notification,
             (notification) => {
                 if (!notification) return;
 

@@ -1,11 +1,12 @@
 <template>
     <ListingCard
-        v-model="investmentAmount"
+        :model-value="investmentAmount"
+        @update:model-value="updateSharesFromAmount"
         :min-investment-amount="data.minimum_investment"
         :total-capital-goal="data.investment_goal"
         :amount-raised="data.amount_raised"
         type="investment"
-        @action="toggleDialog(true)"
+        @invest="toggleDialog(true)"
     />
 
     <Dialog :open="isDialogOpen" @update:open="toggleDialog">
@@ -24,20 +25,23 @@
             </DialogHeader>
             <form @submit.prevent="submitInvestment" class="grid gap-4 py-4">
                 <div class="grid grid-cols-4 items-center gap-4">
-                    <Label for="amount" class="text-right">
-                        {{ $t('listings.investment.dialog.amount_label') }}
+                    <Label for="shares" class="text-right">
+                        {{ $t('listings.investment.dialog.shares_label') }}
                     </Label>
                     <Input
-                        id="amount"
-                        v-model="investForm.amount"
+                        id="shares"
+                        v-model="investForm.shares"
                         type="number"
-                        :min="data.minimum_investment"
-                        :max="
-                            data.investment_goal -
-                            parseFloat(data.amount_raised)
-                        "
+                        min="1"
+                        :max="maxShares"
                         class="col-span-3"
                     />
+                    <div v-if="investForm.errors.shares" class="col-span-4 text-right text-sm text-destructive">
+                        {{ investForm.errors.shares }}
+                    </div>
+                </div>
+                <div class="text-right font-bold">
+                    Total: {{ formattedAmount }}
                 </div>
                 <Button
                     type="submit"
@@ -56,7 +60,6 @@
 </template>
 
 <script setup lang="ts">
-import { checkout } from '@/actions/App/Http/Controllers/PaymentController';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -70,8 +73,9 @@ import { Label } from '@/components/ui/label';
 import { InvestmentListable } from '@/types/listings';
 import { useForm } from '@inertiajs/vue3';
 import { useToggle } from '@vueuse/core';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import ListingCard from '../ListingCard.vue';
+import {checkout} from '@/routes/listings'
 
 const props = defineProps<{
     data: InvestmentListable;
@@ -79,25 +83,52 @@ const props = defineProps<{
 }>();
 
 const [isDialogOpen, toggleDialog] = useToggle(false);
-const investmentAmount = ref<number>(props.data.minimum_investment || 0);
 
 const investForm = useForm({
-    amount: investmentAmount.value,
-    listing_id: props.listingId,
     shares: 1,
 });
 
-watch(investmentAmount, (newVal) => (investForm.amount = newVal));
+const investmentAmount = computed(() => {
+    return investForm.shares * props.data.share_price;
+});
+
+// Calculate max shares available
+const maxShares = computed(() => {
+    if (!props.data.share_price) return 0;
+    const soldShares = Math.floor(props.data.amount_raised / props.data.share_price);
+    return props.data.shares_offered - soldShares;
+});
 
 const formattedAmount = computed(() => {
     return investmentAmount.value.toLocaleString('de-DE', {
         style: 'currency',
         currency: 'EUR',
-        maximumFractionDigits: 0,
+        maximumFractionDigits: 2,
     });
 });
 
+const updateSharesFromAmount = (amount: number) => {
+    if (props.data.share_price > 0) {
+        investForm.shares = Math.max(1, Math.round(amount / props.data.share_price));
+    }
+};
+
 const submitInvestment = () => {
-    investForm.post(checkout.url(props.listingId));
+    console.log('Submitting investment:', {
+        listingId: props.listingId,
+        shares: investForm.shares,
+        url: checkout.url(props.listingId)
+    });
+    
+    investForm.post(checkout.url(props.listingId), {
+        preserveScroll: true,
+        onError: (errors) => {
+            console.error('Investment submission failed:', errors);
+        },
+        onSuccess: () => {
+            console.log('Investment submission successful');
+            toggleDialog(false);
+        }
+    });
 };
 </script>

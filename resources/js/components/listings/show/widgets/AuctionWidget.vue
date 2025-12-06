@@ -42,7 +42,7 @@ import { Label } from '@/components/ui/label';
 import { formatCurrency } from '@/composables/useCurrency';
 import { AuctionListable } from '@/types/listings';
 import { useForm } from '@inertiajs/vue3';
-
+import {bid} from '@/routes/listings'
 const props = defineProps<{
     data: AuctionListable;
     listingId: number;
@@ -50,11 +50,12 @@ const props = defineProps<{
 
 const bidForm = useForm({
     amount: null as number | null,
-    listing_id: props.listingId,
 });
 
 const submitBid = () => {
-    console.log('Bidding', bidForm.data());
-    // bidForm.post(...)
+    bidForm.post(bid.url(props.listingId), {
+        preserveScroll: true,
+        onSuccess: () => bidForm.reset('amount'),
+    });
 };
 </script>

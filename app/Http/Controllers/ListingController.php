@@ -311,12 +311,15 @@ class ListingController extends Controller
 
 public function like(Request $request, Listing $listing): RedirectResponse
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
         if ($listing->isLikedByCurrentUser()) {
             return redirect()->back();
         }
 
         try {
-            $listing->likers()->syncWithoutDetaching(Auth::id());
+            $listing->likers()->syncWithoutDetaching(Auth::id());   
             $listing->increment('likes_count');
             
             // Pass 'liked' so the trait looks for messages.success.liked

@@ -33,7 +33,7 @@ return [
     'total_listings' => 'Gesamte Angebote',
     'location' => 'Standort',
     'role' => 'Rolle',
-    'contact_button' => 'Verkäufer kontaktieren',
+    'contact_button' => 'Kontakt',
     'dialog' => [
         'title' => 'Investition bestätigen',
         'description' => 'Sie sind im Begriff, :amount zu investieren. Bitte bestätigen Sie Ihre Eingabe.',

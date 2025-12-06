@@ -33,7 +33,7 @@ return [
     'total_listings' => 'Gesamte Angebote',
     'location' => 'Standort',
     'role' => 'Rolle',
-    'contact_button' => 'Verkäufer kontaktieren',
+    'contact_button' => 'Kontakt',
     'dialog' => [
         'title' => 'Investition bestätigen',
         'description' => 'Sie sind im Begriff, :amount zu investieren. Bitte bestätigen Sie Ihre Eingabe.',
@@ -107,6 +107,7 @@ return [
             'title' => 'Investition bestätigen',
             'description' => 'Sie sind dabei, :amount in dieses Projekt zu investieren. Bitte überprüfen Sie Ihre Eingabe.',
             'amount_label' => 'Investitionsbetrag',
+            'shares_label' => 'Anteile',
             'confirm_button' => 'Zahlungspflichtig investieren',
         ],
         'toast' => [
@@ -144,6 +145,7 @@ return [
         'raised' => 'Gesammelt',
         'goal' => 'Ziel',
         'action_btn' => 'Jetzt spenden',
+        'amount_placeholder' => 'Betrag eingeben (€)',
     ],
     'faq' => [
         'title' => 'Häufig gestellte Fragen',

@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+
 
 class TransactionController extends Controller
 {
-    // 1. Handle Auction Bids (Usually Bids go to a 'bids' table, not 'transactions' immediately)
     public function placeBid(Request $request, Listing $listing)
     {
         $request->validate(['amount' => 'required|numeric']);
@@ -46,13 +47,11 @@ class TransactionController extends Controller
         });
     }
 
-    // 2. Handle Buy Now
     public function buyItem(Request $request, Listing $listing)
     {
         $item = $listing->listable;
         $quantity = $request->input('quantity', 1);
 
-        // Fail fast if type mismatch
         if (!$item instanceof \App\Models\BuyNowListing) {
             abort(404);
         }
@@ -180,5 +179,31 @@ class TransactionController extends Controller
             return redirect()->route('transactions.portfolio')
                 ->with('success', 'Investment successful!');
         });
+    }
+
+
+    public function index(Request $request)
+    {
+        $filters = $request->validate([
+            'type' => 'nullable|string|in:buy_now,auction,donation,investment',
+            'search' => 'nullable|string',
+        ]);
+
+        $transactions = \App\Models\Transaction::where('user_id', Auth::id())
+            ->with(['payable.listing']) // Eager load the listing via the polymorphic relation
+            ->when($filters['type'] ?? null, function ($q, $type) {
+                $q->where('type', $type);
+            })
+            ->when($filters['search'] ?? null, function ($q, $search) {
+                $q->where('transaction_ref', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        return Inertia::render('Transactions/Index', [
+            'transactions' => $transactions,
+            'filters' => $filters,
+        ]);
     }
 }

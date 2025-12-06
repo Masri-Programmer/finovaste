@@ -15,6 +15,8 @@ Route::controller(ListingController::class)
     ->group(function () {
 
         Route::get('/', 'index')->name('index');
+        Route::post('/{listing}/like', 'like')->name('like');
+
 
         // 🔒 AUTHENTICATED ROUTES
         Route::middleware(['auth', 'verified'])->group(function () {
@@ -24,12 +26,11 @@ Route::controller(ListingController::class)
             Route::post('/', 'store')->name('store');
 
             Route::post('/{listing}/bid', [BidController::class, 'store'])->name('bid');
-            Route::post('/{listing}/buy', [TransactionController::class, 'buyItem'])->name('buy');
+            // Route::post('/{listing}/buy', [TransactionController::class, 'buyItem'])->name('buy');
+            Route::post('/{listing}/buy', [PaymentController::class, 'checkout'])->name('buy');
             Route::post('/{listing}/donate', [TransactionController::class, 'donate'])->name('donate');
             Route::post('/{listing}/invest', [TransactionController::class, 'invest'])->name('invest');
 
-            // Existing Listing Routes...
-            Route::post('/{listing}/like', 'like')->name('like');
             Route::delete('/{listing}/unlike', 'unlike')->name('unlike');
 
             Route::get('/{listing}/edit', 'edit')->name('edit');
@@ -56,7 +57,7 @@ Route::controller(ListingController::class)
             Route::post('/{listing}/subscribe', [ListingSubscriptionController::class, 'store'])
                 ->name('subscribe');
 
-            Route::post('/{listing}/checkout', [PaymentController::class, 'checkout']);
+            Route::post('/{listing}/checkout', [PaymentController::class, 'checkout'])->name('checkout');
             Route::get('/{listing}/payment/success', [PaymentController::class, 'success'])->name('success');
         });
 

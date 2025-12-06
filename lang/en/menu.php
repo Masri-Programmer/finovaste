@@ -9,5 +9,6 @@ return [
     'messages' => 'Messages',
     'profile' => 'Profile',
     'marketplace' => 'Marketplace',
-    'home' => 'Marketplace'
+    'home' => 'Marketplace',
+    'transactions' => 'Transactions'
 ];

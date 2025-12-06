@@ -20,21 +20,21 @@ class BidController extends Controller
 
         // 1. Validation: Basic Checks
         if (!Auth::check()) {
-            return response()->json(['message' => 'You must be logged in.'], 401);
+            return back()->with('error', 'You must be logged in.');
         }
 
         if ($listing->user_id === Auth::id()) {
-            return response()->json(['message' => 'You cannot bid on your own listing.'], 403);
+            return back()->with('error', 'You cannot bid on your own listing.');
         }
 
         // Ensure this listing is actually an auction
         if ($listing->listable_type !== 'App\Models\AuctionListing') { // Or however you map your morph map
-            return response()->json(['message' => 'This listing is not an auction.'], 400);
+            return back()->with('error', 'This listing is not an auction.');
         }
 
         // 2. THE TRANSACTION: Critical for Data Integrity
         try {
-            return DB::transaction(function () use ($request, $listing) {
+            DB::transaction(function () use ($request, $listing) {
 
                 // A. Lock the rows. This prevents anyone else from writing to these
                 // specific rows until this transaction finishes.
@@ -51,7 +51,7 @@ class BidController extends Controller
 
                 // C. Price Logic
                 $incomingBid = $request->amount;
-                $currentHigh = $auctionData->current_bid ?? $auctionData->start_price;
+                // $currentHigh = $auctionData->current_bid ?? $auctionData->start_price;
 
                 // If there are NO bids yet, the bid must be >= start_price
                 // If there ARE bids, the bid must be > current_bid
@@ -90,18 +90,16 @@ class BidController extends Controller
                 // }
 
                  // Updates for system
-         ListingUpdateService::system($listing, 'updates.bid_new', [
-    'amount' => number_format($incomingBid, 2) . '€'
-]);
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Bid placed successfully!',
-                    'new_current_bid' => $incomingBid
+                ListingUpdateService::system($listing, 'updates.bid_new', [
+                    'amount' => number_format($incomingBid, 2) . '€'
                 ]);
             });
+
+            return back()->with('success', 'Bid placed successfully!');
+
         } catch (\Exception $e) {
             // If anything in the transaction fails, it rolls back automatically
-            return response()->json(['message' => $e->getMessage()], 422);
+            return back()->with('error', $e->getMessage());
         }
     }
 }

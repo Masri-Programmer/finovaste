@@ -33,8 +33,8 @@
                 }}</span>
                 <span>{{ data.quantity }}</span>
             </div>
-            <Button class="mt-2 w-full" @click="handleBuyNow">
-                {{ $t('listings.buy_now.action_btn') }}
+            <Button class="mt-2 w-full" :disabled="isOwner" @click="router.post(buy.url({listing: listingId}))">
+                {{ isOwner ? 'You own this listing' : $t('listings.buy_now.action_btn') }}
             </Button>
         </div>
     </div>
@@ -44,14 +44,11 @@
 import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/composables/useCurrency';
 import { BuyNowListable } from '@/types/listings';
-
+import {buy} from '@/routes/listings'
+import { router } from '@inertiajs/vue3';
 const props = defineProps<{
     data: BuyNowListable;
     listingId: number;
+    isOwner?: boolean;
 }>();
-
-const handleBuyNow = () => {
-    // Implement Buy Now Logic or emit event
-    console.log('Buy now for listing', props.listingId);
-};
 </script>

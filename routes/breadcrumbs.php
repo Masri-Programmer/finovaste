@@ -128,3 +128,8 @@ Breadcrumbs::for('verification.notice', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Verify Email', route('verification.notice'));
 });
+// Home > Transaction History
+Breadcrumbs::for('transactions.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Transaction History', route('transactions.index'));
+});
