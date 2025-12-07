@@ -36,7 +36,10 @@
                         :max="maxShares"
                         class="col-span-3"
                     />
-                    <div v-if="investForm.errors.shares" class="col-span-4 text-right text-sm text-destructive">
+                    <div
+                        v-if="investForm.errors.shares"
+                        class="col-span-4 text-right text-sm text-destructive"
+                    >
                         {{ investForm.errors.shares }}
                     </div>
                 </div>
@@ -70,12 +73,12 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { checkout } from '@/routes/listings';
 import { InvestmentListable } from '@/types/listings';
 import { useForm } from '@inertiajs/vue3';
 import { useToggle } from '@vueuse/core';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import ListingCard from '../ListingCard.vue';
-import {checkout} from '@/routes/listings'
 
 const props = defineProps<{
     data: InvestmentListable;
@@ -95,7 +98,9 @@ const investmentAmount = computed(() => {
 // Calculate max shares available
 const maxShares = computed(() => {
     if (!props.data.share_price) return 0;
-    const soldShares = Math.floor(props.data.amount_raised / props.data.share_price);
+    const soldShares = Math.floor(
+        props.data.amount_raised / props.data.share_price,
+    );
     return props.data.shares_offered - soldShares;
 });
 
@@ -109,26 +114,19 @@ const formattedAmount = computed(() => {
 
 const updateSharesFromAmount = (amount: number) => {
     if (props.data.share_price > 0) {
-        investForm.shares = Math.max(1, Math.round(amount / props.data.share_price));
+        investForm.shares = Math.max(
+            1,
+            Math.round(amount / props.data.share_price),
+        );
     }
 };
 
 const submitInvestment = () => {
-    console.log('Submitting investment:', {
-        listingId: props.listingId,
-        shares: investForm.shares,
-        url: checkout.url(props.listingId)
-    });
-    
     investForm.post(checkout.url(props.listingId), {
         preserveScroll: true,
-        onError: (errors) => {
-            console.error('Investment submission failed:', errors);
-        },
         onSuccess: () => {
-            console.log('Investment submission successful');
             toggleDialog(false);
-        }
+        },
     });
 };
 </script>

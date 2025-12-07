@@ -149,7 +149,7 @@ class ListingController extends Controller
 
         } catch (Throwable $e) {
             DB::rollBack();
-            
+
             return $this->checkError('messages.errors.generic_user', $e);
         }
     }

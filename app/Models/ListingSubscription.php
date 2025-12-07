@@ -10,7 +10,7 @@ class ListingSubscription extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['listing_id', 'email'];
+    protected $fillable = ['listing_id', 'email', 'locale'];
 
     public function listing(): BelongsTo
     {

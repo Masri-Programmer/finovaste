@@ -1,11 +1,39 @@
 <?php
 
 return [
-    'investment_new' => ':name hat heute :amount in diese Immobilie investiert!',
-    'bid_new' => 'Ein neues Gebot von :amount wurde abgegeben.',
-    'auction_ended' => 'Die Auktion ist beendet.',
-    'status_changed' => 'Der Status des Inserats ist jetzt: :status.',
-    'email_subject_system' => 'Aktualisierung: :title',
-    'email_subject_manual' => 'Nachricht vom Eigentümer: :title',
-    'view_listing' => 'Inserat ansehen',
+    // Email Structure
+    'email_header' => 'Eintrag Aktualisierung',
+    'email_subject_general' => 'Aktualisierung bezüglich :title',
+    'view_listing' => 'Eintrag ansehen',
+    'footer' => 'Sie erhalten diese E-Mail, weil Sie Updates für diesen Eintrag abonniert haben.',
+
+    // Email Subjects
+    'listing_updated_subject' => 'Eintrag aktualisiert: :title',
+    'new_review_subject' => 'Neue Bewertung für :title',
+    'new_question_subject' => 'Neue Frage zu :title',
+    'question_answered_subject' => 'Frage beantwortet zu :title',
+    'new_bid_subject' => 'Neues Gebot für :title',
+    'item_purchased_subject' => 'Artikel gekauft: :title',
+    'new_donation_subject' => 'Neue Spende für :title',
+    'new_investment_subject' => 'Neue Investition in :title',
+
+    // Notification Messages (Body)
+    'listing_general_update' => 'Die Details des Eintrags wurden aktualisiert.',
+    
+    'new_review_body' => 'Eine neue Bewertung wurde veröffentlicht: ":body"',
+    
+    'new_question_body' => 'Eine neue Frage wurde gestellt: ":question"',
+    'question_answered_body' => 'Eine Frage wurde beantwortet: ":answer"',
+    
+    'price_updated' => 'Preis aktualisiert auf :price',
+    'stock_updated' => 'Bestand erhöht auf :quantity',
+    'auction_details_updated' => 'Auktionsdetails wurden aktualisiert.',
+    'donation_goal_updated' => 'Spendenziel aktualisiert auf :goal',
+    'share_price_updated' => 'Aktienpreis aktualisiert auf :price',
+    'investment_goal_updated' => 'Investitionsziel aktualisiert auf :goal',
+    
+    'new_bid_placed' => 'Ein neues Gebot von :amount wurde abgegeben.',
+    'item_purchased' => 'Ein Artikel wurde gekauft! Verbleibender Bestand: :stock.',
+    'new_donation_received' => 'Eine neue Spende von :amount ist eingegangen!',
+    'new_investment_made' => 'Neue Investition! :shares Anteile gekauft.',
 ];

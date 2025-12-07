@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Listing;
 use App\Models\Transaction;
+use App\Mail\ListingUpdated;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+
 
 
 class TransactionController extends Controller
@@ -43,7 +46,21 @@ class TransactionController extends Controller
             // Update the cache column on the auction
             $auction->update(['current_bid' => $request->amount]);
 
-            return back()->with('success', 'Bid placed successfully!');
+            // Notify Subscribers
+            foreach ($listing->subscriptions as $subscriber) {
+                $user = \App\Models\User::where('email', $subscriber->email)->first();
+                $locale = $user ? $user->locale : config('app.locale');
+
+                 Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
+                    'type' => 'bid',
+                    'key' => 'updates.new_bid_placed', // "A new bid of :amount has been placed."
+                    'params' => ['amount' => number_format($request->amount, 2) . "€"],
+                    'subject_key' => 'updates.new_bid_subject',
+                    'url' => route('listings.show', $listing)
+                ], $locale));
+            }
+
+             return $this->checkSuccess($listing, 'bid');
         });
     }
 
@@ -90,6 +107,20 @@ class TransactionController extends Controller
             // 4. Decrement Stock
             $item->decrement('quantity', $quantity);
 
+             // Notify Subscribers
+            foreach ($listing->subscriptions as $subscriber) {
+                $user = \App\Models\User::where('email', $subscriber->email)->first();
+                $locale = $user ? $user->locale : config('app.locale');
+
+                 Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
+                    'type' => 'buy',
+                    'key' => 'updates.item_purchased', // "An item has been purchased! Remaining stock: :stock."
+                    'params' => ['stock' => ($item->quantity - $quantity)],
+                    'subject_key' => 'updates.item_purchased_subject',
+                    'url' => route('listings.show', $listing)
+                ], $locale));
+            }
+
             return redirect()->route('transactions.receipt', $transaction->uuid)
                 ->with('success', 'Item purchased!');
         });
@@ -124,6 +155,20 @@ class TransactionController extends Controller
 
             $donation->increment('amount_raised', $request->amount);
             $donation->increment('donors_count');
+
+            // Notify Subscribers
+            foreach ($listing->subscriptions as $subscriber) {
+                $user = \App\Models\User::where('email', $subscriber->email)->first();
+                $locale = $user ? $user->locale : config('app.locale');
+
+                 Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
+                    'type' => 'donation',
+                    'key' => 'updates.new_donation_received', // "A new donation of :amount has been made!"
+                    'params' => ['amount' => number_format($request->amount, 2) . "€"],
+                    'subject_key' => 'updates.new_donation_subject',
+                    'url' => route('listings.show', $listing)
+                ], $locale));
+            }
 
             return back()->with('success', 'Thank you for your donation!');
         });
@@ -175,6 +220,20 @@ class TransactionController extends Controller
             $investment->decrement('shares_offered', $sharesToBuy);
             $investment->increment('amount_raised', $totalCost);
             $investment->increment('investors_count');
+
+            // Notify Subscribers
+            foreach ($listing->subscriptions as $subscriber) {
+                $user = \App\Models\User::where('email', $subscriber->email)->first();
+                $locale = $user ? $user->locale : config('app.locale');
+
+                 Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
+                    'type' => 'investment',
+                    'key' => 'updates.new_investment_made', // "New Investment! :shares shares purchased."
+                    'params' => ['shares' => $sharesToBuy],
+                    'subject_key' => 'updates.new_investment_subject',
+                    'url' => route('listings.show', $listing)
+                ], $locale));
+            }
 
             return redirect()->route('transactions.portfolio')
                 ->with('success', 'Investment successful!');

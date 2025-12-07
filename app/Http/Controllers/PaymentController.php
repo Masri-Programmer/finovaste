@@ -20,13 +20,14 @@ class PaymentController extends Controller
     public function checkout(Request $request, Listing $listing)
     {
         $user = Auth::user();
-        
+
         // 1. Ownership Check
         if ($listing->user_id === $user->id) {
-            return back()->with('error', 'You cannot buy your own listing.');
+            // [3] Use checkError
+            return $this->checkError('You cannot buy your own listing.');
         }
 
-        $listing->load('listable'); // Load the specific sub-model
+        $listing->load('listable');
 
         $amount = 0;
         $productName = $listing->title;
@@ -39,7 +40,7 @@ class PaymentController extends Controller
             case BuyNowListing::class:
                 $amount = $listing->listable->price;
                 if ($listing->listable->quantity < 1) {
-                    return back()->with('error', 'Item out of stock.');
+                    return $this->checkError('Item out of stock.');
                 }
                 break;
 
@@ -53,30 +54,32 @@ class PaymentController extends Controller
             case InvestmentListing::class:
                 $request->validate(['shares' => 'required|integer|min:1']);
                 $amount = $listing->listable->share_price * $request->shares;
-                $quantity = $request->shares; // Stored for logic, not Stripe qty
+                $quantity = $request->shares;
                 $transactionType = 'investment';
                 $productName = "Investment: {$request->shares} shares in {$listing->title}";
-                $metadata['shares_count'] = $request->shares;
-                
-                // Check available shares
-                $remaining = $listing->listable->shares_offered - $listing->listable->investors_count; // Simplified logic
-                // Real logic might need to sum 'shares_sold' column if you have one
+
+                // CRITICAL FIX: Stripe metadata values must be strings
+                $metadata['shares_count'] = (string) $request->shares;
+
+                $remaining = $listing->listable->shares_offered - $listing->listable->investors_count;
+                if ($quantity > $remaining) {
+                     return $this->checkError('Not enough shares available.');
+                }
                 break;
-            
+
             case AuctionListing::class:
-                 // Assuming "Buy It Now" for this flow
                  if (!$listing->listable->buy_it_now_price) {
-                     return back()->with('error', 'Buy Now not available for this auction.');
+                     return $this->checkError('Buy Now not available for this auction.');
                  }
                  $amount = $listing->listable->buy_it_now_price;
                  $transactionType = 'auction_buy_now';
                  break;
 
             default:
-                return back()->with('error', 'Invalid listing type.');
+                return $this->checkError('Invalid listing type.');
         }
 
-        // 3. Create Pending Transaction (So we have a record BEFORE they pay)
+        // 3. Create Pending Transaction
         $transaction = Transaction::create([
             'user_id' => $user->id,
             'payable_type' => $listing->listable_type,
@@ -86,42 +89,56 @@ class PaymentController extends Controller
             'status' => 'pending',
             'type' => $transactionType,
             'metadata' => $metadata,
-            'transaction_ref' => 'temp_' . uniqid(), // Temporary, will update with Stripe ID
+            'transaction_ref' => 'temp_' . uniqid(),
         ]);
 
         // 4. Initialize Stripe
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $checkoutSession = Session::create([
-            'payment_method_types' => ['card'],
-            'customer_email' => $user->email,
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'usd',
-                    'product_data' => [
-                        'name' => $productName,
-                        'images' => array_filter([$listing->getFirstMediaUrl('images', 'thumb')]), // Optional, remove empty strings
+        // Prepare image for Stripe (ensure it's a valid URL)
+        $imageUrl = $listing->getFirstMediaUrl('images', 'thumb');
+        $images = $imageUrl ? [$imageUrl] : [];
+
+        try {
+            $checkoutSession = Session::create([
+                // Option A: Explicitly defined
+                'payment_method_types' => ['card', 'paypal'],
+
+                // Option B: Recommended
+                // 'automatic_payment_methods' => ['enabled' => true],
+
+                'customer_email' => $user->email,
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => $productName,
+                            'images' => $images,
+                        ],
+                        'unit_amount' => (int)($amount * 100), // Cents
                     ],
-                    'unit_amount' => (int)($amount * 100), // Cents
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => route('listings.success', $listing->id) . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('listings.show', $listing->id),
-            'client_reference_id' => $transaction->id, // Link Stripe to DB ID
-            'metadata' => [
-                'transaction_uuid' => $transaction->uuid,
-                'listing_id' => $listing->id,
-            ],
-        ]);
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('listings.success', $listing->id) . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('listings.show', $listing->id),
+                'client_reference_id' => (string) $transaction->id,
+                'metadata' => array_merge([
+                    'transaction_uuid' => (string) $transaction->uuid,
+                    'listing_id' => (string) $listing->id,
+                ], $metadata),
+            ]);
+        } catch (\Exception $e) {
+            // [4] Pass exception to checkError for automatic logging if debug is on
+            return $this->checkError('Payment initialization failed: ' . $e->getMessage(), $e);
+        }
 
         // 5. Update Transaction with real Stripe Session ID
         $transaction->update(['transaction_ref' => $checkoutSession->id]);
 
         return Inertia::location($checkoutSession->url);
     }
-    
+
     public function success(Request $request, Listing $listing)
     {
         $sessionId = $request->get('session_id');
@@ -131,27 +148,40 @@ class PaymentController extends Controller
         }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
-        $session = Session::retrieve($sessionId);
 
+        try {
+            $session = Session::retrieve($sessionId);
+        } catch (\Exception $e) {
+             // [5] Use checkError (Redirects back)
+             return $this->checkError('Invalid Session.', $e);
+        }
+
+        // Note: For PayPal, status might briefly be 'processing', but usually 'paid'
         if ($session->payment_status !== 'paid') {
-           return redirect()->route('listings.show', $listing->id)->with('error', 'Payment not completed.');
+           return $this->checkError('Payment not completed or is processing.');
         }
 
         $transaction = Transaction::where('transaction_ref', $sessionId)->firstOrFail();
 
         if ($transaction->status !== 'completed') {
-            DB::transaction(function () use ($transaction, $listing) {
+            DB::transaction(function () use ($transaction, $listing, $session) {
                 // 1. Mark Paid
-                $transaction->update(['status' => 'completed']);
-    
+                $transaction->update([
+                    'status' => 'completed',
+                    'payment_method' => $session->payment_method_types[0] ?? 'stripe', // Capture method
+                ]);
+
                 // 2. Handle Stock / Updates based on Type
                 $item = $listing->listable;
-    
+
                 if ($item instanceof BuyNowListing) {
-                    $item->decrement('quantity', 1); // Assuming qty 1 for now
+                    $item->decrement('quantity', 1);
                 }
-                
-                // Add logic for other types if needed (Donation, Investment)
+
+                // Add Investment logic if needed
+                if ($item instanceof InvestmentListing) {
+                    // $item->increment('investors_count', $transaction->metadata['shares_count']);
+                }
             });
         }
 

@@ -1,16 +1,14 @@
 <x-mail::message>
 # {{ __('updates.email_header') }}
 
-{{-- Logic to display Manual Text OR Translated System Message --}}
-@if($update->type === 'manual')
-## {{ $update->title }}
-{{ $update->content }}
+@if(($updateData['type'] ?? '') === 'manual')
+## {{ $updateData['title'] ?? 'Update' }}
+{{ $updateData['message'] ?? '' }}
 @else
-{{-- Translate the key using the stored attributes --}}
-{{ __($update->translation_key, $update->attributes) }}
+{{ __($updateData['key'], $updateData['params'] ?? []) }}
 @endif
 
-<x-mail::button :url="route('listings.show', $listing)">
+<x-mail::button :url="$updateData['url'] ?? route('listings.show', $listing)">
 {{ __('updates.view_listing') }}
 </x-mail::button>
 
