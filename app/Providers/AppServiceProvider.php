@@ -37,5 +37,10 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\AuctionListing::observe(\App\Observers\AuctionListingObserver::class);
         \App\Models\DonationListing::observe(\App\Observers\DonationListingObserver::class);
         \App\Models\InvestmentListing::observe(\App\Observers\InvestmentListingObserver::class);
+
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Login::class,
+            \App\Listeners\SetLocaleOnLogin::class
+        );
     }
 }

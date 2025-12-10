@@ -87,6 +87,7 @@ return [
     'supported_locales' => [
         'en',
         'de',
+        'es',
     ],
 
 
