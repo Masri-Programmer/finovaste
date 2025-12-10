@@ -19,15 +19,7 @@ import { show } from '@/routes/listings';
 import { Listing } from '@/types/listings';
 import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-import {
-    BadgeDollarSign,
-    CircleDollarSign,
-    ExternalLink,
-    Gavel,
-    HandHeart,
-    MapPin,
-    Star,
-} from 'lucide-vue-next';
+import { ExternalLink, MapPin, Star } from 'lucide-vue-next';
 import { computed, PropType } from 'vue';
 
 const props = defineProps({
@@ -177,7 +169,7 @@ const shareUrl = computed(() => {
             </CardContent>
 
             <CardFooter class="flex flex-col gap-3">
-                <Button
+                <!-- <Button
                     v-if="
                         listing.listable_type ===
                         'App\\Models\\InvestmentListing'
@@ -219,7 +211,7 @@ const shareUrl = computed(() => {
                 >
                     <HandHeart class="mr-2 h-4 w-4" />
                     {{ $t('listings.donateNow') }}
-                </Button>
+                </Button> -->
 
                 <div
                     class="flex w-full justify-between gap-2 border-t border-border pt-3"
@@ -230,10 +222,10 @@ const shareUrl = computed(() => {
                         class="w-full justify-center text-xs"
                         as-child
                     >
-                        <a href="#" target="_blank" @click.stop>
+                        <Link :href="show.url(listing.id)" @click.stop>
                             {{ $t('links.details') }}
                             <ExternalLink class="ml-1 h-3 w-3" />
-                        </a>
+                        </Link>
                     </Button>
                 </div>
             </CardFooter>
