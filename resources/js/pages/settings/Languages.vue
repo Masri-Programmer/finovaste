@@ -5,7 +5,7 @@ import Layout from '@/components/layout/Layout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import LocaleSelector from '@/components/LocaleSelector.vue';
+import LanguageSelector from '@/components/LanguageSelector.vue';
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import LocaleSelector from '@/components/LocaleSelector.vue';
                     :title="$t('languages.title')"
                     :description="$t('languages.description')"
                 />
-                <LocaleSelector />
+                <LanguageSelector />
 
                 <!-- <div
                     v-for="lang in page.props.supported_languages"

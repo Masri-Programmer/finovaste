@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Stevebauman\Location\Facades\Location;
 
-class SetLocaleMiddleware
+class SetLanguageMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
