@@ -3,11 +3,11 @@
 
 
 return [
-    'appearance' => 'Erscheinungsbild',
-    'description' => 'Verwalten Sie Ihre Profil- und Kontoeinstellungen',
-    'password' => 'Passwort',
-    'profile' => 'Profil',
-    'title' => 'Einstellungen',
-    'twoFactor' => 'Zwei-Faktor-Authentifizierung',
-    'languages' => 'Sprache'
+    'appearance' => 'appearance',
+    'description' => 'Manage your profile and account settings',
+    'password' => 'Password',
+    'profile' => 'Profile',
+    'title' => 'Settings',
+    'twoFactor' => 'Two-Factor Authentication',
+    'languages' => 'language'
 ];

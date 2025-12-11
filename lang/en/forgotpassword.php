@@ -3,10 +3,10 @@
 
 
 return [
-    'button' => 'Link zum Zurücksetzen senden',
-    'description' => 'Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten',
-    'email' => 'E-Mail-Adresse',
-    'loginLink' => 'Anmeldung',
-    'orReturnTo' => 'Oder kehren Sie zurück zur',
-    'title' => 'Passwort vergessen'
+    'button' => 'Send reset link',
+    'description' => 'Enter your email address to receive a password reset link',
+    'email' => 'email address',
+    'loginLink' => 'Login',
+    'orReturnTo' => 'Or return to',
+    'title' => 'Forgot password'
 ];

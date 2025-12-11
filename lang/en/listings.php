@@ -69,14 +69,13 @@ return [
     'liked' => [
         'title' => 'Posts marked with "Like"',
         'description' => '',
-        'empty' => "You haven't liked any posts yet.",
+        'empty' => 'You haven\'t liked any posts yet.',
         'share_link_label' => 'Share link',
-
     ],
     'edit' => [
         'title' => 'Edit entry: :title',
         'description' => '',
-        'empty' => "You haven't liked any posts yet.",
+        'empty' => 'You haven\'t liked any posts yet.',
         'share_link_label' => 'Share link',
         'actions' => [
             'save' => 'Save',
@@ -99,6 +98,7 @@ return [
 
     // Investment Specifics
     'investment' => [
+        'tag' => 'Investment',
         'invest_now' => 'Invest now',
         'min_invest' => 'minimum investment',
         'goal' => 'financing goal',
@@ -107,7 +107,7 @@ return [
             'description' => 'You are about to invest :amount in this project. Please check your entry.',
             'amount_label' => 'investment amount',
             'shares_label' => 'Shares',
-            'confirm_button' => 'Invest with obligation to pay', // Legal standard for buy buttons in DE
+            'confirm_button' => 'Invest with payment',
         ],
         'toast' => [
             'starting' => 'Investment is being prepared...',
@@ -118,6 +118,7 @@ return [
 
     // Buy Now / E-commerce
     'buy_now' => [
+        'tag' => 'Buy',
         'purchase_details' => 'Purchase Details',
         'price' => 'price',
         'condition' => 'state',
@@ -129,6 +130,7 @@ return [
 
     // Auction
     'auction' => [
+        'tag' => 'Auction',
         'current_bid' => 'Current bid',
         'start_price' => 'start price',
         'ends_at' => 'Ends on',

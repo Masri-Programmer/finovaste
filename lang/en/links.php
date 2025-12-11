@@ -4,6 +4,6 @@
 
 return [
     'details' => 'Details',
-    'pitchdeck' => 'Pitchdeck',
-    'website' => 'Webseite'
+    'pitchdeck' => 'pitchdeck',
+    'website' => 'website'
 ];

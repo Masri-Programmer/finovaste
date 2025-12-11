@@ -3,8 +3,8 @@
 
 
 return [
-    'auction' => 'Auktion',
-    'buyNow' => 'Sofort-Kauf',
-    'donation' => 'Spende',
-    'investment' => 'Investition'
+    'auction' => 'auction',
+    'buyNow' => 'Buy Now',
+    'donation' => 'donation',
+    'investment' => 'investment'
 ];

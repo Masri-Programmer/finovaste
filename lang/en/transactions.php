@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'title' => 'Transaction History',
-    'description' => 'View your purchases, investments, donations, and auction activity.',
+    'title' => 'Transaction history',
+    'description' => 'View your purchases, investments, donations, and auction activities.',
     'search_placeholder' => 'Search transactions...',
-    'item_unavailable' => 'Item unavailable',
+    'item_unavailable' => 'Item not available',
     'empty_state' => 'No transactions found.',
-    
+
     'filters' => [
         'all' => 'All',
         'purchases' => 'Purchases',
@@ -26,7 +26,7 @@ return [
 
     'types' => [
         'purchase' => 'Purchase',
-        'auction_buy_now' => 'Auction Buy Now',
+        'auction_buy_now' => 'Auction (Buy Now)',
         'investment' => 'Investment',
         'donation' => 'Donation',
         'auction' => 'Auction',

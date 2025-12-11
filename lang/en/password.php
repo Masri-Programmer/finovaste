@@ -3,12 +3,12 @@
 
 
 return [
-    'breadcrumb' => 'Passwort-Einstellungen',
-    'button' => 'Passwort speichern',
-    'confirmPassword' => 'Passwort bestätigen',
-    'currentPassword' => 'Aktuelles Passwort',
-    'description' => 'Stellen Sie sicher, dass Ihr Konto ein langes, zufälliges Passwort verwendet, um sicher zu bleiben.',
-    'headTitle' => 'Passwort-Einstellungen',
-    'newPassword' => 'Neues Passwort',
-    'title' => 'Passwort aktualisieren'
+    'breadcrumb' => 'Password Settings',
+    'button' => 'Save password',
+    'confirmPassword' => 'Confirm password',
+    'currentPassword' => 'Current Password',
+    'description' => 'Make sure your account uses a long, random password to stay secure.',
+    'headTitle' => 'Password Settings',
+    'newPassword' => 'New Password',
+    'title' => 'Update Password'
 ];

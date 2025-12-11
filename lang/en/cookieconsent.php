@@ -4,36 +4,36 @@
 
 return [
     'banner' => [
-        'acceptAll' => 'Alle akzeptieren',
-        'customize' => 'Anpassen',
-        'description' => 'Wir verwenden Cookies, um Ihr Surferlebnis zu verbessern, personalisierte Inhalte bereitzustellen und unseren Datenverkehr zu analysieren.',
-        'necessaryOnly' => 'Nur Notwendige',
-        'title' => 'Cookie-Einstellungen'
+        'acceptAll' => 'Accept All',
+        'customize' => 'Adjust',
+        'description' => 'We use cookies to improve your browsing experience, provide personalized content and analyze our traffic.',
+        'necessaryOnly' => 'Only necessary',
+        'title' => 'Cookie Settings'
     ],
     'modal' => [
         'analytics' => [
-            'description' => 'Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Informationen anonym sammeln.',
-            'title' => 'Analyse-Cookies'
+            'description' => 'These cookies help us understand how visitors interact with our website by collecting information anonymously.',
+            'title' => 'Analysis Cookies'
         ],
-        'cancel' => 'Abbrechen',
-        'description' => 'Verwalten Sie Ihre Cookie-Einstellungen. Sie können unten verschiedene Arten von Cookies aktivieren oder deaktivieren.',
+        'cancel' => 'Cancel',
+        'description' => 'Manage your cookie settings. You can enable or disable different types of cookies below.',
         'marketing' => [
-            'description' => 'Diese Cookies werden verwendet, um Besucher über Websites hinweg zu verfolgen, um relevante Anzeigen anzuzeigen.',
-            'title' => 'Marketing-Cookies'
+            'description' => 'These cookies are used to track visitors across websites in order to show relevant advertisements.',
+            'title' => 'Marketing Cookies'
         ],
         'necessary' => [
-            'description' => 'Diese Cookies sind für die ordnungsgemäße Funktion der Website unerlässlich. Sie ermöglichen Kernfunktionen.',
-            'title' => 'Notwendige Cookies'
+            'description' => 'These cookies are essential for the website to function properly. They enable core functions.',
+            'title' => 'Necessary Cookies'
         ],
         'preference' => [
-            'description' => 'Diese Cookies ermöglichen es der Website, sich an Ihre getroffenen Entscheidungen zu erinnern und erweiterte Funktionen bereitzustellen.',
-            'title' => 'Präferenz-Cookies'
+            'description' => 'These cookies allow the website to remember choices you make and provide enhanced functionality.',
+            'title' => 'Preference Cookies'
         ],
-        'save' => 'Einstellungen speichern',
-        'title' => 'Cookie-Präferenzen'
+        'save' => 'Save settings',
+        'title' => 'Cookie Preferences'
     ],
     'toast' => [
-        'error' => 'Speichern der Einstellungen fehlgeschlagen. Bitte versuchen Sie es erneut.',
-        'success' => 'Cookie-Einstellungen erfolgreich gespeichert!'
+        'error' => 'Save settings failed. Please try again.',
+        'success' => 'Cookie settings saved successfully!'
     ]
 ];

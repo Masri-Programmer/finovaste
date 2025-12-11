@@ -3,10 +3,10 @@
 
 
 return [
-    'arabic' => 'Arabisch',
-    'changeLanguage' => 'Sprache ändern',
-    'english' => 'Englisch',
-    'french' => 'Französisch',
-    'german' => 'Deutsch',
-    'saved' => 'Gespeichert.'
+    'arabic' => 'Arabic',
+    'changeLanguage' => 'Change Language',
+    'english' => 'English',
+    'french' => 'French',
+    'german' => 'German',
+    'saved' => 'Saved.'
 ];

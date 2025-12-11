@@ -3,9 +3,9 @@
 
 
 return [
-    'button' => 'Passwort bestätigen',
-    'description' => 'Dies ist ein gesicherter Bereich der Anwendung. Bitte bestätigen Sie Ihr Passwort, bevor Sie fortfahren.',
-    'headTitle' => 'Passwort bestätigen',
-    'password' => 'Passwort',
-    'title' => 'Bestätigen Sie Ihr Passwort'
+    'button' => 'Confirm password',
+    'description' => 'This is a secured area of the application. Please confirm your password before continuing.',
+    'headTitle' => 'Confirm password',
+    'password' => 'Password',
+    'title' => 'Confirm your password'
 ];

@@ -3,15 +3,15 @@
 
 
 return [
-    'alreadyHaveAccount' => 'Sie haben bereits ein Konto?',
-    'button' => 'Konto erstellen',
-    'confirmPassword' => 'Passwort bestätigen',
-    'description' => 'Geben Sie unten Ihre Daten ein, um Ihr Konto zu erstellen',
-    'email' => 'E-Mail-Adresse',
-    'fullNamePlaceholder' => 'Vollständiger Name',
-    'headTitle' => 'Registrieren',
-    'loginLink' => 'Anmelden',
+    'alreadyHaveAccount' => 'You already have an account?',
+    'button' => 'Create account',
+    'confirmPassword' => 'Confirm password',
+    'description' => 'Enter your data below to create your account',
+    'email' => 'Email address',
+    'fullNamePlaceholder' => 'Full name',
+    'headTitle' => 'Register',
+    'loginLink' => 'Login',
     'name' => 'Name',
-    'password' => 'Passwort',
-    'title' => 'Konto erstellen'
+    'password' => 'Password',
+    'title' => 'Create account'
 ];

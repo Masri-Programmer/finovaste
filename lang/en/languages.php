@@ -3,13 +3,13 @@
 
 
 return [
-    'english' => 'Englisch',
-    'german' => 'Deutsch',
-    'french' => 'Französisch',
-    'arabic' => 'Arabisch',
-    'breadcrumb' => 'Spracheinstellungen',
-    'description' => 'Aktualisieren Sie Ihre Spracheinstellungen.',
-    'headTitle' => 'Spracheinstellungen',
-    'title' => 'Sprache',
-    'saved' => 'Gespeichert.'
+    'english' => 'English',
+    'german' => 'German',
+    'french' => 'French',
+    'arabic' => 'Arabic',
+    'breadcrumb' => 'Language settings',
+    'description' => 'Update your language settings.',
+    'headTitle' => 'Language settings',
+    'title' => 'Language',
+    'saved' => 'Saved.'
 ];

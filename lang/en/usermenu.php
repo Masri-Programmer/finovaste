@@ -3,14 +3,14 @@
 
 
 return [
-    'logout' => 'Abmelden',
+    'logout' => 'Logout',
     'messages' => [
-        'logoutError' => 'Abmeldung fehlgeschlagen. Bitte erneut versuchen.',
-        'logoutSuccess' => 'Erfolgreich abgemeldet.'
+        'logoutError' => 'Logout failed. Please try again.',
+        'logoutSuccess' => 'Successfully logged out.'
     ],
-    'myInvestments' => 'Meine Investitionen',
-    'myListings' => 'Meine Angebote',
-    'profile' => 'Profil',
-    'settings' => 'Einstellungen',
-    'title' => 'Mein Konto'
+    'myInvestments' => 'My Investments',
+    'myListings' => 'My Listings',
+    'profile' => 'Profile',
+    'settings' => 'Settings',
+    'title' => 'My Account'
 ];

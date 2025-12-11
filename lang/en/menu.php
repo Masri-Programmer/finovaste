@@ -3,7 +3,7 @@
 
 
 return [
-    'logout' => 'Log out',
+    'logout' => 'Logout',
     'settings' => 'Settings',
     'listings' => 'Entries',
     'messages' => 'Messages',

@@ -1,31 +1,37 @@
 <?php
 
 return [
-    'label' => 'Bewertungen',
+    'label' => 'Reviews',
 
     'tabs' => [
-        'reviews' => 'Bewertungen',
-        'documents' => 'Dokumente',
+        'reviews' => 'Reviews',
+        'documents' => 'Documents',
         'updates' => 'Updates',
-        'reviews_empty' => 'Keine Bewertungen verfügbar.',
-        'documents_empty' => 'Keine Dokumente verfügbar.',
-        'updates_empty' => 'Keine Updates verfügbar.',
+        'reviews_empty' => 'No reviews available.',
+        'documents_empty' => 'No documents available.',
+        'updates_empty' => 'No updates available.',
     ],
-    'verified_investor' => 'Verifizierter Investor',
-    'load_more_button' => 'Weitere Bewertungen laden',
 
     'documents' => [
-        'download_button' => 'Herunterladen',
+        'download_button' => 'Download',
     ],
 
     'updates' => [
-        'last_checked' => 'Zuletzt geprüft',
+        'last_checked' => 'Last checked',
     ],
 
     'notifications' => [
-        'load_more_success' => 'Weitere Bewertungen erfolgreich geladen.',
-        'load_more_error' => 'Fehler beim Laden weiterer Bewertungen.',
-        'download_start' => 'Download für :name gestartet.',
-        'download_error' => 'Fehler beim Download.',
+        'load_more_success' => 'More reviews successfully loaded.',
+        'load_more_error' => 'Error loading more reviews.',
+        'download_start' => 'Download for :name started.',
+        'download_error' => 'Error downloading.',
     ],
+    'write_review' => 'Write review',
+    'rating' => 'Rating',
+    'comment' => 'Comment',
+    'placeholder' => 'Share your experiences with us...',
+    'submit' => 'Submit review',
+    'verified_investor' => 'Verified investor',
+    'load_more_button' => 'Load more',
+    'reviews_empty' => 'No reviews available.',
 ];

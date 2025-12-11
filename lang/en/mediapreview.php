@@ -3,8 +3,8 @@
 
 
 return [
-    'downloadPdf' => 'PDF herunterladen',
-    'imageAlt' => 'Vorschaubild für {name}',
-    'removeLabel' => 'Datei entfernen',
-    'videoNotSupported' => 'Ihr Browser unterstützt das Video-Tag nicht.'
+    'downloadPdf' => 'Download PDF',
+    'imageAlt' => 'Preview image for {name}',
+    'removeLabel' => 'Remove file',
+    'videoNotSupported' => 'Your browser does not support the video tag.'
 ];

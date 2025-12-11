@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'title' => 'Payment Successful!',
-    'description' => 'Your transaction has been completed successfully.',
+    'title' => 'Payment successful!',
+    'description' => 'Your transaction has been successfully completed.',
     'transaction_id' => 'Transaction ID',
     'item' => 'Item',
-    'back_to_listing' => 'Back to Listing',
-    'go_home' => 'Go to Home',
+    'back_to_listing' => 'Back to listing',
+    'go_home' => 'Go to home',
 ];

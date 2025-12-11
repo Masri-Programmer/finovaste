@@ -1,7 +1,7 @@
 <?php
 
 return [
-    // 1xx: Informational
+    // 1xx: Information
     100 => 'Continue',
     101 => 'Switching Protocols',
     102 => 'Processing',
@@ -48,8 +48,8 @@ return [
     415 => 'Unsupported Media Type',
     416 => 'Range Not Satisfiable',
     417 => 'Expectation Failed',
-    418 => 'I\'m a teapot', // RFC 2324
-    419 => 'Page Expired', // Common Framework specific (e.g. Laravel)
+    418 => 'I\'m a Teapot', // RFC 2324
+    419 => 'Page Expired', // Common Framework specific
     421 => 'Misdirected Request',
     422 => 'Unprocessable Entity',
     423 => 'Locked',
@@ -76,7 +76,7 @@ return [
     508 => 'Loop Detected',
     510 => 'Not Extended',
     511 => 'Network Authentication Required',
-    599 => 'Network Connect Timeout Error',
+    599 => 'Network Connect Timeout',
 
     // Application Statuses
     'pending' => 'Pending',

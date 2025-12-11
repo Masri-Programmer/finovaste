@@ -4,17 +4,17 @@
 
 return [
     'cta' => [
-        'primary' => 'Marktplatz erkunden',
-        'secondary' => 'So funktioniert\'s'
+        'primary' => 'Explore the marketplace',
+        'secondary' => 'How it works'
     ],
-    'headline' => 'Ihr Tor zu exklusiven Vermögenswerten & Investitionen',
+    'headline' => 'Your gateway to exclusive assets & investments',
     'notifications' => [
-        'learnMoreClicked' => 'Lade Details zur Funktionsweise von Finovaste...',
-        'navigating' => 'Lade Marktplatz...'
+        'learnMoreClicked' => 'Loading marketplace details...',
+        'navigating' => 'Loading marketplace...'
     ],
-    'subheading' => 'Finovaste ist die All-in-One-Plattform, um Immobilien, Startups, Luxusgüter und Sammlerstücke zu entdecken, zu kaufen und in sie zu investieren.',
+    'subheading' => 'Finovaste is the All-in-One-Platform to discover, buy and invest in Immobilien, Startups, Luxusgüter and Collectibles.',
     'visual' => [
-        'darkModePlaceholder' => 'Marktplatz-Vorschau (Dunkler Modus)',
-        'lightModePlaceholder' => 'Marktplatz-Vorschau (Heller Modus)'
+        'darkModePlaceholder' => 'Marketplace Preview (Dark Mode)',
+        'lightModePlaceholder' => 'Marketplace Preview (Light Mode)'
     ]
 ];

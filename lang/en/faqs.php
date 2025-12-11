@@ -3,11 +3,11 @@
 
 
 return [
-    'allFaqsTitle' => 'Alle FAQs zum Listing',
-    'antwort1' => 'Die Zielrendite liegt bei 8-10% pro Jahr.',
-    'antwort2' => 'Die Auszahlungen beginnen im nächsten Quartal.',
-    'frage1' => 'Was ist die erwartete Rendite?',
-    'frage2' => 'Wann beginnt die Auszahlung?',
-    'showAll' => 'Alle anzeigen',
-    'title' => 'Häufig gestellte Fragen (FAQs)'
+    'allFaqsTitle' => 'All FAQs about the listing',
+    'answer1' => 'The target return is 8-10% per year.',
+    'answer2' => 'Payouts will begin next quarter.',
+    'question1' => 'What is the expected return?',
+    'question2' => 'When does the payout start?',
+    'showAll' => 'Show All',
+    'title' => 'Frequently asked questions (FAQs)'
 ];

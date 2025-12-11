@@ -3,10 +3,10 @@
 
 
 return [
-    'button' => 'Bestätigungs-E-Mail erneut senden',
-    'description' => 'Bitte bestätigen Sie Ihre E-Mail-Adresse, indem Sie auf den Link klicken, den wir Ihnen gerade zugesandt haben.',
-    'headTitle' => 'E-Mail-Bestätigung',
-    'logoutLink' => 'Abmelden',
-    'successMessage' => 'Ein neuer Bestätigungslink wurde an die E-Mail-Adresse gesendet, die Sie bei der Registrierung angegeben haben.',
-    'title' => 'E-Mail bestätigen'
+    'button' => 'Resend confirmation email',
+    'description' => 'Please confirm your email address by clicking the link we just sent to you.',
+    'headTitle' => 'Email confirmation',
+    'logoutLink' => 'Logout',
+    'successMessage' => 'A new confirmation link has been sent to the email address you provided during registration.',
+    'title' => 'Email confirmation'
 ];

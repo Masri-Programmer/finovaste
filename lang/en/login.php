@@ -3,13 +3,13 @@
 
 
 return [
-    'button' => 'Anmelden',
-    'description' => 'Geben Sie unten Ihre E-Mail-Adresse und Ihr Passwort ein, um sich anzumelden',
-    'email' => 'E-Mail-Adresse',
-    'forgotPassword' => 'Passwort vergessen?',
-    'noAccount' => 'Sie haben noch kein Konto?',
-    'password' => 'Passwort',
-    'rememberMe' => 'Angemeldet bleiben',
-    'signUp' => 'Registrieren',
-    'title' => 'Bei Ihrem Konto anmelden'
+    'button' => 'Login',
+    'description' => 'Enter your email address and password below to log in',
+    'email' => 'email address',
+    'forgotPassword' => 'Forgot your password?',
+    'noAccount' => 'You don\'t have an account yet?',
+    'password' => 'Password',
+    'rememberMe' => 'Remember me',
+    'signUp' => 'Register',
+    'title' => 'Log in to your account'
 ];

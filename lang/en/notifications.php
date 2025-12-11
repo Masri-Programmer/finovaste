@@ -1,28 +1,31 @@
 <?php
 
-
-
 return [
-    'errorGeneric' => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
-    'wishlistAdded' => 'Zur Wunschliste hinzugefügt!',
-    'title'                 => 'Bleiben Sie auf dem Laufenden',
-    'subtitle'              => 'Abonnieren Sie, um Updates über neue Inserate und Kampagnen zu erhalten',
+    'errorGeneric' => 'An unexpected error has occurred. Please try again.',
+    'wishlistAdded' => 'Added to wishlist!',
+    
+    // Updated to match "Get Updates"
+    'title' => 'Stay up to date', 
+    
+    // Updated to match: "Enter your email to receive notifications when this listing is updated."
+    'subtitle' => 'Enter your email address to receive notifications when this listing is updated.',
 
-    'email_label'           => 'E-Mail',
-    'email_placeholder'     => 'Geben Sie Ihre E-Mail ein',
+    // Updated to match "Email Address"
+    'email_label' => 'email address', 
+    
+    // Updated to match "you@example.com"
+    'email_placeholder' => 'sie@example.de',
 
-    'categories_title'      => 'Kategorien',
+    'categories_title' => 'Categories',
+    'category_real_estate' => 'Real Estate',
+    'category_startups' => 'Startups',
+    'category_vehicles' => 'Vehicles',
+    'category_art_collectibles' => 'Art & Collectibles',
 
+    'organizations_title' => 'Organizations',
 
-    'category_real_estate'      => 'Immobilien',
-    'category_startups'         => 'Startups',
-    'category_vehicles'         => 'Fahrzeuge',
-    'category_art_collectibles' => 'Kunst & Sammlerstücke',
+    // Translated the English part to German
+    'priority_helper' => 'Priority Notifications: Get instant notifications for your priority organization.',
 
-
-    'organizations_title'   => 'Organisationen',
-
-    'priority_helper'       => 'Prioritätsbenachrichtigungen: Get instant notifications for your priority organization',
-
-    'subscribe_button'      => 'Abonnieren',
+    'subscribe_button' => 'Subscribe',
 ];

@@ -3,15 +3,15 @@
 
 
 return [
-    'button' => 'Konto löschen',
-    'cancelButton' => 'Abbrechen',
-    'caution' => 'Bitte gehen Sie vorsichtig vor, dieser Vorgang kann nicht rückgängig gemacht werden.',
-    'confirmButton' => 'Konto löschen',
-    'description' => 'Löschen Sie Ihr Konto und alle damit verbundenen Ressourcen.',
-    'modalDescription' => 'Sobald Ihr Konto gelöscht wurde, werden alle zugehörigen Ressourcen und Daten dauerhaft entfernt. Bitte geben Sie Ihr Passwort ein, um die endgültige Löschung Ihres Kontos zu bestätigen.',
-    'modalTitle' => 'Sind Sie sicher, dass Sie Ihr Konto löschen möchten?',
-    'passwordLabel' => 'Passwort',
-    'passwordPlaceholder' => 'Passwort',
-    'title' => 'Konto löschen',
-    'warning' => 'Warnung'
+    'button' => 'Delete account',
+    'cancelButton' => 'Cancel',
+    'caution' => 'Please proceed with caution, this operation cannot be reversed.',
+    'confirmButton' => 'Delete account',
+    'description' => 'Delete your account and all associated resources.',
+    'modalDescription' => 'Once your account is deleted, all associated resources and data will be permanently removed. Please enter your password to confirm the permanent deletion of your account.',
+    'modalTitle' => 'Are you sure you want to delete your account?',
+    'passwordLabel' => 'Password',
+    'passwordPlaceholder' => 'Password',
+    'title' => 'Delete Account',
+    'warning' => 'Warning'
 ];
