@@ -41,7 +41,7 @@ import {
     DonationListable,
     InvestmentListable,
     Listing,
-    Media,
+    ListingMediaCollection,
 } from '@/types/listings';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
@@ -77,18 +77,18 @@ const initialDescriptionTranslations = availableLanguages.value.reduce<
 }, {});
 
 const existingMedia: {
-    images: Media[];
-    documents: Media[];
-    videos: Media[];
+    images: ListingMediaCollection[];
+    documents: ListingMediaCollection[];
+    videos: ListingMediaCollection[];
 } = {
     images: props.listing.media.filter(
-        (m: Media) => m.collection_name === 'images',
+        (m: ListingMediaCollection) => m.collection_name === 'images',
     ),
     documents: props.listing.media.filter(
-        (m: Media) => m.collection_name === 'documents',
+        (m: ListingMediaCollection) => m.collection_name === 'documents',
     ),
     videos: props.listing.media.filter(
-        (m: Media) => m.collection_name === 'videos',
+        (m: ListingMediaCollection) => m.collection_name === 'videos',
     ),
 };
 

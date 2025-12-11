@@ -11,7 +11,9 @@ import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-const sidebarNavItems: NavItem[] = [
+import { computed } from 'vue';
+
+const sidebarNavItems = computed<NavItem[]>(() => [
     {
         title: trans('layout.profile'),
         href: editProfile(),
@@ -32,7 +34,7 @@ const sidebarNavItems: NavItem[] = [
         title: trans('layout.languages'),
         href: editLanguages(),
     },
-];
+]);
 
 const currentPath = typeof window !== undefined ? window.location.pathname : '';
 </script>

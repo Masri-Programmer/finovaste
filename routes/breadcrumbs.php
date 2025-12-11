@@ -2,60 +2,29 @@
 
 use App\Models\Category;
 use App\Models\Listing;
-
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+
+// --- Explicit Definitions (Custom Logic) ---
 
 // Home
 Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
-    $trail->push('Home', route('home'));
-});
-
-// Home > Dashboard
-Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Dashboard', route('dashboard'));
-});
-
-// --- Categories ---
-
-// Home > Categories
-Breadcrumbs::for('categories.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Categories', route('categories.index'));
+    $trail->push(__('breadcrumbs.home'), route('home'));
 });
 
 // Home > Categories > [Category Name]
 Breadcrumbs::for('categories.show', function (BreadcrumbTrail $trail, Category $category) {
     $trail->parent('categories.index');
-    // Assuming your Category model has a 'name' attribute
     $trail->push($category->name, route('categories.show', $category));
-});
-
-// --- Listings ---
-
-// Home > Listings
-Breadcrumbs::for('listings.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Listings', route('listings.index'));
-});
-
-// Home > Listings > Create
-Breadcrumbs::for('listings.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('listings.index');
-    $trail->push('Create Listing', route('listings.create'));
-});
-
-// Home > Liked Listings
-Breadcrumbs::for('listings.liked', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('My Liked Listings', route('listings.liked'));
 });
 
 // Home > Listings > [Listing Title]
 Breadcrumbs::for('listings.show', function (BreadcrumbTrail $trail, Listing $listing) {
     $trail->parent('listings.index');
-    // Assuming your Listing model has a 'title' attribute
     $trail->push($listing->title, route('listings.show', $listing));
 });
 
@@ -65,71 +34,71 @@ Breadcrumbs::for('listings.edit', function (BreadcrumbTrail $trail, Listing $lis
     $trail->push('Edit', route('listings.edit', $listing));
 });
 
-// --- Settings ---
-
-// Home > Settings (Virtual parent for all settings pages)
+// Settings Base (Virtual)
 Breadcrumbs::for('settings', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
-    $trail->push('Settings', '/settings/profile'); // Links to the default profile page
+    $trail->push(__('breadcrumbs.settings.index'), route('profile.edit'));
 });
 
-// Home > Settings > Profile
-Breadcrumbs::for('profile.edit', function (BreadcrumbTrail $trail) {
-    $trail->parent('settings');
-    $trail->push('Profile', route('profile.edit'));
-});
+// --- Dynamic Generation ---
 
-// Home > Settings > Password
-Breadcrumbs::for('password.edit', function (BreadcrumbTrail $trail) {
-    $trail->parent('settings');
-    $trail->push('Change Password', route('password.edit'));
-});
+$routes = Route::getRoutes()->getRoutesByName();
 
-// Home > Settings > Appearance
-Breadcrumbs::for('appearance.edit', function (BreadcrumbTrail $trail) {
-    $trail->parent('settings');
-    $trail->push('Appearance', route('appearance.edit'));
-});
+foreach ($routes as $name => $route) {
+    // Skip if already defined or not a GET request
+    if (Breadcrumbs::exists($name) || !in_array('GET', $route->methods())) {
+        continue;
+    }
+    
+    // Skip internal/debug routes
+    if (Str::startsWith($name, ['telescope.', '_debugbar.', 'ignition.', 'sanctum.'])) {
+        continue;
+    }
 
-// Home > Settings > Languages
-Breadcrumbs::for('languages.edit', function (BreadcrumbTrail $trail) {
-    $trail->parent('settings');
-    $trail->push('Languages', route('languages.edit'));
-});
+    Breadcrumbs::for($name, function (BreadcrumbTrail $trail, ...$params) use ($name) {
+        // limit recursion/loops by defaulting to home
+        $parentFound = false;
+        
+        // 1. Try to find a parent by segments (e.g. listings.create -> listings.index)
+        $parts = explode('.', $name);
+        while (count($parts) > 1) {
+            array_pop($parts);
+            $parentName = implode('.', $parts);
+            
+            // Try convention: parent is index? e.g. listings.create -> parent is listings.index
+            if (!Breadcrumbs::exists($parentName)) {
+                $parentName .= '.index';
+            }
 
-// Home > Settings > Two-Factor Authentication
-Breadcrumbs::for('two-factor.show', function (BreadcrumbTrail $trail) {
-    $trail->parent('settings');
-    $trail->push('Two-Factor Authentication', route('two-factor.show'));
-});
+            if (Breadcrumbs::exists($parentName) && $parentName !== $name) {
+                $trail->parent($parentName, ...$params); // Pass params just in case parent needs them
+                $parentFound = true;
+                break;
+            }
+        }
+        
+        // 2. Special case: if we are in settings.* but didn't match above loop (e.g. strict segments)
+        // Ensure settings pages fall under the 'settings' virtual parent if not already caught
+        if (!$parentFound && Str::startsWith($name, 'settings.') && Breadcrumbs::exists('settings')) {
+             $trail->parent('settings');
+             $parentFound = true;
+        }
 
-// --- Auth ---
+        // 3. Fallback to Home
+        if (!$parentFound) {
+            $trail->parent('home');
+        }
 
-// Home > Register
-Breadcrumbs::for('register', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Register', route('register'));
-});
+        // Determine Title from properties or translation
+        // Try 'breadcrumbs.route.name'
+        $transKey = 'breadcrumbs.' . $name;
+        if (Lang::has($transKey)) {
+            $title = __($transKey);
+        } else {
+            // Fallback: Humanize the last segment
+            $title = Str::title(str_replace(['-', '_'], ' ', Arr::last(explode('.', $name))));
+        }
 
-// Home > Forgot Password
-Breadcrumbs::for('password.request', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Forgot Password', route('password.request'));
-});
-
-// Home > Forgot Password > Reset Password
-Breadcrumbs::for('password.reset', function (BreadcrumbTrail $trail) {
-    $trail->parent('password.request');
-    $trail->push('Reset Password', route('password.reset'));
-});
-
-// Home > Verify Email
-Breadcrumbs::for('verification.notice', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Verify Email', route('verification.notice'));
-});
-// Home > Transaction History
-Breadcrumbs::for('transactions.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Transaction History', route('transactions.index'));
-});
+        $trail->push($title, route($name, $params));
+    });
+}
