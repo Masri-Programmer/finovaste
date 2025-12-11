@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'boxes' => [
+        'duration' => 'Durée',
+        'investors' => 'Investisseurs',
+        'roi' => 'ROI attendu',
+        'category' => 'Catégorie',
+        'time_left' => 'Temps restant',
+        'total_bids' => 'Offres totales',
+        'price' => 'Prix',
+        'quantity' => 'Quantité',
+        'condition' => 'Condition',
+        'goal' => 'Objectif',
+        'raised' => 'Collecté',
+        'donors' => 'Donateurs',
+    ],
+    'capital_raised' => 'Capital levé',
+    'faq' => [
+        'a1' => 'Les modalités de paiement sont détaillées dans le prospectus d\'investissement. Généralement, les fonds sont dus dans les 5 jours ouvrables suivant l\'engagement.',
+        'a2' => 'La période d\'investissement est de 24 mois, comme indiqué dans la section \'Durée\'.',
+        'a3' => 'Vous recevrez un prospectus d\'investissement complet, un accord de souscription et des rapports trimestriels réguliers.',
+        'a4' => 'Non, comme tous les investissements, celui-ci comporte des risques et n\'est pas assuré par une agence gouvernementale. Veuillez examiner les facteurs de risque.',
+        'q1' => 'Quelles sont les modalités de paiement ?',
+        'q2' => 'Combien de temps dure la période d\'investissement ?',
+        'q3' => 'Quelle documentation est fournie ?',
+        'q4' => 'Cet investissement est-il assuré ?',
+    ],
+    'faq_subtitle' => 'Questions courantes concernant cette annonce',
+    'faq_title' => 'Questions fréquentes',
+    'features' => [
+        'growth' => 'Potentiel de croissance',
+        'secure' => 'Paiements sécurisés',
+        'support' => 'Support professionnel',
+        'verified' => 'Annonce vérifiée',
+    ],
+    'key_features' => 'Caractéristiques clés',
+    'reviews' => 'Avis',
+    'started' => 'Débuté',
+    'ending' => 'Fin',
+];

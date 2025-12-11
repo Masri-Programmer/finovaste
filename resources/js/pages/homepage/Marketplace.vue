@@ -16,7 +16,7 @@ const filters = ref({
     <div class="min-h-screen bg-background text-foreground">
         <header class="mb-4 flex items-center justify-between">
             <h1 class="text-3xl font-bold text-foreground">
-                {{ $t('marketplace.title') }}
+                {{ $t('listings.title') }}
             </h1>
         </header>
 

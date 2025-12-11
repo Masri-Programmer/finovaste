@@ -38,7 +38,7 @@ createInertiaApp({
             .use(Toast, options)
             .use(i18nVue, {
                 fallbackLang: 'de',
-                lang: 'de',
+                lang: props.initialPage.props.locale as string,
                 resolve: async (lang) => {
                     const langs = import.meta.glob('../../lang/*.json');
                     return await langs[`../../lang/${lang}.json`]();

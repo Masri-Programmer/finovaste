@@ -3,6 +3,8 @@
 
 
 return [
+    'searchPlaceholder' => 'Search listings...',
+    'title' => 'Marketplace',
     'apartment' => [
         'description' => 'Stunning 3 bedroom apartment in the heart of the city center with panoramic city views. High-quality equipment and smart home technology.',
         'title' => 'Modern luxury apartment in the city center'

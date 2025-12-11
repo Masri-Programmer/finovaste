@@ -1,6 +1,6 @@
 import language from '@/routes/language';
 import { router, usePage } from '@inertiajs/vue3';
-import { getActiveLanguage } from 'laravel-vue-i18n';
+import { getActiveLanguage, loadLanguageAsync } from 'laravel-vue-i18n';
 import { computed, ref, watch } from 'vue';
 
 export function useLanguageSwitcher() {
@@ -35,6 +35,7 @@ export function useLanguageSwitcher() {
         locale,
         (newLocale) => {
             if (newLocale) {
+                loadLanguageAsync(newLocale);
                 i18nLocale.value = newLocale;
                 if (typeof document !== 'undefined') {
                     document.documentElement.lang = newLocale;

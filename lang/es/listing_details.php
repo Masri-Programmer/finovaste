@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'boxes' => [
+        'duration' => 'Duración',
+        'investors' => 'Inversores',
+        'roi' => 'ROI esperado',
+        'category' => 'Categoría',
+        'time_left' => 'Tiempo restante',
+        'total_bids' => 'Ofertas totales',
+        'price' => 'precio',
+        'quantity' => 'cantidad',
+        'condition' => 'Condición',
+        'goal' => 'Meta',
+        'raised' => 'Recaudado',
+        'donors' => 'Donantes',
+    ],
+    'capital_raised' => 'Capital recaudado',
+    'faq' => [
+        'a1' => 'Las condiciones de pago se detallan en el folleto de inversión. Normalmente, los fondos deben abonarse en un plazo de 5 días hábiles a partir del compromiso.',
+        'a2' => 'El período de inversión es de 24 meses, como se indica en la sección \'Duración\'.',
+        'a3' => 'Recibirá un folleto de inversión completo, un acuerdo de suscripción e informes trimestrales regulares.',
+        'a4' => 'No, como todas las inversiones, esta conlleva riesgos y no está asegurada por ninguna agencia gubernamental. Por favor, revise los factores de riesgo.',
+        'q1' => '¿Cuáles son las condiciones de pago?',
+        'q2' => '¿Cuánto dura el período de inversión?',
+        'q3' => '¿Qué documentación se proporciona?',
+        'q4' => '¿Está asegurada esta inversión?',
+    ],
+    'faq_subtitle' => 'Preguntas frecuentes sobre esta publicación',
+    'faq_title' => 'Preguntas frecuentes',
+    'features' => [
+        'growth' => 'Potencial de crecimiento',
+        'secure' => 'Pagos seguros',
+        'support' => 'Soporte profesional',
+        'verified' => 'Publicación verificada',
+    ],
+    'key_features' => 'Características clave',
+    'reviews' => 'Reseñas',
+    'started' => 'Iniciado',
+    'ending' => 'Finaliza',
+];

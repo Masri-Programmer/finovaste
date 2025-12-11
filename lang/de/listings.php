@@ -1,18 +1,19 @@
 <?php
 
-
-
 return [
+    'featuredListings' => 'Empfohlene Angebote',
+    'searchPlaceholder' => 'Angebote durchsuchen...',
+    'title' => 'Marktplatz',
     'apartment' => [
         'description' => 'Atemberaubendes 3-Zimmer-Apartment im Herzen der Innenstadt mit Panoramablick auf die Stadt. Hochwertige Ausstattung und Smart-Home-Technologie.',
-        'title' => 'Modernes Luxus-Apartment in der Innenstadt'
+        'title' => 'Modernes Luxus-Apartment in der Innenstadt',
     ],
     'auctionEnds' => 'Auktion endet in',
     'buyNow' => 'Jetzt kaufen',
     'capitalRaised' => 'Eingesammeltes Kapital',
     'carCollection' => [
         'description' => 'Seltene Sammlung von Hochleistungs-Luxusfahrzeugen. Limitierte Modelle mit verifizierter Echtheit und vollständiger Servicehistorie.',
-        'title' => 'Luxus-Sportwagensammlung 2024'
+        'title' => 'Luxus-Sportwagensammlung 2024',
     ],
     'currentBid' => 'Aktuelles Gebot',
     'donateNow' => 'Jetzt spenden',
@@ -55,26 +56,25 @@ return [
     'secure_payment' => 'Sichere Zahlung powered by PayPal, Stripe & mehr',
     'watch_video' => 'Video ansehen',
     'investment_tag' => 'Investition',
-    "backToMarketplace" => "Zurück zum Marktplatz",
+    'backToMarketplace' => 'Zurück zum Marktplatz',
     'pagination_name' => 'Angebote',
     'share' => [
-        'title'                     => 'Eintrag teilen',
-        'description'               => 'Teile diesen Eintrag mit deinem Netzwerk.',
-        'share_link_label'          => 'Link zum Teilen',
-        'copy_link'                 => 'Link kopieren',
-        'link_copied'               => 'Link in die Zwischenablage kopiert!',
-        'clipboard_not_supported'   => 'Die Zwischenablage wird von deinem Browser nicht unterstützt.',
-        'share_text'                => 'Sieh dir diesen Eintrag an: :title',
+        'title' => 'Eintrag teilen',
+        'description' => 'Teile diesen Eintrag mit deinem Netzwerk.',
+        'share_link_label' => 'Link zum Teilen',
+        'copy_link' => 'Link kopieren',
+        'link_copied' => 'Link in die Zwischenablage kopiert!',
+        'clipboard_not_supported' => 'Die Zwischenablage wird von deinem Browser nicht unterstützt.',
+        'share_text' => 'Sieh dir diesen Eintrag an: :title',
     ],
     'liked' => [
-        'title'                     => 'Beiträge mit „Gefällt mir“ markiert',
-        'description'               => '',
+        'title' => 'Beiträge mit „Gefällt mir“ markiert',
+        'description' => '',
         'empty' => 'Du hast noch keine Beiträge mit „Gefällt mir“ markiert.',
-        'share_link_label'          => 'Link zum Teilen',
-
+        'share_link_label' => 'Link zum Teilen',
     ],
     'edit' => [
-        'title'  => 'Eintrag bearbeiten: :title',
+        'title' => 'Eintrag bearbeiten: :title',
         'description' => '',
         'empty' => 'Du hast noch keine Beiträge mit „Gefällt mir“ markiert.',
         'share_link_label' => 'Link zum Teilen',
@@ -89,15 +89,13 @@ return [
                 'cancel' => 'Abbrechen',
                 'confirm' => 'Löschen',
             ],
-        ]
+        ],
     ],
     'common' => [
         'processing' => 'Verarbeitung...',
         'amount' => 'Betrag',
         'currency' => 'Währung',
     ],
-
-    // Investment Specifics
     'investment' => [
         'tag' => 'Investment',
         'invest_now' => 'Jetzt investieren',
@@ -115,9 +113,14 @@ return [
             'success' => 'Investition erfolgreich!',
             'failure' => 'Investition fehlgeschlagen. Bitte versuchen Sie es erneut.',
         ],
+        'dialogue' => [
+            'title' => 'Investition bestätigen',
+            'description' => 'Sie sind dabei, :amount in dieses Projekt zu investieren. Bitte überprüfen Sie Ihre Eingabe.',
+            'amount_label' => 'Investitionsbetrag',
+            'shares_label' => 'Anteile',
+            'confirm_button' => 'Mit Zahlung investieren',
+        ],
     ],
-
-    // Buy Now / E-commerce
     'buy_now' => [
         'tag' => 'Kaufen',
         'purchase_details' => 'Kaufdetails',
@@ -128,8 +131,6 @@ return [
         'available_qty' => 'Verfügbare Menge',
         'action_btn' => 'In den Warenkorb / Jetzt kaufen',
     ],
-
-    // Auction
     'auction' => [
         'tag' => 'Auction',
         'current_bid' => 'Aktuelles Gebot',
@@ -138,8 +139,6 @@ return [
         'place_bid_label' => 'Gebot abgeben',
         'bid_btn' => 'Bieten',
     ],
-
-    // Donation
     'donation' => [
         'support_cause' => 'Dieses Projekt unterstützen',
         'raised' => 'Gesammelt',
@@ -155,5 +154,12 @@ return [
         'write_answer' => 'Antwort schreiben...',
         'answer' => 'Antworten',
         'no_questions_yet' => 'Noch keine Fragen vorhanden',
+    ],
+    'dialogue' => [
+        'title' => 'Investition bestätigen',
+        'description' => 'Sie sind dabei, :amount zu investieren. Bitte bestätigen Sie Ihre Eingabe.',
+        'amount_label' => 'Betrag',
+        'processing' => 'Wird verarbeitet...',
+        'confirm_button' => 'Jetzt bestätigen',
     ],
 ];

@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'boxes' => [
+        'duration' => 'Dauer',
+        'investors' => 'Investoren',
+        'roi' => 'Erwarteter ROI',
+        'category' => 'Kategorie',
+        'time_left' => 'Restzeit',
+        'total_bids' => 'Gesamtgebote',
+        'price' => 'Preis',
+        'quantity' => 'Menge',
+        'condition' => 'Zustand',
+        'goal' => 'Ziel',
+        'raised' => 'Gesammelt',
+        'donors' => 'Spender',
+    ],
+    'capital_raised' => 'Kapital gesammelt',
+    'faq' => [
+        'a1' => 'Die Zahlungsbedingungen sind im Investitionsprospekt detailliert. Typischerweise sind Gelder innerhalb von 5 Werktagen nach Zusage fällig.',
+        'a2' => 'Die Investitionsdauer beträgt 24 Monate, wie im Abschnitt \'Dauer\' dargelegt.',
+        'a3' => 'Sie erhalten einen vollständigen Investitionsprospekt, eine Zeichnungsvereinbarung und regelmäßige Quartalsberichte.',
+        'a4' => 'Nein, wie alle Investitionen birgt auch diese Risiken und ist nicht durch eine staatliche Behörde versichert. Bitte prüfen Sie die Risikofaktoren.',
+        'q1' => 'Wie sind die Zahlungsbedingungen?',
+        'q2' => 'Wie lange dauert die Investitionsperiode?',
+        'q3' => 'Welche Dokumentation wird bereitgestellt?',
+        'q4' => 'Ist diese Investition versichert?',
+    ],
+    'faq_subtitle' => 'Häufige Fragen zu diesem Angebot',
+    'faq_title' => 'Häufig gestellte Fragen',
+    'features' => [
+        'growth' => 'Wachstumspotenzial',
+        'secure' => 'Sichere Zahlungen',
+        'support' => 'Professioneller Support',
+        'verified' => 'Verifiziertes Angebot',
+    ],
+    'key_features' => 'Hauptmerkmale',
+    'reviews' => 'Bewertungen',
+    'started' => 'Beginn',
+    'ending' => 'Ende',
+];

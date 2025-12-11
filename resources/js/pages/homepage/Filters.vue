@@ -106,7 +106,7 @@ watchDebounced(
                 <Input
                     v-model="searchTerm"
                     type="search"
-                    :placeholder="$t('marketplace.searchPlaceholder')"
+                    :placeholder="$t('listings.searchPlaceholder')"
                     class="rounded-full pl-9"
                 />
             </div>

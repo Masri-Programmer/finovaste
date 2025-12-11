@@ -84,10 +84,14 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'de_DE'),
 
+    // php artisan translate:sync --all: Sync all languages immediately.
+    // php artisan translate:sync --locales=es,fr: Sync specific languages.
+    // php artisan translate:sync --locales=es --batch=20: Sync specific languages in batches.
     'supported_locales' => [
         'en',
         'de',
         'es',
+        'fr',
     ],
 
 

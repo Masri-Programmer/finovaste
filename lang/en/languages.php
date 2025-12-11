@@ -5,6 +5,8 @@
 return [
     'english' => 'English',
     'german' => 'German',
+    'spanish' => 'Spanish',
+    'es' => 'Spanish',
     'french' => 'French',
     'arabic' => 'Arabic',
     'breadcrumb' => 'Language settings',
