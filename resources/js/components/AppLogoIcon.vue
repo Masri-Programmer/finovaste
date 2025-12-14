@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import logo from '@/images/LogoFinoVaste.png';
+import logo from '@/images/ranalp_logo_1.jpg';
 import type { HTMLAttributes } from 'vue';
 defineOptions({
     inheritAttrs: false,
@@ -13,5 +13,5 @@ defineProps<Props>();
 </script>
 
 <template>
-    <img :src="logo" alt="finvasto logo" :class="className" v-bind="$attrs" />
+    <img :src="logo" alt="ranalp logo" :class="className" v-bind="$attrs" />
 </template>
