@@ -112,6 +112,13 @@ return [
             'success' => '¡Inversión exitosa!',
             'failure' => 'La inversión falló. Por favor, inténtalo de nuevo.',
         ],
+        'dialog' => [
+            'title' => 'Confirmar inversión',
+            'description' => 'Estás a punto de invertir :amount en este proyecto. Por favor, revisa tus detalles a continuación.',
+            'shares_label' => 'Número de participaciones',
+            'confirm_button' => 'Confirmar Inversión',
+            'amount_label' => 'Monto de inversión',
+        ],
     ],
     'buy_now' => [
         'tag' => 'Comprar',
@@ -121,7 +128,8 @@ return [
         'condition_new' => 'Nuevo',
         'condition_used' => 'Usado',
         'available_qty' => 'Cantidad disponible',
-        'action_btn' => 'Añadir al carrito / Comprar ahora',
+        'action_btn' => 'Comprar ahora',
+        'ownership' => 'Usted posee este anuncio',
     ],
     'auction' => [
         'tag' => 'Subasta',

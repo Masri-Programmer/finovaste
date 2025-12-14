@@ -17,7 +17,7 @@ return [
     ],
     'copied' => '{type} copied to the clipboard!',
     'copyFailed' => 'Copy failed.',
-    'copyright' => '© 2025 Finovaste. All rights reserved.',
+    'copyright' => '© 2025 Ranalp. All rights reserved.',
     'description' => 'Your trusted platform for buying, selling, investing and bidding on premium assets worldwide.',
     'legal' => [
         'agb' => 'General Terms and Conditions',

@@ -33,8 +33,16 @@
                 }}</span>
                 <span>{{ data.quantity }}</span>
             </div>
-            <Button class="mt-2 w-full" :disabled="isOwner" @click="router.post(buy.url({listing: listingId}))">
-                {{ isOwner ? 'You own this listing' : $t('listings.buy_now.action_btn') }}
+            <Button
+                class="mt-2 w-full"
+                :disabled="isOwner"
+                @click="router.post(buy.url({ listing: listingId }))"
+            >
+                {{
+                    isOwner
+                        ? $t('listings.buy_now.ownership')
+                        : $t('listings.buy_now.action_btn')
+                }}
             </Button>
         </div>
     </div>
@@ -43,8 +51,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/composables/useCurrency';
+import { buy } from '@/routes/listings';
 import { BuyNowListable } from '@/types/listings';
-import {buy} from '@/routes/listings'
 import { router } from '@inertiajs/vue3';
 const props = defineProps<{
     data: BuyNowListable;

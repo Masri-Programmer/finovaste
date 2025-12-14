@@ -3,7 +3,7 @@
         <!-- Common: Category -->
         <InfoBox
             :icon="FolderOpen"
-            :title="$t('listingdetails.boxes.category')"
+            :title="$t('listing_details.boxes.category')"
             :value="listing.category.name.en"
             icon-bg-class="bg-purple-100 text-purple-700"
         />
@@ -12,13 +12,13 @@
         <template v-if="isAuction">
             <InfoBox
                 :icon="Clock"
-                :title="$t('listingdetails.boxes.time_left')"
+                :title="$t('listing_details.boxes.time_left')"
                 :value="timeRemaining"
                 :icon-bg-class="timeCriticalClass"
             />
             <InfoBox
                 :icon="Gavel"
-                :title="$t('listingdetails.boxes.total_bids')"
+                :title="$t('listing_details.boxes.total_bids')"
                 :value="bidCount"
                 icon-bg-class="bg-blue-100 text-blue-700"
             />
@@ -28,20 +28,20 @@
         <template v-if="isBuyNow">
             <InfoBox
                 :icon="Tag"
-                :title="$t('listingdetails.boxes.price')"
+                :title="$t('listing_details.boxes.price')"
                 :value="buyNowData.price"
                 icon-bg-class="bg-green-100 text-green-700"
             />
             <InfoBox
                 :icon="Package"
-                :title="$t('listingdetails.boxes.quantity')"
+                :title="$t('listing_details.boxes.quantity')"
                 :value="buyNowData.quantity.toString()"
                 icon-bg-class="bg-blue-100 text-blue-700"
             />
             <InfoBox
                 v-if="buyNowData.condition"
                 :icon="Info"
-                :title="$t('listingdetails.boxes.condition')"
+                :title="$t('listing_details.boxes.condition')"
                 :value="buyNowData.condition"
                 icon-bg-class="bg-gray-100 text-gray-700"
             />
@@ -51,19 +51,19 @@
         <template v-if="isInvestment">
             <InfoBox
                 :icon="Target"
-                :title="$t('listingdetails.boxes.goal')"
+                :title="$t('listing_details.boxes.goal')"
                 :value="investmentData.investment_goal.toString()"
                 icon-bg-class="bg-green-100 text-green-700"
             />
             <InfoBox
                 :icon="TrendingUp"
-                :title="$t('listingdetails.boxes.raised')"
+                :title="$t('listing_details.boxes.raised')"
                 :value="investmentData.amount_raised.toString()"
                 icon-bg-class="bg-blue-100 text-blue-700"
             />
             <InfoBox
                 :icon="Users"
-                :title="$t('listingdetails.boxes.investors')"
+                :title="$t('listing_details.boxes.investors')"
                 :value="investmentData.investors_count.toString()"
                 icon-bg-class="bg-purple-100 text-purple-700"
             />
@@ -73,19 +73,19 @@
         <template v-if="isDonation">
             <InfoBox
                 :icon="Target"
-                :title="$t('listingdetails.boxes.goal')"
+                :title="$t('listing_details.boxes.goal')"
                 :value="donationData.donation_goal"
                 icon-bg-class="bg-green-100 text-green-700"
             />
             <InfoBox
                 :icon="Heart"
-                :title="$t('listingdetails.boxes.raised')"
+                :title="$t('listing_details.boxes.raised')"
                 :value="donationData.amount_raised"
                 icon-bg-class="bg-red-100 text-red-700"
             />
             <InfoBox
                 :icon="Users"
-                :title="$t('listingdetails.boxes.donors')"
+                :title="$t('listing_details.boxes.donors')"
                 :value="donationData.donors_count.toString()"
                 icon-bg-class="bg-purple-100 text-purple-700"
             />
@@ -93,8 +93,8 @@
     </section>
     <div class="space-y-1.5">
         <div class="flex justify-between text-xs text-muted-foreground">
-            <span>{{ $t('listingdetails.started') }}</span>
-            <span>{{ $t('listingdetails.ending') }}</span>
+            <span>{{ $t('listing_details.started') }}</span>
+            <span>{{ $t('listing_details.ending') }}</span>
         </div>
 
         <Progress v-model="progressPercentage" class="h-2 w-full" />

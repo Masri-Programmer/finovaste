@@ -71,7 +71,7 @@ const mainNavItems: NavItem[] = [
 const rightNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/Masri-Programmer/finovaste',
+        href: 'https://github.com/Masri-Programmer/ranalp',
         icon: Folder,
     },
     {

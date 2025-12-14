@@ -6,7 +6,7 @@ unset GIT_DIR
 unset GIT_WORK_TREE
 unset GIT_INDEX_FILE
 
-PM2_PROCESS_NAME="finovaste-ssr"
+PM2_PROCESS_NAME="ranalp-ssr"
 
 echo "🚀 Starting deployment..."
 
@@ -24,7 +24,7 @@ echo "🛠️ Building assets for production (SSR)..."
 NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
 echo "🏃 Running database migrations..."
-php artisan migrate:fresh --seed --force
+# php artisan migrate:fresh --seed --force
 
 echo "🧹 Clearing old Laravel caches..."
 php artisan optimize:clear

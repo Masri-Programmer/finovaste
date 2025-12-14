@@ -129,7 +129,8 @@ return [
         'condition_new' => 'Neu',
         'condition_used' => 'Gebraucht',
         'available_qty' => 'Verfügbare Menge',
-        'action_btn' => 'In den Warenkorb / Jetzt kaufen',
+        'action_btn' => 'Jetzt kaufen',
+        'ownership' => 'Sie besitzen dieses Inserat',
     ],
     'auction' => [
         'tag' => 'Auction',

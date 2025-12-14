@@ -60,12 +60,12 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
-        href: 'https://github.com/Masri-Programmer/finovaste',
+        href: 'https://github.com/Masri-Programmer/ranalp',
         icon: Folder,
     },
     {
         title: 'Documentation',
-        href: 'https://github.com/Masri-Programmer/finovaste',
+        href: 'https://github.com/Masri-Programmer/ranalp',
         icon: BookOpen,
     },
 ];

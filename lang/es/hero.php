@@ -10,7 +10,7 @@ return [
         'learnMoreClicked' => 'Cargando detalles del mercado...',
         'navigating' => 'Cargando mercado...',
     ],
-    'subheading' => 'Finovaste es la Plataforma Todo en Uno para descubrir, comprar e invertir en inmuebles, startups, bienes de lujo y coleccionables.',
+    'subheading' => 'Ranalp es la Plataforma Todo en Uno para descubrir, comprar e invertir en inmuebles, startups, bienes de lujo y coleccionables.',
     'visual' => [
         'darkModePlaceholder' => 'Vista previa del mercado (Modo oscuro)',
         'lightModePlaceholder' => 'Vista previa del mercado (Modo claro)',

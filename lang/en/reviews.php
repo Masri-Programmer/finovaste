@@ -23,6 +23,8 @@ return [
     'notifications' => [
         'load_more_success' => 'More reviews successfully loaded.',
         'load_more_error' => 'Error loading more reviews.',
+        'load_error' => 'Failed to load more reviews.',
+        'no_more_reviews' => 'No more reviews to load.',
         'download_start' => 'Download for :name started.',
         'download_error' => 'Error downloading.',
     ],

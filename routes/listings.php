@@ -44,9 +44,10 @@ Route::controller(ListingController::class)
             Route::patch('/{listing}/faq/{faq}', [ListingFaqController::class, 'update'])->name('faq.update');
             Route::delete('/{listing}/faq/{faq}', [ListingFaqController::class, 'destroy'])->name('faq.destroy');
 
-    
+            // Reviews
             Route::post('{listing}/reviews', [ReviewController::class, 'store'])
                 ->name('reviews.store');
+
 
             Route::put('/reviews/{review}', [ReviewController::class, 'update'])
                 ->name('reviews.update');
@@ -61,7 +62,9 @@ Route::controller(ListingController::class)
             Route::get('/{listing}/payment/success', [PaymentController::class, 'success'])->name('success');
         });
 
-
+        // Reviews - publicly accessible to load more
+        Route::get('/{listing}/reviews', [ReviewController::class, 'index'])
+            ->name('reviews.index');
 
         Route::get('/{listing}', 'show')->name('show');
     });

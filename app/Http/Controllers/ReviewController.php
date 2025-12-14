@@ -11,6 +11,37 @@ use Illuminate\Support\Facades\Gate;
 class ReviewController extends Controller
 {
     /**
+     * Get paginated reviews for a listing.
+     */
+    public function index(Request $request, Listing $listing)
+    {
+        $reviews = $listing->reviews()
+            ->with('user')
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return response()->json([
+            'reviews' => $reviews->map(function ($review) {
+                return [
+                    'id' => $review->id,
+                    'user' => [
+                        'id' => $review->user->id,
+                        'name' => $review->user->name,
+                        'profile_photo_url' => $review->user->profile_photo_url ?? null,
+                    ],
+                    'rating' => $review->rating,
+                    'body' => $review->body,
+                    'created_at' => $review->created_at,
+                    'time_ago' => $review->created_at->diffForHumans(),
+                    'can_edit' => Auth::id() === $review->user_id,
+                ];
+            }),
+            'next_page_url' => $reviews->nextPageUrl(),
+        ]);
+    }
+
+
+    /**
      * Store a newly created review in storage.
      */
     public function store(Request $request, Listing $listing)

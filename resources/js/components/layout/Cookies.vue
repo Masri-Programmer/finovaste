@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import { Cookie, Settings, X } from 'lucide-vue-next';
-import { onMounted, ref } from 'vue';
-
-// Assuming you are using shadcn-vue, the Vue port of shadcn/ui
-// The import paths might be slightly different based on your project setup
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -15,6 +10,8 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Cookie, Settings, X } from 'lucide-vue-next';
+import { onMounted, ref } from 'vue';
 
 const showBanner = ref(false);
 const showSettings = ref(false);
@@ -26,7 +23,7 @@ const preferences = ref({
 });
 
 onMounted(() => {
-    const consent = localStorage.getItem('finovaste-cookie-consent');
+    const consent = localStorage.getItem('ranalp-cookie-consent');
     if (!consent) {
         showBanner.value = true;
     }
@@ -40,10 +37,7 @@ const handleAcceptAll = () => {
         preferences: true,
     };
     preferences.value = allAccepted;
-    localStorage.setItem(
-        'finovaste-cookie-consent',
-        JSON.stringify(allAccepted),
-    );
+    localStorage.setItem('ranalp-cookie-consent', JSON.stringify(allAccepted));
     showBanner.value = false;
 };
 
@@ -56,7 +50,7 @@ const handleAcceptNecessary = () => {
     };
     preferences.value = necessaryOnly;
     localStorage.setItem(
-        'finovaste-cookie-consent',
+        'ranalp-cookie-consent',
         JSON.stringify(necessaryOnly),
     );
     showBanner.value = false;
@@ -64,7 +58,7 @@ const handleAcceptNecessary = () => {
 
 const handleSavePreferences = () => {
     localStorage.setItem(
-        'finovaste-cookie-consent',
+        'ranalp-cookie-consent',
         JSON.stringify(preferences.value),
     );
     showSettings.value = false;
@@ -154,10 +148,6 @@ const handleSavePreferences = () => {
                                 <Label class="font-semibold">{{
                                     $t('cookieconsent.modal.necessary.title')
                                 }}</Label>
-                                <span
-                                    class="rounded bg-gray-200 px-2 py-1 text-xs dark:bg-gray-700"
-                                    >Immer aktiv</span
-                                >
                             </div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{

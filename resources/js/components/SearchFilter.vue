@@ -73,7 +73,7 @@ const defaultState = {
     sortBy: 'latest',
 };
 
-const storedFilters = useStorage('finovaste-filters', defaultState);
+const storedFilters = useStorage('ranalp-filters', defaultState);
 interface ServerFilters {
     search?: string;
     category?: string;

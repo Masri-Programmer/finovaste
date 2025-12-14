@@ -1,4 +1,4 @@
-## \***\*Finovaste\*\*** - Multi-Purpose Investment & Asset Marketplace
+## \***\*Ranalp\*\*** - Multi-Purpose Investment & Asset Marketplace
 
 This is a comprehensive marketplace platform that allows users to discover and participate in various investment opportunities and asset transactions. The app supports four main transaction types:
 
@@ -23,7 +23,7 @@ The platform is designed as a hybrid marketplace combining traditional e-commerc
 
 ## 📋 What's Included:
 
-1. \***\*Complete Overview\*\*** - What Finovaste is and what it does
+1. \***\*Complete Overview\*\*** - What Ranalp is and what it does
 2. \***\*Key Features\*\*** - Detailed breakdown of all major features:
 
 - Multi-language support

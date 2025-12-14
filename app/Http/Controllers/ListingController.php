@@ -154,9 +154,6 @@ class ListingController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Listing $listing)
     {
         $listing->load([
@@ -167,7 +164,6 @@ class ListingController extends Controller
             'category', 
             'address', 
             'media',
-            'reviews.user',
             'updates',
         ]);
 
@@ -220,7 +216,13 @@ class ListingController extends Controller
         $listingArray = $listing->toArray();
         $listingArray['media'] = $mediaData;
 
-        $listingArray['reviews'] = $listing->reviews->sortByDesc('created_at')->values()->map(function ($review) {
+        // Paginate reviews
+        $reviews = $listing->reviews()
+            ->with('user')
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        $listingArray['reviews'] = $reviews->map(function ($review) {
             return [
                 'id' => $review->id,
                 'user' => [
@@ -231,10 +233,12 @@ class ListingController extends Controller
                 'rating' => $review->rating,
                 'body' => $review->body,
                 'created_at' => $review->created_at,
-                'time_ago' => $review->created_at->diffForHumans(),
+                'time_ago' => $review->created_at?->diffForHumans(),
                 'can_edit' => Auth::id() === $review->user_id,
             ];
         });
+
+        $listingArray['next_page_url'] = $reviews->nextPageUrl();
 
         return Inertia::render('listings/Show', [
             'listing' => $listingArray,

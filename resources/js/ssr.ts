@@ -6,7 +6,7 @@ import { createSSRApp, DefineComponent, h } from 'vue';
 import Toast, { PluginOptions } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import { renderToString } from 'vue/server-renderer';
-const appName = import.meta.env.VITE_APP_NAME || 'Finovaste';
+const appName = import.meta.env.VITE_APP_NAME || 'Ranalp';
 const options: PluginOptions = {
     timeout: 5000,
     closeOnClick: true,

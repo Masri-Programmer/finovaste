@@ -15,7 +15,7 @@
     <!-- 
     <section>
         <h2 class="mb-4 text-lg font-semibold text-foreground">
-            {{ $t('listingdetails.key_features') }}
+            {{ $t('listing_details.key_features') }}
         </h2>
         <div class="grid grid-cols-2 gap-x-8 gap-y-3">
             <div
@@ -66,32 +66,32 @@ const formattedCurrentCapital = computed(() => formatCurrency(currentCapital));
 // --- Static Content ---
 
 const keyFeatures = [
-    { text: 'listingdetails.features.verified', icon: CheckCircle },
-    { text: 'listingdetails.features.secure', icon: ShieldCheck },
-    { text: 'listingdetails.features.support', icon: Users },
-    { text: 'listingdetails.features.growth', icon: BarChart },
+    { text: 'listing_details.features.verified', icon: CheckCircle },
+    { text: 'listing_details.features.secure', icon: ShieldCheck },
+    { text: 'listing_details.features.support', icon: Users },
+    { text: 'listing_details.features.growth', icon: BarChart },
 ];
 
 const faqItems = [
     {
         value: 'item-1',
-        question: 'listingdetails.faq.q1',
-        answer: 'listingdetails.faq.a1',
+        question: 'listing_details.faq.q1',
+        answer: 'listing_details.faq.a1',
     },
     {
         value: 'item-2',
-        question: 'listingdetails.faq.q2',
-        answer: 'listingdetails.faq.a2',
+        question: 'listing_details.faq.q2',
+        answer: 'listing_details.faq.a2',
     },
     {
         value: 'item-3',
-        question: 'listingdetails.faq.q3',
-        answer: 'listingdetails.faq.a3',
+        question: 'listing_details.faq.q3',
+        answer: 'listing_details.faq.a3',
     },
     {
         value: 'item-4',
-        question: 'listingdetails.faq.q4',
-        answer: 'listingdetails.faq.a4',
+        question: 'listing_details.faq.q4',
+        answer: 'listing_details.faq.a4',
     },
 ];
 </script>

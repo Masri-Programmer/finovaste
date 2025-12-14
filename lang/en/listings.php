@@ -98,36 +98,17 @@ return [
         'currency' => 'currency',
     ],
 
-    // Investment Specifics
-    'investment' => [
-        'tag' => 'Investment',
-        'invest_now' => 'Invest now',
-        'min_invest' => 'minimum investment',
-        'goal' => 'financing goal',
-        'dialogue' => [
-            'title' => 'Confirm investment',
-            'description' => 'You are about to invest :amount in this project. Please check your entry.',
-            'amount_label' => 'investment amount',
-            'shares_label' => 'Shares',
-            'confirm_button' => 'Invest with payment',
-        ],
-        'toast' => [
-            'starting' => 'Investment is being prepared...',
-            'success' => 'Investment successful!',
-            'failure' => 'Investment failed. Please try again.',
-        ],
-    ],
-
     // Buy Now / E-commerce
     'buy_now' => [
         'tag' => 'Buy',
+        'ownership' => 'You own this listing',
         'purchase_details' => 'Purchase Details',
         'price' => 'price',
         'condition' => 'state',
         'condition_new' => 'New',
         'condition_used' => 'Used',
         'available_qty' => 'Available quantity',
-        'action_btn' => 'Add to Cart / Buy Now',
+        'action_btn' => 'Buy Now',
     ],
 
     // Auction
@@ -156,5 +137,27 @@ return [
         'write_answer' => 'Write answer...',
         'answer' => 'Answer',
         'no_questions_yet' => 'No questions yet',
+    ],
+
+    'investment' => [
+        'tag' => 'Investment',
+        'invest_now' => 'Invest now',
+        'min_invest' => 'Minimum investment',
+        'goal' => 'Financing goal',
+        
+        // CHANGED: Key is now 'dialog' to match Vue component (was 'dialogue')
+        'dialog' => [ 
+            'title' => 'Confirm investment',
+            'description' => 'You are about to invest :amount in this project. Please review your details below.',
+            'shares_label' => 'Number of shares',
+            'confirm_button' => 'Confirm Investment',
+            'amount_label' => 'Investment amount', 
+        ],
+
+        'toast' => [
+            'starting' => 'Investment is being prepared...',
+            'success' => 'Investment successful!',
+            'failure' => 'Investment failed. Please try again.',
+        ],
     ],
 ];
