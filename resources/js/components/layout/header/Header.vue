@@ -6,21 +6,57 @@
             <div
                 class="container-custom flex h-14 items-center !overflow-visible"
             >
-                <Link
-                    :href="home()"
-                    prefetch
-                    as="button"
-                    class="flex flex-1 items-center justify-start"
-                >
-                    <AppLogoIcon class="size-6 fill-current" /> &nbsp;
-                    {{ $page.props.name }}
-                </Link>
+                <div class="flex flex-1 items-center justify-start gap-x-8">
+                    <Link
+                        :href="home()"
+                        prefetch
+                        as="button"
+                        class="flex items-center"
+                    >
+                        <AppLogoIcon class="size-6 fill-current" /> &nbsp;
+                        {{ $page.props.name }}
+                    </Link>
+
+                    <nav class="hidden items-center gap-x-6 lg:flex">
+                        <Link
+                            :href="home()"
+                            :class="[
+                                'text-sm font-medium transition-colors hover:text-foreground',
+                                isActive('/')
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground',
+                            ]"
+                        >
+                            {{ $t('menu.home') }}
+                        </Link>
+                        <Link
+                            :href="about()"
+                            :class="[
+                                'text-sm font-medium transition-colors hover:text-foreground',
+                                isActive('/about')
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground',
+                            ]"
+                        >
+                            {{ $t('menu.about') }}
+                        </Link>
+                        <Link
+                            :href="faq()"
+                            :class="[
+                                'text-sm font-medium transition-colors hover:text-foreground',
+                                isActive('/faq')
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground',
+                            ]"
+                        >
+                            {{ $t('menu.faq') }}
+                        </Link>
+                    </nav>
+                </div>
 
                 <div class="flex flex-1 justify-end">
                     <div class="flex items-center gap-x-2">
                         <div class="hidden items-center gap-x-4 lg:flex">
-                            <!-- <AppearanceIcon />
-                            <LanguageSwitch /> -->
                             <nav class="flex items-center justify-end gap-2">
                                 <template v-if="$page.props.auth.user">
                                     <Link :href="create()" prefetch as="button">
@@ -113,8 +149,6 @@
 </template>
 
 <script setup lang="ts">
-// import AppearanceIcon from '@/components/AppearanceIcon.vue';
-// import LanguageSwitch from '@/components/LanguageSwitch.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import UserMenuContent from '@/components/header/UserMenuContent.vue';
@@ -125,7 +159,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { home, login, register } from '@/routes';
+import { about, faq, home, login, register } from '@/routes';
 import { create, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Bell, Heart, Plus } from 'lucide-vue-next';
@@ -144,5 +178,9 @@ const getInitials = (name: string) => {
     const names = name.split(' ');
     const initials = names.map((n) => n[0]).join('');
     return initials.toUpperCase();
+};
+
+const isActive = (path: string) => {
+    return page.url === path || (path !== '/' && page.url.startsWith(path));
 };
 </script>

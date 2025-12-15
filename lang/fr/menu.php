@@ -9,4 +9,6 @@ return [
     'marketplace' => 'Marché',
     'home' => 'Marché',
     'transactions' => 'Transactions',
+    'about' => 'À propos',
+    'faq' => 'FAQ',
 ];

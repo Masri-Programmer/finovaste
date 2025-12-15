@@ -17,6 +17,9 @@ Route::resource('categories', CategoryController::class)->only([
     'show'
 ]);
 
+Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 });

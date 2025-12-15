@@ -10,5 +10,7 @@ return [
     'profile' => 'Profile',
     'marketplace' => 'Marketplace',
     'home' => 'Marketplace',
-    'transactions' => 'Transactions'
+    'transactions' => 'Transactions',
+    'about' => 'About',
+    'faq' => 'FAQ',
 ];

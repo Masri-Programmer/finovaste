@@ -37,4 +37,12 @@ class HomeController extends Controller
             'filters' => $filters,
         ]);
     }
+
+    public function faq(): Response {
+        return Inertia::render('Faq');
+    }
+
+    public function about(): Response {
+        return Inertia::render('About');
+    }
 }

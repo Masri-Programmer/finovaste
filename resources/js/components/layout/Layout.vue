@@ -30,8 +30,8 @@ enableGlobalHandling();
 
 <template>
     <Head>
-        <!-- <title>{{ head ?? t('meta_title') }}</title>
-        <link rel="preconnect" :href="customProps.app.url + link" />
+        <title>{{ head }}</title>
+        <!-- <link rel="preconnect" :href="customProps.app.url + link" />
         <link rel="canonical" :href="customProps.app.url + link" />
         <link
             rel="alternate"

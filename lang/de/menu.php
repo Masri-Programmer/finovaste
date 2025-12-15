@@ -1,7 +1,5 @@
 <?php
 
-
-
 return [
     'logout' => 'Abmelden',
     'settings' => 'Einstellungen',
@@ -10,5 +8,7 @@ return [
     'profile' => 'Profil',
     'marketplace' => 'Marktplatz',
     'home' => 'Marktplatz',
-    'transactions' => 'Transaktionen'
+    'transactions' => 'Transaktionen',
+    'about' => 'Über uns',
+    'faq' => 'Häufig gestellte Fragen',
 ];

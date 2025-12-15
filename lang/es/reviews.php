@@ -21,6 +21,8 @@ return [
         'load_more_error' => 'Error al cargar más reseñas.',
         'download_start' => 'Descarga de :name iniciada.',
         'download_error' => 'Error al descargar.',
+        'load_error' => 'Error al cargar más reseñas.',
+        'no_more_reviews' => 'No hay más reseñas para cargar.',
     ],
     'write_review' => 'Escribir reseña',
     'rating' => 'Calificación',

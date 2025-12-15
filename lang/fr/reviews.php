@@ -21,6 +21,8 @@ return [
         'load_more_error' => 'Erreur lors du chargement de plus d\'avis.',
         'download_start' => 'Téléchargement pour :name commencé.',
         'download_error' => 'Erreur lors du téléchargement.',
+        'load_error' => 'Échec du chargement d\'autres avis.',
+        'no_more_reviews' => 'Plus aucun avis à charger.',
     ],
     'write_review' => 'Écrire un avis',
     'rating' => 'Note',
