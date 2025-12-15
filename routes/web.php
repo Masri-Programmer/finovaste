@@ -19,6 +19,11 @@ Route::resource('categories', CategoryController::class)->only([
 
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/terms-of-service', [HomeController::class, 'termsOfService'])->name('terms.service');
+
+Route::get('/terms-and-conditions', [HomeController::class, 'termsOfService'])->name('terms.general');
+Route::get('/privacy-policy', [HomeController::class, 'termsOfService'])->name('privacy');
+Route::get('/imprint', [HomeController::class, 'termsOfService'])->name('imprint');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');

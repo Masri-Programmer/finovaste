@@ -45,4 +45,8 @@ class HomeController extends Controller
     public function about(): Response {
         return Inertia::render('About');
     }
+
+    public function termsOfService(): Response {
+        return Inertia::render('legal/TermsOfService');
+    }
 }
