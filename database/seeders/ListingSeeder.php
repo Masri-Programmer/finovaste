@@ -182,38 +182,71 @@ class ListingSeeder extends SeederOnce
 
     private function seedMedia(Listing $listing): void
     {
-        try {
-            $listing->addMediaFromUrl('https://loremflickr.com/640/480/business?random=' . rand(1, 10000))
-                ->usingFileName(uniqid('img_') . '.jpg')
-                ->toMediaCollection('images');
+        $seedingPath = storage_path('app/seeding');
+        if (!file_exists($seedingPath)) {
+            mkdir($seedingPath, 0755, true);
+        }
 
-            $listing->addMediaFromUrl('https://loremflickr.com/640/480/city?random=' . rand(1, 10000))
-                ->usingFileName(uniqid('img_') . '.jpg')
-                ->toMediaCollection('images');
+        $files = [
+            'image_1.jpg' => 'https://loremflickr.com/640/480/business',
+            'image_2.jpg' => 'https://loremflickr.com/640/480/city',
+            'video.mp4' => 'https://raw.githubusercontent.com/intel-iot-devkit/sample-videos/master/classroom.mp4',
+            'doc_1.pdf' => 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+            'doc_2.pdf' => 'https://www.africau.edu/images/default/sample.pdf',
+        ];
+
+        // Download files once if they don't exist
+        foreach ($files as $name => $url) {
+            $path = "$seedingPath/$name";
+            if (!file_exists($path)) {
+                try {
+                    file_put_contents($path, file_get_contents($url));
+                } catch (\Exception $e) {
+                    // Fallback or ignore if download fails
+                    continue;
+                }
+            }
+        }
+
+        try {
+            if (file_exists("$seedingPath/image_1.jpg")) {
+                $listing->addMedia("$seedingPath/image_1.jpg")
+                    ->preservingOriginal()
+                    ->toMediaCollection('images');
+            }
+
+            if (file_exists("$seedingPath/image_2.jpg")) {
+                $listing->addMedia("$seedingPath/image_2.jpg")
+                    ->preservingOriginal()
+                    ->toMediaCollection('images');
+            }
         } catch (\Exception $e) {
-            // Ignore download errors
         }
 
         try {
             // Only add video to some listings
-            if (rand(0, 1)) {
-                 $listing->addMediaFromUrl('https://raw.githubusercontent.com/intel-iot-devkit/sample-videos/master/classroom.mp4')
-                    ->usingFileName(uniqid('vid_') . '.mp4')
+            if (rand(0, 1) && file_exists("$seedingPath/video.mp4")) {
+                 $listing->addMedia("$seedingPath/video.mp4")
+                    ->preservingOriginal()
                     ->toMediaCollection('videos');
             }
         } catch (\Exception $e) {
         }
 
         try {
-            $listing->addMediaFromUrl('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
-                ->withCustomProperties(['name' => 'Generic Business Plan'])
-                ->usingFileName(uniqid('doc_') . '.pdf')
-                ->toMediaCollection('documents');
+            if (file_exists("$seedingPath/doc_1.pdf")) {
+                $listing->addMedia("$seedingPath/doc_1.pdf")
+                    ->preservingOriginal()
+                    ->withCustomProperties(['name' => 'Generic Business Plan'])
+                    ->toMediaCollection('documents');
+            }
 
-            $listing->addMediaFromUrl('https://www.africau.edu/images/default/sample.pdf')
-                ->withCustomProperties(['name' => 'Annual Report'])
-                ->usingFileName(uniqid('doc_') . '.pdf')
-                ->toMediaCollection('documents');
+            if (file_exists("$seedingPath/doc_2.pdf")) {
+                $listing->addMedia("$seedingPath/doc_2.pdf")
+                    ->preservingOriginal()
+                    ->withCustomProperties(['name' => 'Annual Report'])
+                    ->toMediaCollection('documents');
+            }
         } catch (\Exception $e) {
         }
     }
