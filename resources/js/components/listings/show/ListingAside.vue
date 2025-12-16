@@ -6,9 +6,9 @@
             :listing-id="listing.id"
         />
 
-        <BuyNowWidget
-            v-else-if="isBuyNow && buyNowData"
-            :data="buyNowData"
+        <PurchaseWidget
+            v-else-if="isPurchase && purchaseData"
+            :data="purchaseData"
             :listing-id="listing.id"
             :is-owner="isOwner"
         />
@@ -32,19 +32,19 @@
 <script setup lang="ts">
 import {
     AuctionListable,
-    BuyNowListable,
     DonationListable,
     InvestmentListable,
     Listing,
+    PurchaseListable,
 } from '@/types/listings';
 import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 import UserProfileCard from './UserProfileCard.vue';
 import AuctionWidget from './widgets/AuctionWidget.vue';
-import BuyNowWidget from './widgets/BuyWidget.vue';
 import DonationWidget from './widgets/DonationWidget.vue';
 import InvestmentWidget from './widgets/InvestmentWidget.vue';
+import PurchaseWidget from './widgets/PurchaseWidget.vue';
 
 const page = usePage();
 const listing = computed<Listing>(() => page.props.listing as Listing);
@@ -53,8 +53,8 @@ const listing = computed<Listing>(() => page.props.listing as Listing);
 const isInvestment = computed(
     () => listing.value.listable_type === 'App\\Models\\InvestmentListing',
 );
-const isBuyNow = computed(
-    () => listing.value.listable_type === 'App\\Models\\BuyNowListing',
+const isPurchase = computed(
+    () => listing.value.listable_type === 'App\\Models\\PurchaseListing',
 );
 const isAuction = computed(
     () => listing.value.listable_type === 'App\\Models\\AuctionListing',
@@ -72,8 +72,8 @@ const isOwner = computed(() => {
 const investmentData = computed(() =>
     isInvestment.value ? (listing.value.listable as InvestmentListable) : null,
 );
-const buyNowData = computed(() =>
-    isBuyNow.value ? (listing.value.listable as BuyNowListable) : null,
+const purchaseData = computed(() =>
+    isPurchase.value ? (listing.value.listable as PurchaseListable) : null,
 );
 const auctionData = computed(() =>
     isAuction.value ? (listing.value.listable as AuctionListable) : null,

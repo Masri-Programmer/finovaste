@@ -3,7 +3,7 @@ import { useFormatting } from '@/composables/useFormatting';
 import { CircleDollarSign, Package } from 'lucide-vue-next';
 
 defineProps<{
-    listable: any; // Or a more specific 'BuyNowListable' type
+    listable: any;
 }>();
 
 const { formatCurrency } = useFormatting();

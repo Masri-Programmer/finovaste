@@ -7,7 +7,7 @@ export type TransactionType =
     | 'investment'
     | 'auction_win';
 
-export type BuyNowMetadata = {
+export type PurchaseMetadata = {
     snapshot_price: number;
     product_name: string;
     condition: string | null;
@@ -30,7 +30,7 @@ export interface Transaction {
 
     payable_type:
         | 'App\\Models\\InvestmentListing'
-        | 'App\\Models\\BuyNowListing'
+        | 'App\\Models\\PurchaseListing'
         | 'App\\Models\\AuctionListing'
         | 'App\\Models\\DonationListing';
 
@@ -38,7 +38,7 @@ export interface Transaction {
 
     payable?:
         | InvestmentListable
-        | BuyNowListable
+        | PurchaseListable
         | AuctionListable
         | DonationListable;
 
@@ -53,7 +53,7 @@ export interface Transaction {
     payment_method: string | null;
     transaction_ref: string | null;
 
-    metadata: BuyNowMetadata | DonationMetadata | InvestmentMetadata | any;
+    metadata: PurchaseMetadata | DonationMetadata | InvestmentMetadata | any;
 
     status: TransactionStatus;
     paid_at: string | null;
@@ -111,7 +111,7 @@ export interface Listing {
     expires_at: string | null;
     listable_type:
         | 'App\\Models\\InvestmentListing'
-        | 'App\\Models\\BuyNowListing'
+        | 'App\\Models\\PurchaseListing'
         | 'App\\Models\\AuctionListing'
         | 'App\\Models\\DonationListing';
     listable_id: number;
@@ -130,7 +130,7 @@ export interface Listing {
 
     listable:
         | InvestmentListable
-        | BuyNowListable
+        | PurchaseListable
         | AuctionListable
         | DonationListable;
 
@@ -157,7 +157,7 @@ export interface InvestmentListable {
     transactions_count?: number;
 }
 
-export interface BuyNowListable {
+export interface PurchaseListable {
     id: number;
     price: string;
     quantity: number;

@@ -52,10 +52,10 @@
 import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/composables/useCurrency';
 import { buy } from '@/routes/listings';
-import { BuyNowListable } from '@/types/listings';
+import { PurchaseListable } from '@/types/listings';
 import { router } from '@inertiajs/vue3';
 const props = defineProps<{
-    data: BuyNowListable;
+    data: PurchaseListable;
     listingId: number;
     isOwner?: boolean;
 }>();

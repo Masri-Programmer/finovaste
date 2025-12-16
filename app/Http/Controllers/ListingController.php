@@ -7,7 +7,7 @@ use App\Http\Requests\Listings\UpdateListingRequest;
 use App\Models\Listing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use App\Models\Category;
 use App\Models\User;
 use App\Services\ListingMediaService;
@@ -82,7 +82,7 @@ class ListingController extends Controller
 
             switch ($validatedData['listing_type']) {
                 case 'purchase':
-                    $specificListing = BuyNowListing::create([
+                    $specificListing = PurchaseListing::create([
                         'price' => $validatedData['price'],
                         'quantity' => $validatedData['quantity'],
                         'condition' => $validatedData['condition'],

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\AuctionListing;
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
 use App\Models\Listing;
@@ -28,7 +28,7 @@ class ListingSeeder extends Seeder
 
         $listingTypes = [
             InvestmentListing::class,
-            BuyNowListing::class,
+            PurchaseListing::class,
             AuctionListing::class,
             DonationListing::class,
         ];
@@ -45,7 +45,7 @@ class ListingSeeder extends Seeder
         $bar->start();
 
         $tasks->shuffle()->each(function ($class) use ($bar) {
-            // 1. Create the Specific Listing (Auction, BuyNow, etc)
+            // 1. Create the Specific Listing (Auction, Purchase, etc)
             $specificModel = $class::factory()
                 ->withListing()
                 ->create();
@@ -99,8 +99,8 @@ class ListingSeeder extends Seeder
         $this->seedMedia($listing);
 
         // Buy Now Listing
-        $buyNow = BuyNowListing::create(['price' => 45000, 'quantity' => 1, 'condition' => 'new']);
-        $listing = $buyNow->listing()->create([
+        $purchase = PurchaseListing::create(['price' => 45000, 'quantity' => 1, 'condition' => 'new']);
+        $listing = $purchase->listing()->create([
             'user_id' => $user->id,
             'category_id' => $category->id,
             'address_id' => $address->id,

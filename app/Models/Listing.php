@@ -14,7 +14,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\AuctionListing;
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
@@ -241,7 +241,7 @@ class Listing extends Model implements HasMedia
             foreach ($types as $type) {
                 match ($type) {
                     'bid', 'auction' => $mappedClasses[] = AuctionListing::class,
-                    'buy', 'purchase' => $mappedClasses[] = BuyNowListing::class,
+                    'buy', 'purchase' => $mappedClasses[] = PurchaseListing::class,
                     'invest', 'investment' => $mappedClasses[] = InvestmentListing::class,
                     'donate', 'donation' => $mappedClasses[] = DonationListing::class,
                     default => null,
@@ -259,7 +259,7 @@ class Listing extends Model implements HasMedia
             $min = $filters['min_price'] ?? 0;
             $max = $filters['max_price'] ?? 1000000;
 
-            $query->whereHasMorph('listable', [BuyNowListing::class, AuctionListing::class, InvestmentListing::class], function (Builder $sq) use ($min, $max) {
+            $query->whereHasMorph('listable', [PurchaseListing::class, AuctionListing::class, InvestmentListing::class], function (Builder $sq) use ($min, $max) {
                 $sq->where(function (Builder $qq) use ($min, $max) {
                     $qq->orWhereBetween('price', [$min, $max]);
 

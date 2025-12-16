@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Models\InvestmentListing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use Illuminate\Validation\Rule;
 
 class UpdateListingRequest extends FormRequest
@@ -80,7 +80,7 @@ class UpdateListingRequest extends FormRequest
                 'donation_goal' => 'required|numeric|min:0',
                 'is_goal_flexible' => 'boolean',
             ];
-        } elseif ($listing->listable instanceof BuyNowListing) {
+        } elseif ($listing->listable instanceof PurchaseListing) {
             $specificRules = [
                 'price' => 'required|numeric|min:0',
                 'quantity' => 'required|integer|min:1',
@@ -137,7 +137,7 @@ class UpdateListingRequest extends FormRequest
                 'is_goal_flexible'
             ]);
         }
-        if ($listing->listable instanceof BuyNowListing) {
+        if ($listing->listable instanceof PurchaseListing) {
             return $this->safe()->only([
                 'price',
                 'quantity',

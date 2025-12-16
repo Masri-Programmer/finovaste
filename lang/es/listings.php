@@ -8,7 +8,7 @@ return [
         'title' => 'Moderno apartamento de lujo en el centro de la ciudad',
     ],
     'auctionEnds' => 'La subasta termina en',
-    'buyNow' => 'Comprar ahora',
+    'purchase' => 'Comprar ahora',
     'capitalRaised' => 'Capital recaudado',
     'carCollection' => [
         'description' => 'Colección única de vehículos de lujo de alto rendimiento. Modelos limitados con autenticidad verificada e historial de servicio completo.',

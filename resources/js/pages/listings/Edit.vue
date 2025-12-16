@@ -5,11 +5,11 @@ import { useToast } from 'vue-toastification';
 
 import Layout from '@/components/layout/Layout.vue';
 import ListingAuctionForm from '@/components/listings/create/ListingAuctionForm.vue';
-import ListingBuyNowForm from '@/components/listings/create/ListingBuyNowForm.vue';
 import ListingCommonDetails from '@/components/listings/create/ListingCommonDetails.vue';
 import ListingDonationForm from '@/components/listings/create/ListingDonationForm.vue';
 import ListingInvestmentForm from '@/components/listings/create/ListingInvestmentForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
+import ListingPurchaseForm from '@/components/listings/create/ListingPurchaseForm.vue';
 import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
 import {
     AlertDialog,
@@ -37,11 +37,11 @@ import { destroy, update } from '@/routes/listings';
 import { Category } from '@/types';
 import {
     AuctionListable,
-    BuyNowListable,
     DonationListable,
     InvestmentListable,
     Listing,
     ListingMediaCollection,
+    PurchaseListable,
 } from '@/types/listings';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
@@ -93,7 +93,7 @@ const existingMedia: {
 };
 
 const listingType = ref<'purchase' | 'auction' | 'donation' | 'investment'>(
-    props.listing.listable_type.includes('BuyNowListing')
+    props.listing.listable_type.includes('PurchaseListing')
         ? 'purchase'
         : props.listing.listable_type.includes('AuctionListing')
           ? 'auction'
@@ -123,15 +123,15 @@ const form = useForm({
     // Buy Now
     price:
         listingType.value === 'purchase'
-            ? Number((props.listing.listable as BuyNowListable).price)
+            ? Number((props.listing.listable as PurchaseListable).price)
             : null,
     quantity:
         listingType.value === 'purchase'
-            ? (props.listing.listable as BuyNowListable).quantity
+            ? (props.listing.listable as PurchaseListable).quantity
             : 1,
     condition:
         listingType.value === 'purchase'
-            ? (props.listing.listable as BuyNowListable).condition
+            ? (props.listing.listable as PurchaseListable).condition
             : 'new',
 
     // Auction
@@ -267,7 +267,7 @@ const deleteListing = () => {
                             {{ $t('createListing.sections.details') }}
                         </h3>
 
-                        <ListingBuyNowForm
+                        <ListingPurchaseForm
                             v-if="listingType === 'purchase'"
                             :form="form"
                         />

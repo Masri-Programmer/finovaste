@@ -69,7 +69,7 @@ class TransactionController extends Controller
         $item = $listing->listable;
         $quantity = $request->input('quantity', 1);
 
-        if (!$item instanceof \App\Models\BuyNowListing) {
+        if (!$item instanceof \App\Models\PurchaseListing) {
             abort(404);
         }
 

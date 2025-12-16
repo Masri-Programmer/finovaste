@@ -6,10 +6,10 @@ import { useToast } from 'vue-toastification';
 // Layout & UI
 import Layout from '@/components/layout/Layout.vue';
 import ListingAuctionForm from '@/components/listings/create/ListingAuctionForm.vue';
-import ListingBuyNowForm from '@/components/listings/create/ListingBuyNowForm.vue';
 import ListingCommonDetails from '@/components/listings/create/ListingCommonDetails.vue';
 import ListingDonationForm from '@/components/listings/create/ListingDonationForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
+import ListingPurchaseForm from '@/components/listings/create/ListingPurchaseForm.vue';
 import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -147,7 +147,7 @@ const submit = () => {
                             {{ $t('createListing.sections.details') }}
                         </h3>
 
-                        <ListingBuyNowForm
+                        <ListingPurchaseForm
                             v-if="listingType === 'purchase'"
                             :form="form"
                         />

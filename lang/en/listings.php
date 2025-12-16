@@ -10,7 +10,7 @@ return [
         'title' => 'Modern luxury apartment in the city center'
     ],
     'auctionEnds' => 'Auction ends in',
-    'buyNow' => 'Buy Now',
+    'purchase' => 'Buy Now',
     'capitalRaised' => 'Capital Raised',
     'carCollection' => [
         'description' => 'Rare collection of high performance luxury vehicles. Limited models with verified authenticity and full service history.',

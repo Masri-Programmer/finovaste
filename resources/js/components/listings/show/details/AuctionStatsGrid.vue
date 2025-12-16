@@ -25,24 +25,24 @@
         </template>
 
         <!-- Buy Now Specific -->
-        <template v-if="isBuyNow">
+        <template v-if="isPurchase">
             <InfoBox
                 :icon="Tag"
                 :title="$t('listing_details.boxes.price')"
-                :value="buyNowData.price"
+                :value="purchaseData.price"
                 icon-bg-class="bg-green-100 text-green-700"
             />
             <InfoBox
                 :icon="Package"
                 :title="$t('listing_details.boxes.quantity')"
-                :value="buyNowData.quantity.toString()"
+                :value="purchaseData.quantity.toString()"
                 icon-bg-class="bg-blue-100 text-blue-700"
             />
             <InfoBox
-                v-if="buyNowData.condition"
+                v-if="purchaseData.condition"
                 :icon="Info"
                 :title="$t('listing_details.boxes.condition')"
-                :value="buyNowData.condition"
+                :value="purchaseData.condition"
                 icon-bg-class="bg-gray-100 text-gray-700"
             />
         </template>
@@ -105,10 +105,10 @@
 import { Progress } from '@/components/ui/progress';
 import type {
     AuctionListable,
-    BuyNowListable,
     DonationListable,
     InvestmentListable,
     Listing,
+    PurchaseListable,
 } from '@/types/listings';
 import {
     Clock,
@@ -134,8 +134,8 @@ const props = defineProps<Props>();
 const isAuction = computed(
     () => props.listing.listable_type === 'App\\Models\\AuctionListing',
 );
-const isBuyNow = computed(
-    () => props.listing.listable_type === 'App\\Models\\BuyNowListing',
+const isPurchase = computed(
+    () => props.listing.listable_type === 'App\\Models\\PurchaseListing',
 );
 const isInvestment = computed(
     () => props.listing.listable_type === 'App\\Models\\InvestmentListing',
@@ -147,8 +147,8 @@ const isDonation = computed(
 const auctionData = computed(() => {
     return props.listing.listable as AuctionListable;
 });
-const buyNowData = computed(() => {
-    return props.listing.listable as BuyNowListable;
+const purchaseData = computed(() => {
+    return props.listing.listable as PurchaseListable;
 });
 const investmentData = computed(() => {
     return props.listing.listable as InvestmentListable;

@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BuyNowListing>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PurchaseListing>
  */
-class BuyNowListingFactory extends Factory
+class PurchaseListingFactory extends Factory
 {
-    protected $model = BuyNowListing::class;
+    protected $model = PurchaseListing::class;
 
     public function definition(): array
     {
@@ -23,8 +23,8 @@ class BuyNowListingFactory extends Factory
 
     public function withListing()
     {
-        return $this->afterCreating(function (BuyNowListing $buyNow) {
-            $buyNow->listing()->save(
+        return $this->afterCreating(function (PurchaseListing $purchase) {
+            $purchase->listing()->save(
                 \App\Models\Listing::factory()->make()
             );
         });

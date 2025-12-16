@@ -8,7 +8,7 @@ return [
         'title' => 'Appartement de luxe moderne au centre-ville',
     ],
     'auctionEnds' => 'L\'enchère se termine dans',
-    'buyNow' => 'Acheter maintenant',
+    'purchase' => 'Acheter maintenant',
     'capitalRaised' => 'Capital levé',
     'carCollection' => [
         'description' => 'Collection rare de véhicules de luxe haute performance. Modèles limités avec authenticité vérifiée et historique d\'entretien complet.',

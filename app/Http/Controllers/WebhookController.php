@@ -33,7 +33,7 @@ class WebhookController extends Controller
 
                     if ($payable) {
                         switch ($transaction->payable_type) {
-                            case 'App\Models\BuyNowListing':
+                            case 'App\Models\PurchaseListing':
                                 $payable->decrement('quantity');
                                 break;
 

@@ -2,7 +2,7 @@
 
 return [
     'auction' => 'enchère',
-    'buyNow' => 'Acheter maintenant',
+    'purchase' => 'Acheter maintenant',
     'donation' => 'donation',
     'investment' => 'investissement',
 ];

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Listing;
 use App\Models\Transaction;
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use App\Models\DonationListing;
 use App\Models\InvestmentListing;
 use App\Models\AuctionListing;
@@ -37,7 +37,7 @@ class PaymentController extends Controller
 
         // 2. Calculate Amount & Validation based on Type
         switch ($listing->listable_type) {
-            case BuyNowListing::class:
+            case PurchaseListing::class:
                 $amount = $listing->listable->price;
                 if ($listing->listable->quantity < 1) {
                     return $this->checkError('Item out of stock.');
@@ -174,7 +174,7 @@ class PaymentController extends Controller
                 // 2. Handle Stock / Updates based on Type
                 $item = $listing->listable;
 
-                if ($item instanceof BuyNowListing) {
+                if ($item instanceof PurchaseListing) {
                     $item->decrement('quantity', 1);
                 }
 

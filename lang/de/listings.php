@@ -9,7 +9,7 @@ return [
         'title' => 'Modernes Luxus-Apartment in der Innenstadt',
     ],
     'auctionEnds' => 'Auktion endet in',
-    'buyNow' => 'Jetzt kaufen',
+    'purchase' => 'Jetzt kaufen',
     'capitalRaised' => 'Eingesammeltes Kapital',
     'carCollection' => [
         'description' => 'Seltene Sammlung von Hochleistungs-Luxusfahrzeugen. Limitierte Modelle mit verifizierter Echtheit und vollständiger Servicehistorie.',

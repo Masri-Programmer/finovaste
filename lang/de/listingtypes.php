@@ -4,7 +4,7 @@
 
 return [
     'auction' => 'Auktion',
-    'buyNow' => 'Sofort-Kauf',
+    'purchase' => 'Sofort-Kauf',
     'donation' => 'Spende',
     'investment' => 'Investition'
 ];

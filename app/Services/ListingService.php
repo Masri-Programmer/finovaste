@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Listing;
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
 use Illuminate\Support\Facades\DB;
@@ -91,7 +91,7 @@ class ListingService
     {
         switch ($data['listing_type']) {
             case 'purchase':
-                return BuyNowListing::create([
+                return PurchaseListing::create([
                     'price' => $data['price'],
                     'quantity' => $data['quantity'],
                     'condition' => $data['condition'],

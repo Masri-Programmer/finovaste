@@ -85,7 +85,7 @@ const getListablePrice = (listing: Listing) => {
         case 'App\\Models\\InvestmentListing':
             price = listing.listable.investment_goal;
             break;
-        case 'App\\Models\\BuyNowListing':
+        case 'App\\Models\\PurchaseListing':
             price = listing.listable.price;
             break;
         case 'App\\Models\\AuctionListing':

@@ -2,13 +2,13 @@
 
 namespace App\Observers;
 
-use App\Models\BuyNowListing;
+use App\Models\PurchaseListing;
 use App\Mail\ListingUpdated;
 use Illuminate\Support\Facades\Mail;
 
-class BuyNowListingObserver
+class PurchaseListingObserver
 {
-    public function updated(BuyNowListing $item): void
+    public function updated(PurchaseListing $item): void
     {
         $listing = $item->listing;
         if (!$listing) return;

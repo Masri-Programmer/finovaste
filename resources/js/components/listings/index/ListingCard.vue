@@ -2,9 +2,9 @@
 import LikeAction from '@/components/actions/LikeAction.vue';
 import ShareAction from '@/components/actions/ShareAction.vue';
 import ListingAuctionContent from '@/components/listings/index/ListingAuctionContent.vue';
-import ListingBuyNowContent from '@/components/listings/index/ListingBuyNowContent.vue';
 import ListingDonationContent from '@/components/listings/index/ListingDonationContent.vue';
 import ListingInvestmentContent from '@/components/listings/index/ListingInvestmentContent.vue';
+import ListingPurchaseContent from '@/components/listings/index/ListingPurchaseContent.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -48,7 +48,7 @@ function getListingType(type: Listing['listable_type'] | string): {
                 text: trans('filters.types.bid'),
                 variant: 'secondary',
             };
-        case 'App\\Models\\BuyNowListing':
+        case 'App\\Models\\PurchaseListing':
             return {
                 text: trans('filters.types.buy'),
                 variant: 'default',
@@ -156,10 +156,10 @@ const handleImageError = (e: Event) => {
                     "
                     :listable="listable"
                 />
-                <ListingBuyNowContent
+                <ListingPurchaseContent
                     v-if="
                         listing.listable_type ===
-                            'App\\Models\\BuyNowListing' && listable
+                            'App\\Models\\PurchaseListing' && listable
                     "
                     :listable="listable"
                 />
@@ -197,13 +197,13 @@ const handleImageError = (e: Event) => {
                 </Button>
                 <Button
                     v-if="
-                        listing.listable_type === 'App\\Models\\BuyNowListing'
+                        listing.listable_type === 'App\\Models\\PurchaseListing'
                     "
                     class="w-full"
                     @click.prevent
                 >
                     <BadgeDollarSign class="mr-2 h-4 w-4" />
-                    {{ $t('listings.buyNow') }}
+                    {{ $t('listings.purchase') }}
                 </Button>
                 <Button
                     v-if="

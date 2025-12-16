@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\App;
 use App\Settings\GeneralSettings;
+use Illuminate\Support\Facades\Cache;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -94,29 +95,32 @@ class HandleInertiaRequests extends Middleware
         ];
     }
 
-     public function getCategories(): \Illuminate\Support\Collection
+    public function getCategories(): \Illuminate\Support\Collection
     {
-        $allCategories = \App\Models\Category::whereNull('parent_id')
-            ->with('children')
-            ->withCount('listings')
-            ->orderBy('sort_order','asc')
-            ->orderBy('name','asc')
-            ->get();
+        return Cache::remember('site_categories_tree', now()->addDay(), function () {
+            
+            $allCategories = \App\Models\Category::whereNull('parent_id')
+                ->with('children')
+                ->withCount('listings')
+                ->orderBy('sort_order', 'asc')
+                ->orderBy('name', 'asc')
+                ->get();
 
-        return $allCategories->map(function ($category) {
-            return [
-                'id' => $category->id,
-                'slug' => $category->slug,
-                'icon' => $category->icon,
-                'name' => $category->getTranslations('name'),
-                'children' => $category->children->map(function ($child) {
-                    return [
-                        'id' => $child->id,
-                        'slug' => $child->slug,
-                        'name' => $child->getTranslations('name'),
-                    ];
-                })
-            ];
+            return $allCategories->map(function ($category) {
+                return [
+                    'id' => $category->id,
+                    'slug' => $category->slug,
+                    'icon' => $category->icon,
+                    'name' => $category->getTranslations('name'),
+                    'children' => $category->children->map(function ($child) {
+                        return [
+                            'id' => $child->id,
+                            'slug' => $child->slug,
+                            'name' => $child->getTranslations('name'),
+                        ];
+                    })
+                ];
+            });
         });
     }
 
