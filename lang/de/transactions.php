@@ -26,7 +26,7 @@ return [
 
     'types' => [
         'purchase' => 'Kauf',
-        'auction_buy_now' => 'Auktion (Sofortkauf)',
+        'auction_purchase' => 'Auktion (Sofortkauf)',
         'investment' => 'Investition',
         'donation' => 'Spende',
         'auction' => 'Auktion',

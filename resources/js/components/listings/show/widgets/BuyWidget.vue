@@ -1,12 +1,12 @@
 <template>
     <div class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
         <h3 class="mb-4 leading-none font-semibold tracking-tight">
-            {{ $t('listings.buy_now.purchase_details') }}
+            {{ $t('listings.purchase.purchase_details') }}
         </h3>
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between">
                 <span class="text-muted-foreground">{{
-                    $t('listings.buy_now.price')
+                    $t('listings.purchase.price')
                 }}</span>
                 <span class="text-2xl font-bold">{{
                     formatCurrency(data.price)
@@ -14,22 +14,22 @@
             </div>
             <div class="flex items-center justify-between text-sm">
                 <span class="text-muted-foreground">{{
-                    $t('listings.buy_now.condition')
+                    $t('listings.purchase.condition')
                 }}</span>
                 <span class="capitalize">
                     {{
                         data.condition
                             ? $t(
-                                  'listings.buy_now.condition_' +
+                                  'listings.purchase.condition_' +
                                       data.condition.toLowerCase(),
                               )
-                            : $t('listings.buy_now.condition_new')
+                            : $t('listings.purchase.condition_new')
                     }}
                 </span>
             </div>
             <div class="flex items-center justify-between text-sm">
                 <span class="text-muted-foreground">{{
-                    $t('listings.buy_now.available_qty')
+                    $t('listings.purchase.available_qty')
                 }}</span>
                 <span>{{ data.quantity }}</span>
             </div>
@@ -40,8 +40,8 @@
             >
                 {{
                     isOwner
-                        ? $t('listings.buy_now.ownership')
-                        : $t('listings.buy_now.action_btn')
+                        ? $t('listings.purchase.ownership')
+                        : $t('listings.purchase.action_btn')
                 }}
             </Button>
         </div>

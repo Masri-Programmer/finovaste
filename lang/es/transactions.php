@@ -23,7 +23,7 @@ return [
     ],
     'types' => [
         'purchase' => 'Compra',
-        'auction_buy_now' => 'Subasta (Comprar ahora)',
+        'auction_purchase' => 'Subasta (Comprar ahora)',
         'investment' => 'Inversión',
         'donation' => 'Donación',
         'auction' => 'Subasta',

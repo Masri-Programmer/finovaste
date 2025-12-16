@@ -15,7 +15,7 @@ class BuyNowListing extends Model
      *
      * @var string
      */
-    protected $table = 'buy_now_listings';
+    protected $table = 'purchase_listings';
 
     public $timestamps = true;
 

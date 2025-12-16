@@ -120,7 +120,7 @@ return [
             'amount_label' => 'Montant de l\'investissement',
         ],
     ],
-    'buy_now' => [
+    'purchase' => [
         'tag' => 'Acheter',
         'purchase_details' => 'Détails de l\'achat',
         'price' => 'prix',

@@ -72,7 +72,7 @@ class PaymentController extends Controller
                      return $this->checkError('Buy Now not available for this auction.');
                  }
                  $amount = $listing->listable->buy_it_now_price;
-                 $transactionType = 'auction_buy_now';
+                 $transactionType = 'auction_purchase';
                  break;
 
             default:

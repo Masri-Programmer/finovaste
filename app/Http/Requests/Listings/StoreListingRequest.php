@@ -64,7 +64,7 @@ class StoreListingRequest extends FormRequest
             'description.' . $fallbackLocale => 'required|string',
             'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'listing_type' => 'required|string|in:auction,donation,buy_now,investment',
+            'listing_type' => 'required|string|in:auction,donation,purchase,investment',
             'location_text' => 'nullable|string|max:255',
             'expires_at' => 'nullable|date|after:now',
 
@@ -107,7 +107,7 @@ class StoreListingRequest extends FormRequest
                 ];
                 break;
 
-            case 'buy_now':
+            case 'purchase':
                 $specificRules = [
                     'price' => 'required|numeric|min:0',
                     'quantity' => 'required|integer|min:1',
@@ -163,7 +163,7 @@ class StoreListingRequest extends FormRequest
                 'donation_goal',
                 'is_goal_flexible'
             ]),
-            'buy_now' => $this->safe()->only([
+            'purchase' => $this->safe()->only([
                 'price',
                 'quantity',
                 'condition'

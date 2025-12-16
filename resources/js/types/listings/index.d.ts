@@ -2,7 +2,7 @@ import { Address, Category, LocaleString, User } from './../index.d';
 
 export type TransactionStatus = 'pending' | 'completed' | 'failed' | 'refunded';
 export type TransactionType =
-    | 'buy_now'
+    | 'purchase'
     | 'donation'
     | 'investment'
     | 'auction_win';

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('buy_now_listings', function (Blueprint $table) {
+        Schema::create('purchase_listings', function (Blueprint $table) {
             $table->id();
             $table->decimal('price', 10, 2);
             $table->unsignedInteger('quantity')->default(1);
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('buy_now_listings');
+        Schema::dropIfExists('purchase_listings');
     }
 };

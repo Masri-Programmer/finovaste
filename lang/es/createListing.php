@@ -102,7 +102,7 @@ return [
             'description' => 'Vende un artículo al mejor postor.',
             'title' => 'Subasta',
         ],
-        'buy_now' => [
+        'purchase' => [
             'description' => 'Precio fijo para artículos o servicios.',
             'title' => 'Compra Directa',
         ],

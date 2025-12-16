@@ -95,7 +95,7 @@ return [
             'description' => 'Artikel an den Höchstbietenden verkaufen.',
             'title' => 'Auktion',
         ],
-        'buy_now' => [
+        'purchase' => [
             'description' => 'Fester Preis für Artikel oder Dienstleistungen.',
             'title' => 'Sofort-Kauf',
         ],

@@ -99,7 +99,7 @@ return [
     ],
 
     // Buy Now / E-commerce
-    'buy_now' => [
+    'purchase' => [
         'tag' => 'Buy',
         'ownership' => 'You own this listing',
         'purchase_details' => 'Purchase Details',

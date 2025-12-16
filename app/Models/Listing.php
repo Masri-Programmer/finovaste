@@ -241,7 +241,7 @@ class Listing extends Model implements HasMedia
             foreach ($types as $type) {
                 match ($type) {
                     'bid', 'auction' => $mappedClasses[] = AuctionListing::class,
-                    'buy', 'buy_now' => $mappedClasses[] = BuyNowListing::class,
+                    'buy', 'purchase' => $mappedClasses[] = BuyNowListing::class,
                     'invest', 'investment' => $mappedClasses[] = InvestmentListing::class,
                     'donate', 'donation' => $mappedClasses[] = DonationListing::class,
                     default => null,

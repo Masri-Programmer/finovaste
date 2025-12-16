@@ -43,9 +43,9 @@ const mediaUploadRef = ref<InstanceType<typeof ListingMediaUpload> | null>(
     null,
 );
 
-const listingType = useStorage<'buy_now' | 'auction' | 'donation'>(
+const listingType = useStorage<'purchase' | 'auction' | 'donation'>(
     'create-listing-type',
-    'buy_now',
+    'purchase',
 );
 
 const initialTranslations = availableLanguages.value.reduce(
@@ -148,7 +148,7 @@ const submit = () => {
                         </h3>
 
                         <ListingBuyNowForm
-                            v-if="listingType === 'buy_now'"
+                            v-if="listingType === 'purchase'"
                             :form="form"
                         />
                         <ListingAuctionForm

@@ -81,7 +81,7 @@ class ListingController extends Controller
             DB::beginTransaction();
 
             switch ($validatedData['listing_type']) {
-                case 'buy_now':
+                case 'purchase':
                     $specificListing = BuyNowListing::create([
                         'price' => $validatedData['price'],
                         'quantity' => $validatedData['quantity'],

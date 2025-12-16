@@ -90,7 +90,7 @@ class ListingService
     private function createSpecificListing(array $data)
     {
         switch ($data['listing_type']) {
-            case 'buy_now':
+            case 'purchase':
                 return BuyNowListing::create([
                     'price' => $data['price'],
                     'quantity' => $data['quantity'],

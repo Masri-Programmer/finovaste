@@ -57,10 +57,10 @@ watch(
 
 const getTypeLabel = (type: string) => {
     switch (type) {
-        case 'buy_now':
+        case 'purchase':
             return 'transactions.types.purchase';
-        case 'auction_buy_now':
-            return 'transactions.types.auction_buy_now';
+        case 'auction_purchase':
+            return 'transactions.types.auction_purchase';
         case 'investment':
             return 'transactions.types.investment';
         case 'donation':
@@ -100,7 +100,7 @@ const getStatusVariant = (status: string) => {
                     <Link :href="index()" :class="{'font-bold text-primary': !filters.type, 'text-muted-foreground hover:text-primary': filters.type}">
                         {{ $t('transactions.filters.all') }}
                     </Link>
-                    <Link :href="index({ query: { type: 'buy_now' } })" :class="{'font-bold text-primary': filters.type === 'buy_now', 'text-muted-foreground hover:text-primary': filters.type !== 'buy_now'}">
+                    <Link :href="index({ query: { type: 'purchase' } })" :class="{'font-bold text-primary': filters.type === 'purchase', 'text-muted-foreground hover:text-primary': filters.type !== 'purchase'}">
                         {{ $t('transactions.filters.purchases') }}
                     </Link>
                     <Link :href="index({ query: { type: 'investment' } })" :class="{'font-bold text-primary': filters.type === 'investment', 'text-muted-foreground hover:text-primary': filters.type !== 'investment'}">

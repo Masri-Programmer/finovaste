@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { computed } from 'vue';
 
 // --- 1. Add 'investment' to the type ---
-type ListingType = 'buy_now' | 'auction' | 'donation' | 'investment';
+type ListingType = 'purchase' | 'auction' | 'donation' | 'investment';
 
 const props = defineProps<{
     modelValue: ListingType;
@@ -35,12 +35,12 @@ const listingType = computed({
             <Label
                 class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
             >
-                <RadioGroupItem value="buy_now" class="sr-only" />
+                <RadioGroupItem value="purchase" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.buy_now.title') }}
+                    {{ $t('createListing.types.purchase.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.buy_now.description') }}
+                    {{ $t('createListing.types.purchase.description') }}
                 </span>
             </Label>
             <Label

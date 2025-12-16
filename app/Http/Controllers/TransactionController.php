@@ -91,7 +91,7 @@ class TransactionController extends Controller
                 'payable_type' => get_class($item),
                 'payable_id'   => $item->id,
 
-                'type'         => 'buy_now',
+                'type'         => 'purchase',
                 'amount'       => $totalAmount,
                 'quantity'     => $quantity,
                 'status'       => 'completed', // In real apps, this is 'pending' until Stripe calls back
@@ -244,7 +244,7 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $filters = $request->validate([
-            'type' => 'nullable|string|in:buy_now,auction,donation,investment',
+            'type' => 'nullable|string|in:purchase,auction,donation,investment',
             'search' => 'nullable|string',
         ]);
 

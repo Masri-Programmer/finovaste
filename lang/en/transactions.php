@@ -26,7 +26,7 @@ return [
 
     'types' => [
         'purchase' => 'Purchase',
-        'auction_buy_now' => 'Auction (Buy Now)',
+        'auction_purchase' => 'Auction (Buy Now)',
         'investment' => 'Investment',
         'donation' => 'Donation',
         'auction' => 'Auction',

@@ -92,14 +92,14 @@ const existingMedia: {
     ),
 };
 
-const listingType = ref<'buy_now' | 'auction' | 'donation' | 'investment'>(
+const listingType = ref<'purchase' | 'auction' | 'donation' | 'investment'>(
     props.listing.listable_type.includes('BuyNowListing')
-        ? 'buy_now'
+        ? 'purchase'
         : props.listing.listable_type.includes('AuctionListing')
           ? 'auction'
           : props.listing.listable_type.includes('InvestmentListing')
             ? 'investment'
-            : 'buy_now',
+            : 'purchase',
 );
 
 const form = useForm({
@@ -122,15 +122,15 @@ const form = useForm({
 
     // Buy Now
     price:
-        listingType.value === 'buy_now'
+        listingType.value === 'purchase'
             ? Number((props.listing.listable as BuyNowListable).price)
             : null,
     quantity:
-        listingType.value === 'buy_now'
+        listingType.value === 'purchase'
             ? (props.listing.listable as BuyNowListable).quantity
             : 1,
     condition:
-        listingType.value === 'buy_now'
+        listingType.value === 'purchase'
             ? (props.listing.listable as BuyNowListable).condition
             : 'new',
 
@@ -268,7 +268,7 @@ const deleteListing = () => {
                         </h3>
 
                         <ListingBuyNowForm
-                            v-if="listingType === 'buy_now'"
+                            v-if="listingType === 'purchase'"
                             :form="form"
                         />
                         <ListingAuctionForm

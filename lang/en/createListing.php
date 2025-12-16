@@ -103,7 +103,7 @@ return [
             'description' => 'Sell item to highest bidder.',
             'title' => 'Auction'
         ],
-        'buy_now' => [
+        'purchase' => [
             'description' => 'Fixed price for items or services.',
             'title' => 'Buy Now'
         ],

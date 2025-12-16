@@ -102,7 +102,7 @@ return [
             'description' => 'Vendre un article au plus offrant.',
             'title' => 'Enchère',
         ],
-        'buy_now' => [
+        'purchase' => [
             'description' => 'Prix fixe pour des articles ou services.',
             'title' => 'Achat immédiat',
         ],

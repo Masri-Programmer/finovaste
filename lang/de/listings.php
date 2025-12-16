@@ -121,7 +121,7 @@ return [
             'confirm_button' => 'Mit Zahlung investieren',
         ],
     ],
-    'buy_now' => [
+    'purchase' => [
         'tag' => 'Kaufen',
         'purchase_details' => 'Kaufdetails',
         'price' => 'Preis',
