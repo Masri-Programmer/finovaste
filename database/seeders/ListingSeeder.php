@@ -209,14 +209,14 @@ class ListingSeeder extends SeederOnce
         }
 
         try {
-            if (file_exists("$seedingPath/image_1.jpg")) {
-                $listing->addMedia("$seedingPath/image_1.jpg")
+            if (file_exists("$seedingPath/https://loremflickr.com/640/480/business")) {
+                $listing->addMedia("$seedingPath/https://loremflickr.com/640/480/business")
                     ->preservingOriginal()
                     ->toMediaCollection('images');
             }
 
-            if (file_exists("$seedingPath/image_2.jpg")) {
-                $listing->addMedia("$seedingPath/image_2.jpg")
+            if (file_exists("$seedingPath/https://loremflickr.com/640/480/city")) {
+                $listing->addMedia("$seedingPath/https://loremflickr.com/640/480/city")
                     ->preservingOriginal()
                     ->toMediaCollection('images');
             }
