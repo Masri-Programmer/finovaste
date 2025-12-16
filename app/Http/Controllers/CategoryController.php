@@ -21,7 +21,6 @@ class CategoryController extends Controller
             ->get();
 
         return Inertia::render('Categories/Index', [
-            'categories' => $categories,
         ]);
     }
 

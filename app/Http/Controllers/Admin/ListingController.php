@@ -62,7 +62,6 @@ class ListingController extends Controller
 
         return Inertia::render('admin/listings/Edit', [
             'listing' => $listing,
-            // 'categories' => $this->getCategoriesForForm()
         ]);
     }
 

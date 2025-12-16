@@ -30,6 +30,17 @@
                             {{ $t('menu.home') }}
                         </Link>
                         <Link
+                            :href="index()"
+                            :class="[
+                                'text-sm font-medium transition-colors hover:text-foreground',
+                                isActive('/')
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground',
+                            ]"
+                        >
+                            {{ $t('menu.marketplace') }}
+                        </Link>
+                        <Link
                             :href="about()"
                             :class="[
                                 'text-sm font-medium transition-colors hover:text-foreground',
@@ -58,16 +69,16 @@
                     <div class="flex items-center gap-x-2">
                         <div class="hidden items-center gap-x-4 lg:flex">
                             <nav class="flex items-center justify-end gap-2">
+                                <Link :href="create()" prefetch as="button">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="relative h-9 w-9 rounded-full"
+                                    >
+                                        <Plus class="h-5 w-5" />
+                                    </Button>
+                                </Link>
                                 <template v-if="$page.props.auth.user">
-                                    <Link :href="create()" prefetch as="button">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            class="relative h-9 w-9 rounded-full"
-                                        >
-                                            <Plus class="h-5 w-5" />
-                                        </Button>
-                                    </Link>
                                     <Link :href="liked()" prefetch as="button">
                                         <Button
                                             variant="ghost"
@@ -160,7 +171,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { about, faq, home, login, register } from '@/routes';
-import { create, liked } from '@/routes/listings';
+import { create, index, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Bell, Heart, Plus } from 'lucide-vue-next';
 import { computed } from 'vue';

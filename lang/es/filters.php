@@ -13,15 +13,6 @@ return [
     'sortBy' => 'Ordenar por',
     'apply' => 'Aplicar filtro',
     'reset' => 'Reiniciar filtro',
-    'categories' => [
-        'properties' => 'bienes raíces',
-        'vehicles' => 'vehículos',
-        'furniture' => 'muebles',
-        'electronics' => 'electrónica',
-        'art' => 'Arte y coleccionables',
-        'businesses' => 'negocios',
-        'startups' => 'startups',
-    ],
     'types' => [
         'buy' => 'Comprar ahora',
         'invest' => 'inversión',

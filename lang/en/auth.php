@@ -16,5 +16,7 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password was incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    "register" => [
+        "cta" => "Register now"
+    ]
 ];

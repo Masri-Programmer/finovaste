@@ -43,4 +43,5 @@ return [
         "button_start" => "Start Campaign Now",
         "button_contact" => "Contact Support",
     ],
+    "badge" => "Support Center",
 ];

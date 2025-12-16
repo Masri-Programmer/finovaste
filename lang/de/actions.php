@@ -37,4 +37,5 @@ return [
     'copy' => 'Kopieren',
     'loading' => 'Lädt...',
     'processing' => 'Verarbeitung...',
+    'learn_more' => 'Mehr erfahren',
 ];

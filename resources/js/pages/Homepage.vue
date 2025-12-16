@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import FaqContent from '@/components/FaqContent.vue';
 import Layout from '@/components/layout/Layout.vue';
 import { home } from '@/routes';
-import Hero from './homepage/Hero.vue';
+import Home from './homepage/Home.vue';
 import Marketplace from './homepage/Marketplace.vue';
 </script>
 
 <template>
     <Layout :link="home.url()">
-        <Hero />
+        <Home />
         <Marketplace />
+        <FaqContent />
     </Layout>
 </template>

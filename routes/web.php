@@ -19,6 +19,7 @@ Route::resource('categories', CategoryController::class)->only([
 
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/terms-of-service', [HomeController::class, 'termsOfService'])->name('terms.service');
 
 Route::get('/terms-and-conditions', [HomeController::class, 'termsOfService'])->name('terms.general');

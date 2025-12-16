@@ -17,14 +17,8 @@ class CategoryController extends Controller
      */
     public function index(): Response
     {
-        $categories = Category::with('parent', 'children')
-            ->orderBy('sort_order', 'asc')
-            ->orderBy('name', 'asc')
-            ->paginate(20)
-            ->withQueryString();
 
         return Inertia::render('admin/categories/Index', [
-            'categories' => $categories,
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),

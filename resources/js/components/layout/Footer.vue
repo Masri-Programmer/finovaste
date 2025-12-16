@@ -57,7 +57,15 @@
                             :href="footerRoutes.company.about"
                             class="text-muted-foreground transition-colors hover:text-primary"
                         >
-                            {{ $t('footer.company.about') }}
+                            {{ $t('menu.marketplace') }}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            :href="footerRoutes.company.about"
+                            class="text-muted-foreground transition-colors hover:text-primary"
+                        >
+                            {{ $t('menu.about') }}
                         </Link>
                     </li>
                     <li>
@@ -65,15 +73,23 @@
                             :href="footerRoutes.company.contact"
                             class="text-muted-foreground transition-colors hover:text-primary"
                         >
-                            {{ $t('footer.company.contact') }}
+                            {{ $t('menu.contact') }}
                         </Link>
                     </li>
                     <li>
                         <Link
+                            :href="footerRoutes.company.contact"
+                            class="text-muted-foreground transition-colors hover:text-primary"
+                        >
+                            {{ $t('menu.faq') }}
+                        </Link>
+                    </li>
+                    <!-- <li>
+                        <Link
                             :href="footerRoutes.company.careers"
                             class="text-muted-foreground transition-colors hover:text-primary"
                         >
-                            {{ $t('footer.company.careers') }}
+                            {{ $t('menu.careers') }}
                         </Link>
                     </li>
                     <li>
@@ -81,13 +97,13 @@
                             :href="footerRoutes.company.press"
                             class="text-muted-foreground transition-colors hover:text-primary"
                         >
-                            {{ $t('footer.company.press') }}
+                            {{ $t('menu.press') }}
                         </Link>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
 
-            <div>
+            <!-- <div>
                 <h4 class="font-semibold text-foreground">
                     {{ $t('footer.support.title') }}
                 </h4>
@@ -125,21 +141,13 @@
                         </Link>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
             <div>
                 <h4 class="font-semibold text-foreground">
                     {{ $t('footer.legal.title') }}
                 </h4>
                 <ul class="mt-4 space-y-3">
-                    <li>
-                        <Link
-                            :href="footerRoutes.legal.termsGeneral"
-                            class="text-muted-foreground transition-colors hover:text-primary"
-                        >
-                            {{ $t('footer.legal.agb') }}
-                        </Link>
-                    </li>
                     <li>
                         <Link
                             :href="footerRoutes.legal.privacy"
@@ -169,39 +177,17 @@
 
             <div>
                 <h4 class="font-semibold text-foreground">
-                    {{ $t('footer.marketplace.title') }}
+                    {{ $t('menu.marketplace') }}
                 </h4>
                 <ul class="mt-4 space-y-3">
-                    <li>
+                    <li v-for="item in $page.props.categories" :key="item.id">
                         <Link
-                            :href="footerRoutes.marketplace.properties"
+                            :href="`${index.url()}/?category=${item.slug}`"
                             class="text-muted-foreground transition-colors hover:text-primary"
                         >
-                            {{ $t('footer.marketplace.properties') }}
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            :href="footerRoutes.marketplace.vehicles"
-                            class="text-muted-foreground transition-colors hover:text-primary"
-                        >
-                            {{ $t('footer.marketplace.vehicles') }}
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            :href="footerRoutes.marketplace.investments"
-                            class="text-muted-foreground transition-colors hover:text-primary"
-                        >
-                            {{ $t('footer.marketplace.investments') }}
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            :href="footerRoutes.marketplace.auctions"
-                            class="text-muted-foreground transition-colors hover:text-primary"
-                        >
-                            {{ $t('footer.marketplace.auctions') }}
+                            {{
+                                item.name[$page.props.locale] ?? item.name['en']
+                            }}
                         </Link>
                     </li>
                 </ul>
@@ -212,6 +198,7 @@
             class="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-border pt-8 sm:flex-row"
         >
             <p class="text-center text-sm text-muted-foreground sm:text-left">
+                © {{ year }} {{ $page.props.name }}
                 {{ $t('footer.copyright') }}
             </p>
 
@@ -257,8 +244,9 @@
 </template>
 
 <script setup lang="ts">
+import { index } from '@/routes/listings';
 import { Link } from '@inertiajs/vue3';
-import { useClipboard } from '@vueuse/core';
+import { useClipboard, useDateFormat, useNow } from '@vueuse/core';
 import { trans } from 'laravel-vue-i18n';
 import {
     Facebook,
@@ -310,6 +298,7 @@ const footerRoutes = {
 const toast = useToast();
 const { copy } = useClipboard();
 
+const year = useDateFormat(useNow(), 'YYYY');
 const copyToClipboard = (text: string, type: string) => {
     copy(text)
         .then(() => {

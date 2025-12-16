@@ -19,35 +19,6 @@ class ListingService
     protected $mediaService;
 
     /**
-     * Fetch the category tree with counts.
-     */
-    public function getCategories(): \Illuminate\Support\Collection
-    {
-        $allCategories = Category::whereNull('parent_id')
-            ->with('children')
-            ->withCount('listings')
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
-
-        return $allCategories->map(function ($category) {
-            return [
-                'id' => $category->id,
-                'slug' => $category->slug,
-                'icon' => $category->icon,
-                'name' => $category->getTranslations('name'),
-                'children' => $category->children->map(function ($child) {
-                    return [
-                        'id' => $child->id,
-                        'slug' => $child->slug,
-                        'name' => $child->getTranslations('name'),
-                    ];
-                })
-            ];
-        });
-    }
-
-    /**
      * Filter and paginate listings.
      */
     public function getListings(array $filters): LengthAwarePaginator

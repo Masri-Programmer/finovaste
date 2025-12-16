@@ -2,8 +2,8 @@
 
 return [
     'company' => [
-        'about' => 'About Us',
-        'careers' => 'Careers',
+        'about' => 'Über uns',
+        'careers' => 'Karrieren',
         'contact' => 'Contact',
         'press' => 'Press',
         'title' => 'Company'
@@ -15,9 +15,7 @@ return [
         'phone' => '+1 (555) 123-4567',
         'phoneLabel' => 'Telefon'
     ],
-    'copied' => '{type} in die Zwischenablage kopiert!',
-    'copyFailed' => 'Kopieren fehlgeschlagen.',
-    'copyright' => '© 2025 Ranalp. Alle Rechte vorbehalten.',
+    'copyright' => ' Alle Rechte vorbehalten.',
     'description' => 'Ihre vertrauenswürdige Plattform für den Kauf, Verkauf, die Investition und das Bieten auf Premium-Assets weltweit.',
     'legal' => [
         'agb' => 'Allgemeine Geschäftsbedingungen',
@@ -25,13 +23,6 @@ return [
         'privacy' => 'Datenschutzerklärung',
         'terms' => 'AGB',
         'title' => 'Legal'
-    ],
-    'marketplace' => [
-        'auctions' => 'Auctions',
-        'investments' => 'Investments',
-        'properties' => 'Properties',
-        'title' => 'Marketplace',
-        'vehicles' => 'Vehicles'
     ],
     'support' => [
         'community' => 'Community',

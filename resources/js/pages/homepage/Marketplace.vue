@@ -13,7 +13,7 @@ const filters = ref({
 </script>
 
 <template>
-    <div class="min-h-screen bg-background text-foreground">
+    <div class="bg-background text-foreground">
         <header class="mb-4 flex items-center justify-between">
             <h1 class="text-3xl font-bold text-foreground">
                 {{ $t('listings.title') }}

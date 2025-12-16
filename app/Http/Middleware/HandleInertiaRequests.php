@@ -62,6 +62,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'navigation' => $componentService->getStructuredComponent('main_navigation'),
             'footer' => $componentService->getStructuredComponent('site_footer'),
+            'categories' => $this->getCategories(),
             'page' => session(
                 'page_data',
                 [
@@ -92,4 +93,31 @@ class HandleInertiaRequests extends Middleware
             ],
         ];
     }
+
+     public function getCategories(): \Illuminate\Support\Collection
+    {
+        $allCategories = \App\Models\Category::whereNull('parent_id')
+            ->with('children')
+            ->withCount('listings')
+            ->orderBy('sort_order','asc')
+            ->orderBy('name','asc')
+            ->get();
+
+        return $allCategories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'slug' => $category->slug,
+                'icon' => $category->icon,
+                'name' => $category->getTranslations('name'),
+                'children' => $category->children->map(function ($child) {
+                    return [
+                        'id' => $child->id,
+                        'slug' => $child->slug,
+                        'name' => $child->getTranslations('name'),
+                    ];
+                })
+            ];
+        });
+    }
+
 }

@@ -17,11 +17,16 @@ Route::controller(ListingController::class)
         Route::get('/', 'index')->name('index');
         Route::post('/{listing}/like', 'like')->name('like');
 
+        Route::get('/create', 'create')->name('create');
+
+        Route::get('/{listing}/reviews', [ReviewController::class, 'index'])
+            ->name('reviews.index');
+
+        Route::get('/{listing}', 'show')->name('show');
 
         // 🔒 AUTHENTICATED ROUTES
         Route::middleware(['auth', 'verified'])->group(function () {
 
-            Route::get('/create', 'create')->name('create');
             Route::get('/liked', 'liked')->name('liked');
             Route::post('/', 'store')->name('store');
 
@@ -62,9 +67,4 @@ Route::controller(ListingController::class)
             Route::get('/{listing}/payment/success', [PaymentController::class, 'success'])->name('success');
         });
 
-        // Reviews - publicly accessible to load more
-        Route::get('/{listing}/reviews', [ReviewController::class, 'index'])
-            ->name('reviews.index');
-
-        Route::get('/{listing}', 'show')->name('show');
     });

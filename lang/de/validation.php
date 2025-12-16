@@ -172,20 +172,17 @@ return [
         'price' => 'Preis',
         'quantity' => 'Menge',
         'condition' => 'Zustand',
-
         'start_price' => 'Startpreis',
         'reserve_price' => 'Mindestpreis',
         'buy_it_now_price' => 'Sofort-Kaufen-Preis',
         'starts_at' => 'Startdatum',
         'ends_at' => 'Enddatum',
-
         'donation_goal' => 'Spendenziel',
         'is_goal_flexible' => 'Ziel ist flexibel',
-
         'investment_goal' => 'Investitionsziel',
         'minimum_investment' => 'Mindestinvestition',
         'shares_offered' => 'Angebotene Anteile',
         'share_price' => 'Anteilspreis',
     ],
-
+    'clipboard_unsupported' => 'Ihr Browser unterstützt das Kopieren nicht.',
 ];

@@ -11,4 +11,9 @@ return [
     'transactions' => 'Transaktionen',
     'about' => 'Über uns',
     'faq' => 'Häufig gestellte Fragen',
+    'careers' => 'Karriere',
+    'press' => 'Presse',
+    'contact' => 'Kontakt',
+    'safety' => 'Sicherheit',
+    'community' => 'Gemeinschaft',
 ];

@@ -48,35 +48,22 @@ class ListingController extends Controller
             'sort'      => 'nullable|string|in:latest,oldest,price-low,price-high,popular',
         ]);
 
-        $categories = $this->listingService->getCategories();
         $listings = $this->listingService->getListings($filters);
 
         return Inertia::render('listings/Index', [
-            'categories' => $categories,
             'listings' => $listings,
             'filters' => $filters,
         ]);
     }
-
-    private function getCategoriesForForm(): \Illuminate\Support\Collection
-    {
-        return Cache::remember('categories_for_form', 60 * 60, function () {
-            return Category::orderBy('name')->get()->map(function ($category) {
-                return [
-                    'id' => $category->id,
-                    'name' => $category->getTranslations('name'),
-                ];
-            });
-        });
-    }
-
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        if(!$request->user()) {
+            return redirect()->route('login');
+        }
         return Inertia::render('listings/Create', [
-            'categories' => $this->getCategoriesForForm(),
         ]);
     }
 
@@ -159,10 +146,10 @@ class ListingController extends Controller
         $listing->load([
             'listable' => function ($morph) {
                 $morph->withCount('transactions');
-            }, 
-            'user', 
-            'category', 
-            'address', 
+            },
+            'user',
+            'category',
+            'address',
             'media',
             'updates',
         ]);
@@ -176,20 +163,20 @@ class ListingController extends Controller
 
         $listing->load(['faqs' => function ($q) use ($listing) {
             $userId = Auth::id();
-            
+
             if ($userId !== $listing->user_id) {
                 $q->where(function ($query) use ($userId) {
                     $query->where(function ($sub) {
                         $sub->whereNotNull('answer')
                             ->where('is_visible', true);
                     });
-                    
+
                     if ($userId) {
                         $query->orWhere('user_id', $userId);
                     }
                 });
             }
-            
+
             $q->with('user:id,name');
          }]);
 
@@ -228,7 +215,7 @@ class ListingController extends Controller
                 'user' => [
                     'id' => $review->user->id,
                     'name' => $review->user->name,
-                    'profile_photo_url' => $review->user->profile_photo_url ?? null, 
+                    'profile_photo_url' => $review->user->profile_photo_url ?? null,
                 ],
                 'rating' => $review->rating,
                 'body' => $review->body,
@@ -260,7 +247,6 @@ class ListingController extends Controller
 
         return Inertia::render('listings/Edit', [
             'listing' => $listingData,
-            'categories' => $this->getCategoriesForForm(),
         ]);
     }
 
@@ -323,9 +309,9 @@ public function like(Request $request, Listing $listing): RedirectResponse
         }
 
         try {
-            $listing->likers()->syncWithoutDetaching(Auth::id());   
+            $listing->likers()->syncWithoutDetaching(Auth::id());
             $listing->increment('likes_count');
-            
+
             // Pass 'liked' so the trait looks for messages.success.liked
             return $this->checkSuccess($listing, 'liked');
 
@@ -338,11 +324,11 @@ public function like(Request $request, Listing $listing): RedirectResponse
     {
         try {
             $detached = $listing->likers()->detach(Auth::id());
-            
+
             if ($detached) {
                 $listing->decrement('likes_count');
             }
-            
+
             // Pass 'unliked' so the trait looks for messages.success.unliked
             return $this->checkSuccess($listing, 'unliked');
 

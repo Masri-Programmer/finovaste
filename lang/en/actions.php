@@ -36,4 +36,5 @@ return [
     'copy' => 'Copy',
     'loading' => 'Loading...',
     'processing' => 'Processing...',
+    'learn_more' => 'Learn more',
 ];

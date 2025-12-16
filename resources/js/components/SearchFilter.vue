@@ -23,7 +23,7 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { Slider } from '@/components/ui/slider';
-import { home } from '@/routes';
+import { index } from '@/routes/listings';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import { useStorage, useToggle } from '@vueuse/core';
 import { Search, SlidersHorizontal, X } from 'lucide-vue-next';
@@ -219,7 +219,7 @@ function applyFilters() {
         Object.entries(queryParams).filter(([_, v]) => v !== null && v !== ''),
     );
 
-    router.get(home(), cleanParams, {
+    router.get(index(), cleanParams, {
         preserveState: true,
         preserveScroll: true,
         replace: true,

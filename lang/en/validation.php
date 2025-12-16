@@ -187,5 +187,6 @@ return [
         'shares_offered' => 'Shares Offered',
         'share_price' => 'Share Price',
     ],
+    'clipboard_unsupported' => 'Your browser does not support copying.',
 
 ];

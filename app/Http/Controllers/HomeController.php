@@ -28,11 +28,9 @@ class HomeController extends Controller
             'sort'      => 'nullable|string|in:latest,oldest,price-low,price-high,popular',
         ]);
 
-        $categories = $this->listingService->getCategories();
         $listings = $this->listingService->getListings($filters);
 
         return Inertia::render('Homepage', [
-            'categories' => $categories,
             'listings' => $listings,
             'filters' => $filters,
         ]);
@@ -48,5 +46,9 @@ class HomeController extends Controller
 
     public function termsOfService(): Response {
         return Inertia::render('legal/TermsOfService');
+    }
+
+    public function contact(): Response {
+        return Inertia::render('Contact');
     }
 }
