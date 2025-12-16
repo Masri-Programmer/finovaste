@@ -6,8 +6,9 @@ use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Kdabrow\SeederOnce\SeederOnce;
 
-class CategorySeeder extends Seeder
+class CategorySeeder extends SeederOnce
 {
     /**
      * Run the database seeds.

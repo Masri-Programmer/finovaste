@@ -5,8 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Component;
 use App\Models\ComponentItem;
+use Kdabrow\SeederOnce\SeederOnce;
 
-class ComponentSeeder extends Seeder
+class ComponentSeeder extends SeederOnce
 {
     /**
      * Run the database seeds.

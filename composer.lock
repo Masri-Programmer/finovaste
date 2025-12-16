@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71e6639988a7eef209b0cd7c7f0d39bb",
+    "content-hash": "f67057cf9d2b4520ba388394ec942c06",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1666,6 +1666,66 @@
                 "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.10"
             },
             "time": "2025-09-28T21:21:36+00:00"
+        },
+        {
+            "name": "kdabrow/seeder-once",
+            "version": "6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/karoldabro/seeder-once.git",
+                "reference": "812bf6087654609bc1e287db6037129e5460f880"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/karoldabro/seeder-once/zipball/812bf6087654609bc1e287db6037129e5460f880",
+                "reference": "812bf6087654609bc1e287db6037129e5460f880",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^10.0|^11.0|^12.0",
+                "illuminate/database": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": ">=8.2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kdabrow\\SeederOnce\\Providers\\SeederOnceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kdabrow\\SeederOnce\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Karol Dąbrowski",
+                    "email": "20278897+karoldabro@users.noreply.github.com",
+                    "homepage": "https://kdabrow.com"
+                }
+            ],
+            "description": "Run your laravel seeders only once",
+            "keywords": [
+                "database",
+                "laravel",
+                "php",
+                "seeder"
+            ],
+            "support": {
+                "issues": "https://github.com/karoldabro/seeder-once/issues",
+                "source": "https://github.com/karoldabro/seeder-once/tree/6.0.0"
+            },
+            "time": "2025-02-25T14:55:52+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -12579,5 +12639,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }

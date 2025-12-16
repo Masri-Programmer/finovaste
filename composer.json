@@ -13,6 +13,7 @@
         "diglactic/laravel-breadcrumbs": "^10.0",
         "fakerphp/faker": "^1.24",
         "inertiajs/inertia-laravel": "^2.0",
+        "kdabrow/seeder-once": "^6.0",
         "laravel/cashier": "^16.1",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",

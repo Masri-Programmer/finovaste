@@ -5,11 +5,11 @@ namespace Database\Seeders;
 use App\Models\Bid;
 use App\Models\Listing;
 use App\Models\User;
-use App\Models\AuctionListing; // Ensure this matches your model namespace
+use App\Models\AuctionListing;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
-class BidSeeder extends Seeder
+use Kdabrow\SeederOnce\SeederOnce;
+class BidSeeder extends SeederOnce
 {
     public function run(): void
     {

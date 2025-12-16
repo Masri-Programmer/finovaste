@@ -9,10 +9,10 @@ use App\Models\User;
 use Database\Factories\AddressFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-
-class UserSeeder extends Seeder
+use Kdabrow\SeederOnce\SeederOnce;
+class UserSeeder extends SeederOnce
 {
-    /**
+    /**:
      * Run the database seeds.
      */
     public function run(): void

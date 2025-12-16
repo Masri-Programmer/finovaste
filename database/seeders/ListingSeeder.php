@@ -8,12 +8,13 @@ use App\Models\DonationListing;
 use App\Models\InvestmentListing;
 use App\Models\Listing;
 use App\Models\ListingFaq;
-use App\Models\Review; // Import Review
+use App\Models\Review; 
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Factories\AddressFactory;
+use Kdabrow\SeederOnce\SeederOnce;
 
-class ListingSeeder extends Seeder
+class ListingSeeder extends SeederOnce
 {
     protected int $count = 5;
 
