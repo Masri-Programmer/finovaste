@@ -10,7 +10,6 @@ return [
     'profile' => 'Profile',
     'marketplace' => 'Marketplace',
     'home' => 'Home',
-    'marketplace' => 'Marketplace',
     'transactions' => 'Transactions',
     'about' => 'About',
     'faq' => 'FAQ',
