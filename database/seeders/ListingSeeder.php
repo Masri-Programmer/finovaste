@@ -16,7 +16,7 @@ use Kdabrow\SeederOnce\SeederOnce;
 
 class ListingSeeder extends SeederOnce
 {
-    protected int $count = 5;
+    protected int $count = 3;
 
     public function run(): void
     {
