@@ -40,29 +40,6 @@ class InvestmentListingFactory extends Factory
         return $this->afterCreating(function ($model) {
             $listing = Listing::factory()->make();
             $model->listing()->save($listing);
-
-            $listing->addMediaFromUrl('https://loremflickr.com/640/480/business?random=' . rand(1, 1000))
-                ->toMediaCollection('images');
-
-            $listing->addMediaFromUrl('https://loremflickr.com/640/480/city?random=' . rand(1, 1000))
-                ->toMediaCollection('images');
-
-            try {
-                $listing->addMediaFromUrl('https://raw.githubusercontent.com/intel-iot-devkit/sample-videos/master/classroom.mp4')
-                    ->toMediaCollection('videos');
-            } catch (\Exception $e) {
-            }
-
-            try {
-                $listing->addMediaFromUrl('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
-                    ->withCustomProperties(['name' => 'Business Plan'])
-                    ->toMediaCollection('documents');
-
-                $listing->addMediaFromUrl('https://www.africau.edu/images/default/sample.pdf')
-                    ->withCustomProperties(['name' => 'Financial Report'])
-                    ->toMediaCollection('documents');
-            } catch (\Exception $e) {
-            }
         });
     }
 }

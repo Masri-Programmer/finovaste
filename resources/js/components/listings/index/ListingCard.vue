@@ -76,6 +76,12 @@ const listable = computed(() => {
 const shareUrl = computed(() => {
     return show.url(props.listing.id);
 });
+const fallbackImage = 'https://placehold.co/600x400?text=No+Media+Available';
+
+const handleImageError = (e: Event) => {
+    const target = e.target as HTMLImageElement;
+    target.src = fallbackImage;
+};
 </script>
 
 <template>
@@ -86,12 +92,10 @@ const shareUrl = computed(() => {
         >
             <CardHeader class="relative p-0">
                 <img
-                    :src="
-                        listing.image_url ||
-                        'https://placehold.co/600x400.png?text=Listing+Image'
-                    "
+                    :src="listing.image_url"
                     :alt="listing.title[locale]"
                     class="h-48 w-full object-cover"
+                    @error="handleImageError"
                 />
                 <div class="absolute top-4 left-4 flex gap-2">
                     <Badge

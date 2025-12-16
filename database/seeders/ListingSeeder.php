@@ -54,6 +54,7 @@ class ListingSeeder extends Seeder
             if ($specificModel->listing) {
                 $this->seedFaqs($specificModel->listing);
                 $this->seedReviews($specificModel->listing); // <--- Add Reviews
+                $this->seedMedia($specificModel->listing);
             }
 
             $bar->advance();
@@ -94,7 +95,8 @@ class ListingSeeder extends Seeder
             'description' => ['en' => 'Invest in a promising tech startup...', 'de' => 'Investieren Sie in ein vielversprechendes Tech-Startup...'],
         ]);
         $this->seedFaqs($listing);
-        $this->seedReviews($listing); // <--- Add Reviews
+        $this->seedReviews($listing);
+        $this->seedMedia($listing);
 
         // Buy Now Listing
         $buyNow = BuyNowListing::create(['price' => 45000, 'quantity' => 1, 'condition' => 'new']);
@@ -108,6 +110,7 @@ class ListingSeeder extends Seeder
         ]);
         $this->seedFaqs($listing);
         $this->seedReviews($listing);
+        $this->seedMedia($listing);
 
         // Auction Listing
         $auction = AuctionListing::create([
@@ -124,6 +127,7 @@ class ListingSeeder extends Seeder
         ]);
         $this->seedFaqs($listing);
         $this->seedReviews($listing);
+        $this->seedMedia($listing);
 
         // Donation Listing
         $donation = DonationListing::create(['donation_goal' => 25000]);
@@ -137,6 +141,7 @@ class ListingSeeder extends Seeder
         ]);
         $this->seedFaqs($listing);
         $this->seedReviews($listing);
+        $this->seedMedia($listing);
 
         $this->command->info('Original listings re-seeded with FAQs and Reviews.');
     }
@@ -171,6 +176,44 @@ class ListingSeeder extends Seeder
                 'listing_id' => $listing->id,
                 'user_id' => $reviewer->id,
             ]);
+        }
+    }
+
+    private function seedMedia(Listing $listing): void
+    {
+        try {
+            $listing->addMediaFromUrl('https://loremflickr.com/640/480/business?random=' . rand(1, 10000))
+                ->usingFileName(uniqid('img_') . '.jpg')
+                ->toMediaCollection('images');
+
+            $listing->addMediaFromUrl('https://loremflickr.com/640/480/city?random=' . rand(1, 10000))
+                ->usingFileName(uniqid('img_') . '.jpg')
+                ->toMediaCollection('images');
+        } catch (\Exception $e) {
+            // Ignore download errors
+        }
+
+        try {
+            // Only add video to some listings
+            if (rand(0, 1)) {
+                 $listing->addMediaFromUrl('https://raw.githubusercontent.com/intel-iot-devkit/sample-videos/master/classroom.mp4')
+                    ->usingFileName(uniqid('vid_') . '.mp4')
+                    ->toMediaCollection('videos');
+            }
+        } catch (\Exception $e) {
+        }
+
+        try {
+            $listing->addMediaFromUrl('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
+                ->withCustomProperties(['name' => 'Generic Business Plan'])
+                ->usingFileName(uniqid('doc_') . '.pdf')
+                ->toMediaCollection('documents');
+
+            $listing->addMediaFromUrl('https://www.africau.edu/images/default/sample.pdf')
+                ->withCustomProperties(['name' => 'Annual Report'])
+                ->usingFileName(uniqid('doc_') . '.pdf')
+                ->toMediaCollection('documents');
+        } catch (\Exception $e) {
         }
     }
 }
