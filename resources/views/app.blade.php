@@ -22,7 +22,7 @@
 
     {{-- Inline style to set the HTML background color based on our theme in app.css --}}
 
-    <title inertia>{{ config('app.name', 'Finosaste') }}</title>
+    <title inertia>{{ config('app.name', 'Ranalp') }}</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
