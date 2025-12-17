@@ -158,4 +158,10 @@ return [
             'success' => 'Inserat erfolgreich aktualisiert.',
         ],
     ],
+    'terms' => [
+        'title' => 'Allgemeine Geschäftsbedingungen',
+        'description' => 'Mit der Erstellung eines Inserats stimmen Sie unseren Allgemeinen Geschäftsbedingungen zu.',
+        'agree' => 'Ich stimme den',
+        'link' => 'Allgemeine Geschäftsbedingungen',
+    ],
 ];

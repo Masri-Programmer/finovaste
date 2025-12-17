@@ -26,12 +26,12 @@ const props = defineProps({
 const formattedStartsAt = computed(() => {
     return props.form.starts_at
         ? format(props.form.starts_at, 'PPP', { locale: de })
-        : trans('createlisting.fields.starts_at.placeholder');
+        : trans('createListing.fields.starts_at.placeholder');
 });
 const formattedEndsAt = computed(() => {
     return props.form.ends_at
         ? format(props.form.ends_at, 'PPP', { locale: de })
-        : trans('createlisting.fields.ends_at.placeholder');
+        : trans('createListing.fields.ends_at.placeholder');
 });
 </script>
 
@@ -76,7 +76,7 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    $t('createlisting.fields.purchase_price.placeholder')
+                    $t('createListing.fields.purchase_price.placeholder')
                 "
             />
         </div>

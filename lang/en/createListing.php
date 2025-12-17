@@ -172,4 +172,10 @@ return [
             'success' => 'Listing updated successfully.',
         ],
     ],
+    'terms' => [
+        'title' => 'Terms and Conditions',
+        'description' => 'By creating a Listing, you must agree to our terms and conditions.',
+        'agree' => 'I agree to the',
+        'link' => 'Terms and Conditions',
+    ],
 ];

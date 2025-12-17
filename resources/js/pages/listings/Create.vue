@@ -20,9 +20,12 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { create, store } from '@/routes/listings';
+import { trans } from 'laravel-vue-i18n';
 import { PropType, ref, watch } from 'vue';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
@@ -83,6 +86,10 @@ const form = useForm({
     // Donation
     donation_goal: null as number | null,
     is_goal_flexible: false,
+
+    // Terms
+    terms: false,
+    processing: false,
 });
 
 watch(listingType, (newType) => {
@@ -91,10 +98,20 @@ watch(listingType, (newType) => {
 });
 
 const submit = () => {
+    if (!form.terms) {
+        form.setError('terms', trans('createListing.terms.description'));
+        return;
+    }
     form.post(store.url(), {
+        onBefore: () => {
+            form.processing = true;
+        },
         onSuccess: () => {
             form.reset();
             mediaUploadRef.value?.reset();
+        },
+        onFinish: () => {
+            form.processing = false;
         },
         onError: (errors) => {
             const errorMessages = Object.values(errors);
@@ -163,14 +180,44 @@ const submit = () => {
                 </CardContent>
 
                 <CardFooter>
-                    <Button type="submit" :disabled="form.processing">
-                        <span v-if="form.processing">
-                            {{ $t('createListing.buttons.submitting') }}
-                        </span>
-                        <span v-else>
-                            {{ $t('createListing.buttons.submit') }}
-                        </span>
-                    </Button>
+                    <div class="flex w-full flex-col gap-4">
+                        <div class="flex items-center space-x-2">
+                            <Checkbox
+                                id="terms"
+                                :checked="form.terms"
+                                @update:checked="form.terms = $event"
+                                required
+                            />
+                            <Label
+                                for="terms"
+                                class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                {{ $t('createListing.terms.agree') }}
+                                <a
+                                    href="/terms-of-service"
+                                    target="_blank"
+                                    class="text-primary underline"
+                                >
+                                    {{ $t('createListing.terms.link') }}
+                                </a>
+                            </Label>
+                        </div>
+
+                        <Button type="submit">
+                            <span v-if="form.processing">
+                                {{ $t('createListing.buttons.submitting') }}
+                            </span>
+                            <span v-else>
+                                {{ $t('createListing.buttons.submit') }}
+                            </span>
+                        </Button>
+                        <p
+                            v-if="form.errors.terms"
+                            class="text-sm font-medium text-destructive"
+                        >
+                            {{ form.errors.terms }}
+                        </p>
+                    </div>
                 </CardFooter>
             </Card>
         </form>

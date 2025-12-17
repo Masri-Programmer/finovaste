@@ -136,7 +136,7 @@ const updateDescription = (newDescription: string) => {
                         )
                     "
                     :placeholder="
-                        $t('createlisting.fields.description.placeholder')
+                        $t('createListing.fields.description.placeholder')
                     "
                     class="min-h-[120px]"
                 />
@@ -169,7 +169,7 @@ const updateDescription = (newDescription: string) => {
                     <SelectTrigger>
                         <SelectValue
                             :placeholder="
-                                $t('createlisting.fields.category.placeholder')
+                                $t('createListing.fields.category.placeholder')
                             "
                         />
                     </SelectTrigger>
