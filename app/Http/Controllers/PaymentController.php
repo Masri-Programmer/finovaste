@@ -68,10 +68,10 @@ class PaymentController extends Controller
                 break;
 
             case AuctionListing::class:
-                 if (!$listing->listable->buy_it_now_price) {
+                 if (!$listing->listable->purchase_price) {
                      return $this->checkError('Buy Now not available for this auction.');
                  }
-                 $amount = $listing->listable->buy_it_now_price;
+                 $amount = $listing->listable->purchase_price;
                  $transactionType = 'auction_purchase';
                  break;
 

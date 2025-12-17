@@ -19,7 +19,7 @@ class AuctionListingFactory extends Factory
         return [
             'start_price' => $startPrice,
             'reserve_price' => $startPrice * 1.5,
-            'buy_it_now_price' => $startPrice * 2,
+            'purchase_price' => $startPrice * 2,
             'current_bid' => $this->faker->numberBetween($startPrice, $startPrice * 1.5),
             'starts_at' => $this->faker->dateTimeBetween('-1 week', 'now'),
             'ends_at' => $this->faker->dateTimeBetween('now', '+2 weeks'),

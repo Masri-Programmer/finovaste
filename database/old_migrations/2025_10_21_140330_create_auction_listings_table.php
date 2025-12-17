@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('start_price', 10, 2);
             $table->decimal('reserve_price', 10, 2)->nullable();
-            $table->decimal('buy_it_now_price', 10, 2)->nullable();
+            $table->decimal('purchase_price', 10, 2)->nullable();
             $table->decimal('current_bid', 10, 2)->nullable();
 
             $table->timestamp('starts_at')->nullable();

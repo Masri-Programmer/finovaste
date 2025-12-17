@@ -67,16 +67,16 @@ const formattedEndsAt = computed(() => {
             />
         </div>
         <div class="space-y-2">
-            <Label for="buy_it_now_price">
-                {{ $t('createListing.fields.buy_it_now_price.label') }}
+            <Label for="purchase_price">
+                {{ $t('createListing.fields.purchase_price.label') }}
             </Label>
             <Input
-                id="buy_it_now_price"
-                v-model.number="form.buy_it_now_price"
+                id="purchase_price"
+                v-model.number="form.purchase_price"
                 type="number"
                 step="0.01"
                 :placeholder="
-                    $t('createlisting.fields.buy_it_now_price.placeholder')
+                    $t('createlisting.fields.purchase_price.placeholder')
                 "
             />
         </div>

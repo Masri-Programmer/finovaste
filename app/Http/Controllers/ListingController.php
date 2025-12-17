@@ -93,7 +93,7 @@ class ListingController extends Controller
                     $specificListing = AuctionListing::create([
                         'start_price' => $validatedData['start_price'],
                         'reserve_price' => $validatedData['reserve_price'],
-                        'buy_it_now_price' => $validatedData['buy_it_now_price'],
+                        'purchase_price' => $validatedData['purchase_price'],
                         'starts_at' => $validatedData['starts_at'],
                         'ends_at' => $validatedData['ends_at'],
                     ]);

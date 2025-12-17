@@ -73,7 +73,7 @@ class UpdateListingRequest extends FormRequest
                 'start_price' => 'required|numeric|min:0',
                 'ends_at' => 'required|date',
                 'reserve_price' => 'nullable|numeric|gte:start_price',
-                'buy_it_now_price' => 'nullable|numeric|gte:start_price',
+                'purchase_price' => 'nullable|numeric|gte:start_price',
             ];
         } elseif ($listing->listable instanceof DonationListing) {
             $specificRules = [
@@ -128,7 +128,7 @@ class UpdateListingRequest extends FormRequest
                 'start_price',
                 'ends_at',
                 'reserve_price',
-                'buy_it_now_price'
+                'purchase_price'
             ]);
         }
         if ($listing->listable instanceof DonationListing) {

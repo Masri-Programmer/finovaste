@@ -34,6 +34,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
+echo "🔥 Seeding Translations..."
+php artisan translate:sync --all 
 # echo "🗺️ Generating sitemap..."
 # php artisan sitemap:generate
 

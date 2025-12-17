@@ -143,9 +143,9 @@ const form = useForm({
         listingType.value === 'auction'
             ? (props.listing.listable as AuctionListable).reserve_price
             : null,
-    buy_it_now_price:
+    purchase_price:
         listingType.value === 'auction'
-            ? (props.listing.listable as AuctionListable).buy_it_now_price
+            ? (props.listing.listable as AuctionListable).purchase_price
             : null,
     starts_at:
         listingType.value === 'auction' &&

@@ -171,7 +171,7 @@ export interface AuctionListable {
     id: number;
     start_price: number;
     reserve_price: number | null;
-    buy_it_now_price: number | null;
+    purchase_price: number | null;
     current_bid: number | null;
     starts_at: string | null;
     ends_at: string;

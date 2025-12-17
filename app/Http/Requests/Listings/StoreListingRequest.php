@@ -96,7 +96,7 @@ class StoreListingRequest extends FormRequest
                     'starts_at' => 'nullable|date|after:now',
                     'ends_at' => 'required|date|after:starts_at',
                     'reserve_price' => 'nullable|numeric|gte:start_price',
-                    'buy_it_now_price' => 'nullable|numeric|gte:start_price',
+                    'purchase_price' => 'nullable|numeric|gte:start_price',
                 ];
                 break;
 
@@ -157,7 +157,7 @@ class StoreListingRequest extends FormRequest
                 'starts_at',
                 'ends_at',
                 'reserve_price',
-                'buy_it_now_price'
+                'purchase_price'
             ]),
             'donation' => $this->safe()->only([
                 'donation_goal',

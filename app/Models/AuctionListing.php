@@ -24,7 +24,7 @@ class AuctionListing extends Model
     protected $fillable = [
         'start_price',
         'reserve_price',
-        'buy_it_now_price',
+        'purchase_price',
         'current_bid',
         'starts_at',
         'ends_at',

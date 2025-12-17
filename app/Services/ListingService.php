@@ -100,7 +100,7 @@ class ListingService
                 return AuctionListing::create([
                     'start_price' => $data['start_price'],
                     'reserve_price' => $data['reserve_price'],
-                    'buy_it_now_price' => $data['buy_it_now_price'],
+                    'purchase_price' => $data['purchase_price'],
                     'starts_at' => $data['starts_at'],
                     'ends_at' => $data['ends_at'],
                 ]);

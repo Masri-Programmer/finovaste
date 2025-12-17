@@ -76,7 +76,7 @@ const form = useForm({
     // Auction
     start_price: null as number | null,
     reserve_price: null as number | null,
-    buy_it_now_price: null as number | null,
+    purchase_price: null as number | null,
     starts_at: null as Date | null,
     ends_at: null as Date | null,
 
