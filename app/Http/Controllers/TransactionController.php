@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use App\Models\Transaction;
 use App\Mail\ListingUpdated;
+use App\Traits\HasAppMessages; //
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransactionController extends Controller
 {
+    use HasAppMessages; //
+
     public function placeBid(Request $request, Listing $listing)
     {
         $request->validate(['amount' => 'required|numeric']);
@@ -30,14 +32,13 @@ class TransactionController extends Controller
             $auction = $auction->lockForUpdate()->find($auction->id);
 
             if ($request->amount <= $auction->current_bid) {
+                // Keep ValidationException here as it maps to specific input fields perfectly
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     'amount' => 'Bid must be higher than ' . number_format($auction->current_bid, 2)
                 ]);
             }
 
             // Create the Bid Record
-            // Note: This usually goes into a 'bids' table, not the 'transactions' table yet.
-            // The 'transaction' happens only when the auction is WON and paid for.
             $listing->bids()->create([
                 'user_id' => Auth::id(),
                 'amount' => $request->amount
@@ -53,7 +54,7 @@ class TransactionController extends Controller
 
                  Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
                     'type' => 'bid',
-                    'key' => 'updates.new_bid_placed', // "A new bid of :amount has been placed."
+                    'key' => 'updates.new_bid_placed',
                     'params' => ['amount' => number_format($request->amount, 2) . "€"],
                     'subject_key' => 'updates.new_bid_subject',
                     'url' => route('listings.show', $listing)
@@ -78,7 +79,8 @@ class TransactionController extends Controller
 
             // 2. Check Stock
             if ($item->quantity < $quantity) {
-                return back()->withErrors(['quantity' => 'Not enough stock available']);
+                // Switched to checkError for a standardized toast notification
+                return $this->checkError('Not enough stock available');
             }
 
             $totalAmount = $item->price * $quantity;
@@ -86,17 +88,12 @@ class TransactionController extends Controller
             $transaction = Transaction::create([
                 'uuid'         => Str::uuid(),
                 'user_id'      => Auth::id(),
-
-                // Polymorphic Link (The Magic)
                 'payable_type' => get_class($item),
                 'payable_id'   => $item->id,
-
                 'type'         => 'purchase',
                 'amount'       => $totalAmount,
                 'quantity'     => $quantity,
-                'status'       => 'completed', // In real apps, this is 'pending' until Stripe calls back
-
-                // Snapshot! If price changes later, this keeps the record accurate
+                'status'       => 'completed',
                 'metadata'     => [
                     'snapshot_price' => $item->price,
                     'product_name'   => $listing->title,
@@ -114,15 +111,27 @@ class TransactionController extends Controller
 
                  Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
                     'type' => 'buy',
-                    'key' => 'updates.item_purchased', // "An item has been purchased! Remaining stock: :stock."
+                    'key' => 'updates.item_purchased',
                     'params' => ['stock' => ($item->quantity - $quantity)],
                     'subject_key' => 'updates.item_purchased_subject',
                     'url' => route('listings.show', $listing)
                 ], $locale));
             }
 
+            // NOTE: We cannot use $this->checkSuccess() here because it does not support
+            // passing parameters to the route (we need the UUID for the receipt).
+            // We manually construct the "notification" format to match the Trait's output.
             return redirect()->route('transactions.receipt', $transaction->uuid)
-                ->with('success', 'Item purchased!');
+                ->with('notification', [
+                    'type' => 'success',
+                    'title' => __('messages.titles.success'),
+                    'message' => 'Item purchased!',
+                    'options' => [
+                        'timeout' => 5000,
+                        'closeOnClick' => true,
+                        'icon' => true,
+                    ]
+                ]);
         });
     }
 
@@ -163,14 +172,15 @@ class TransactionController extends Controller
 
                  Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
                     'type' => 'donation',
-                    'key' => 'updates.new_donation_received', // "A new donation of :amount has been made!"
+                    'key' => 'updates.new_donation_received',
                     'params' => ['amount' => number_format($request->amount, 2) . "€"],
                     'subject_key' => 'updates.new_donation_subject',
                     'url' => route('listings.show', $listing)
                 ], $locale));
             }
 
-            return back()->with('success', 'Thank you for your donation!');
+            // Refactored to use checkSuccess
+            return $this->checkSuccess($donation, 'donated');
         });
     }
 
@@ -194,7 +204,8 @@ class TransactionController extends Controller
 
             // 2. Check if enough shares exist
             if ($investment->shares_offered < $sharesToBuy) {
-                return back()->withErrors(['shares' => 'Only ' . $investment->shares_offered . ' shares remaining.']);
+                // Refactored to use checkError
+                return $this->checkError('Only ' . $investment->shares_offered . ' shares remaining.');
             }
 
             $totalCost = $investment->share_price * $sharesToBuy;
@@ -216,7 +227,6 @@ class TransactionController extends Controller
             ]);
 
             // 4. Update Investment Metrics
-            // We reduce the shares available, and increase amount raised
             $investment->decrement('shares_offered', $sharesToBuy);
             $investment->increment('amount_raised', $totalCost);
             $investment->increment('investors_count');
@@ -228,18 +238,17 @@ class TransactionController extends Controller
 
                  Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
                     'type' => 'investment',
-                    'key' => 'updates.new_investment_made', // "New Investment! :shares shares purchased."
+                    'key' => 'updates.new_investment_made',
                     'params' => ['shares' => $sharesToBuy],
                     'subject_key' => 'updates.new_investment_subject',
                     'url' => route('listings.show', $listing)
                 ], $locale));
             }
 
-            return redirect()->route('transactions.portfolio')
-                ->with('success', 'Investment successful!');
+            // Refactored to use checkSuccess with a redirect route
+            return $this->checkSuccess($investment, 'invested', 'transactions.portfolio');
         });
     }
-
 
     public function index(Request $request)
     {
@@ -249,7 +258,7 @@ class TransactionController extends Controller
         ]);
 
         $transactions = \App\Models\Transaction::where('user_id', Auth::id())
-            ->with(['payable.listing']) // Eager load the listing via the polymorphic relation
+            ->with(['payable.listing'])
             ->when($filters['type'] ?? null, function ($q, $type) {
                 $q->where('type', $type);
             })
@@ -264,5 +273,40 @@ class TransactionController extends Controller
             'transactions' => $transactions,
             'filters' => $filters,
         ]);
+    }
+
+    public function receipt(Transaction $transaction)
+    {
+        \Illuminate\Support\Facades\Log::info('Receipt download requested', ['uuid' => $transaction->uuid, 'user_id' => \Illuminate\Support\Facades\Auth::id()]);
+
+        if ($transaction->user_id !== \Illuminate\Support\Facades\Auth::id()) {
+            \Illuminate\Support\Facades\Log::warning('Unauthorized receipt access attempt', ['uuid' => $transaction->uuid, 'request_user' => \Illuminate\Support\Facades\Auth::id(), 'owner_user' => $transaction->user_id]);
+            abort(403);
+        }
+
+        if ($transaction->status !== 'completed') {
+            \Illuminate\Support\Facades\Log::warning('Receipt requested for non-completed transaction', ['uuid' => $transaction->uuid, 'status' => $transaction->status]);
+            return $this->checkError('Receipt is only available for completed transactions.');
+        }
+
+        try {
+            $transaction->load(['payable.listing', 'user']);
+            \Illuminate\Support\Facades\Log::info('Transaction loaded for receipt', ['uuid' => $transaction->uuid]);
+
+            $pdf = Pdf::loadView('pdf.receipt', [
+                'transaction' => $transaction,
+            ]);
+
+            \Illuminate\Support\Facades\Log::info('PDF view loaded', ['uuid' => $transaction->uuid]);
+
+            return $pdf->download("receipt-{$transaction->uuid}.pdf");
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('PDF generation failed', [
+                'uuid' => $transaction->uuid,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
     }
 }

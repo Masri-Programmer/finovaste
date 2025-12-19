@@ -41,5 +41,6 @@ return [
 
     'actions' => [
         'view' => 'Ansehen',
+        'download' => 'Herunterladen',
     ],
 ];

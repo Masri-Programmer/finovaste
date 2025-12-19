@@ -28,6 +28,7 @@ Route::get('/imprint', [HomeController::class, 'termsOfService'])->name('imprint
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transaction:uuid}/receipt', [TransactionController::class, 'receipt'])->name('transactions.receipt');
 });
 
 require __DIR__ . '/listings.php';

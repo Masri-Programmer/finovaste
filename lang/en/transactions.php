@@ -41,5 +41,6 @@ return [
 
     'actions' => [
         'view' => 'View',
+        'download' => 'Download',
     ],
 ];

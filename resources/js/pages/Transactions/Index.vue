@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { formatCurrency } from '@/composables/useCurrency';
 import { show } from '@/routes/listings';
-import { index } from '@/routes/transactions';
+import { index, receipt } from '@/routes/transactions';
 import { Link, router } from '@inertiajs/vue3';
 import { format } from 'date-fns';
 import { debounce } from 'lodash';
@@ -170,9 +170,15 @@ const getStatusVariant = (status: string) => {
                                     class="block max-w-[200px] truncate"
                                 >
                                     {{
-                                        transaction.payable.listing.title[
-                                            $page.props.locale
-                                        ]
+                                        typeof transaction.payable.listing
+                                            .title === 'object'
+                                            ? transaction.payable.listing.title[
+                                                  $page.props.locale
+                                              ] ||
+                                              transaction.payable.listing.title[
+                                                  'en'
+                                              ]
+                                            : transaction.payable.listing.title
                                     }}
                                 </span>
                                 <span
@@ -214,6 +220,22 @@ const getStatusVariant = (status: string) => {
                                         $t('transactions.actions.view')
                                     }}</Button>
                                 </Link>
+                                <a
+                                    v-if="transaction.status === 'completed'"
+                                    :href="receipt.url(transaction.uuid)"
+                                    :download="`receipt-${transaction.uuid}.pdf`"
+                                    target="_blank"
+                                >
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        class="ml-2"
+                                    >
+                                        {{
+                                            $t('transactions.actions.download')
+                                        }}
+                                    </Button>
+                                </a>
                             </TableCell>
                         </TableRow>
                         <TableRow v-if="transactions.data.length === 0">
