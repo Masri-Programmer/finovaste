@@ -15,7 +15,7 @@ defineProps({
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="space-y-2">
             <Label for="investment_goal">
-                {{ $t('createListing.fields.investment_goal') }}
+                {{ $t('createListing.fields.investment_goal.label') }}
             </Label>
             <Input
                 id="investment_goal"
@@ -23,11 +23,7 @@ defineProps({
                 type="number"
                 step="0.01"
                 min="0"
-                :placeholder="
-                    $t('createListing.placeholders.investment_goal', {
-                        amount: '50000',
-                    })
-                "
+                :placeholder="$t('createListing.placeholders.investment_goal')"
             />
             <p v-if="form.errors.investment_goal" class="text-sm text-red-600">
                 {{ form.errors.investment_goal }}
@@ -36,7 +32,7 @@ defineProps({
 
         <div class="space-y-2">
             <Label for="minimum_investment">
-                {{ $t('createListing.fields.minimum_investment') }}
+                {{ $t('createListing.fields.minimum_investment.label') }}
             </Label>
             <Input
                 id="minimum_investment"
@@ -45,9 +41,7 @@ defineProps({
                 step="0.01"
                 min="0"
                 :placeholder="
-                    $t('createListing.placeholders.minimum_investment', {
-                        amount: '500',
-                    })
+                    $t('createListing.placeholders.minimum_investment')
                 "
             />
             <p
@@ -60,7 +54,7 @@ defineProps({
 
         <div class="space-y-2">
             <Label for="shares_offered">
-                {{ $t('createListing.fields.shares_offered') }}
+                {{ $t('createListing.fields.shares_offered.label') }}
             </Label>
             <Input
                 id="shares_offered"
@@ -68,11 +62,7 @@ defineProps({
                 type="number"
                 min="1"
                 step="1"
-                :placeholder="
-                    $t('createListing.placeholders.shares_offered', {
-                        amount: '1000',
-                    })
-                "
+                :placeholder="$t('createListing.placeholders.shares_offered')"
             />
             <p v-if="form.errors.shares_offered" class="text-sm text-red-600">
                 {{ form.errors.shares_offered }}
@@ -81,7 +71,7 @@ defineProps({
 
         <div class="space-y-2">
             <Label for="share_price">
-                {{ $t('createListing.fields.share_price') }}
+                {{ $t('createListing.fields.share_price.label') }}
             </Label>
             <Input
                 id="share_price"
@@ -89,11 +79,7 @@ defineProps({
                 type="number"
                 step="0.01"
                 min="0"
-                :placeholder="
-                    $t('createListing.placeholders.share_price', {
-                        amount: '50',
-                    })
-                "
+                :placeholder="$t('createListing.placeholders.share_price')"
             />
             <p v-if="form.errors.share_price" class="text-sm text-red-600">
                 {{ form.errors.share_price }}

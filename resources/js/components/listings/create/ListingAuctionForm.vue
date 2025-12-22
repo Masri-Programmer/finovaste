@@ -68,7 +68,7 @@ const formattedEndsAt = computed(() => {
         </div>
         <div class="space-y-2">
             <Label for="purchase_price">
-                {{ $t('createListing.fields.purchase_price.label') }}
+                {{ $t('createListing.fields.buy_it_now_price.label') }}
             </Label>
             <Input
                 id="purchase_price"
@@ -76,7 +76,7 @@ const formattedEndsAt = computed(() => {
                 type="number"
                 step="0.01"
                 :placeholder="
-                    $t('createListing.fields.purchase_price.placeholder')
+                    $t('createListing.fields.buy_it_now_price.placeholder')
                 "
             />
         </div>

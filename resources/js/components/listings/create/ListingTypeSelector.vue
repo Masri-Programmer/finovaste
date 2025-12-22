@@ -37,10 +37,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="purchase" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.purchase.title') }}
+                    {{ $t('createListing.types.private.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.purchase.description') }}
+                    {{ $t('createListing.types.private.description') }}
                 </span>
             </Label>
             <Label
@@ -48,10 +48,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="auction" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.auction.title') }}
+                    {{ $t('createListing.types.charity_auction.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.auction.description') }}
+                    {{ $t('createListing.types.charity_auction.description') }}
                 </span>
             </Label>
             <Label
@@ -59,10 +59,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="donation" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.donation.title') }}
+                    {{ $t('createListing.types.charity.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.donation.description') }}
+                    {{ $t('createListing.types.charity.description') }}
                 </span>
             </Label>
 
@@ -71,10 +71,10 @@ const listingType = computed({
             >
                 <RadioGroupItem value="investment" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.investment.title') }}
+                    {{ $t('createListing.types.creative.title') }}
                 </span>
                 <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.investment.description') }}
+                    {{ $t('createListing.types.creative.description') }}
                 </span>
             </Label>
         </RadioGroup>

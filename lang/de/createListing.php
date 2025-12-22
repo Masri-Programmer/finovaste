@@ -1,38 +1,116 @@
 <?php
 
 return [
+    'title' => 'Neues Inserat erstellen',
+    'description' => 'Wählen Sie eine Kategorie und füllen Sie die Details aus, um Ihre Kampagne zu starten.',
+
     'buttons' => [
-        'submit' => 'Inserat erstellen',
+        'submit' => 'Kampagne anlegen',
         'submitting' => 'Wird erstellt...',
+        'preview' => 'Vorschau ansehen',
+        'save_draft' => 'Als Entwurf speichern',
     ],
-    'description' => 'Wählen Sie einen Inseratstyp und füllen Sie die Details aus, um Ihr Angebot zu veröffentlichen.',
+
+    'types' => [
+        'private' => [
+            'title' => 'Private Anlässe',
+            'description' => 'Unterstützen Sie Geburtstage oder besondere Ereignisse im Kreis von Familie und Freunden – ganz einfach durch private Schenkungen.',
+        ],
+        'creative' => [
+            'title' => 'Gründer:innen & Kreative',
+            'description' => 'Verwirklichen Sie Ihre kreativen Ideen: Präsentieren Sie Ihr Projekt unserer Community und sammeln Sie die Unterstützung, die Sie für die Umsetzung benötigen.',
+        ],
+        'charity' => [
+            'title' => 'Spendenaktionen',
+            'description' => 'Für ehrenamtliches Engagement: Stellen Sie lokale Initiativen oder internationale Hilfsprojekte vor und erhalten Sie gezielte Unterstützung.',
+        ],
+        'charity_auction' => [
+            'title' => 'Wohltätige Aktionen',
+            'description' => 'Bieten Sie Produkte zur Auktion oder zum Direktkauf an und unterstützen Sie mit den Erlösen einen guten Zweck.',
+        ],
+    ],
+
+    'sections' => [
+        'core' => 'Basisdaten',
+        'type' => 'Kategorie wählen',
+        'details' => 'Details zur Kampagne',
+        'media' => 'Medien (Bilder, Dokumente, Videos)',
+        'design' => 'Gestaltung & Vorschau',
+        'settings' => 'Einstellungen & Privatsphäre',
+        'verification' => 'Verifizierung & Rechtliches',
+    ],
+
     'fields' => [
-        'buy_it_now_price' => [
-            'label' => 'Sofort-Kauf-Preis (€) (optional)',
-            'placeholder' => 'Ermöglicht sofortigen Kauf',
+        'title' => [
+            'label' => 'Titel der Kampagne',
+            'placeholder' => 'z.B. "Hilfe für das Tierheim" oder "Mein 30. Geburtstag"',
+        ],
+        'description' => [
+            'label' => 'Beschreibung & Gestaltung',
+            'placeholder' => 'Beschreiben Sie Ihr Vorhaben. Nutzen Sie Fettgedrucktes und verschiedene Schriftarten zur Gestaltung...',
+            'hint' => 'Sie können hier Text formatieren.',
         ],
         'category' => [
             'label' => 'Kategorie',
             'placeholder' => 'Kategorie auswählen',
         ],
-        'condition' => [
-            'label' => 'Zustand',
-            'options' => [
-                'new' => 'Neu',
-                'refurbished' => 'Überholt',
-                'used' => 'Gebraucht',
-            ],
+        
+        'is_private' => [
+            'label' => 'Privat (Nur mit Einladungslink)',
+            'help' => 'Wenn aktiviert, wird die Seite nicht öffentlich gelistet. Sie ist nur für Personen sichtbar, die den Einladungslink (WhatsApp, SMS, E-Mail) erhalten. Keine Registrierung für Spender notwendig.',
         ],
-        'description' => [
-            'label' => 'Beschreibung',
-            'placeholder' => 'Beschreiben Sie Ihr Inserat im Detail ...',
+
+        'media' => [
+            'label' => 'Dateien & Medien',
+            'images' => 'Bilder hochladen',
+            'videos' => 'Videos',
+            'video_embed' => 'Video einbetten (YouTube/Vimeo Link)',
+            'documents' => 'Dokumente',
+            'dropzone' => 'Dateien hier ablegen oder klicken',
         ],
+
+        'association_check' => [
+            'label' => 'Ich handele im Namen eines eingetragenen Vereins (e.V.)',
+            'help' => 'Spendenaktionen dürfen nur von in Deutschland registrierten Vereinen erstellt werden.',
+        ],
+        'association_proof' => [
+            'label' => 'Nachweis Gemeinnützigkeit / Vereinsregisterauszug',
+            'placeholder' => 'Dokument hochladen',
+        ],
+        'tax_receipt_info' => [
+            'label' => 'Hinweis zu Spendenquittungen',
+            'text' => 'Wir sind verpflichtet, für jede Spende über 300 Euro eine Spendenquittung oder Rechnung auszustellen. Bitte bestätigen Sie, dass Sie dies gewährleisten können.',
+        ],
+
         'donation_goal' => [
             'label' => 'Spendenziel (€)',
             'placeholder' => 'z.B. 5000',
         ],
+        'price' => [
+            'label' => 'Festpreis (€)',
+            'placeholder' => 'z.B. 49.99',
+        ],
+        'start_price' => [
+            'label' => 'Startgebot (€)',
+            'placeholder' => 'z.B. 1.00',
+        ],
+        'reserve_price' => [
+            'label' => 'Mindestpreis (€)',
+            'placeholder' => 'Nicht öffentlich sichtbar',
+        ],
+        'buy_it_now_price' => [
+            'label' => 'Sofort-Kaufen Preis (€)',
+            'placeholder' => 'Ermöglicht sofortigen Kauf',
+        ],
+        'quantity' => [
+            'label' => 'Verfügbare Menge',
+        ],
+        'starts_at' => [
+            'label' => 'Startdatum',
+            'placeholder' => 'Startdatum wählen',
+        ],
         'ends_at' => [
-            'label' => 'Auktionsende',
+            'label' => 'Laufzeit Ende',
             'placeholder' => 'Enddatum wählen',
         ],
         'expires_at' => [
@@ -42,126 +120,53 @@ return [
         'is_goal_flexible' => [
             'label' => 'Flexibles Ziel (Gelder auch bei Nichterreichen behalten)',
         ],
+        'investment_goal' => [
+            'label' => 'Investitionsziel',
+        ],
+        'minimum_investment' => [
+            'label' => 'Mindestinvestition',
+        ],
+        'shares_offered' => [
+            'label' => 'Angebotene Anteile',
+        ],
+        'share_price' => [
+            'label' => 'Preis pro Anteil',
+        ],
         'location' => [
-            'label' => 'Standort',
-            'placeholder' => 'z.B. „Berlin, Deutschland“',
-        ],
-        'investment_goal' => 'Investitionsziel',
-        'minimum_investment' => 'Mindestinvestition',
-        'shares_offered' => 'Angebotene Anteile',
-        'share_price' => 'Preis pro Anteil',
-        'images' => 'Bilder',
-        'documents' => 'Dokumente',
-        'videos' => 'Videos',
-        'media' => [
-            'description' => 'Laden Sie ...',
-            'documents' => 'Dokumente',
-            'dropzone' => 'Dateien hier ablegen oder durchsuchen',
-            'images' => 'Fotos',
-            'label' => 'Datei (Fotos, Dokumente...)',
-            'videos' => 'Videos',
-        ],
-        'price' => [
-            'label' => 'Preis (€)',
-            'placeholder' => 'z.B. 499.99',
-        ],
-        'quantity' => [
-            'label' => 'Verfügbare Menge',
-        ],
-        'reserve_price' => [
-            'label' => 'Mindestpreis (€) (optional)',
-            'placeholder' => 'Wird nicht öffentlich angezeigt',
-        ],
-        'start_price' => [
-            'label' => 'Startgebot (€)',
-            'placeholder' => 'z.B. 1.00',
-        ],
-        'starts_at' => [
-            'label' => 'Auktionsstart (optional)',
-            'placeholder' => 'Startdatum wählen',
-        ],
-        'title' => [
-            'label' => 'Titel',
-            'placeholder' => 'z.B. „Moderne Stadtwohnung“',
+            'label' => 'Ort / Standort',
+            'placeholder' => 'z.B. Berlin, Deutschland',
         ],
     ],
+
     'notifications' => [
-        'error' => 'Fehler beim Erstellen des Inserats. Bitte überprüfen Sie Ihre Eingaben.',
-        'success' => 'Inserat erfolgreich erstellt! Es wird nun überprüft.',
+        'error' => 'Fehler beim Erstellen. Bitte überprüfen Sie die Eingaben (z.B. Vereinsnachweis).',
+        'success' => 'Kampagne erfolgreich angelegt! Sie wird nun überprüft.',
+        'preview_mode' => 'Sie befinden sich im Vorschau-Modus. Klicken Sie auf "Kampagne anlegen", um zu veröffentlichen.',
     ],
-    'title' => 'Neues Inserat erstellen',
-    'types' => [
-        'auction' => [
-            'description' => 'Artikel an den Höchstbietenden verkaufen.',
-            'title' => 'Auktion',
-        ],
-        'purchase' => [
-            'description' => 'Fester Preis für Artikel oder Dienstleistungen.',
-            'title' => 'Sofort-Kauf',
-        ],
-        'donation' => [
-            'description' => 'Gelder für einen bestimmten Zweck sammeln.',
-            'title' => 'Spendenaktion',
-        ],
-        'investment' => [
-            'title' => 'Investition',
-            'description' => 'Investieren Sie in Startups, Immobilien oder andere Projekte.',
-        ],
+
+    'tooltips' => [
+        'preview' => 'Sehen Sie hier, wie die Seite für Besucher aussehen wird.',
+        'invitation_link' => 'Diesen Link können Sie nach Erstellung kopieren und per WhatsApp/SMS versenden.',
     ],
-    'sections' => [
-        'common' => 'Allgemeine Details',
-        'media' => 'Medien (Bilder, Dokumente, Videos)',
-        'core' => 'Kerndetails',
-        'details' => 'Spezifische Details',
-        'type' => 'Inseratstyp auswählen',
-    ],
+    
     'placeholders' => [
-        'title' => 'z.B. "Vintage Lederjacke"',
-        'description' => 'Beschreiben Sie Ihren Artikel, Ihr Projekt oder Ihr Ziel im Detail...',
-        'category' => 'Wählen Sie eine Kategorie',
-        'location' => 'z.B. "Berlin, Deutschland"',
-        'price' => 'z.B. 99,50',
-        'start_price' => 'z.B. 10,00',
-        'reserve_price' => 'z.B. 50,00',
-        'buy_it_now_price' => 'z.B. 150,00',
-        'donation_goal' => 'z.B. 5000',
+        'video_embed' => 'https://www.youtube.com/watch?v=...',
         'investment_goal' => 'z.B. 50000',
         'minimum_investment' => 'z.B. 500',
         'shares_offered' => 'z.B. 1000',
         'share_price' => 'z.B. 50',
     ],
-    'conditions' => [
-        'new' => 'Neu',
-        'used' => 'Gebraucht',
-        'refurbished' => 'Überholt',
+    
+    'validation' => [
+        'association_required' => 'Für Spendenaktionen ist ein Nachweis als eingetragener Verein erforderlich.',
+        'receipt_agreement' => 'Sie müssen der Ausstellung von Spendenquittungen ab 300€ zustimmen.',
     ],
-    'tooltips' => [
-        'is_goal_flexible' => 'Wenn aktiviert, können Spenden auch nach Erreichen des Ziels fortgesetzt werden.',
-    ],
-    'media' => [
-        'dropzone' => 'Dateien hier ablegen oder zum Durchsuchen klicken',
-        'remove' => 'Entfernen',
-        'existing' => 'Vorhandene Medien',
-    ],
-    'listings' => [
-        'edit' => [
-            'title' => '"{title}" bearbeiten',
-            'description' => 'Aktualisieren Sie unten Ihre Inseratsdetails, Medien und spezifischen Einstellungen.',
-            'actions' => [
-                'save' => 'Änderungen speichern',
-                'saving' => 'Speichert...',
-            ],
-        ],
-    ],
-    'edit' => [
-        'notifications' => [
-            'success' => 'Inserat erfolgreich aktualisiert.',
-        ],
-    ],
+
     'terms' => [
         'title' => 'Allgemeine Geschäftsbedingungen',
-        'description' => 'Mit der Erstellung eines Inserats stimmen Sie unseren Allgemeinen Geschäftsbedingungen zu.',
+        'description' => 'Mit der Erstellung eines Inserats stimmen Sie unseren AGBs zu.',
         'agree' => 'Ich stimme den',
         'link' => 'Allgemeine Geschäftsbedingungen',
     ],
 ];
+
