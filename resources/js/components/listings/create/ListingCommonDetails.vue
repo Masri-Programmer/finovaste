@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TiptapEditor from '@/components/tiptap/TiptapEditor.vue';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
@@ -15,7 +16,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -75,6 +75,7 @@ const emit = defineEmits([
 ]);
 
 const locale = ref(getActiveLanguage());
+
 // --- COMPUTED PROPS ---
 const formattedExpiresAt = computed(() => {
     return props.expires_at
@@ -87,6 +88,7 @@ const updateTitle = (newTitle: string) => {
     emit('update:title', { ...props.title, [locale.value]: newTitle });
 };
 
+// --- NOTE: Tiptap emits the raw HTML string directly, matching this signature ---
 const updateDescription = (newDescription: string) => {
     emit('update:description', {
         ...props.description,
@@ -127,19 +129,17 @@ const updateDescription = (newDescription: string) => {
                 <Label for="description">
                     {{ $t('createListing.fields.description.label') }}
                 </Label>
-                <Textarea
-                    id="description"
-                    :model-value="props.description[locale]"
-                    @input="
-                        updateDescription(
-                            ($event.target as HTMLTextAreaElement).value,
-                        )
-                    "
-                    :placeholder="
-                        $t('createListing.fields.description.placeholder')
-                    "
-                    class="min-h-[120px]"
-                />
+
+                <div class="min-h-[250px]">
+                    <TiptapEditor
+                        :content="props.description[locale] || ''"
+                        @update:content="updateDescription"
+                        :placeholder="
+                            $t('createListing.fields.description.placeholder')
+                        "
+                    />
+                </div>
+
                 <span
                     v-if="props.errors[`description.${locale}`]"
                     class="text-sm text-destructive"
@@ -148,6 +148,7 @@ const updateDescription = (newDescription: string) => {
                 </span>
             </div>
         </div>
+
         <span v-if="props.errors.title" class="text-sm text-destructive">
             {{ props.errors.title }}
         </span>
@@ -162,8 +163,10 @@ const updateDescription = (newDescription: string) => {
                 </Label>
                 <Select
                     id="category_id"
-                    :model-value="props.category_id"
-                    @update:model-value="emit('update:category_id', $event)"
+                    :model-value="props.category_id?.toString()"
+                    @update:model-value="
+                        (val) => emit('update:category_id', Number(val))
+                    "
                     required
                 >
                     <SelectTrigger>
@@ -177,7 +180,7 @@ const updateDescription = (newDescription: string) => {
                         <SelectItem
                             v-for="category in props.categories"
                             :key="category.id"
-                            :value="category.id"
+                            :value="category.id.toString()"
                         >
                             {{
                                 (category.name && category.name[locale]) ||
@@ -203,7 +206,9 @@ const updateDescription = (newDescription: string) => {
                 <Input
                     id="location_text"
                     :model-value="props.location_text"
-                    @update:model-value="emit('update:location_text', $event)"
+                    @update:model-value="
+                        emit('update:location_text', $event as string)
+                    "
                     :placeholder="
                         $t('createListing.fields.location.placeholder')
                     "
@@ -232,7 +237,7 @@ const updateDescription = (newDescription: string) => {
                     </PopoverTrigger>
                     <PopoverContent class="w-auto p-0">
                         <Calendar
-                            :model-value="props.expires_at"
+                            :model-value="props.expires_at || undefined"
                             @update:model-value="
                                 emit('update:expires_at', $event)
                             "

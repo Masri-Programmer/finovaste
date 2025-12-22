@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Listings;
 
-use Carbon\Carbon;
-use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;use App\Http\Requests\BaseFormRequest;
 
-class StoreListingRequest extends FormRequest
+class StoreListingRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -55,13 +54,14 @@ class StoreListingRequest extends FormRequest
     public function rules(): array
     {
         $fallbackLocale = config('app.fallback_locale');
+        $userLocale = app()->getLocale();
         $rules = [
             // Common Data
             'title' => 'required|array',
-            'title.' . $fallbackLocale => 'required|string|max:255',
+            'title.' . $userLocale => 'required|string|max:255',
             'title.*' => 'nullable|string|max:255',
             'description' => 'required|array',
-            'description.' . $fallbackLocale => 'required|string',
+            'description.' . $userLocale => 'required|string',
             'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'listing_type' => 'required|string|in:auction,donation,purchase,investment',

@@ -54,11 +54,10 @@
                     <span>{{ localizedCategoryName }}</span>
                 </div>
 
-                <p
-                    class="mt-4 text-base whitespace-pre-line text-foreground/80"
-                >
-                    {{ localizedDescription }}
-                </p>
+                <div
+                    class="prose prose-slate dark:prose-invert mt-4 max-w-none text-base text-foreground/80"
+                    v-html="localizedDescription"
+                ></div>
             </div>
         </section>
     </div>

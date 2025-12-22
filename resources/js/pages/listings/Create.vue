@@ -102,22 +102,22 @@ const submit = () => {
         form.setError('terms', trans('createListing.terms.description'));
         return;
     }
+
     form.post(store.url(), {
-        onBefore: () => {
-            form.processing = true;
-        },
         onSuccess: () => {
             form.reset();
             mediaUploadRef.value?.reset();
         },
-        onFinish: () => {
-            form.processing = false;
-        },
         onError: (errors) => {
-            const errorMessages = Object.values(errors);
-            console.log(errors);
+            console.error(errors);
         },
     });
+};
+
+const updateTerms = (value: boolean) => {
+    console.log('Checkbox updated to:', value);
+    form.terms = value;
+    if (value) form.clearErrors('terms');
 };
 </script>
 
@@ -184,9 +184,10 @@ const submit = () => {
                         <div class="flex items-center space-x-2">
                             <Checkbox
                                 id="terms"
-                                :checked="form.terms"
-                                @update:checked="form.terms = $event"
-                                required
+                                v-model="form.terms"
+                                @update:model-value="
+                                    (val) => console.log('Model Value:', val)
+                                "
                             />
                             <Label
                                 for="terms"
@@ -203,8 +204,11 @@ const submit = () => {
                             </Label>
                         </div>
 
-                        <Button type="submit">
-                            <span v-if="form.processing">
+                        <Button type="submit" :disabled="form.processing">
+                            <span
+                                v-if="form.processing"
+                                class="flex items-center gap-2"
+                            >
                                 {{ $t('createListing.buttons.submitting') }}
                             </span>
                             <span v-else>
