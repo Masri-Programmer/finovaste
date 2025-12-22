@@ -25,8 +25,11 @@ import {
 import { computed } from 'vue';
 
 // Route Imports
-import { home, login, logout, register } from '@/routes';
+// Updated: Added about, faq
+import { login, logout, register } from '@/routes';
+// Updated: Added index
 import { create, liked } from '@/routes/listings';
+
 // Specific User Menu Routes
 import { dashboard } from '@/routes/admin';
 import { index as userListingsIndex } from '@/routes/listings/users';
@@ -41,6 +44,8 @@ interface MenuItem {
 interface MenuSection {
     title?: string;
     items: MenuItem[];
+    href: string;
+    label: string;
 }
 
 defineProps<{
@@ -140,10 +145,6 @@ const handleLogout = () => {
                                 class="flex w-full flex-col items-center justify-center gap-1.5 rounded-lg border border-transparent bg-secondary/50 p-2.5 transition-all hover:border-border hover:bg-secondary"
                             >
                                 <Bell class="h-5 w-5 text-foreground" />
-                                <!-- <span
-                                    class="text-[10px] font-bold tracking-wider uppercase opacity-70"
-                                    >{{ $t('action.notify') }}</span
-                                > -->
                             </button>
                         </div>
 
@@ -203,10 +204,16 @@ const handleLogout = () => {
 
                     <nav class="flex flex-col space-y-1">
                         <Link
-                            :href="home()"
+                            v-for="item in menuSections"
+                            :key="item.href"
+                            :href="item.href"
                             class="flex items-center px-2 py-2 text-sm font-medium transition-colors hover:text-primary"
+                            :class="{
+                                'rounded-md bg-secondary/50 text-primary':
+                                    $page.url === item.href, // Optional: Add active state styling for mobile
+                            }"
                         >
-                            {{ $t('menu.home') }}
+                            {{ $t(item.label) }}
                         </Link>
 
                         <template v-if="menuSections">

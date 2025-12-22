@@ -47,7 +47,7 @@ const form = useForm<ContactForm>({
 
 // Logic
 const copyEmail = async () => {
-    const supportEmail = 'support@ranalp.de';
+    const supportEmail = 'ranalp@ranalp.de';
     await copy(supportEmail);
 
     if (copied.value) {
@@ -100,7 +100,7 @@ const submitContactForm = () => {
                                     {{ $t('support.contact.email_label') }}
                                 </p>
                                 <p class="text-lg font-semibold">
-                                    support@ranalp.de
+                                    ranalp@ranalp.de
                                 </p>
                             </div>
                             <Button

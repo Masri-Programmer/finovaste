@@ -3,6 +3,7 @@ import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toUrl, urlIsActive } from '@/lib/utils';
+import { index as indexAddresses } from '@/routes/addresses';
 import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editLanguages } from '@/routes/languages';
 import { edit as editPassword } from '@/routes/password';
@@ -33,6 +34,10 @@ const sidebarNavItems = computed<NavItem[]>(() => [
     {
         title: trans('layout.languages'),
         href: editLanguages(),
+    },
+    {
+        title: trans('layout.addresses'),
+        href: indexAddresses(),
     },
 ]);
 

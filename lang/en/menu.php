@@ -18,4 +18,5 @@ return [
     'contact' => 'Contact',
     'safety' => 'Safety',
     'community' => 'Community',
+    'favorites' => 'Favorites',
 ];

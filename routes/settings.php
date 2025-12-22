@@ -29,4 +29,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    Route::get('settings/addresses', [\App\Http\Controllers\Settings\AddressController::class, 'index'])->name('addresses.index');
+    Route::post('settings/addresses', [\App\Http\Controllers\Settings\AddressController::class, 'store'])->name('addresses.store');
+    Route::put('settings/addresses/{address}', [\App\Http\Controllers\Settings\AddressController::class, 'update'])->name('addresses.update');
+    Route::patch('settings/addresses/{address}/primary', [\App\Http\Controllers\Settings\AddressController::class, 'setPrimary'])->name('addresses.set-primary');
+    Route::delete('settings/addresses/{address}', [\App\Http\Controllers\Settings\AddressController::class, 'destroy'])->name('addresses.destroy');
 });

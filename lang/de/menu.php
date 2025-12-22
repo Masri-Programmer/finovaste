@@ -16,4 +16,5 @@ return [
     'contact' => 'Kontakt',
     'safety' => 'Sicherheit',
     'community' => 'Gemeinschaft',
+    'favorites' => 'Favoriten',
 ];

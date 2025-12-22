@@ -12,6 +12,7 @@ export interface Address {
     country: string;
     latitude: number | null;
     longitude: number | null;
+    is_primary: boolean;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;

@@ -312,7 +312,6 @@ public function like(Request $request, Listing $listing): RedirectResponse
             $listing->likers()->syncWithoutDetaching(Auth::id());
             $listing->increment('likes_count');
 
-            // Pass 'liked' so the trait looks for messages.success.liked
             return $this->checkSuccess($listing, 'liked');
 
         } catch (\Exception $e) {
@@ -329,7 +328,6 @@ public function like(Request $request, Listing $listing): RedirectResponse
                 $listing->decrement('likes_count');
             }
 
-            // Pass 'unliked' so the trait looks for messages.success.unliked
             return $this->checkSuccess($listing, 'unliked');
 
         } catch (\Exception $e) {

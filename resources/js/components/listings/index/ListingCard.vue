@@ -72,9 +72,8 @@ const listable = computed(() => {
     }
     return null;
 });
-
 const shareUrl = computed(() => {
-    return show.url(props.listing.id);
+    return window.location.origin + show.url(props.listing.id);
 });
 const fallbackImage = 'https://placehold.co/600x400?text=No+Media+Available';
 

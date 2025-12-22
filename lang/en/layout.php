@@ -9,5 +9,6 @@ return [
     'profile' => 'Profile',
     'title' => 'Settings',
     'twoFactor' => 'Two-Factor Authentication',
-    'languages' => 'language'
+    'languages' => 'language',
+    'addresses' => 'Addresses',
 ];

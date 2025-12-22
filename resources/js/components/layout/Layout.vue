@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useGlobalToast } from '@/composables/useGlobalToast';
+import { about, faq, home } from '@/routes';
+import { index, liked } from '@/routes/listings';
 import { Head } from '@inertiajs/vue3';
 import { defineAsyncComponent } from 'vue';
 import Cookies from './Cookies.vue';
@@ -22,7 +24,39 @@ defineProps<{
     };
 }>();
 
-const menuSections = [];
+interface NavItem {
+    label: string;
+    href: string | any;
+    activePath: string;
+}
+
+const mainNavItems: NavItem[] = [
+    {
+        label: 'menu.home',
+        href: home(),
+        activePath: home.url(),
+    },
+    {
+        label: 'menu.marketplace',
+        href: index(),
+        activePath: index.url(),
+    },
+    {
+        label: 'menu.about',
+        href: about(),
+        activePath: about.url(),
+    },
+    {
+        label: 'menu.faq',
+        href: faq(),
+        activePath: faq.url(),
+    },
+    {
+        label: 'menu.favorites',
+        href: liked(),
+        activePath: liked.url(),
+    },
+];
 
 const { enableGlobalHandling } = useGlobalToast();
 enableGlobalHandling();
@@ -59,7 +93,7 @@ enableGlobalHandling();
             {{ jsonLdSchema }}
         </component> -->
     </Head>
-    <Header :menuSections="menuSections" />
+    <Header :menuSections="mainNavItems" />
     <main
         class="container-custom mt-30 grid min-h-screen items-center gap-4 pt-4 sm:mt-20 sm:gap-6 sm:pt-6 md:mt-22 md:gap-8 md:pt-8 lg:mt-24 lg:gap-10 lg:pt-10 xl:mt-26 xl:gap-12 xl:pt-12"
     >
@@ -69,7 +103,7 @@ enableGlobalHandling();
     <div
         class="mt-4 border-t border-border bg-background pt-4 text-foreground sm:mt-6 md:mt-8 lg:mt-10 xl:mt-12"
     >
-        <Footer :menuSections="menuSections" />
+        <Footer :menuSections="mainNavItems" />
     </div>
     <Cookies />
     <!--

@@ -19,48 +19,17 @@
 
                     <nav class="hidden items-center gap-x-6 lg:flex">
                         <Link
-                            :href="home()"
+                            v-for="item in menuSections"
+                            :key="item.href"
+                            :href="item.href"
                             :class="[
                                 'text-sm font-medium transition-colors hover:text-foreground',
-                                isActive('/')
+                                isActive(item.activePath)
                                     ? 'text-foreground'
                                     : 'text-muted-foreground',
                             ]"
                         >
-                            {{ $t('menu.home') }}
-                        </Link>
-                        <Link
-                            :href="index()"
-                            :class="[
-                                'text-sm font-medium transition-colors hover:text-foreground',
-                                isActive('/')
-                                    ? 'text-foreground'
-                                    : 'text-muted-foreground',
-                            ]"
-                        >
-                            {{ $t('menu.marketplace') }}
-                        </Link>
-                        <Link
-                            :href="about()"
-                            :class="[
-                                'text-sm font-medium transition-colors hover:text-foreground',
-                                isActive('/about')
-                                    ? 'text-foreground'
-                                    : 'text-muted-foreground',
-                            ]"
-                        >
-                            {{ $t('menu.about') }}
-                        </Link>
-                        <Link
-                            :href="faq()"
-                            :class="[
-                                'text-sm font-medium transition-colors hover:text-foreground',
-                                isActive('/faq')
-                                    ? 'text-foreground'
-                                    : 'text-muted-foreground',
-                            ]"
-                        >
-                            {{ $t('menu.faq') }}
+                            {{ $t(item.label) }}
                         </Link>
                     </nav>
                 </div>
@@ -170,8 +139,8 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { about, faq, home, login, register } from '@/routes';
-import { create, index, liked } from '@/routes/listings';
+import { home, login, register } from '@/routes';
+import { create, liked } from '@/routes/listings';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Bell, Heart, Plus } from 'lucide-vue-next';
 import { computed } from 'vue';

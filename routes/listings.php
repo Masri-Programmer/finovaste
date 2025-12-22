@@ -22,12 +22,12 @@ Route::controller(ListingController::class)
         Route::get('/{listing}/reviews', [ReviewController::class, 'index'])
             ->name('reviews.index');
 
-        Route::get('/{listing}', 'show')->name('show');
+
 
         // 🔒 AUTHENTICATED ROUTES
         Route::middleware(['auth', 'verified'])->group(function () {
-
             Route::get('/liked', 'liked')->name('liked');
+
             Route::post('/', 'store')->name('store');
 
             Route::post('/{listing}/bid', [BidController::class, 'store'])->name('bid');
@@ -63,8 +63,10 @@ Route::controller(ListingController::class)
             Route::post('/{listing}/subscribe', [ListingSubscriptionController::class, 'store'])
                 ->name('subscribe');
 
+
             Route::post('/{listing}/checkout', [PaymentController::class, 'checkout'])->name('checkout');
             Route::get('/{listing}/payment/success', [PaymentController::class, 'success'])->name('success');
         });
 
+        Route::get('/{listing}', 'show')->name('show');
     });

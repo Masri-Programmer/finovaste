@@ -10,7 +10,6 @@ import ListingDonationForm from '@/components/listings/create/ListingDonationFor
 import ListingInvestmentForm from '@/components/listings/create/ListingInvestmentForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
 import ListingPurchaseForm from '@/components/listings/create/ListingPurchaseForm.vue';
-import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -233,10 +232,10 @@ const deleteListing = () => {
                 </CardHeader>
 
                 <CardContent class="space-y-8">
-                    <ListingTypeSelector
+                    <!-- <ListingTypeSelector
                         v-model="listingType"
                         :disabled="true"
-                    />
+                    /> -->
 
                     <ListingCommonDetails
                         v-model:title="form.title"

@@ -23,7 +23,7 @@ const filters = ref({
         <section>
             <SearchFilter v-if="!$page.props?.hide_filters" />
             <div
-                class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3"
+                class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3"
             >
                 <ListingCard
                     v-for="listing in $page.props.listings.data"
