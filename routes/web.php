@@ -31,6 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transactions/{transaction:uuid}/receipt', [TransactionController::class, 'receipt'])->name('transactions.receipt');
 });
 
+Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark_all_read');
+Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+// Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
 require __DIR__ . '/listings.php';
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

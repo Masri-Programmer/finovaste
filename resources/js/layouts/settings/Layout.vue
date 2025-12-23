@@ -8,7 +8,6 @@ import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editLanguages } from '@/routes/languages';
 import { edit as editPassword } from '@/routes/password';
 import { edit as editProfile } from '@/routes/profile';
-import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
@@ -23,10 +22,10 @@ const sidebarNavItems = computed<NavItem[]>(() => [
         title: trans('layout.password'),
         href: editPassword(),
     },
-    {
-        title: trans('layout.twoFactor'),
-        href: show(),
-    },
+    // {
+    //     title: trans('layout.twoFactor'),
+    //     href: show(),
+    // },
     {
         title: trans('layout.appearance'),
         href: editAppearance(),
@@ -50,8 +49,10 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
         :description="$t('layout.description')"
     />
 
-    <div class="flex min-h-[100vh] flex-col lg:flex-row lg:space-x-12">
-        <aside class="w-full max-w-xl lg:w-48">
+    <div
+        class="flex min-h-screen flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12"
+    >
+        <aside class="lg:w-1/5">
             <nav class="flex flex-col space-y-1 space-x-0">
                 <Button
                     v-for="item in sidebarNavItems"
@@ -73,8 +74,8 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
 
         <Separator class="my-6 lg:hidden" />
 
-        <div class="flex-1 md:max-w-2xl">
-            <section class="max-w-xl space-y-12">
+        <div class="flex-1">
+            <section class="space-y-12">
                 <slot />
             </section>
         </div>

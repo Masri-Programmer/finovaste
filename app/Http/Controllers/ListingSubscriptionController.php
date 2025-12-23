@@ -17,7 +17,7 @@ public function store(Request $request, Listing $listing)
 
     ListingSubscription::firstOrCreate(
         ['listing_id' => $listing->id, 'email' => $request->email],
-        ['locale' => $locale] // Only sets this on creation
+        ['locale' => $locale] 
     );
 
     return $this->checkSuccess(ListingSubscription::class,);

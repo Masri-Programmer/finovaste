@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AddressAutocomplete from '@/components/AddressAutocomplete.vue';
 import TiptapEditor from '@/components/tiptap/TiptapEditor.vue';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -203,11 +204,13 @@ const updateDescription = (newDescription: string) => {
                 <Label for="location_text">
                     {{ $t('createListing.fields.location.label') }}
                 </Label>
-                <Input
+                <AddressAutocomplete
                     id="location_text"
                     :model-value="props.location_text"
-                    @update:model-value="
-                        emit('update:location_text', $event as string)
+                    @update:model-value="emit('update:location_text', $event)"
+                    @address-selected="
+                        (res) =>
+                            emit('update:location_text', res.formatted_address)
                     "
                     :placeholder="
                         $t('createListing.fields.location.placeholder')

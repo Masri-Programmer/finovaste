@@ -28,4 +28,10 @@ return [
     'priority_helper' => 'Priority Notifications: Get instant notifications for your priority organization.',
 
     'subscribe_button' => 'Subscribe',
+    'toggle' => 'Toggle Notifications',
+    'mark_all_read' => 'Mark all as read',
+    'mark_all_success' => 'All notifications marked as read.',
+    'mark_all_error' => 'Error updating notifications.',
+    'empty' => 'No new notifications.',
+    'view_all' => 'View all notifications',
 ];

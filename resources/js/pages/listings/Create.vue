@@ -113,12 +113,6 @@ const submit = () => {
         },
     });
 };
-
-const updateTerms = (value: boolean) => {
-    console.log('Checkbox updated to:', value);
-    form.terms = value;
-    if (value) form.clearErrors('terms');
-};
 </script>
 
 <template>

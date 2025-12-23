@@ -28,4 +28,10 @@ return [
     'priority_helper' => 'Prioritätsbenachrichtigungen: Erhalten Sie sofortige Benachrichtigungen für Ihre Prioritätsorganisation.',
 
     'subscribe_button' => 'Abonnieren',
+    'toggle' => 'Benachrichtigungen umschalten',
+    'mark_all_read' => 'Alle als gelesen markieren',
+    'mark_all_success' => 'Alle Benachrichtigungen wurden als gelesen markiert.',
+    'mark_all_error' => 'Fehler beim Aktualisieren der Benachrichtigungen.',
+    'empty' => 'Keine neuen Benachrichtigungen.',
+    'view_all' => 'Alle Benachrichtigungen anzeigen',
 ];
