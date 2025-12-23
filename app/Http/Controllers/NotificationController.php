@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    public function markAllRead()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        return back();
+    }
+
     public function updateSettings(Request $request)
     {
         $user = Auth::user();
@@ -25,6 +31,11 @@ class NotificationController extends Controller
     {
         $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->markAsRead();
-        return redirect($notification->data['url']); 
+
+        if (isset($notification->data['url'])) {
+             return redirect($notification->data['url']);
+        }
+        
+        return back(); 
     }
 }

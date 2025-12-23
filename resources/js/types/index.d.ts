@@ -56,6 +56,8 @@ export interface Auth {
     permissions: string[];
     addresses: Address[];
     listings_count: number;
+    notifications: any[];
+    unread_notifications_count: number;
 }
 
 export interface Roles {
@@ -150,6 +152,10 @@ export interface PaginatedResponse<T> {
     prev_page_url: string | null;
     to: number;
     total: number;
+}
+
+declare global {
+    var route: (name: string, params?: any, absolute?: boolean) => string;
 }
 
 export interface Link {

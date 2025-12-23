@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { useTimeAgo } from '@vueuse/core';
 import { trans } from 'laravel-vue-i18n';
 import { AlertCircle, Bell, Check, Clock, Info } from 'lucide-vue-next';
@@ -27,51 +27,26 @@ interface NotificationItem {
     link: string;
 }
 
-const props = defineProps<{
-    notifications?: NotificationItem[];
-    unreadCount?: number;
-}>();
-
+const page = usePage();
 const toast = useToast();
 
-const items = computed<NotificationItem[]>(
-    () =>
-        props.notifications ?? [
-            {
-                id: '1',
-                title: 'Neuer Benutzer registriert',
-                description: 'Max Mustermann hat sich angemeldet.',
-                type: 'info',
-                created_at: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 min ago
-                read_at: null,
-                link: 'users.show',
-            },
-            {
-                id: '2',
-                title: 'Systemwartung',
-                description: 'Geplante Wartung um 22:00 Uhr.',
-                type: 'warning',
-                created_at: new Date(
-                    Date.now() - 1000 * 60 * 60 * 2,
-                ).toISOString(), // 2 hours ago
-                read_at: null,
-                link: 'system.status',
-            },
-            {
-                id: '3',
-                title: 'Rechnung bezahlt',
-                description: 'Rechnung #2024-001 wurde beglichen.',
-                type: 'success',
-                created_at: new Date(
-                    Date.now() - 1000 * 60 * 60 * 24,
-                ).toISOString(), // 1 day ago
-                read_at: '2024-01-01',
-                link: 'invoices.show',
-            },
-        ],
-);
+const items = computed<NotificationItem[]>(() => {
+    const notifications = page.props.auth?.notifications || [];
 
-const unreadCountDisplay = computed(() => props.unreadCount ?? 2);
+    return notifications.map((n: any) => ({
+        id: n.id,
+        title: n.data.title || 'Notification',
+        description: n.data.description || '',
+        type: n.data.type || 'info',
+        created_at: n.created_at,
+        read_at: n.read_at,
+        link: n.data.url || '#',
+    }));
+});
+
+const unreadCountDisplay = computed(
+    () => page.props.auth?.unread_notifications_count || 0,
+);
 
 /**
  * Handle marking a single notification as read and visiting its link.
@@ -79,20 +54,20 @@ const unreadCountDisplay = computed(() => props.unreadCount ?? 2);
 const handleNotificationClick = (notification: NotificationItem) => {
     if (!notification.read_at) {
         router.post(
-            'www.company.com/api/notifications/mark-all-as-read',
+            route('notifications.read', notification.id),
             {},
             {
                 preserveScroll: true,
                 onSuccess: () => {
-                    // Navigate after marking as read
-                    router.visit(
-                        'www.company.com/api/notifications/mark-all-as-read',
-                    );
+                    // Navigate after marking as read if it has a link
+                    if (notification.link && notification.link !== '#') {
+                        window.location.href = notification.link;
+                    }
                 },
             },
         );
-    } else {
-        router.visit('www.company.com/api/notifications/mark-all-as-read');
+    } else if (notification.link && notification.link !== '#') {
+        window.location.href = notification.link;
     }
 };
 
@@ -101,7 +76,7 @@ const handleNotificationClick = (notification: NotificationItem) => {
  */
 const markAllAsRead = () => {
     router.post(
-        'www.company.com/api/notifications/mark-all-as-read',
+        route('notifications.mark_all_read'),
         {},
         {
             preserveScroll: true,
