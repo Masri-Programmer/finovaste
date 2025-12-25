@@ -44,11 +44,12 @@ trait ApiResponse
         // If $model is null or not an object, fallback to "Resource"
         $modelName = is_object($model) ? class_basename($model) : (is_string($model) ? $model : 'Resource');
 
-        // 2. Format the action (e.g., 'created' -> 'Created Successfully')
-        $message = "{$modelName} " . ucfirst($action) . " Successfully";
+        // 2. Format the message using translation patterns (see success.created/updated/deleted in messages.php)
+        $message = __("messages.success.{$action}", ['model' => Str::headline($modelName)]);
 
         // 3. Determine status code (201 for created, 200 for others)
         $code = ($action === 'created') ? 201 : 200;
+
 
         return $this->successResponse($data ?? $model, $message, $code);
     }

@@ -18,6 +18,6 @@ return [
     'primary' => 'Primary',
     'set_primary' => 'Set as Primary',
     'is_primary' => 'Set as primary address',
-    'select_placeholder' => 'Select an address',
+    'select_placeholder' => 'Select an address...',
+    'primary_notice' => 'This will be your default shipping address.',
 ];
-

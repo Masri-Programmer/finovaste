@@ -53,13 +53,13 @@ class ReviewController extends Controller
 
         // Optional: Prevent user from reviewing their own listing
         if ($listing->user_id === Auth::id()) {
-            return $this->checkError('You cannot review your own listing.');
+            return $this->checkError('messages.errors.own_review');
         }
 
         // Optional: Check if user already reviewed this listing
         $existingReview = $listing->reviews()->where('user_id', Auth::id())->first();
         if ($existingReview) {
-            return $this->checkError('You have already reviewed this listing.');
+            return $this->checkError('messages.errors.already_reviewed');
         }
 
         $listing->reviews()->create([
@@ -78,7 +78,7 @@ class ReviewController extends Controller
     {
         // Ensure the authenticated user owns the review
         if ($review->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
+            abort(403, __('messages.errors.unauthorized'));
         }
 
         $validated = $request->validate([
@@ -98,8 +98,9 @@ class ReviewController extends Controller
     {
         // Ensure the authenticated user owns the review or is an admin
         if ($review->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
+            abort(403, __('messages.errors.unauthorized'));
         }
+
 
         $review->delete();
 

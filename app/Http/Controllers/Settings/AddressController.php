@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Traits\HasAppMessages;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,6 +12,8 @@ use Inertia\Response;
 
 class AddressController extends Controller
 {
+    use HasAppMessages;
+
     /**
      * Show the user's addresses.
      */
@@ -18,7 +21,6 @@ class AddressController extends Controller
     {
         return Inertia::render('settings/Addresses', [
             'addresses' => $request->user()->addresses,
-            'status' => $request->session()->get('status'),
         ]);
     }
 
@@ -38,9 +40,9 @@ class AddressController extends Controller
             'is_primary' => ['nullable', 'boolean'],
         ]);
 
-        $request->user()->addresses()->create($validated);
+        $address = $request->user()->addresses()->create($validated);
 
-        return to_route('addresses.index')->with('status', 'address-created');
+        return $this->checkSuccess($address, 'created', 'addresses.index');
     }
 
     /**
@@ -50,7 +52,7 @@ class AddressController extends Controller
     {
         // Ensure the user owns the address
         if ($address->addressable_id !== $request->user()->id || $address->addressable_type !== get_class($request->user())) {
-            abort(403);
+            abort(403, __('messages.errors.unauthorized'));
         }
 
         $validated = $request->validate([
@@ -66,7 +68,7 @@ class AddressController extends Controller
 
         $address->update($validated);
 
-        return to_route('addresses.index')->with('status', 'address-updated');
+        return $this->checkSuccess($address, 'updated', 'addresses.index');
     }
 
     /**
@@ -76,12 +78,12 @@ class AddressController extends Controller
     {
         // Ensure the user owns the address
         if ($address->addressable_id !== $request->user()->id || $address->addressable_type !== get_class($request->user())) {
-            abort(403);
+            abort(403, __('messages.errors.unauthorized'));
         }
 
         $address->update(['is_primary' => true]);
 
-        return to_route('addresses.index')->with('status', 'address-primary-set');
+        return $this->checkSuccess($address, 'updated', 'addresses.index');
     }
 
     /**
@@ -91,11 +93,12 @@ class AddressController extends Controller
     {
         // Ensure the user owns the address
         if ($address->addressable_id !== $request->user()->id || $address->addressable_type !== get_class($request->user())) {
-            abort(403);
+            abort(403, __('messages.errors.unauthorized'));
         }
 
         $address->delete();
 
-        return to_route('addresses.index')->with('status', 'address-deleted');
+        return $this->checkSuccess($address, 'deleted', 'addresses.index');
     }
 }
+

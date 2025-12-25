@@ -1,5 +1,5 @@
 <?php
-// resources/lang/de/messages.php
+
 return [
     'welcome' => 'Welcome to our application',
     'user' => 'User',
@@ -26,11 +26,29 @@ return [
         'generic' => 'Action completed successfully.',
         'liked' => ':model liked successfully.',
         'unliked' => ':model unliked successful.',
+        'bid_placed' => 'Bid placed successfully!',
     ],
 
     'errors' => [
         'generic_user' => 'An error has occurred. Please try again later.',
         'not_found' => 'The requested :model could not be found.',
         'unauthorized' => 'You are not authorized to perform this action.',
-    ],
-];
+        'own_listing' => 'You cannot perform this action on your own listing.',
+        'own_bid' => 'You cannot bid on your own listing.',
+        'own_review' => 'You cannot review your own listing.',
+        'already_reviewed' => 'You have already reviewed this listing.',
+        'listing_expired' => 'This listing has already ended.',
+        'not_an_auction' => 'This listing is not an auction.',
+        'auction_not_started' => 'The auction has not started yet.',
+        'auction_ended' => 'The auction has ended.',
+        'bid_too_low' => 'Your bid must be at least :amount.',
+        'buy_now_not_available' => 'Buy Now not available for this auction.',
+        'invalid_listing_type' => 'Invalid listing type.',
+        'payment_init_failed' => 'Payment initialization failed.',
+        'invalid_session' => 'Invalid Session.',
+        'payment_not_completed' => 'Payment not completed or is processing.',
+        'model_not_found' => 'Model :model not found.',
+        'no_items_selected' => 'No items selected for deletion.',
+        'not_implemented' => ':feature not implemented yet.',
+        'delete_own_account' => 'You cannot delete your own account.',
+        'category_has_children' => 'Can

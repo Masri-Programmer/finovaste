@@ -26,7 +26,6 @@ import { ref } from 'vue';
 
 interface Props {
     addresses: Address[];
-    status?: string;
 }
 
 import AddressAutocomplete, {
@@ -311,7 +310,7 @@ const setPrimary = (address: Address) => {
                                 id="is_primary"
                                 :checked="form.is_primary"
                                 @update:checked="
-                                    (val) => (form.is_primary = val)
+                                    (val: boolean) => (form.is_primary = val)
                                 "
                             />
                             <Label
@@ -321,8 +320,7 @@ const setPrimary = (address: Address) => {
                                 <span>{{ $t('address.is_primary') }}</span>
                                 <span
                                     class="text-xs font-normal text-muted-foreground"
-                                    >This will be your default shipping
-                                    address.</span
+                                    >{{ $t('address.primary_notice') }}</span
                                 >
                             </Label>
                         </div>

@@ -18,5 +18,6 @@ return [
     'primary' => 'Standard',
     'set_primary' => 'Als Standard festlegen',
     'is_primary' => 'Als primäre Adresse festlegen',
-    'select_placeholder' => 'Wähle eine Adresse',
+    'select_placeholder' => 'Wähle eine Adresse...',
+    'primary_notice' => 'Dies wird deine Standard-Versandadresse sein.',
 ];

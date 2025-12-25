@@ -20,16 +20,16 @@ class AuctionController extends Controller
 
         // 1. Validation: Basic Checks
         if (!Auth::check()) {
-            return back()->with('error', 'You must be logged in.');
+            return back()->with('error', __('messages.auth.login_required'));
         }
 
         if ($listing->user_id === Auth::id()) {
-            return back()->with('error', 'You cannot bid on your own listing.');
+            return back()->with('error', __('messages.errors.own_bid'));
         }
 
         // Ensure this listing is actually an auction
-        if ($listing->listable_type !== 'App\Models\AuctionListing') { // Or however you map your morph map
-            return back()->with('error', 'This listing is not an auction.');
+        if ($listing->listable_type !== 'App\\Models\\AuctionListing') { // Or however you map your morph map
+            return back()->with('error', __('messages.errors.not_an_auction'));
         }
 
         // 2. THE TRANSACTION: Critical for Data Integrity
@@ -43,10 +43,10 @@ class AuctionController extends Controller
                 // B. Timing Validation
                 $now = now();
                 if ($now < $auctionData->starts_at) {
-                    throw new \Exception("The auction has not started yet.");
+                    throw new \Exception(__('messages.errors.auction_not_started'));
                 }
                 if ($now > $auctionData->ends_at) {
-                    throw new \Exception("The auction has ended.");
+                    throw new \Exception(__('messages.errors.auction_ended'));
                 }
 
                 // C. Price Logic
@@ -65,7 +65,7 @@ class AuctionController extends Controller
                     : $auctionData->start_price;
 
                 if ($incomingBid < $minRequired) {
-                    throw new \Exception("Your bid must be at least " . number_format($minRequired, 2));
+                    throw new \Exception(__('messages.errors.bid_too_low', ['amount' => number_format($minRequired, 2)]));
                 }
 
                 // D. Create the Bid
@@ -95,11 +95,12 @@ class AuctionController extends Controller
                 ]);
             });
 
-            return back()->with('success', 'Bid placed successfully!');
+            return back()->with('success', __('messages.success.bid_placed'));
 
         } catch (\Exception $e) {
             // If anything in the transaction fails, it rolls back automatically
             return back()->with('error', $e->getMessage());
         }
+
     }
 }

@@ -30,7 +30,7 @@ class ModelController extends Controller
         $this->modelViewName = Str::studly($modelSlug);
 
         if (!class_exists($this->modelClass)) {
-            abort(404, "Model {$modelName} not found");
+            abort(404, __('messages.errors.model_not_found', ['model' => $modelName]));
         }
 
         $this->modelInstance = new $this->modelClass;
@@ -189,7 +189,7 @@ class ModelController extends Controller
             $ids = $request->input('ids', []);
 
             if (empty($ids)) {
-                return redirect()->back()->withErrors(['error' => 'No items selected for deletion']);
+                return redirect()->back()->withErrors(['error' => __('messages.errors.no_items_selected')]);
             }
 
             DB::beginTransaction();
@@ -286,7 +286,7 @@ class ModelController extends Controller
 
         // Implementation for import would go here
         // This would typically use a package like Laravel Excel
-        return redirect()->back()->with('success', 'Data imported successfully');
+        return redirect()->back()->with('success', __('messages.success.generic'));
     }
 
     /**
@@ -436,7 +436,7 @@ class ModelController extends Controller
     {
         // Requires: composer require maatwebsite/excel
         // Implementation would go here
-        return response()->json(['message' => 'Excel export not implemented']);
+        return response()->json(['message' => __('messages.errors.not_implemented', ['feature' => 'Excel export'])]);
     }
 
     /**
@@ -446,6 +446,6 @@ class ModelController extends Controller
     {
         // Requires: composer require barryvdh/laravel-dompdf
         // Implementation would go here
-        return response()->json(['message' => 'PDF export not implemented']);
+        return response()->json(['message' => __('messages.errors.not_implemented', ['feature' => 'PDF export'])]);
     }
 }

@@ -22,11 +22,11 @@ class PaymentController extends Controller
 
         // 1. Ownership & Expiration Checks
         if ($listing->user_id === $user->id) {
-            return $this->checkError('You cannot buy your own listing.');
+            return $this->checkError('messages.errors.own_listing');
         }
 
         if ($listing->is_expired) {
-            return $this->checkError('This listing has already ended and is no longer accepting donations or purchases.');
+            return $this->checkError('messages.errors.listing_expired');
         }
 
 
@@ -51,14 +51,14 @@ class PaymentController extends Controller
 
             case AuctionListing::class:
                  if (!$listing->listable->purchase_price) {
-                     return $this->checkError('Buy Now not available for this auction.');
+                     return $this->checkError('messages.errors.buy_now_not_available');
                  }
                  $amount = $listing->listable->purchase_price;
                  $transactionType = 'auction_purchase';
                  break;
 
             default:
-                return $this->checkError('Invalid listing type.');
+                return $this->checkError('messages.errors.invalid_listing_type');
         }
 
         // 3. Create Pending Transaction
@@ -112,7 +112,7 @@ class PaymentController extends Controller
             ]);
         } catch (\Exception $e) {
             // [4] Pass exception to checkError for automatic logging if debug is on
-            return $this->checkError('Payment initialization failed: ' . $e->getMessage(), $e);
+            return $this->checkError('messages.errors.payment_init_failed', $e);
         }
 
         // 5. Update Transaction with real Stripe Session ID
@@ -135,13 +135,14 @@ class PaymentController extends Controller
             $session = Session::retrieve($sessionId);
         } catch (\Exception $e) {
              // [5] Use checkError (Redirects back)
-             return $this->checkError('Invalid Session.', $e);
+             return $this->checkError('messages.errors.invalid_session', $e);
         }
 
         // Note: For PayPal, status might briefly be 'processing', but usually 'paid'
         if ($session->payment_status !== 'paid') {
-           return $this->checkError('Payment not completed or is processing.');
+           return $this->checkError('messages.errors.payment_not_completed');
         }
+
 
         $transaction = Transaction::where('transaction_ref', $sessionId)->firstOrFail();
 
