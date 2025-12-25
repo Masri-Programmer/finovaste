@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { PropType, ref, watch } from 'vue';
-import { useToast } from 'vue-toastification';
+import { PropType, ref } from 'vue';
 
 import Layout from '@/components/layout/Layout.vue';
 import ListingAuctionForm from '@/components/listings/create/ListingAuctionForm.vue';
@@ -32,12 +31,7 @@ import {
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { destroy, update } from '@/routes/listings';
 import { Category } from '@/types';
-import {
-    AuctionListable,
-    DonationListable,
-    Listing,
-    ListingMediaCollection,
-} from '@/types/listings';
+import { AuctionListable, DonationListable, Listing } from '@/types/listings';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
 const props = defineProps({
@@ -49,14 +43,41 @@ const props = defineProps({
         type: Array as PropType<Array<Category>>,
         required: true,
     },
+    addresses: {
+        type: Array as PropType<Array<any>>,
+        required: true,
+    },
 });
-
-const toast = useToast();
 
 const mediaUploadRef = ref<InstanceType<typeof ListingMediaUpload> | null>(
     null,
 );
 
+// --- 1. DETERMINE MODE & TYPE ---
+
+// The Business Type (e.g. 'charity_action', 'private_occasion')
+// We assume this doesn't change during Edit
+const businessType = props.listing.type;
+
+// The Technical Mode (auction, purchase, donation)
+const detectMode = (): 'auction' | 'purchase' | 'donation' => {
+    if (props.listing.listable_type.includes('AuctionListing')) {
+        const listable = props.listing.listable as AuctionListable;
+        // If there is a start_price, it's an Auction.
+        // If start_price is null/0 but has purchase_price, it's 'purchase'.
+        // (Adjust this logic if your DB stores 0.00 for nulls)
+        if (listable.start_price && Number(listable.start_price) > 0) {
+            return 'auction';
+        }
+        return 'purchase';
+    }
+    // Default fallback
+    return 'donation';
+};
+
+const listingMode = ref<'auction' | 'purchase' | 'donation'>(detectMode());
+
+// --- Translations ---
 const initialTranslations = availableLanguages.value.reduce<
     Record<string, string>
 >((acc, lang) => {
@@ -71,30 +92,20 @@ const initialDescriptionTranslations = availableLanguages.value.reduce<
     return acc;
 }, {});
 
-const existingMedia: {
-    images: ListingMediaCollection[];
-    documents: ListingMediaCollection[];
-    videos: ListingMediaCollection[];
-} = {
+// --- Media ---
+const existingMedia = {
     images: props.listing.media.filter(
-        (m: ListingMediaCollection) => m.collection_name === 'images',
+        (m: any) => m.collection_name === 'images',
     ),
     documents: props.listing.media.filter(
-        (m: ListingMediaCollection) => m.collection_name === 'documents',
+        (m: any) => m.collection_name === 'documents',
     ),
     videos: props.listing.media.filter(
-        (m: ListingMediaCollection) => m.collection_name === 'videos',
+        (m: any) => m.collection_name === 'videos',
     ),
 };
 
-const listingType = ref<'auction' | 'donation'>(
-    props.listing.listable_type.includes('AuctionListing')
-        ? 'auction'
-        : props.listing.listable_type.includes('DonationListing')
-          ? 'donation'
-          : 'donation',
-);
-
+// --- Form Setup ---
 const form = useForm({
     _method: 'patch',
 
@@ -105,74 +116,69 @@ const form = useForm({
     expires_at: props.listing.expires_at
         ? new Date(props.listing.expires_at)
         : null,
-    location_text: props.listing.address?.full_address || '',
-    listing_type: listingType.value,
+    address_id: props.listing.address_id as number | null,
+
+    // Critical: Send the Business Type and Mode so Controller knows what to validate
+    type: businessType,
+    mode: listingMode.value,
 
     images: [] as File[],
     documents: [] as File[],
     videos: [] as File[],
     media_to_delete: [] as number[],
 
-    // Buy Now
-    price:
-        listingType.value === 'purchase'
-            ? Number((props.listing.listable as PurchaseListable).price)
-            : null,
-    quantity:
-        listingType.value === 'purchase'
-            ? (props.listing.listable as PurchaseListable).quantity
-            : 1,
-    condition:
-        listingType.value === 'purchase'
-            ? (props.listing.listable as PurchaseListable).condition
-            : 'new',
+    // --- PURCHASE FIELDS (AuctionListing used as Buy Now) ---
+    // Note: 'purchase' mode relies on 'purchase_price' in DB, but UI might refer to it as 'price'
+    purchase_price:
+        listingMode.value === 'purchase'
+            ? (props.listing.listable as AuctionListable).purchase_price
+            : ((props.listing.listable as AuctionListable)?.purchase_price ??
+              null),
 
-    // Auction
+    // In 'purchase' mode, we might not have 'quantity' in AuctionListing unless you added it.
+    // If AuctionListing has no quantity column, remove this or map it correctly.
+    // Assuming AuctionListing has item_condition:
+    item_condition:
+        (props.listing.listable as AuctionListable)?.item_condition ?? 'new',
+
+    // --- AUCTION FIELDS ---
     start_price:
-        listingType.value === 'auction'
+        listingMode.value === 'auction'
             ? (props.listing.listable as AuctionListable).start_price
             : null,
+
     reserve_price:
-        listingType.value === 'auction'
+        listingMode.value === 'auction'
             ? (props.listing.listable as AuctionListable).reserve_price
             : null,
-    purchase_price:
-        listingType.value === 'auction'
-            ? (props.listing.listable as AuctionListable).purchase_price
-            : null,
-    starts_at:
-        listingType.value === 'auction' &&
-        (props.listing.listable as AuctionListable).starts_at
-            ? new Date((props.listing.listable as AuctionListable).starts_at!)
-            : null,
-    ends_at:
-        listingType.value === 'auction' &&
-        (props.listing.listable as AuctionListable).ends_at
-            ? new Date((props.listing.listable as AuctionListable).ends_at)
-            : null,
 
-    // Donation
+    // Auction can ALSO have a purchase price (Buy Now option)
+    // We map it above, but ensure it's loaded if mode is auction too
+
+    starts_at: (props.listing.listable as AuctionListable)?.starts_at
+        ? new Date((props.listing.listable as AuctionListable).starts_at!)
+        : null,
+
+    ends_at: (props.listing.listable as AuctionListable)?.ends_at
+        ? new Date((props.listing.listable as AuctionListable).ends_at!)
+        : null,
+
+    // --- DONATION FIELDS ---
     target:
-        listingType.value === 'donation'
+        listingMode.value === 'donation'
             ? Number((props.listing.listable as DonationListable).target)
             : null,
+
     is_capped:
-        listingType.value === 'donation'
+        listingMode.value === 'donation'
             ? (props.listing.listable as DonationListable).is_capped
             : false,
 });
 
-watch(listingType, (newType) => {
-    form.listing_type = newType;
-    form.clearErrors();
-});
-
 const submit = () => {
-    form.post(
-        update.url({
-            listing: props.listing.id,
-        }),
-    );
+    form.post(update.url({ listing: props.listing.id }), {
+        preserveScroll: true,
+    });
 };
 
 function handleMediaDelete(mediaIds: number[]) {
@@ -202,18 +208,24 @@ const deleteListing = () => {
                 </CardHeader>
 
                 <CardContent class="space-y-8">
-                    <!-- <ListingTypeSelector
-                        v-model="listingType"
-                        :disabled="true"
-                    /> -->
+                    <div class="mb-4">
+                        <span
+                            class="text-sm font-semibold tracking-wider text-muted-foreground uppercase"
+                        >
+                            {{
+                                $t(`createListing.types.${businessType}.title`)
+                            }}
+                        </span>
+                    </div>
 
                     <ListingCommonDetails
                         v-model:title="form.title"
                         v-model:description="form.description"
                         v-model:category_id="form.category_id"
-                        v-model:location_text="form.location_text"
+                        v-model:address_id="form.address_id"
                         v-model:expires_at="form.expires_at"
                         :categories="props.categories"
+                        :addresses="props.addresses"
                         :locale="locale"
                         :fallback-locale="'de'"
                         :errors="form.errors"
@@ -237,11 +249,16 @@ const deleteListing = () => {
                         </h3>
 
                         <ListingAuctionForm
-                            v-if="listingType === 'auction'"
+                            v-if="
+                                listingMode === 'auction' ||
+                                listingMode === 'purchase'
+                            "
                             :form="form"
+                            :mode="listingMode"
                         />
+
                         <ListingDonationForm
-                            v-if="listingType === 'donation'"
+                            v-if="listingMode === 'donation'"
                             :form="form"
                         />
                     </div>
@@ -256,47 +273,39 @@ const deleteListing = () => {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    {{
-                                        $t(
-                                            'listings.edit.delete_confirmation.title',
-                                        )
-                                    }}
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    {{
-                                        $t(
-                                            'listings.edit.delete_confirmation.description',
-                                        )
-                                    }}
-                                </AlertDialogDescription>
+                                <AlertDialogTitle>{{
+                                    $t(
+                                        'listings.edit.delete_confirmation.title',
+                                    )
+                                }}</AlertDialogTitle>
+                                <AlertDialogDescription>{{
+                                    $t(
+                                        'listings.edit.delete_confirmation.description',
+                                    )
+                                }}</AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel>
-                                    {{
-                                        $t(
-                                            'listings.edit.delete_confirmation.cancel',
-                                        )
-                                    }}
-                                </AlertDialogCancel>
-                                <AlertDialogAction @click="deleteListing">
-                                    {{
-                                        $t(
-                                            'listings.edit.delete_confirmation.confirm',
-                                        )
-                                    }}
-                                </AlertDialogAction>
+                                <AlertDialogCancel>{{
+                                    $t(
+                                        'listings.edit.delete_confirmation.cancel',
+                                    )
+                                }}</AlertDialogCancel>
+                                <AlertDialogAction @click="deleteListing">{{
+                                    $t(
+                                        'listings.edit.delete_confirmation.confirm',
+                                    )
+                                }}</AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
 
                     <Button type="submit" :disabled="form.processing">
-                        <span v-if="form.processing">
-                            {{ $t('listings.edit.actions.saving') }}
-                        </span>
-                        <span v-else>
-                            {{ $t('listings.edit.actions.save') }}
-                        </span>
+                        <span v-if="form.processing">{{
+                            $t('listings.edit.actions.saving')
+                        }}</span>
+                        <span v-else>{{
+                            $t('listings.edit.actions.save')
+                        }}</span>
                     </Button>
                 </CardFooter>
             </Card>

@@ -18,6 +18,7 @@ class UserSeeder extends SeederOnce
     public function run(): void
     {
         $adminRole = Role::firstWhere('name', 'admin');
+        $developerRole = Role::firstWhere('name', 'developer');
         $userRole = Role::firstWhere('name', 'user');
 
         $admin = User::updateOrCreate(
@@ -49,6 +50,10 @@ class UserSeeder extends SeederOnce
         if ($adminRole && !$admin->hasRole($adminRole)) {
             $admin->assignRole($adminRole);
         }
+        if ($developerRole && !$admin->hasRole($developerRole)) {
+            $admin->assignRole($developerRole);
+        }
+        
         $testUser->assignRole($userRole);
         User::factory(20)->create()->each(function ($user) use ($userRole) {
 

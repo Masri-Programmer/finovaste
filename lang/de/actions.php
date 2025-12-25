@@ -38,4 +38,8 @@ return [
     'loading' => 'Lädt...',
     'processing' => 'Verarbeitung...',
     'learn_more' => 'Mehr erfahren',
+    'destroy' => 'Zerstören',
+    'reject' => 'Ablehnen',
+    'publish' => 'Veröffentlichen',
+    'unpublish' => 'Veröffentlichung aufheben',
 ];

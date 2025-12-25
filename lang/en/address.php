@@ -18,4 +18,6 @@ return [
     'primary' => 'Primary',
     'set_primary' => 'Set as Primary',
     'is_primary' => 'Set as primary address',
+    'select_placeholder' => 'Select an address',
 ];
+

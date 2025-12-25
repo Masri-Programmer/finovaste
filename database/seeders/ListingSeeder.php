@@ -99,9 +99,11 @@ class ListingSeeder extends SeederOnce
             'address_id' => $address->id,
             'type' => 'donation',
             'status' => 'active',
+            'expires_at' => now()->addMonths(1),
             'title' => ['en' => 'Park Renovation', 'de' => 'Parkrenovierung'],
             'description' => ['en' => 'Help us renovate...', 'de' => 'Helfen Sie uns...'],
         ]);
+
 
         $this->seedExtras($listing2);
 

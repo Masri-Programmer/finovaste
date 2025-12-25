@@ -5,7 +5,7 @@
                 {{ $t('listings.faq.title') }}
             </h3>
             <Button
-                v-if="!isOwner && !showAskForm"
+                v-if="!showAskForm"
                 @click="handleAskQuestion"
                 variant="outline"
             >
@@ -75,7 +75,7 @@
                                 {{ getTranslation(faq.question) }}
                             </span>
 
-                            <!-- Question Actions (Edit/Delete for Asker) -->
+                            <!-- Question Actions for Asker (Non-Owner) -->
                             <div
                                 v-if="
                                     currentUser &&
@@ -98,6 +98,38 @@
                                     variant="ghost"
                                     class="h-6 w-6 text-destructive"
                                     @click="deleteFaq(faq)"
+                                >
+                                    <Trash2 class="h-3 w-3" />
+                                </Button>
+                            </div>
+
+                            <!-- Question Actions for Owner -->
+                            <div
+                                v-if="isOwner"
+                                class="ml-2 flex gap-1"
+                                @click.stop
+                            >
+                                <Button
+                                    size="icon"
+                                    :variant="
+                                        faq.is_visible ? 'ghost' : 'default'
+                                    "
+                                    class="h-6 w-6"
+                                    @click="toggleVisibility(faq)"
+                                    :title="
+                                        faq.is_visible
+                                            ? $t('actions.hide')
+                                            : $t('actions.approve')
+                                    "
+                                >
+                                    <Eye class="h-3 w-3" />
+                                </Button>
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    class="h-6 w-6 text-destructive"
+                                    @click="deleteFaq(faq)"
+                                    :title="$t('actions.delete')"
                                 >
                                     <Trash2 class="h-3 w-3" />
                                 </Button>
@@ -152,7 +184,7 @@
                             </div>
                         </div>
 
-                        <div v-else class="flex items-center gap-2">
+                        <div v-else>
                             <Button
                                 size="sm"
                                 variant="outline"
@@ -164,27 +196,6 @@
                                         ? $t('actions.edit')
                                         : $t('listings.faq.answer')
                                 }}
-                            </Button>
-
-                            <Button
-                                size="sm"
-                                :variant="faq.is_visible ? 'ghost' : 'default'"
-                                @click="toggleVisibility(faq)"
-                            >
-                                <Eye class="mr-1 h-3 w-3" />
-                                {{
-                                    faq.is_visible
-                                        ? $t('actions.hide')
-                                        : $t('actions.approve')
-                                }}
-                            </Button>
-
-                            <Button
-                                size="sm"
-                                variant="destructive"
-                                @click="deleteFaq(faq)"
-                            >
-                                <Trash2 class="h-3 w-3" />
                             </Button>
                         </div>
                     </div>
@@ -320,8 +331,6 @@ const toggleVisibility = (faq: ListingFaq) => {
 };
 
 const deleteFaq = (faq: ListingFaq) => {
-    if (confirm('Are you sure you want to delete this?')) {
-        router.delete(destroy.url({ listing: props.listingId, faq: faq.id }));
-    }
+    router.delete(destroy.url({ listing: props.listingId, faq: faq.id }));
 };
 </script>

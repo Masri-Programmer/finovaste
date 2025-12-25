@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { useStorage } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
 
@@ -10,6 +10,10 @@ import ListingCommonDetails from '@/components/listings/create/ListingCommonDeta
 import ListingDonationForm from '@/components/listings/create/ListingDonationForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
 import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
+
+import ListingAside from '@/components/listings/show/ListingAside.vue';
+import ListingDetails from '@/components/listings/show/ListingDetails.vue';
+import ListingSlide from '@/components/listings/show/ListingSlide.vue';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -25,7 +29,7 @@ import { Label } from '@/components/ui/label';
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher';
 import { create, store } from '@/routes/listings';
 import { trans } from 'laravel-vue-i18n';
-import { PropType, ref, watch } from 'vue';
+import { computed, PropType, ref, watch } from 'vue';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
 const props = defineProps({
@@ -38,6 +42,10 @@ const props = defineProps({
         >,
         required: true,
     },
+    addresses: {
+        type: Array as PropType<Array<any>>,
+        required: true,
+    },
 });
 const toast = useToast();
 
@@ -46,11 +54,20 @@ const mediaUploadRef = ref<InstanceType<typeof ListingMediaUpload> | null>(
 );
 
 const listingType = useStorage<
-    'private' | 'creative' | 'charity' | 'charity_auction'
->('create-listing-type', 'private');
+    | 'private_occasion'
+    | 'charity_action'
+    | 'donation_campaign'
+    | 'founders_creatives'
+>('create-listing-type', 'private_occasion');
 
-const listingMode = ref<'auction' | 'donation'>('donation');
+const getModeFromType = (type: string): 'donation' | 'auction' => {
+    if (type === 'charity_action') return 'auction'; // Default to auction, can toggle to purchase
+    return 'donation';
+};
 
+const listingMode = ref<'auction' | 'purchase' | 'donation'>(
+    getModeFromType(listingType.value),
+);
 const initialTranslations = availableLanguages.value.reduce(
     (acc, lang) => {
         acc[lang.code] = '';
@@ -68,14 +85,14 @@ const form = useForm({
     images: [] as File[],
     documents: [] as File[],
     videos: [] as File[],
-    location_text: '',
+    address_id: null as number | null,
     type: listingType.value,
     mode: listingMode.value,
 
     // Buy Now
     price: null as number | null,
     quantity: 1,
-    condition: 'new',
+    item_condition: 'new',
 
     // Auction
     start_price: null as number | null,
@@ -96,12 +113,13 @@ const form = useForm({
 watch(listingType, (newType) => {
     form.type = newType;
 
-    // Auto-set mode based on type
-    if (['private', 'creative', 'charity'].includes(newType)) {
-        listingMode.value = 'donation';
-    } else if (newType === 'charity_auction') {
-        // Default to auction, but user can change it
+    // Automatically set the mode based on the selected type
+    if (newType === 'charity_action') {
+        // If switching TO charity action, default to auction (user can click "Buy Now" toggle)
         listingMode.value = 'auction';
+    } else {
+        // All other types (Private, Campaign, Founders) are purely Donation based
+        listingMode.value = 'donation';
     }
 
     form.mode = listingMode.value;
@@ -128,6 +146,135 @@ const submit = () => {
         },
     });
 };
+const showPreview = ref(false);
+const page = usePage();
+
+// Helper to create object URLs for file previews
+const getFilePreview = (file: File) => {
+    return URL.createObjectURL(file);
+};
+const previewListing = computed(() => {
+    // 1. Safe Defaults for Category/Address/User
+    const selectedCategory = props.categories?.find(
+        (c) => c.id === form.category_id,
+    ) || { id: 0, name: { en: 'Category' }, icon: 'tag' };
+
+    const selectedAddress = props.addresses?.find(
+        (a) => a.id === form.address_id,
+    ) || { id: 0, city: 'City', country: 'Country', label: 'Address' };
+
+    const currentUser = page.props.auth?.user || {
+        id: 0,
+        name: 'You',
+        profile_photo_url: null,
+    };
+
+    // 2. Determine Type string for Morph
+    let morphType = 'App\\Models\\PurchaseListing'; // Default
+    let listableData = {};
+
+    if (form.mode === 'auction') {
+        morphType = 'App\\Models\\AuctionListing'; //
+        listableData = {
+            id: 999, // Fake ID for listable
+            start_price: form.start_price || 0,
+            current_bid: form.start_price || 0,
+            reserve_price: form.reserve_price || 0,
+            purchase_price: form.purchase_price || 0,
+            ends_at: form.ends_at
+                ? form.ends_at
+                : new Date(Date.now() + 86400000).toISOString(), // +1 day default
+            starts_at: form.starts_at
+                ? form.starts_at
+                : new Date().toISOString(),
+            item_condition: form.item_condition || 'new',
+            bids_count: 0,
+        };
+    } else if (form.mode === 'donation') {
+        morphType = 'App\\Models\\DonationListing'; //
+        listableData = {
+            id: 999,
+            target: form.target || 1000,
+            raised: 0,
+            donors_count: 0,
+            is_capped: form.is_capped || false,
+            progress_percent: 0,
+        };
+    } else {
+        // Purchase/Standard
+        morphType = 'App\\Models\\PurchaseListing';
+        listableData = {
+            id: 999,
+            price: form.price || 0,
+            quantity: form.quantity || 1,
+        };
+    }
+
+    // 3. Media Mapping
+    const mediaImages = (form.images || []).map((file, index) => ({
+        id: index,
+        url: URL.createObjectURL(file),
+        thumbnail: URL.createObjectURL(file),
+        mime_type: file.type,
+    }));
+
+    // 4. Return Final Object
+    return {
+        id: 999999, // Non-null ID is crucial
+        uuid: 'preview-uuid',
+        user_id: currentUser.id,
+        category_id: form.category_id || 0,
+        address_id: form.address_id || null,
+
+        // Main fields
+        title: form.title,
+        slug: 'preview-slug',
+        description: form.description,
+        type: form.type, // private_occasion, charity_action, etc.
+        status: 'draft',
+        currency: 'EUR',
+        visibility: 'public',
+
+        // Polymorphic Type (CRITICAL for ListingAside)
+        listable_type: morphType,
+        listable_id: 999,
+        listable: listableData,
+
+        // Relations
+        user: currentUser,
+        category: selectedCategory,
+        address: selectedAddress,
+
+        // Metrics & booleans
+        views_count: 0,
+        likes_count: 0,
+        is_liked_by_current_user: false,
+        is_expired: false,
+        reviews_count: 0,
+        comments_count: 0,
+        average_rating: 0,
+        is_featured: false,
+
+        // Price helper
+        price: form.price || form.start_price || form.target || 0,
+
+        // Dates
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        published_at: new Date().toISOString(),
+        expires_at: form.expires_at || null,
+        deleted_at: null,
+
+        meta: null,
+
+        // Media
+        media: {
+            images: mediaImages,
+            videos: [],
+            documents: [],
+        },
+    } as any;
+});
 </script>
 
 <template>
@@ -150,9 +297,10 @@ const submit = () => {
                         v-model:title="form.title"
                         v-model:description="form.description"
                         v-model:category_id="form.category_id"
-                        v-model:location_text="form.location_text"
+                        v-model:address_id="form.address_id"
                         v-model:expires_at="form.expires_at"
                         :categories="props.categories"
+                        :addresses="props.addresses"
                         :locale="locale"
                         :fallback-locale="'de'"
                         :errors="form.errors"
@@ -175,7 +323,7 @@ const submit = () => {
 
                         <!-- Sub-mode selector for Charity Action -->
                         <div
-                            v-if="listingType === 'charity_auction'"
+                            v-if="listingType === 'charity_action'"
                             class="mb-6 border-b pb-4"
                         >
                             <Label class="mb-2 block text-base font-semibold">
@@ -209,16 +357,19 @@ const submit = () => {
 
                         <ListingAuctionForm
                             v-if="
-                                listingType === 'charity_auction' &&
+                                listingType === 'charity_action' &&
                                 listingMode === 'auction'
                             "
                             :form="form"
                         />
                         <ListingDonationForm
                             v-if="
-                                ['private', 'creative', 'charity'].includes(
-                                    listingType,
-                                )
+                                [
+                                    'private_occasion',
+                                    'charity_action',
+                                    'donation_campaign',
+                                    'founders_creatives',
+                                ].includes(listingType)
                             "
                             :form="form"
                         />
@@ -261,6 +412,14 @@ const submit = () => {
                                 {{ $t('createListing.buttons.submit') }}
                             </span>
                         </Button>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            class="w-full"
+                            @click="showPreview = true"
+                        >
+                            {{ $t('createListing.buttons.preview') }}
+                        </Button>
                         <p
                             v-if="form.errors.terms"
                             class="text-sm font-medium text-destructive"
@@ -269,6 +428,74 @@ const submit = () => {
                         </p>
                     </div>
                 </CardFooter>
+
+                <div
+                    v-if="showPreview"
+                    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
+                >
+                    <div
+                        class="relative my-8 w-full max-w-7xl rounded-lg bg-background shadow-xl"
+                    >
+                        <button
+                            @click="showPreview = false"
+                            class="absolute top-4 right-4 z-50 rounded-full bg-white p-2 text-black shadow hover:bg-gray-100"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-6 w-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+
+                        <div class="max-h-[90vh] overflow-y-auto p-6">
+                            <div
+                                class="mb-6 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700"
+                                role="alert"
+                            >
+                                <p class="font-bold">
+                                    {{ $t('createListing.preview.mode') }}
+                                </p>
+                                <p>
+                                    {{ $t('createListing.preview.notice') }}
+                                </p>
+                            </div>
+
+                            <div class="flex-1 overflow-y-auto p-6">
+                                <div
+                                    v-if="previewListing && previewListing.id"
+                                    class="relative grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start"
+                                >
+                                    <div class="relative col-span-2 space-y-8">
+                                        <!-- <ListingHeader
+                                            :listing="previewListing"
+                                        /> -->
+                                        <ListingSlide
+                                            :listing="previewListing"
+                                        />
+                                    </div>
+
+                                    <ListingAside :listing="previewListing" />
+                                </div>
+
+                                <div
+                                    v-if="previewListing && previewListing.id"
+                                    class="mt-8"
+                                >
+                                    <ListingDetails :listing="previewListing" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Card>
         </form>
     </Layout>

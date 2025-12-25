@@ -20,11 +20,16 @@ class PaymentController extends Controller
     {
         $user = Auth::user();
 
-        // 1. Ownership Check
+        // 1. Ownership & Expiration Checks
         if ($listing->user_id === $user->id) {
-            // [3] Use checkError
             return $this->checkError('You cannot buy your own listing.');
         }
+
+        if ($listing->is_expired) {
+            return $this->checkError('This listing has already ended and is no longer accepting donations or purchases.');
+        }
+
+
 
         $listing->load('listable');
 

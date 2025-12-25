@@ -183,6 +183,8 @@ return [
         'minimum_investment' => 'Mindestinvestition',
         'shares_offered' => 'Angebotene Anteile',
         'share_price' => 'Anteilspreis',
+        'target' => 'Spendenziel',
+        'is_capped' => 'Ziel ist flexibel',
     ],
     'clipboard_unsupported' => 'Ihr Browser unterstützt das Kopieren nicht.',
 ];

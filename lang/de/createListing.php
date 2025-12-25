@@ -3,14 +3,12 @@
 return [
     'title' => 'Neues Inserat erstellen',
     'description' => 'Wählen Sie eine Kategorie und füllen Sie die Details aus, um Ihre Kampagne zu starten.',
-
     'buttons' => [
         'submit' => 'Kampagne anlegen',
         'submitting' => 'Wird erstellt...',
         'preview' => 'Vorschau ansehen',
         'save_draft' => 'Als Entwurf speichern',
     ],
-
     'types' => [
         'private' => [
             'title' => 'Private Anlässe',
@@ -28,8 +26,23 @@ return [
             'title' => 'Wohltätige Aktionen',
             'description' => 'Bieten Sie Produkte zur Auktion oder zum Direktkauf an und unterstützen Sie mit den Erlösen einen guten Zweck.',
         ],
+        'private_occasion' => [
+            'title' => 'Private Anlässe',
+            'description' => 'Unterstützen Sie Geburtstage oder besondere Ereignisse im Kreis von Familie und Freunden – ganz einfach durch private Geschenke.',
+        ],
+        'founders_creatives' => [
+            'title' => 'Gründer & Kreative',
+            'description' => 'Verwirklichen Sie Ihre kreativen Ideen: Präsentieren Sie Ihr Projekt unserer Community und sammeln Sie die Unterstützung, die Sie zur Umsetzung benötigen.',
+        ],
+        'donation_campaign' => [
+            'title' => 'Spendenkampagnen',
+            'description' => 'Für ehrenamtliches Engagement: Stellen Sie lokale Initiativen oder internationale Hilfsprojekte vor und erhalten Sie gezielte Unterstützung.',
+        ],
+        'charity_action' => [
+            'title' => 'Wohltätigkeitsaktionen',
+            'description' => 'Bieten Sie Produkte zur Versteigerung oder zum Direktkauf an und unterstützen Sie mit dem Erlös einen guten Zweck.',
+        ],
     ],
-
     'sections' => [
         'core' => 'Basisdaten',
         'type' => 'Kategorie wählen',
@@ -39,13 +52,13 @@ return [
         'settings' => 'Einstellungen & Privatsphäre',
         'verification' => 'Verifizierung & Rechtliches',
         'mode_select' => 'Verkaufsart wählen',
+        'sales_details' => 'Verkaufsinformationen',
+        'donation_details' => 'Spendenziele',
     ],
-    
     'modes' => [
         'auction' => 'Auktion',
         'purchase' => 'Festpreis / Sofortkauf',
     ],
-
     'fields' => [
         'title' => [
             'label' => 'Titel der Kampagne',
@@ -60,12 +73,10 @@ return [
             'label' => 'Kategorie',
             'placeholder' => 'Kategorie auswählen',
         ],
-        
         'is_private' => [
             'label' => 'Privat (Nur mit Einladungslink)',
             'help' => 'Wenn aktiviert, wird die Seite nicht öffentlich gelistet. Sie ist nur für Personen sichtbar, die den Einladungslink (WhatsApp, SMS, E-Mail) erhalten. Keine Registrierung für Spender notwendig.',
         ],
-
         'media' => [
             'label' => 'Dateien & Medien',
             'images' => 'Bilder hochladen',
@@ -73,8 +84,9 @@ return [
             'video_embed' => 'Video einbetten (YouTube/Vimeo Link)',
             'documents' => 'Dokumente',
             'dropzone' => 'Dateien hier ablegen oder klicken',
+            'attachments' => 'Medien & Anhänge',
+            'dropzone_unified' => 'Ziehen Sie Ihre Bilder, Videos oder Dokumente hierher oder wählen Sie Dateien aus.',
         ],
-
         'association_check' => [
             'label' => 'Ich handele im Namen eines eingetragenen Vereins (e.V.)',
             'help' => 'Spendenaktionen dürfen nur von in Deutschland registrierten Vereinen erstellt werden.',
@@ -87,7 +99,6 @@ return [
             'label' => 'Hinweis zu Spendenquittungen',
             'text' => 'Wir sind verpflichtet, für jede Spende über 300 Euro eine Spendenquittung oder Rechnung auszustellen. Bitte bestätigen Sie, dass Sie dies gewährleisten können.',
         ],
-
         'donation_goal' => [
             'label' => 'Spendenziel (€)',
             'placeholder' => 'z.B. 5000',
@@ -136,30 +147,37 @@ return [
             'label' => 'Ort / Standort',
             'placeholder' => 'z.B. Berlin, Deutschland',
         ],
+        'target' => [
+            'label' => 'Spendenziel (€)',
+            'placeholder' => 'z.B. 5000',
+        ],
+        'is_capped' => [
+            'label' => 'Flexibles Ziel (Gelder behalten, auch wenn das Ziel nicht erreicht wird)',
+        ],
     ],
-
     'notifications' => [
         'error' => 'Fehler beim Erstellen. Bitte überprüfen Sie die Eingaben (z.B. Vereinsnachweis).',
         'success' => 'Kampagne erfolgreich angelegt! Sie wird nun überprüft.',
         'preview_mode' => 'Sie befinden sich im Vorschau-Modus. Klicken Sie auf "Kampagne anlegen", um zu veröffentlichen.',
+    ],
+    'preview' => [
+        'mode' => 'Vorschau-Modus',
+        'notice' => 'Dies ist eine Vorschau Ihres Inserats. Einige Funktionen (wie Bieten oder Liken) sind deaktiviert.',
     ],
 
     'tooltips' => [
         'preview' => 'Sehen Sie hier, wie die Seite für Besucher aussehen wird.',
         'invitation_link' => 'Diesen Link können Sie nach Erstellung kopieren und per WhatsApp/SMS versenden.',
     ],
-    
     'placeholders' => [
         'video_embed' => 'https://www.youtube.com/watch?v=...',
         'shares_offered' => 'z.B. 1000',
         'share_price' => 'z.B. 50',
     ],
-    
     'validation' => [
         'association_required' => 'Für Spendenaktionen ist ein Nachweis als eingetragener Verein erforderlich.',
         'receipt_agreement' => 'Sie müssen der Ausstellung von Spendenquittungen ab 300€ zustimmen.',
     ],
-
     'terms' => [
         'title' => 'Allgemeine Geschäftsbedingungen',
         'description' => 'Mit der Erstellung eines Inserats stimmen Sie unseren AGBs zu.',
@@ -167,4 +185,3 @@ return [
         'link' => 'Allgemeine Geschäftsbedingungen',
     ],
 ];
-

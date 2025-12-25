@@ -18,7 +18,7 @@ trait HasAppMessages
      * @param array $options Extra options for vue-toastification (timeout, position, etc.)
      * @return \Illuminate\Http\RedirectResponse
      */
-   protected function checkSuccess($model, ?string $action = null, ?string $route = null, array $options = [])
+    protected function checkSuccess($model, ?string $action = null, ?string $route = null, array $routeParams = [], array $options = [])
     {
         $modelName = $this->getReadableModelName($model);
 
@@ -40,7 +40,7 @@ trait HasAppMessages
             $message = __($action, ['model' => $modelName]);
         }
 
-        $response = $route ? to_route($route) : back();
+        $response = $route ? to_route($route, $routeParams) : back();
 
         return $response->with('notification', [
             'type' => 'success',
@@ -61,6 +61,7 @@ trait HasAppMessages
             ], $options)
         ]);
     }
+
     /**
      * Handle a specific error manually.
      *

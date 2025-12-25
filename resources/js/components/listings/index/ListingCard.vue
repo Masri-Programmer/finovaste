@@ -33,7 +33,7 @@ const props = defineProps({
 
 function getListingType(type: Listing['listable_type'] | string): {
     text: string;
-    variant: 'secondary' | 'outline' | 'destructive' | 'default' | 'ghost';
+    variant: 'secondary' | 'outline' | 'destructive' | 'default';
 } {
     switch (type) {
         case 'App\\Models\\AuctionListing':
@@ -62,8 +62,9 @@ const listable = computed(() => {
     return null;
 });
 const shareUrl = computed(() => {
-    return window.location.origin + show.url(props.listing.id);
+    return window.location.origin + show.url(props.listing);
 });
+
 const fallbackImage = 'https://placehold.co/600x400?text=No+Media+Available';
 
 const handleImageError = (e: Event) => {
@@ -74,13 +75,10 @@ const handleImageError = (e: Event) => {
 
 <template>
     <Card>
-        <Link
-            :href="show.url(listing.id)"
-            class="flex flex-col overflow-hidden"
-        >
+        <Link :href="show.url(listing)" class="flex flex-col overflow-hidden">
             <CardHeader class="relative p-0">
                 <img
-                    :src="listing.image_url"
+                    :src="listing.image_url || fallbackImage"
                     :alt="listing.title[locale]"
                     class="h-48 w-full object-cover"
                     @error="handleImageError"
@@ -109,8 +107,14 @@ const handleImageError = (e: Event) => {
                 <CardTitle class="mt-1 mb-2 text-xl font-bold">
                     {{ listing.title[locale] }}
                 </CardTitle>
-                <CardDescription class="line-clamp-2 text-muted-foreground">
-                    {{ listing.description[locale] }}
+                <CardDescription
+                    class="line-clamp-2 text-muted-foreground"
+                    v-html="
+                        listing.description[locale]
+                            .substring(0, 100)
+                            .concat('...')
+                    "
+                >
                 </CardDescription>
                 <div
                     class="mt-4 flex flex-col items-start gap-2 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
@@ -156,7 +160,7 @@ const handleImageError = (e: Event) => {
                         class="w-full justify-center text-xs"
                         as-child
                     >
-                        <Link :href="show.url(listing.id)" @click.stop>
+                        <Link :href="show.url(listing)" @click.stop>
                             {{ $t('links.details') }}
                             <ExternalLink class="ml-1 h-3 w-3" />
                         </Link>

@@ -16,10 +16,12 @@ import { index as categories } from '@/routes/admin/categories';
 import { index } from '@/routes/admin/listings';
 import { show } from '@/routes/admin/settings';
 import { index as users } from '@/routes/admin/users';
+import { logs } from '@/routes/developer';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import {
     BookOpen,
+    Bug,
     ChartBarStacked,
     Folder,
     LayoutGrid,
@@ -54,6 +56,11 @@ const mainNavItems: NavItem[] = [
         title: 'Einstellungen',
         href: show(),
         icon: Settings,
+    },
+    {
+        title: 'Logs',
+        href: logs(),
+        icon: Bug,
     },
 ];
 

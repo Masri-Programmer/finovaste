@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-// Removed Checkbox
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'; // Ensure you have this component
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
     Select,
@@ -130,27 +129,20 @@ watch(
 watch(
     () => filters.value,
     (newFilters) => {
-        // If the server props are empty (e.g. cleared filters), reset to defaults
-        // But if they are just missing specific keys, be careful not to kill local state aggressively
-
         const defaults = { ...defaultState };
 
-        // Extract type safely
         let incomingType = defaults.listingTypes;
         if (newFilters?.types) {
             incomingType = Array.isArray(newFilters.types)
                 ? newFilters.types[0]
                 : newFilters.types;
         } else {
-            // If server doesn't return 'types', we usually assume 'all'.
-            // However, to prevent UI flickering if backend is inconsistent,
-            // strictly set to 'all' only if other filters are present or it's a clear reset.
             incomingType = 'all';
         }
 
         form.search = newFilters?.search || defaults.search;
         form.category = newFilters?.category || defaults.category;
-        form.listingTypes = incomingType; // Update the form
+        form.listingTypes = incomingType;
         form.priceRange = [
             Number(newFilters?.min_price) || defaults.priceRange[0],
             Number(newFilters?.max_price) || defaults.priceRange[1],
@@ -160,12 +152,14 @@ watch(
     },
     { deep: true },
 );
+
+// --- UPDATED LISTING TYPES ---
 const listingTypes = [
-    { id: 'all', labelKey: 'filters.all' },
-    { id: 'buy', labelKey: 'filters.types.buy' },
-    { id: 'invest', labelKey: 'filters.types.invest' },
-    { id: 'bid', labelKey: 'filters.types.bid' },
-    { id: 'donate', labelKey: 'filters.types.donate' },
+    { id: 'all', labelKey: 'filters.allCategories' }, // or 'filters.all'
+    // { id: 'private_occasion', labelKey: 'types.private_occasion.title' },
+    { id: 'charity_action', labelKey: 'types.charity_action.title' },
+    { id: 'donation_campaign', labelKey: 'types.donation_campaign.title' },
+    { id: 'founders_creatives', labelKey: 'types.founders_creatives.title' },
 ];
 
 const sortOptions = [
@@ -174,7 +168,7 @@ const sortOptions = [
     { id: 'price-low', labelKey: 'filters.sortOptions.priceLow' },
     { id: 'price-high', labelKey: 'filters.sortOptions.priceHigh' },
     { id: 'popular', labelKey: 'filters.sortOptions.popular' },
-    { id: 'roi', labelKey: 'filters.sortOptions.roi' },
+    // { id: 'roi', labelKey: 'filters.sortOptions.roi' }, // Removed specific ROI sort if not applicable
 ];
 
 function getListingTypeLabel(typeId: string) {
@@ -214,7 +208,6 @@ function applyFilters() {
         sort: form.sortBy === 'latest' ? null : form.sortBy,
     };
 
-    // Clean null/empty values
     const cleanParams = Object.fromEntries(
         Object.entries(queryParams).filter(([_, v]) => v !== null && v !== ''),
     );
@@ -323,7 +316,7 @@ function applyFilters() {
                                 }}</Label>
                                 <RadioGroup
                                     v-model="form.listingTypes"
-                                    class="grid grid-cols-2 gap-3"
+                                    class="grid grid-cols-1 gap-3 sm:grid-cols-2"
                                 >
                                     <div
                                         v-for="type in listingTypes"
@@ -338,13 +331,7 @@ function applyFilters() {
                                             :for="type.id"
                                             class="cursor-pointer text-sm leading-none font-normal"
                                         >
-                                            {{
-                                                type.id === 'all'
-                                                    ? $t(
-                                                          'filters.allCategories',
-                                                      )
-                                                    : $t(type.labelKey)
-                                            }}
+                                            {{ $t(type.labelKey) }}
                                         </Label>
                                     </div>
                                 </RadioGroup>

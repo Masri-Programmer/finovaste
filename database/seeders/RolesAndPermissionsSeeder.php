@@ -38,11 +38,8 @@ class RolesAndPermissionsSeeder extends SeederOnce
             ->givePermissionTo(['view categories']);
 
         $roleAdmin = Role::create(['name' => 'admin']);
+        $roleDeveloper = Role::create(['name' => 'developer']);
         $roleAdmin->givePermissionTo(Permission::all());
-
-        $user = User::find(1);
-        if ($user) {
-            $user->assignRole($roleAdmin);
-        }
+        $roleDeveloper->givePermissionTo(Permission::all());
     }
 }

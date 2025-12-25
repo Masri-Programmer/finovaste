@@ -18,11 +18,14 @@ class ListingFactory extends Factory
         return [
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
-            // We leave address null by default to avoid creating too many addresses, 
-            // or pick one if the user exists.
-            'address_id' => null, 
+            'address_id' => function (array $attributes) {
+                return \App\Models\Address::factory()->create([
+                    'user_id' => $attributes['user_id']
+                ])->id;
+            }, 
             
             'status' => $this->faker->randomElement(['active', 'pending', 'expired']),
+
             'is_featured' => $this->faker->boolean(10),
             'published_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
             

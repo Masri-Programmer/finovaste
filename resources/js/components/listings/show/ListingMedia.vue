@@ -16,23 +16,30 @@
                 >
                     <div
                         v-if="slide.type === 'video'"
-                        class="flex h-full w-full items-center justify-center bg-black"
+                        class="relative flex h-full w-full items-center justify-center bg-black"
                     >
                         <video
-                            controls
                             class="h-full w-full object-contain"
                             :src="slide.url"
                             :poster="slide.thumbnail || fallbackImage"
+                            muted
+                            autoplay
+                            loop
+                            playsinline
                         >
                             Your browser does not support the video tag.
                         </video>
 
-                        <button
+                        <div
+                            class="group absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-transparent"
                             @click="showLightbox(index)"
-                            class="absolute top-2 right-2 z-10 rounded bg-black/50 p-2 text-white hover:bg-black/80"
                         >
-                            <MaximizeIcon class="h-4 w-4" />
-                        </button>
+                            <div
+                                class="rounded-full bg-black/40 p-4 text-white backdrop-blur-sm transition-all group-hover:scale-110 group-hover:bg-black/60"
+                            >
+                                <MaximizeIcon class="h-8 w-8" />
+                            </div>
+                        </div>
                     </div>
 
                     <div
@@ -88,13 +95,15 @@
                 <img
                     :src="
                         slide.type === 'video'
-                            ? 'https://placehold.co/1920x1080?text=Video+Placeholder'
+                            ? slide.thumbnail ||
+                              'https://placehold.co/1920x1080?text=Video'
                             : slide.url || fallbackImage
                     "
                     class="h-full w-full object-cover"
                     :class="{ 'scale-110': currentSlide === index }"
                     @error="handleImageError"
                 />
+
                 <div
                     v-if="slide.type === 'video'"
                     class="absolute inset-0 flex items-center justify-center bg-black/30"
@@ -157,8 +166,8 @@ const props = defineProps<{
         videos: Array<{
             id: number;
             url: string;
-            mime_type: string;
             thumbnail: string;
+            mime_type: string;
         }>;
     };
 }>();
@@ -188,6 +197,8 @@ const allSlides = computed(() => {
             uniqueId: `vid-${vid.id}`,
         })) || [];
 
+    // You can choose to put videos first or last.
+    // Putting videos first is often better for engagement if present.
     const combined = [...images, ...videos];
 
     if (combined.length === 0) {

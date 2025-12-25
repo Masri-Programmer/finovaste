@@ -7,6 +7,7 @@ return [
     'update' => 'Update',
     'save' => 'Save',
     'delete' => 'Delete',
+    'destroy' => 'Destroy',
     'remove' => 'Remove',
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
@@ -37,4 +38,8 @@ return [
     'loading' => 'Loading...',
     'processing' => 'Processing...',
     'learn_more' => 'Learn more',
+    'approve' => 'Approve',
+    'reject' => 'Reject',
+    'publish' => 'Publish',
+    'unpublish' => 'Unpublish',
 ];

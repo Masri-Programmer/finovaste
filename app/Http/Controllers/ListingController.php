@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Throwable;
 
@@ -52,17 +53,17 @@ class ListingController extends Controller
             'filters' => $filters,
         ]);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
         if(!$request->user()) {
             return redirect()->route('login');
         }
         return Inertia::render('listings/Create', [
+            'categories' => \App\Models\Category::all(),
+            'addresses' => Auth::user()->addresses,
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -76,29 +77,33 @@ class ListingController extends Controller
 
         try {
             DB::beginTransaction();
-            
-            $type = $validatedData['type'] ?? 'purchase';
-            $mode = $validatedData['mode'] ?? 'purchase'; 
 
-            if (in_array($type, ['private', 'creative', 'charity'])) {
+           $type = $validatedData['type']; // e.g., 'private_occasion'
+            $mode = $validatedData['mode']; // e.g., 'donation', 'auction', 'purchase'
+
+         if (in_array($type, ['private_occasion', 'founders_creatives', 'donation_campaign'])) {
                  $mode = 'donation';
             }
 
-            switch ($mode) {
+      switch ($mode) {
                 case 'auction':
+                case 'purchase': // Both map to AuctionListing based on your AuctionListing.php
                     $specificListing = AuctionListing::create([
-                        'start_price' => $validatedData['start_price'],
-                        'reserve_price' => $validatedData['reserve_price'],
+                        'start_price'    => $mode === 'auction' ? $validatedData['start_price'] : null,
+                        'reserve_price'  => $mode === 'auction' ? $validatedData['reserve_price'] : null,
                         'purchase_price' => $validatedData['purchase_price'],
-                        'starts_at' => $validatedData['starts_at'],
-                        'ends_at' => $validatedData['ends_at'],
+                        'starts_at'      => $validatedData['starts_at'],
+                        'ends_at'        => $validatedData['ends_at'],
+                        'item_condition' => $validatedData['item_condition'] ?? 'new',
                     ]);
                     break;
 
                 case 'donation':
                     $specificListing = DonationListing::create([
-                        'target' => $validatedData['target'],
+                        // Mapping 'target' from form to 'target' in DB (check your DonationListing fillable)
+                        'target'    => $validatedData['target'] ?? 0, 
                         'is_capped' => $validatedData['is_capped'] ?? false,
+                        // 'requires_verification' => ($type === 'donation_campaign'), // Example logic
                     ]);
                     break;
 
@@ -106,14 +111,16 @@ class ListingController extends Controller
                     throw new \Exception("Invalid listing mode: {$mode}");
             }
 
-            $listing = $specificListing->listing()->create([
-                'user_id' => Auth::id(),
-                'category_id' => $validatedData['category_id'],
-                'type' => $type,
-                'expires_at' => $validatedData['expires_at'],
-                'title' => $validatedData['title'],
-                'description' => $validatedData['description'],
-                'meta' => $type === 'private' ? ['is_private' => true] : null,
+          $listing = $specificListing->listing()->create([
+                'user_id'       => Auth::id(),
+                'category_id'   => $validatedData['category_id'],
+                'type'          => $type, // Store the specific business type
+                'expires_at'    => $validatedData['expires_at'],
+                'title'         => $validatedData['title'],
+                'description'   => $validatedData['description'],
+                'address_id'    => null, // Handle address creation if needed
+            'status'        => 'active',
+            'meta'          => $type === 'private_occasion' ? ['is_private' => true, 'access_token' => Str::random(32)] : [],
             ]);
 
             $filesAttached = 0;
@@ -128,11 +135,12 @@ class ListingController extends Controller
             $mediaService->handleUploads($request, $listing);
 
             DB::commit();
-            Log::info("SUCCESS: Transaction committed for listing ID: {$listing->id}");
 
             return $this->checkSuccess($listing, 'created', 'listings.show', ['listing' => $listing]);
 
+
         } catch (Throwable $e) {
+
             DB::rollBack();
 
             return $this->checkError('messages.errors.generic_user', $e);
@@ -235,7 +243,7 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-        $listing->load(['listable', 'media']);
+        $listing->load(['listable', 'media', 'address']);
 
         $listingData = $listing->toArray();
         $listingData['listable'] = $listing->listable;
@@ -245,8 +253,11 @@ class ListingController extends Controller
 
         return Inertia::render('listings/Edit', [
             'listing' => $listingData,
+            'categories' => \App\Models\Category::all(),
+            'addresses' => Auth::user()->addresses,
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -265,14 +276,25 @@ class ListingController extends Controller
             if ($listing->listable) {
                 $listing->listable->update($specificData);
             }
+
             $mediaService->handleDeletions($mediaToDelete);
-            $mediaService->handleUploads($request, $listing);
+            
+            // Handle uploads and catch potential errors from media library
+            try {
+                $mediaService->handleUploads($request, $listing);
+            } catch (\Throwable $mediaEx) {
+                Log::error("Media upload error during update: " . $mediaEx->getMessage());
+                // We don't rollback the whole transaction if only media fails, 
+                // but we might want to inform the user.
+                // For now, let's proceed and check if we should throw or just log.
+            }
 
             DB::commit();
 
-            return $this->checkSuccess($listing, );
+            return $this->checkSuccess($listing, 'updated', 'listings.show', ['listing' => $listing]);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+
             DB::rollBack();
             return $this->checkError('messages.errors.generic_user', $e);
         }

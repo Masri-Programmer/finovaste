@@ -3,13 +3,13 @@
         <AuctionWidget
             v-if="isAuction && auctionData"
             :data="auctionData"
-            :listing-id="listing.id"
+            :listing="listing"
         />
 
         <DonationWidget
             v-else-if="isDonation && donationData"
             :data="donationData"
-            :listing-id="listing.id"
+            :listing="listing"
         />
 
         <PrivateLinkWidget :listing="listing" />
@@ -28,22 +28,28 @@ import AuctionWidget from './widgets/AuctionWidget.vue';
 import DonationWidget from './widgets/DonationWidget.vue';
 import PrivateLinkWidget from './widgets/PrivateLinkWidget.vue';
 
+const props = defineProps<{
+    listing?: Listing;
+}>();
+
 const page = usePage();
-const listing = computed<Listing>(() => page.props.listing as Listing);
+const listing = computed<Listing>(
+    () => (props.listing || page.props.listing) as Listing,
+);
 
 // Type Guards / Checkers
 const isAuction = computed(
-    () => listing.value.listable_type === 'App\\Models\\AuctionListing',
+    () => listing.value?.listable_type === 'App\\Models\\AuctionListing',
 );
 const isDonation = computed(
-    () => listing.value.listable_type === 'App\\Models\\DonationListing',
+    () => listing.value?.listable_type === 'App\\Models\\DonationListing',
 );
 
 // Data Extraction (Type Casting)
 const auctionData = computed(() =>
-    isAuction.value ? (listing.value.listable as AuctionListable) : null,
+    isAuction.value ? (listing.value?.listable as AuctionListable) : null,
 );
 const donationData = computed(() =>
-    isDonation.value ? (listing.value.listable as DonationListable) : null,
+    isDonation.value ? (listing.value?.listable as DonationListable) : null,
 );
 </script>

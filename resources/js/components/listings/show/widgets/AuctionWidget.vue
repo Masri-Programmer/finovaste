@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { formatCurrency } from '@/composables/useCurrency';
+import { bid } from '@/routes/listings';
+import { AuctionListable, Listing } from '@/types/listings';
+import { useForm } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    data: AuctionListable;
+    listing: Listing;
+}>();
+
+const bidForm = useForm({
+    amount: null as number | null,
+});
+
+const submitBid = () => {
+    bidForm.post(bid.url(props.listing.id), {
+        preserveScroll: true,
+        onSuccess: () => bidForm.reset('amount'),
+    });
+};
+</script>
+
 <template>
     <div class="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
         <h3 class="mb-4 leading-none font-semibold tracking-tight">
@@ -9,7 +35,20 @@
             </div>
             <div class="text-center text-xs text-muted-foreground">
                 {{ $t('listings.auction.ends_at') }}
-                {{ new Date(data.ends_at).toLocaleDateString('de-DE') }}
+                {{
+                    listing.expires_at
+                        ? new Date(listing.expires_at).toLocaleDateString(
+                              'de-DE',
+                          )
+                        : '-'
+                }}
+            </div>
+
+            <div
+                v-if="listing.is_expired"
+                class="text-center text-sm font-bold text-destructive"
+            >
+                {{ $t('listings.common.expired') }}
             </div>
 
             <form
@@ -22,40 +61,24 @@
                 <div class="flex w-full max-w-sm items-center space-x-2">
                     <Input
                         id="bidAmount"
-                        v-model="bidForm.amount"
+                        v-model="bidForm.amount as any"
                         type="number"
                         :placeholder="$t('listings.common.amount')"
+                        :disabled="listing.is_expired"
                     />
-                    <Button type="submit" :disabled="bidForm.processing">
-                        {{ $t('listings.auction.bid_btn') }}
+
+                    <Button
+                        type="submit"
+                        :disabled="bidForm.processing || listing.is_expired"
+                    >
+                        {{
+                            listing.is_expired
+                                ? $t('listings.common.status.expired')
+                                : $t('listings.auction.bid_btn')
+                        }}
                     </Button>
                 </div>
             </form>
         </div>
     </div>
 </template>
-
-<script setup lang="ts">
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { formatCurrency } from '@/composables/useCurrency';
-import { AuctionListable } from '@/types/listings';
-import { useForm } from '@inertiajs/vue3';
-import {bid} from '@/routes/listings'
-const props = defineProps<{
-    data: AuctionListable;
-    listingId: number;
-}>();
-
-const bidForm = useForm({
-    amount: null as number | null,
-});
-
-const submitBid = () => {
-    bidForm.post(bid.url(props.listingId), {
-        preserveScroll: true,
-        onSuccess: () => bidForm.reset('amount'),
-    });
-};
-</script>

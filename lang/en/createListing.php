@@ -12,28 +12,36 @@ return [
     ],
 
     'types' => [
-        'private' => [
+        'private_occasion' => [
             'title' => 'Private Occasions',
             'description' => 'Support birthdays or special events within the circle of family and friends – quite simply through private gifts.',
         ],
-        'creative' => [
+        'founders_creatives' => [
             'title' => 'Founders & Creatives',
             'description' => 'Realize your creative ideas: Present your project to our community and collect the support you need for implementation.',
         ],
-        'charity' => [
+        'donation_campaign' => [
             'title' => 'Donation Campaigns',
             'description' => 'For voluntary commitment: Present local initiatives or international aid projects and receive targeted support.',
         ],
-        'charity_auction' => [ 
+        'charity_action' => [ 
             'title' => 'Charity Actions',
             'description' => 'Offer products for auction or direct purchase and support a good cause with the proceeds.',
         ],
+    ],
+
+    'modes' => [
+        'auction' => 'Auction',
+        'purchase' => 'Buy Now / Fixed Price',
     ],
 
     'sections' => [
         'core' => 'Basic Details',
         'type' => 'Select Category',
         'details' => 'Campaign Details',
+        'sales_details' => 'Sales Information',
+        'donation_details' => 'Donation Targets',
+        'mode_select' => 'Select Sales Method',
         'media' => 'Media (Images, Documents, Videos)',
         'design' => 'Design & Preview',
         'settings' => 'Settings & Privacy',
@@ -66,7 +74,8 @@ return [
             'videos' => 'Videos',
             'video_embed' => 'Embed Video (YouTube/Vimeo Link)',
             'documents' => 'Documents',
-            'dropzone' => 'Drop files here or click',
+            'dropzone' => 'Drop files here or click','attachments' => 'Media & Attachments',
+            'dropzone_unified' => 'Drag & Drop your images, videos, or documents here, or browse',
         ],
 
         'association_check' => [
@@ -137,6 +146,12 @@ return [
         'success' => 'Campaign created successfully! It will now be reviewed.',
         'preview_mode' => 'You are in preview mode. Click "Create Campaign" to publish.',
     ],
+
+    'preview' => [
+        'mode' => 'Preview Mode',
+        'notice' => 'This is a preview of your listing. Some features (like bidding or liking) are disabled.',
+    ],
+
 
     'tooltips' => [
         'preview' => 'See here how the page will look for visitors.',

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Log;
 use Spatie\Translatable\HasTranslations;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -61,7 +62,16 @@ class Listing extends Model implements HasMedia
         'reviews_count' => 'integer',
         'comments_count' => 'integer',
         'is_liked_by_current_user' => 'boolean',
+        'is_expired' => 'boolean',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_liked_by_current_user', 'is_expired'];
+
 
     /**
      * The "booted" method of the model.
@@ -85,10 +95,11 @@ class Listing extends Model implements HasMedia
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('title')
+            ->generateSlugsFrom(fn($model) => $model->getTranslation('title', 'en') ?: 'listing')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
     }
+
 
     /**
      * Retrieve the model for a bound value.
@@ -99,43 +110,34 @@ class Listing extends Model implements HasMedia
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        // Log the attempted access for debugging
-        \Log::debug("Attempting to resolve listing", [
-            'value' => $value,
-            'is_uuid' => Str::isUuid($value),
-            'is_numeric' => is_numeric($value),
-        ]);
-
-        $listing = $this->where(function ($query) use ($value) {
+      $listing = $this->where(function ($query) use ($value) {
             $query->where('slug', $value)
                   ->orWhere('uuid', $value);
             
-            // Also check by ID if the value is numeric
             if (is_numeric($value)) {
                 $query->orWhere('id', $value);
             }
-        })->first(); // Changed from firstOrFail() to first()
+        })->first();
 
-        // If listing not found, log and return null (triggers 404)
         if (!$listing) {
-            \Log::warning("Listing not found", ['value' => $value]);
-            return null; // Laravel will automatically trigger 404
+            return null;
         }
 
-        // Check private listing access
-        if ($listing->type === 'private' && $value !== $listing->uuid) {
-            \Log::warning("Private listing accessed with slug instead of UUID", [
-                'listing_id' => $listing->id,
-                'attempted_value' => $value
-            ]);
+        $isPrivate = in_array($listing->type, ['private', 'private_occasion']);
+        $isOwner = Auth::check() && Auth::id() === $listing->user_id;
+
+        // Redirect to UUID if private, EXCEPT if we are the owner or already using it
+        if ($isPrivate && $value !== $listing->uuid && !$isOwner) {
             abort(404);
         }
 
         return $listing;
     }
-    public function getRouteKey()
+   public function getRouteKey()
     {
-        return $this->type === 'private' ? $this->uuid : $this->slug;
+        return in_array($this->type, ['private', 'private_occasion']) 
+            ? $this->uuid 
+            : $this->slug;
     }
     
     /**
@@ -255,6 +257,25 @@ class Listing extends Model implements HasMedia
             ->sharpen(10);
     }
 
+    /**
+     * Determine if the listing has expired.
+     */
+    public function getIsExpiredAttribute(): bool
+    {
+        // 1. Check explicit status
+        if (in_array($this->status, ['expired', 'sold', 'completed', 'withdrawn'])) {
+            return true;
+        }
+
+        // 2. Check expiration date
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     public function bids()
     {
         return $this->hasMany(Bid::class)->orderBy('amount', 'desc');
@@ -292,10 +313,12 @@ class Listing extends Model implements HasMedia
 {
     return $this->user->address;
 }
-    public function scopePublic(Builder $query): Builder
+  public function scopePublic(Builder $query): Builder
     {
-        return $query->where('type', '!=', 'private')
-                     ->orWhereNull('type');
+        return $query->where(function ($q) {
+            $q->where('type', '!=', 'private_occasion')
+              ->orWhereNull('type');
+        });
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder

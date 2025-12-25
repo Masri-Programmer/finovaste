@@ -29,15 +29,16 @@
             <InfoBox
                 :icon="Target"
                 :title="$t('listing_details.boxes.goal')"
-                :value="donationData.target"
+                :value="formatCurrency(donationData.target)"
                 icon-bg-class="bg-green-100 text-green-700"
             />
             <InfoBox
                 :icon="Heart"
                 :title="$t('listing_details.boxes.raised')"
-                :value="donationData.amount_raised"
+                :value="formatCurrency(donationData.raised)"
                 icon-bg-class="bg-red-100 text-red-700"
             />
+
             <InfoBox
                 :icon="Users"
                 :title="$t('listing_details.boxes.donors')"
@@ -58,6 +59,7 @@
 
 <script setup lang="ts">
 import { Progress } from '@/components/ui/progress';
+import { formatCurrency } from '@/composables/useCurrency';
 import type {
     AuctionListable,
     DonationListable,
@@ -81,26 +83,26 @@ interface Props {
 const props = defineProps<Props>();
 
 const isAuction = computed(
-    () => props.listing.listable_type === 'App\\Models\\AuctionListing',
+    () => props.listing?.listable_type === 'App\\Models\\AuctionListing',
 );
 const isDonation = computed(
-    () => props.listing.listable_type === 'App\\Models\\DonationListing',
+    () => props.listing?.listable_type === 'App\\Models\\DonationListing',
 );
 
 const auctionData = computed(() => {
-    return props.listing.listable as AuctionListable;
+    return props.listing?.listable as AuctionListable;
 });
 const donationData = computed(() => {
-    return props.listing.listable as DonationListable;
+    return props.listing?.listable as DonationListable;
 });
 
 const bidCount = computed(() => {
-    return (props.listing.bids_count || 0).toString();
+    return (props.listing?.bids_count || 0).toString();
 });
 
 // 3. Calculate Time Remaining
 const timeRemaining = computed(() => {
-    if (!auctionData.value.ends_at) return 'N/A';
+    if (!auctionData.value?.ends_at) return 'N/A';
 
     const end = new Date(auctionData.value.ends_at);
     const now = new Date();
@@ -125,7 +127,7 @@ const timeRemaining = computed(() => {
 
 // 4. Dynamic Color for Urgency
 const timeCriticalClass = computed(() => {
-    if (!auctionData.value.ends_at) return 'bg-gray-100 text-gray-700';
+    if (!auctionData.value?.ends_at) return 'bg-gray-100 text-gray-700';
 
     const end = new Date(auctionData.value.ends_at);
     const now = new Date();
@@ -141,12 +143,12 @@ const timeCriticalClass = computed(() => {
 
 const progressPercentage = computed(() => {
     if (isAuction.value) {
-        const end = auctionData.value.ends_at
+        const end = auctionData.value?.ends_at
             ? new Date(auctionData.value.ends_at).getTime()
             : 0;
 
         // Fallback to 'created_at' if 'starts_at' is null (auction started immediately)
-        const start = auctionData.value.starts_at
+        const start = auctionData.value?.starts_at
             ? new Date(auctionData.value.starts_at).getTime()
             : new Date(props.listing.created_at).getTime();
 
@@ -164,8 +166,10 @@ const progressPercentage = computed(() => {
     }
 
     if (isDonation.value) {
-        const goal = parseFloat(donationData.value.target);
-        const raised = parseFloat(donationData.value.amount_raised);
+        const goal = parseFloat(donationData.value?.target?.toString() || '0');
+        const raised = parseFloat(
+            donationData.value?.raised?.toString() || '0',
+        );
         if (goal <= 0) return 0;
         return Math.min(100, Math.max(0, (raised / goal) * 100));
     }

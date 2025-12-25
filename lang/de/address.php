@@ -17,5 +17,6 @@ return [
     'no_addresses' => 'Sie haben noch keine Adressen hinzugefügt.',
     'primary' => 'Standard',
     'set_primary' => 'Als Standard festlegen',
-    'is_primary' => 'Als Standardadresse festlegen',
+    'is_primary' => 'Als primäre Adresse festlegen',
+    'select_placeholder' => 'Wähle eine Adresse',
 ];

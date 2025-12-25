@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import AddressAutocomplete from '@/components/AddressAutocomplete.vue';
+import AddressSelector from '@/components/listings/AddressSelector.vue';
+
 import TiptapEditor from '@/components/tiptap/TiptapEditor.vue';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -38,8 +39,12 @@ const props = defineProps({
         type: Number as PropType<number | null>,
         required: true,
     },
-    location_text: {
-        type: String,
+    address_id: {
+        type: Number as PropType<number | null>,
+        required: true,
+    },
+    addresses: {
+        type: Array as PropType<Array<any>>,
         required: true,
     },
     expires_at: {
@@ -71,7 +76,7 @@ const emit = defineEmits([
     'update:title',
     'update:description',
     'update:category_id',
-    'update:location_text',
+    'update:address_id',
     'update:expires_at',
 ]);
 
@@ -201,20 +206,15 @@ const updateDescription = (newDescription: string) => {
             </div>
 
             <div class="space-y-2">
-                <Label for="location_text">
+                <Label for="address_id">
                     {{ $t('createListing.fields.location.label') }}
                 </Label>
-                <AddressAutocomplete
-                    id="location_text"
-                    :model-value="props.location_text"
-                    @update:model-value="emit('update:location_text', $event)"
-                    @address-selected="
-                        (res) =>
-                            emit('update:location_text', res.formatted_address)
-                    "
-                    :placeholder="
-                        $t('createListing.fields.location.placeholder')
-                    "
+                <AddressSelector
+                    id="address_id"
+                    :model-value="props.address_id"
+                    @update:model-value="emit('update:address_id', $event)"
+                    :addresses="props.addresses"
+                    :error="props.errors.address_id"
                 />
             </div>
 
@@ -240,13 +240,21 @@ const updateDescription = (newDescription: string) => {
                     </PopoverTrigger>
                     <PopoverContent class="w-auto p-0">
                         <Calendar
-                            :model-value="props.expires_at || undefined"
+                            :model-value="
+                                (props.expires_at as any) || undefined
+                            "
                             @update:model-value="
                                 emit('update:expires_at', $event)
                             "
                         />
                     </PopoverContent>
                 </Popover>
+                <span
+                    v-if="props.errors.expires_at"
+                    class="text-sm text-destructive"
+                >
+                    {{ props.errors.expires_at }}
+                </span>
             </div>
         </div>
     </div>
