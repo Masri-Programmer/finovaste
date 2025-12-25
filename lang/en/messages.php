@@ -51,4 +51,12 @@ return [
         'no_items_selected' => 'No items selected for deletion.',
         'not_implemented' => ':feature not implemented yet.',
         'delete_own_account' => 'You cannot delete your own account.',
-        'category_has_children' => 'Can
+        'category_has_children' => 'Cannot delete: This category has subcategories. Please reassign them first.',
+        'delete_failed' => 'An error occurred while deleting the :model.',
+    ],
+
+
+    'auth' => [
+        'login_required' => 'You must be logged in to perform this action.',
+    ],
+];

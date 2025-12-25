@@ -50,7 +50,11 @@ return [
         'model_not_found' => 'Modell :model nicht gefunden.',
         'no_items_selected' => 'Keine Elemente zum Löschen ausgewählt.',
         'not_implemented' => ':feature noch nicht implementiert.',
+        'delete_own_account' => 'Sie können Ihr eigenes Konto nicht löschen.',
+        'category_has_children' => 'Löschen nicht möglich: Diese Kategorie hat Unterkategorien. Bitte weisen Sie diese zuerst neu zu.',
+        'delete_failed' => 'Beim Löschen von :model ist ein Fehler aufgetreten.',
     ],
+
 
     'auth' => [
         'login_required' => 'Sie müssen eingeloggt sein, um diese Aktion durchzuführen.',

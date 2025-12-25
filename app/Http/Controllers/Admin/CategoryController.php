@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Category;
+use App\Traits\HasAppMessages;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -18,12 +19,7 @@ class CategoryController extends Controller
     public function index(): Response
     {
 
-        return Inertia::render('admin/categories/Index', [
-            'flash' => [
-                'success' => session('success'),
-                'error' => session('error'),
-            ],
-        ]);
+        return Inertia::render('admin/categories/Index');
     }
 
     /**
@@ -43,10 +39,9 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request): RedirectResponse
     {
-        Category::create($request->validated());
+        $category = Category::create($request->validated());
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Kategorie erfolgreich erstellt.');
+        return $this->checkSuccess($category, 'created', 'admin.categories.index');
     }
 
     /**
@@ -83,8 +78,7 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Kategorie erfolgreich aktualisiert.');
+        return $this->checkSuccess($category, 'updated', 'admin.categories.index');
     }
 
     /**
@@ -94,17 +88,14 @@ class CategoryController extends Controller
     {
         try {
             if ($category->children()->count() > 0) {
-                return redirect()->route('admin.categories.index')
-                    ->with('error', 'Löschen nicht möglich: Diese Kategorie hat Unterkategorien. Bitte weisen Sie diese zuerst neu zu.');
+                return $this->checkError('messages.errors.category_has_children');
             }
 
             $category->delete();
 
-            return redirect()->route('admin.categories.index')
-                ->with('success', 'Kategorie erfolgreich gelöscht.');
+            return $this->checkSuccess($category, 'deleted', 'admin.categories.index');
         } catch (\Exception $e) {
-            return redirect()->route('admin.categories.index')
-                ->with('error', 'Beim Löschen der Kategorie ist ein Fehler aufgetreten.');
+            return $this->checkError('messages.errors.generic_user', $e);
         }
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
 use App\Models\Listing;
+use App\Traits\HasAppMessages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -86,7 +87,8 @@ class ListingController extends Controller
             // 3. Create the Parent (Wrapper) & Link It
             // We use the relationship on the CHILD to create the PARENT
             // This ensures listable_type and listable_id are set automatically.
-            $listable->listing()->create([
+            // CRITICAL: Sync expiration date for the Scheduler Command
+            $listing = $listable->listing()->create([
                 'user_id' => auth()->id(), // Assuming Admin is creating, or pass user_id
                 'category_id' => $request->category_id,
                 'address_id' => $request->address_id, // Optional
@@ -99,14 +101,14 @@ class ListingController extends Controller
                 'expires_at' => ($request->type === 'auction') ? $request->ends_at : null,
             ]);
 
+
             DB::commit();
 
-            return redirect()->route('admin.listings.index')
-                ->with('success', 'Listing created successfully.');
+            return $this->checkSuccess($listing, 'created', 'admin.listings.index');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Failed to create listing: ' . $e->getMessage());
+            return $this->checkError('messages.errors.generic_user', $e);
         }
     }
 
@@ -179,11 +181,11 @@ class ListingController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Listing updated successfully.');
+            return $this->checkSuccess($listing, 'updated');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Failed to update listing: ' . $e->getMessage());
+            return $this->checkError('messages.errors.generic_user', $e);
         }
     }
 
@@ -204,12 +206,11 @@ class ListingController extends Controller
             
             DB::commit();
 
-            return redirect()->route('admin.listings.index')
-                ->with('success', 'Listing deleted successfully.');
+            return $this->checkSuccess($listing, 'deleted', 'admin.listings.index');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Failed to delete listing: ' . $e->getMessage());
+            return $this->checkError('messages.errors.generic_user', $e);
         }
     }
 }

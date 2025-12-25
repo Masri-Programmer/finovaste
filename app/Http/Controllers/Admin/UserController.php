@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\Admin\UserRequest;
+use App\Traits\HasAppMessages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -70,7 +71,7 @@ class UserController extends Controller
             $user->syncRoles($validated['roles']);
         }
 
-        return redirect()->route('users.index')->with('success', 'Benutzer erfolgreich erstellt.');
+        return $this->checkSuccess($user, 'created', 'users.index');
     }
 
     /**
@@ -93,7 +94,7 @@ class UserController extends Controller
 
         $user->syncRoles($validated['roles'] ?? []);
 
-        return redirect()->route('users.index')->with('success', 'Benutzer erfolgreich aktualisiert.');
+        return $this->checkSuccess($user, 'updated', 'users.index');
     }
 
     /**
@@ -102,13 +103,12 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         if ($user->id === Auth::id()) {
-            // DEUTSCHE FEHLERMELDUNG
-            return redirect()->back()->with('error', 'Sie können Ihr eigenes Konto nicht löschen.');
+            return $this->checkError('messages.errors.delete_own_account');
         }
 
         $user->delete();
 
-        // DEUTSCHE MELDUNG
-        return redirect()->route('users.index')->with('success', 'Benutzer erfolgreich gelöscht.');
+        return $this->checkSuccess($user, 'deleted', 'users.index');
     }
 }
+
