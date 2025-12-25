@@ -1,56 +1,59 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany; // Don't forget this import
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DonationListing extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'donation_listings';
 
-    public $timestamps = true;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // REMOVE 'listing_id' from here
     protected $fillable = [
-        'donation_goal',
-        'amount_raised',
+        'target',
+        'raised',
         'donors_count',
-        'is_goal_flexible',
+        'is_capped',
+        'requires_verification',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'donation_goal' => 'decimal:2',
-        'amount_raised' => 'decimal:2',
-        'is_goal_flexible' => 'boolean',
+        'target' => 'decimal:2',
+        'raised' => 'decimal:2',
+        'donors_count' => 'integer',
+        'is_capped' => 'boolean',
+        'requires_verification' => 'boolean',
     ];
 
     /**
-     * Get the parent listing model.
+     * Correct: This connects back to the Listing that holds "listable_id" = this->id
      */
     public function listing(): MorphOne
     {
         return $this->morphOne(Listing::class, 'listable');
     }
-    public function transactions()
+
+    /**
+     * Good: Assuming your transactions table has 'payable_type' and 'payable_id'
+     */
+    public function transactions(): MorphMany
     {
         return $this->morphMany(Transaction::class, 'payable');
+    }
+    
+    // --- HELPER FOR UI --- //
+    
+    /**
+     * Calculate percentage for the progress bar
+     */
+    public function getProgressPercentAttribute(): int
+    {
+        if ($this->target <= 0) return 0;
+        return min(100, round(($this->raised / $this->target) * 100));
     }
 }

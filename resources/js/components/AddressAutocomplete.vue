@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Input } from '@/components/ui/input';
-import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
+import { Loader } from '@googlemaps/js-api-loader';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -29,12 +29,13 @@ const autocomplete = ref<google.maps.places.Autocomplete | null>(null);
 
 const initAutocomplete = async () => {
     try {
-        setOptions({
+        const loader = new Loader({
             apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
             version: 'weekly',
+            libraries: ['places'],
         });
 
-        const { Autocomplete } = (await importLibrary(
+        const { Autocomplete } = (await loader.importLibrary(
             'places',
         )) as google.maps.PlacesLibrary;
 

@@ -184,76 +184,11 @@ class TransactionController extends Controller
         });
     }
 
-    // 4. Handle Investment
-    public function invest(Request $request, Listing $listing)
-    {
-        $investment = $listing->listable;
-
-        // Validate Shares
-        $request->validate(['shares' => 'required|integer|min:1']);
-        $sharesToBuy = $request->input('shares');
-
-        if (!$investment instanceof \App\Models\InvestmentListing) {
-            abort(404);
-        }
-
-        return DB::transaction(function () use ($request, $listing, $investment, $sharesToBuy) {
-
-            // 1. Lock the investment row
-            $investment = $investment->lockForUpdate()->find($investment->id);
-
-            // 2. Check if enough shares exist
-            if ($investment->shares_offered < $sharesToBuy) {
-                // Refactored to use checkError
-                return $this->checkError('Only ' . $investment->shares_offered . ' shares remaining.');
-            }
-
-            $totalCost = $investment->share_price * $sharesToBuy;
-
-            // 3. Create Transaction
-            $transaction = Transaction::create([
-                'uuid'         => Str::uuid(),
-                'user_id'      => Auth::id(),
-                'payable_type' => get_class($investment),
-                'payable_id'   => $investment->id,
-                'type'         => 'investment',
-                'amount'       => $totalCost,
-                'quantity'     => $sharesToBuy,
-                'status'       => 'completed',
-                'metadata'     => [
-                    'share_price_at_booking' => $investment->share_price,
-                    'project_name'           => $listing->title
-                ]
-            ]);
-
-            // 4. Update Investment Metrics
-            $investment->decrement('shares_offered', $sharesToBuy);
-            $investment->increment('amount_raised', $totalCost);
-            $investment->increment('investors_count');
-
-            // Notify Subscribers
-            foreach ($listing->subscriptions as $subscriber) {
-                $user = \App\Models\User::where('email', $subscriber->email)->first();
-                $locale = $user ? $user->locale : config('app.locale');
-
-                 Mail::to($subscriber->email)->queue(new ListingUpdated($listing, [
-                    'type' => 'investment',
-                    'key' => 'updates.new_investment_made',
-                    'params' => ['shares' => $sharesToBuy],
-                    'subject_key' => 'updates.new_investment_subject',
-                    'url' => route('listings.show', $listing)
-                ], $locale));
-            }
-
-            // Refactored to use checkSuccess with a redirect route
-            return $this->checkSuccess($investment, 'invested', 'transactions.portfolio');
-        });
-    }
 
     public function index(Request $request)
     {
         $filters = $request->validate([
-            'type' => 'nullable|string|in:purchase,auction,donation,investment',
+            'type' => 'nullable|string|in:auction,donation',
             'search' => 'nullable|string',
         ]);
 

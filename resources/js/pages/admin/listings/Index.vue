@@ -82,17 +82,11 @@ const getListablePrice = (listing: Listing) => {
     if (!listing.listable) return 'N/A';
 
     switch (listing.listable_type) {
-        case 'App\\Models\\InvestmentListing':
-            price = listing.listable.investment_goal;
-            break;
-        case 'App\\Models\\PurchaseListing':
-            price = listing.listable.price;
-            break;
         case 'App\\Models\\AuctionListing':
             price = listing.listable.start_price;
             break;
         case 'App\\Models\\DonationListing':
-            price = listing.listable.donation_goal;
+            price = listing.listable.target;
             break;
         default:
             return 'N/A';

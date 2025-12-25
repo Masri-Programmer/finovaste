@@ -33,22 +33,10 @@ class WebhookController extends Controller
 
                     if ($payable) {
                         switch ($transaction->payable_type) {
-                            case 'App\Models\PurchaseListing':
-                                $payable->decrement('quantity');
-                                break;
-
                             case 'App\Models\DonationListing':
                                 $payable->increment('amount_raised', $transaction->amount);
                                 $payable->increment('donors_count');
                                 break;
-
-                            case 'App\Models\InvestmentListing':
-                                $payable->increment('amount_raised', $transaction->amount);
-                                $payable->increment('investors_count');
-                                // Note: You might want a separate table 'investments' to track 
-                                // specifically how many shares this user owns.
-                                break;
-                                
                             case 'App\Models\AuctionListing':
                                 // Mark auction as ended/sold if this was a Buy It Now
                                 $payable->update(['current_bid' => $transaction->amount]); // Or specific logic

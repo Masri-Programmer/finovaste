@@ -179,13 +179,9 @@ return [
         'starts_at' => 'Start Date',
         'ends_at' => 'End Date',
 
-        'donation_goal' => 'Donation Goal',
-        'is_goal_flexible' => 'Goal is Flexible',
+        'target' => 'Donation Goal',
+        'is_capped' => 'Goal is Flexible',
 
-        'investment_goal' => 'Investment Goal',
-        'minimum_investment' => 'Minimum Investment',
-        'shares_offered' => 'Shares Offered',
-        'share_price' => 'Share Price',
     ],
     'clipboard_unsupported' => 'Your browser does not support copying.',
 

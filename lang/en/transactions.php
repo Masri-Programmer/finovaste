@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Transaction history',
-    'description' => 'View your purchases, investments, donations, and auction activities.',
+    'description' => 'View your purchases, donations, and auction activities.',
     'search_placeholder' => 'Search transactions...',
     'item_unavailable' => 'Item not available',
     'empty_state' => 'No transactions found.',
@@ -10,7 +10,6 @@ return [
     'filters' => [
         'all' => 'All',
         'purchases' => 'Purchases',
-        'investments' => 'Investments',
         'donations' => 'Donations',
         'auctions' => 'Auctions',
     ],
@@ -25,9 +24,7 @@ return [
     ],
 
     'types' => [
-        'purchase' => 'Purchase',
         'auction_purchase' => 'Auction (Buy Now)',
-        'investment' => 'Investment',
         'donation' => 'Donation',
         'auction' => 'Auction',
     ],

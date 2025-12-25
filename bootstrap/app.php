@@ -44,15 +44,24 @@ $middleware->validateCsrfTokens(except: [
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'developer' => \App\Http\Middleware\IsDeveloper::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
                 $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             if ($request->inertia()) {
+                // Try to determine what type of resource wasn't found
+                $resourceType = 'Resource';
+                
+                // Check if this is a listing route
+                if (str_contains($request->path(), 'listings/')) {
+                    $resourceType = 'Listing';
+                }
+                
                 return back()->with('notification', [
                     'type' => 'error',
                     'title' => 'Not Found',
-                    'message' => __('messages.errors.not_found', ['model' => 'Resource']),
+                    'message' => __('messages.errors.not_found', ['model' => $resourceType]),
                 ]);
             }
         });

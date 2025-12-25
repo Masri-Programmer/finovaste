@@ -5,7 +5,7 @@ use App\Http\Controllers\ListingFaqController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\BidController;
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\ListingSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,11 +30,8 @@ Route::controller(ListingController::class)
 
             Route::post('/', 'store')->name('store');
 
-            Route::post('/{listing}/bid', [BidController::class, 'store'])->name('bid');
-            // Route::post('/{listing}/buy', [TransactionController::class, 'buyItem'])->name('buy');
-            Route::post('/{listing}/buy', [PaymentController::class, 'checkout'])->name('buy');
+            Route::post('/{listing}/bid', [AuctionController::class, 'store'])->name('bid');
             Route::post('/{listing}/donate', [TransactionController::class, 'donate'])->name('donate');
-            Route::post('/{listing}/invest', [TransactionController::class, 'invest'])->name('invest');
 
             Route::delete('/{listing}/unlike', 'unlike')->name('unlike');
 

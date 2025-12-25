@@ -8,8 +8,6 @@ return [
     'empty_state' => 'Aucune transaction trouvée.',
     'filters' => [
         'all' => 'Tout',
-        'purchases' => 'Achats',
-        'investments' => 'Investissements',
         'donations' => 'Dons',
         'auctions' => 'Enchères',
     ],
@@ -22,9 +20,7 @@ return [
         'action' => 'Action',
     ],
     'types' => [
-        'purchase' => 'Achat',
         'auction_purchase' => 'Enchère (Achat immédiat)',
-        'investment' => 'Investissement',
         'donation' => 'Don',
         'auction' => 'Enchère',
     ],

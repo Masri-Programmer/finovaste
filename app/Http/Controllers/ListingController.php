@@ -7,15 +7,12 @@ use App\Http\Requests\Listings\UpdateListingRequest;
 use App\Models\Listing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
-use App\Models\PurchaseListing;
-use App\Models\Category;
 use App\Models\User;
 use App\Services\ListingMediaService;
 use App\Services\ListingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -79,16 +76,15 @@ class ListingController extends Controller
 
         try {
             DB::beginTransaction();
+            
+            $type = $validatedData['type'] ?? 'purchase';
+            $mode = $validatedData['mode'] ?? 'purchase'; 
 
-            switch ($validatedData['listing_type']) {
-                case 'purchase':
-                    $specificListing = PurchaseListing::create([
-                        'price' => $validatedData['price'],
-                        'quantity' => $validatedData['quantity'],
-                        'condition' => $validatedData['condition'],
-                    ]);
-                    break;
+            if (in_array($type, ['private', 'creative', 'charity'])) {
+                 $mode = 'donation';
+            }
 
+            switch ($mode) {
                 case 'auction':
                     $specificListing = AuctionListing::create([
                         'start_price' => $validatedData['start_price'],
@@ -101,21 +97,23 @@ class ListingController extends Controller
 
                 case 'donation':
                     $specificListing = DonationListing::create([
-                        'donation_goal' => $validatedData['donation_goal'],
-                        'is_goal_flexible' => $validatedData['is_goal_flexible'],
+                        'target' => $validatedData['target'],
+                        'is_capped' => $validatedData['is_capped'] ?? false,
                     ]);
                     break;
 
                 default:
-                    throw new \Exception("Invalid listing type: {$validatedData['listing_type']}");
+                    throw new \Exception("Invalid listing mode: {$mode}");
             }
 
             $listing = $specificListing->listing()->create([
                 'user_id' => Auth::id(),
                 'category_id' => $validatedData['category_id'],
+                'type' => $type,
                 'expires_at' => $validatedData['expires_at'],
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'],
+                'meta' => $type === 'private' ? ['is_private' => true] : null,
             ]);
 
             $filesAttached = 0;
@@ -132,7 +130,7 @@ class ListingController extends Controller
             DB::commit();
             Log::info("SUCCESS: Transaction committed for listing ID: {$listing->id}");
 
-            return $this->checkSuccess($listing, 'created', 'home');
+            return $this->checkSuccess($listing, 'created', 'listings.show', ['listing' => $listing]);
 
         } catch (Throwable $e) {
             DB::rollBack();
@@ -360,8 +358,12 @@ public function like(Request $request, Listing $listing): RedirectResponse
     public function userListings(Request $request, User $user)
     {
         $filters = $request->query();
+        $isOwner = Auth::id() === $user->id;
 
         $listings = $user->listings()
+            ->when(!$isOwner, function ($query) {
+                $query->public();
+            })
             ->filter($filters)
             ->with(['listable', 'user', 'category'])
             ->latest()

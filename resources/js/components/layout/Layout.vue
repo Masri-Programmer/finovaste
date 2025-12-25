@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useGlobalToast } from '@/composables/useGlobalToast';
-import { about, faq, home } from '@/routes';
+import { home } from '@/routes';
 import { index, liked } from '@/routes/listings';
 import { Head } from '@inertiajs/vue3';
 import { defineAsyncComponent } from 'vue';
@@ -41,16 +41,11 @@ const mainNavItems: NavItem[] = [
         href: index(),
         activePath: index.url(),
     },
-    {
-        label: 'menu.about',
-        href: about(),
-        activePath: about.url(),
-    },
-    {
-        label: 'menu.faq',
-        href: faq(),
-        activePath: faq.url(),
-    },
+    // {
+    //     label: 'menu.about',
+    //     href: about(),
+    //     activePath: about.url(),
+    // },
     {
         label: 'menu.favorites',
         href: liked(),

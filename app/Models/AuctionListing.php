@@ -6,42 +6,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class AuctionListing extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    /**
-     * We don't need timestamps for this specific table
-     * if the main listing table's timestamps are sufficient.
-     */
-    public $timestamps = false;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Remove 'listing_id' from fillable
     protected $fillable = [
         'start_price',
         'reserve_price',
         'purchase_price',
         'current_bid',
+        'item_condition',
         'starts_at',
         'ends_at',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'starts_at' => 'datetime',
-        'ends_at' => 'datetime',
+        'start_price'   => 'decimal:2', 
+        'reserve_price' => 'decimal:2',
+        'purchase_price'=> 'decimal:2',
+        'current_bid'   => 'decimal:2',
+        'starts_at'     => 'datetime',
+        'ends_at'       => 'datetime',
     ];
 
     /**
-     * Get the parent listing model.
+     * This works because the 'listings' table has 'listable_id'
+     * pointing to THIS model's ID.
      */
     public function listing(): MorphOne
     {

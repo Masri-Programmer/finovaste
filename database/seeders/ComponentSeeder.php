@@ -28,13 +28,6 @@ class ComponentSeeder extends SeederOnce
             'sort_order' => 1,
         ]);
 
-        ComponentItem::create([
-            'component_id' => $navComponent->id,
-            'display_text' => 'Investments',
-            'item_type' => 'link',
-            'value' => 'investments',
-            'sort_order' => 2,
-        ]);
 
         ComponentItem::create([
             'component_id' => $navComponent->id,

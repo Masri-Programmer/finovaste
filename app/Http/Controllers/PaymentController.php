@@ -6,7 +6,6 @@ use App\Models\Listing;
 use App\Models\Transaction;
 use App\Models\PurchaseListing;
 use App\Models\DonationListing;
-use App\Models\InvestmentListing;
 use App\Models\AuctionListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,13 +36,6 @@ class PaymentController extends Controller
 
         // 2. Calculate Amount & Validation based on Type
         switch ($listing->listable_type) {
-            case PurchaseListing::class:
-                $amount = $listing->listable->price;
-                if ($listing->listable->quantity < 1) {
-                    return $this->checkError('Item out of stock.');
-                }
-                break;
-
             case DonationListing::class:
                 $request->validate(['amount' => 'required|numeric|min:1']);
                 $amount = $request->amount;
@@ -51,21 +43,6 @@ class PaymentController extends Controller
                 $productName = "Donation to: {$listing->title}";
                 break;
 
-            case InvestmentListing::class:
-                $request->validate(['shares' => 'required|integer|min:1']);
-                $amount = $listing->listable->share_price * $request->shares;
-                $quantity = $request->shares;
-                $transactionType = 'investment';
-                $productName = "Investment: {$request->shares} shares in {$listing->title}";
-
-                // CRITICAL FIX: Stripe metadata values must be strings
-                $metadata['shares_count'] = (string) $request->shares;
-
-                $remaining = $listing->listable->shares_offered - $listing->listable->investors_count;
-                if ($quantity > $remaining) {
-                     return $this->checkError('Not enough shares available.');
-                }
-                break;
 
             case AuctionListing::class:
                  if (!$listing->listable->purchase_price) {
@@ -85,7 +62,7 @@ class PaymentController extends Controller
             'payable_type' => $listing->listable_type,
             'payable_id' => $listing->listable_id,
             'amount' => $amount,
-            'currency' => 'USD',
+            'currency' => 'EUR',
             'status' => 'pending',
             'type' => $transactionType,
             'metadata' => $metadata,

@@ -17,12 +17,12 @@ const { formatCurrency, getProgress } = useFormatting();
                 <span>{{ $t('listings.donationsRaised') }}</span>
                 <span class="text-foreground">
                     {{ formatCurrency(listable.amount_raised) }} /
-                    {{ formatCurrency(listable.donation_goal) }}
+                    {{ formatCurrency(listable.target) }}
                 </span>
             </div>
             <Progress
                 :model-value="
-                    getProgress(listable.amount_raised, listable.donation_goal)
+                    getProgress(listable.amount_raised, listable.target)
                 "
                 class="[&>*]:bg-destructive"
             />
@@ -34,7 +34,7 @@ const { formatCurrency, getProgress } = useFormatting();
                 {{ $t('listings.donors') }}
             </span>
             <span
-                v-if="listable.is_goal_flexible"
+                v-if="listable.is_capped"
                 class="flex items-center gap-1 text-muted-foreground"
             >
                 <Target class="h-4 w-4" />

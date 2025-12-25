@@ -10,7 +10,6 @@ return [
     'filters' => [
         'all' => 'Alle',
         'purchases' => 'Käufe',
-        'investments' => 'Investitionen',
         'donations' => 'Spenden',
         'auctions' => 'Auktionen',
     ],
@@ -27,7 +26,6 @@ return [
     'types' => [
         'purchase' => 'Kauf',
         'auction_purchase' => 'Auktion (Sofortkauf)',
-        'investment' => 'Investition',
         'donation' => 'Spende',
         'auction' => 'Auktion',
     ],

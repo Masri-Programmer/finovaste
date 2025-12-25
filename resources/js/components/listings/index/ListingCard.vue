@@ -3,8 +3,6 @@ import LikeAction from '@/components/actions/LikeAction.vue';
 import ShareAction from '@/components/actions/ShareAction.vue';
 import ListingAuctionContent from '@/components/listings/index/ListingAuctionContent.vue';
 import ListingDonationContent from '@/components/listings/index/ListingDonationContent.vue';
-import ListingInvestmentContent from '@/components/listings/index/ListingInvestmentContent.vue';
-import ListingPurchaseContent from '@/components/listings/index/ListingPurchaseContent.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -38,21 +36,12 @@ function getListingType(type: Listing['listable_type'] | string): {
     variant: 'secondary' | 'outline' | 'destructive' | 'default' | 'ghost';
 } {
     switch (type) {
-        case 'App\\Models\\InvestmentListing':
-            return {
-                text: trans('filters.types.invest'),
-                variant: 'default',
-            };
         case 'App\\Models\\AuctionListing':
             return {
                 text: trans('filters.types.bid'),
                 variant: 'secondary',
             };
-        case 'App\\Models\\PurchaseListing':
-            return {
-                text: trans('filters.types.buy'),
-                variant: 'default',
-            };
+
         case 'App\\Models\\DonationListing':
             return {
                 text: trans('filters.types.donate'),
@@ -141,24 +130,10 @@ const handleImageError = (e: Event) => {
                     </div>
                 </div>
 
-                <ListingInvestmentContent
-                    v-if="
-                        listing.listable_type ===
-                            'App\\Models\\InvestmentListing' && listable
-                    "
-                    :listable="listable"
-                />
                 <ListingAuctionContent
                     v-if="
                         listing.listable_type ===
                             'App\\Models\\AuctionListing' && listable
-                    "
-                    :listable="listable"
-                />
-                <ListingPurchaseContent
-                    v-if="
-                        listing.listable_type ===
-                            'App\\Models\\PurchaseListing' && listable
                     "
                     :listable="listable"
                 />
@@ -172,50 +147,6 @@ const handleImageError = (e: Event) => {
             </CardContent>
 
             <CardFooter class="flex flex-col gap-3">
-                <!-- <Button
-                    v-if="
-                        listing.listable_type ===
-                        'App\\Models\\InvestmentListing'
-                    "
-                    class="w-full"
-                    @click.prevent
-                >
-                    <CircleDollarSign class="mr-2 h-4 w-4" />
-                    {{ $t('listings.investNow') }}
-                </Button>
-                <Button
-                    v-if="
-                        listing.listable_type === 'App\\Models\\AuctionListing'
-                    "
-                    class="w-full"
-                    variant="outline"
-                    @click.prevent
-                >
-                    <Gavel class="mr-2 h-4 w-4" />
-                    {{ $t('listings.placeBid') }}
-                </Button>
-                <Button
-                    v-if="
-                        listing.listable_type === 'App\\Models\\PurchaseListing'
-                    "
-                    class="w-full"
-                    @click.prevent
-                >
-                    <BadgeDollarSign class="mr-2 h-4 w-4" />
-                    {{ $t('listings.purchase') }}
-                </Button>
-                <Button
-                    v-if="
-                        listing.listable_type === 'App\\Models\\DonationListing'
-                    "
-                    class="w-full"
-                    variant="destructive"
-                    @click.prevent
-                >
-                    <HandHeart class="mr-2 h-4 w-4" />
-                    {{ $t('listings.donateNow') }}
-                </Button> -->
-
                 <div
                     class="flex w-full justify-between gap-2 border-t border-border pt-3"
                 >

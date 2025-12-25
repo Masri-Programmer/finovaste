@@ -38,6 +38,12 @@ return [
         'design' => 'Gestaltung & Vorschau',
         'settings' => 'Einstellungen & Privatsphäre',
         'verification' => 'Verifizierung & Rechtliches',
+        'mode_select' => 'Verkaufsart wählen',
+    ],
+    
+    'modes' => [
+        'auction' => 'Auktion',
+        'purchase' => 'Festpreis / Sofortkauf',
     ],
 
     'fields' => [
@@ -120,12 +126,6 @@ return [
         'is_goal_flexible' => [
             'label' => 'Flexibles Ziel (Gelder auch bei Nichterreichen behalten)',
         ],
-        'investment_goal' => [
-            'label' => 'Investitionsziel',
-        ],
-        'minimum_investment' => [
-            'label' => 'Mindestinvestition',
-        ],
         'shares_offered' => [
             'label' => 'Angebotene Anteile',
         ],
@@ -151,8 +151,6 @@ return [
     
     'placeholders' => [
         'video_embed' => 'https://www.youtube.com/watch?v=...',
-        'investment_goal' => 'z.B. 50000',
-        'minimum_investment' => 'z.B. 500',
         'shares_offered' => 'z.B. 1000',
         'share_price' => 'z.B. 50',
     ],

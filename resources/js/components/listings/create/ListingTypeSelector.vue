@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { computed } from 'vue';
 
 // --- 1. Add 'investment' to the type ---
-type ListingType = 'purchase' | 'auction' | 'donation' | 'investment';
+type ListingType = 'private' | 'creative' | 'charity' | 'charity_auction';
 
 const props = defineProps<{
     modelValue: ListingType;
@@ -35,33 +35,35 @@ const listingType = computed({
             <Label
                 class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
             >
-                <RadioGroupItem value="purchase" class="sr-only" />
+                <RadioGroupItem value="private" class="sr-only" />
                 <span class="font-semibold">
                     {{ $t('createListing.types.private.title') }}
                 </span>
-                <span class="text-sm text-muted-foreground">
+                <span class="text-center text-sm text-muted-foreground">
                     {{ $t('createListing.types.private.description') }}
                 </span>
             </Label>
+
             <Label
                 class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
             >
-                <RadioGroupItem value="auction" class="sr-only" />
+                <RadioGroupItem value="creative" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.charity_auction.title') }}
+                    {{ $t('createListing.types.creative.title') }}
                 </span>
-                <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.charity_auction.description') }}
+                <span class="text-center text-sm text-muted-foreground">
+                    {{ $t('createListing.types.creative.description') }}
                 </span>
             </Label>
+
             <Label
                 class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
             >
-                <RadioGroupItem value="donation" class="sr-only" />
+                <RadioGroupItem value="charity" class="sr-only" />
                 <span class="font-semibold">
                     {{ $t('createListing.types.charity.title') }}
                 </span>
-                <span class="text-sm text-muted-foreground">
+                <span class="text-center text-sm text-muted-foreground">
                     {{ $t('createListing.types.charity.description') }}
                 </span>
             </Label>
@@ -69,12 +71,12 @@ const listingType = computed({
             <Label
                 class="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
             >
-                <RadioGroupItem value="investment" class="sr-only" />
+                <RadioGroupItem value="charity_auction" class="sr-only" />
                 <span class="font-semibold">
-                    {{ $t('createListing.types.creative.title') }}
+                    {{ $t('createListing.types.charity_auction.title') }}
                 </span>
-                <span class="text-sm text-muted-foreground">
-                    {{ $t('createListing.types.creative.description') }}
+                <span class="text-center text-sm text-muted-foreground">
+                    {{ $t('createListing.types.charity_auction.description') }}
                 </span>
             </Label>
         </RadioGroup>

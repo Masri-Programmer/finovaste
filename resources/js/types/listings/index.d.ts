@@ -101,6 +101,7 @@ export interface Listing {
 
     address_id: number | null;
     address: Address | null;
+    type: 'private' | 'creative' | 'charity' | 'charity_auction' | null;
 
     title: LocaleString;
     slug: string;
@@ -180,10 +181,10 @@ export interface AuctionListable {
 
 export interface DonationListable {
     id: number;
-    donation_goal: string;
+    target: string;
     amount_raised: string;
     donors_count: number;
-    is_goal_flexible: boolean;
+    is_capped: boolean;
     created_at: string;
     updated_at: string;
     transactions_count?: number;

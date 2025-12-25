@@ -16,24 +16,22 @@ defineProps({
 <template>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="space-y-2">
-            <Label for="donation_goal">
-                {{ $t('createListing.fields.donation_goal.label') }}
+            <Label for="target">
+                {{ $t('createListing.fields.target.label') }}
             </Label>
             <Input
-                id="donation_goal"
-                v-model.number="form.donation_goal"
+                id="target"
+                v-model.number="form.target"
                 type="number"
                 step="1"
-                :placeholder="
-                    $t('createListing.fields.donation_goal.placeholder')
-                "
+                :placeholder="$t('createListing.fields.target.placeholder')"
                 required
             />
         </div>
         <div class="flex items-center space-x-2 pt-6">
-            <Switch id="is_goal_flexible" v-model="form.is_goal_flexible" />
-            <Label for="is_goal_flexible">
-                {{ $t('createListing.fields.is_goal_flexible.label') }}
+            <Switch id="is_capped" v-model="form.is_capped" />
+            <Label for="is_capped">
+                {{ $t('createListing.fields.is_capped.label') }}
             </Label>
         </div>
     </div>

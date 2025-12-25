@@ -9,7 +9,6 @@ import ListingAuctionForm from '@/components/listings/create/ListingAuctionForm.
 import ListingCommonDetails from '@/components/listings/create/ListingCommonDetails.vue';
 import ListingDonationForm from '@/components/listings/create/ListingDonationForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
-import ListingPurchaseForm from '@/components/listings/create/ListingPurchaseForm.vue';
 import ListingTypeSelector from '@/components/listings/create/ListingTypeSelector.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -46,10 +45,11 @@ const mediaUploadRef = ref<InstanceType<typeof ListingMediaUpload> | null>(
     null,
 );
 
-const listingType = useStorage<'purchase' | 'auction' | 'donation'>(
-    'create-listing-type',
-    'purchase',
-);
+const listingType = useStorage<
+    'private' | 'creative' | 'charity' | 'charity_auction'
+>('create-listing-type', 'private');
+
+const listingMode = ref<'auction' | 'donation'>('donation');
 
 const initialTranslations = availableLanguages.value.reduce(
     (acc, lang) => {
@@ -69,7 +69,8 @@ const form = useForm({
     documents: [] as File[],
     videos: [] as File[],
     location_text: '',
-    listing_type: listingType.value,
+    type: listingType.value,
+    mode: listingMode.value,
 
     // Buy Now
     price: null as number | null,
@@ -84,8 +85,8 @@ const form = useForm({
     ends_at: null as Date | null,
 
     // Donation
-    donation_goal: null as number | null,
-    is_goal_flexible: false,
+    target: null as number | null,
+    is_capped: false,
 
     // Terms
     terms: false,
@@ -93,8 +94,22 @@ const form = useForm({
 });
 
 watch(listingType, (newType) => {
-    form.listing_type = newType;
+    form.type = newType;
+
+    // Auto-set mode based on type
+    if (['private', 'creative', 'charity'].includes(newType)) {
+        listingMode.value = 'donation';
+    } else if (newType === 'charity_auction') {
+        // Default to auction, but user can change it
+        listingMode.value = 'auction';
+    }
+
+    form.mode = listingMode.value;
     form.clearErrors();
+});
+
+watch(listingMode, (newMode) => {
+    form.mode = newMode;
 });
 
 const submit = () => {
@@ -158,16 +173,53 @@ const submit = () => {
                             {{ $t('createListing.sections.details') }}
                         </h3>
 
-                        <ListingPurchaseForm
-                            v-if="listingType === 'purchase'"
-                            :form="form"
-                        />
+                        <!-- Sub-mode selector for Charity Action -->
+                        <div
+                            v-if="listingType === 'charity_auction'"
+                            class="mb-6 border-b pb-4"
+                        >
+                            <Label class="mb-2 block text-base font-semibold">
+                                {{ $t('createListing.sections.mode_select') }}
+                            </Label>
+                            <div class="flex gap-4">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    :class="{
+                                        'border-primary bg-primary/10':
+                                            listingMode === 'auction',
+                                    }"
+                                    @click="listingMode = 'auction'"
+                                >
+                                    {{ $t('createListing.modes.auction') }}
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    :class="{
+                                        'border-primary bg-primary/10':
+                                            listingMode === 'purchase',
+                                    }"
+                                    @click="listingMode = 'purchase'"
+                                >
+                                    {{ $t('createListing.modes.purchase') }}
+                                </Button>
+                            </div>
+                        </div>
+
                         <ListingAuctionForm
-                            v-if="listingType === 'auction'"
+                            v-if="
+                                listingType === 'charity_auction' &&
+                                listingMode === 'auction'
+                            "
                             :form="form"
                         />
                         <ListingDonationForm
-                            v-if="listingType === 'donation'"
+                            v-if="
+                                ['private', 'creative', 'charity'].includes(
+                                    listingType,
+                                )
+                            "
                             :form="form"
                         />
                     </div>

@@ -283,7 +283,6 @@ const footerRoutes = {
     marketplace: {
         properties: '/properties',
         vehicles: '/vehicles',
-        investments: '/investments',
         auctions: '/auctions',
     },
     socials: {

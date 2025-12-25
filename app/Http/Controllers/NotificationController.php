@@ -20,7 +20,6 @@ class NotificationController extends Controller
             'new_bid' => 'boolean',
             'item_sold' => 'boolean',
             'new_review' => 'boolean',
-            'new_investment' => 'boolean',
         ]);
         $user->save();
         

@@ -24,57 +24,12 @@
             />
         </template>
 
-        <!-- Buy Now Specific -->
-        <template v-if="isPurchase">
-            <InfoBox
-                :icon="Tag"
-                :title="$t('listing_details.boxes.price')"
-                :value="purchaseData.price"
-                icon-bg-class="bg-green-100 text-green-700"
-            />
-            <InfoBox
-                :icon="Package"
-                :title="$t('listing_details.boxes.quantity')"
-                :value="purchaseData.quantity.toString()"
-                icon-bg-class="bg-blue-100 text-blue-700"
-            />
-            <InfoBox
-                v-if="purchaseData.condition"
-                :icon="Info"
-                :title="$t('listing_details.boxes.condition')"
-                :value="purchaseData.condition"
-                icon-bg-class="bg-gray-100 text-gray-700"
-            />
-        </template>
-
-        <!-- Investment Specific -->
-        <template v-if="isInvestment">
-            <InfoBox
-                :icon="Target"
-                :title="$t('listing_details.boxes.goal')"
-                :value="investmentData.investment_goal.toString()"
-                icon-bg-class="bg-green-100 text-green-700"
-            />
-            <InfoBox
-                :icon="TrendingUp"
-                :title="$t('listing_details.boxes.raised')"
-                :value="investmentData.amount_raised.toString()"
-                icon-bg-class="bg-blue-100 text-blue-700"
-            />
-            <InfoBox
-                :icon="Users"
-                :title="$t('listing_details.boxes.investors')"
-                :value="investmentData.investors_count.toString()"
-                icon-bg-class="bg-purple-100 text-purple-700"
-            />
-        </template>
-
         <!-- Donation Specific -->
         <template v-if="isDonation">
             <InfoBox
                 :icon="Target"
                 :title="$t('listing_details.boxes.goal')"
-                :value="donationData.donation_goal"
+                :value="donationData.target"
                 icon-bg-class="bg-green-100 text-green-700"
             />
             <InfoBox
@@ -106,20 +61,14 @@ import { Progress } from '@/components/ui/progress';
 import type {
     AuctionListable,
     DonationListable,
-    InvestmentListable,
     Listing,
-    PurchaseListable,
 } from '@/types/listings';
 import {
     Clock,
     FolderOpen,
     Gavel,
     Heart,
-    Info,
-    Package,
-    Tag,
     Target,
-    TrendingUp,
     Users,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
@@ -134,24 +83,12 @@ const props = defineProps<Props>();
 const isAuction = computed(
     () => props.listing.listable_type === 'App\\Models\\AuctionListing',
 );
-const isPurchase = computed(
-    () => props.listing.listable_type === 'App\\Models\\PurchaseListing',
-);
-const isInvestment = computed(
-    () => props.listing.listable_type === 'App\\Models\\InvestmentListing',
-);
 const isDonation = computed(
     () => props.listing.listable_type === 'App\\Models\\DonationListing',
 );
 
 const auctionData = computed(() => {
     return props.listing.listable as AuctionListable;
-});
-const purchaseData = computed(() => {
-    return props.listing.listable as PurchaseListable;
-});
-const investmentData = computed(() => {
-    return props.listing.listable as InvestmentListable;
 });
 const donationData = computed(() => {
     return props.listing.listable as DonationListable;
@@ -226,15 +163,8 @@ const progressPercentage = computed(() => {
         return Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
     }
 
-    if (isInvestment.value) {
-        const goal = investmentData.value.investment_goal;
-        const raised = investmentData.value.amount_raised;
-        if (goal <= 0) return 0;
-        return Math.min(100, Math.max(0, (raised / goal) * 100));
-    }
-
     if (isDonation.value) {
-        const goal = parseFloat(donationData.value.donation_goal);
+        const goal = parseFloat(donationData.value.target);
         const raised = parseFloat(donationData.value.amount_raised);
         if (goal <= 0) return 0;
         return Math.min(100, Math.max(0, (raised / goal) * 100));

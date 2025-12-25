@@ -64,7 +64,9 @@ class StoreListingRequest extends BaseFormRequest
             'description.' . $userLocale => 'required|string',
             'description.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'listing_type' => 'required|string|in:auction,donation,purchase,investment',
+            'type' => 'required|string|in:private,creative,charity,charity_auction,auction,donation', // Support legacy types for now too if needed, or just new ones
+            'mode' => 'nullable|string|in:purchase,auction,donation',
+            'listing_type' => 'nullable|string', // Deprecated but kept for backward compatibility if needed
             'location_text' => 'nullable|string|max:255',
             'expires_at' => 'nullable|date|after:now',
 
@@ -79,16 +81,27 @@ class StoreListingRequest extends BaseFormRequest
 
         // 2. --- Type-Specific Rules ---
         $specificRules = [];
-        switch ($this->input('listing_type')) {
+        
+        $type = $this->input('type') ?? $this->input('listing_type');
+        $mode = $this->input('mode') ?? 'donation'; // Default assumption for validation logic if not set
 
-            case 'investment':
-                $specificRules = [
-                    'investment_goal' => 'required|numeric|min:0',
-                    'minimum_investment' => 'required|numeric|min:0',
-                    'shares_offered' => 'required|integer|min:1',
-                    'share_price' => 'required|numeric|min:0',
-                ];
-                break;
+        // Infer mode for validation if not explicitly set
+        if (in_array($type, ['private', 'creative', 'charity'])) {
+            $mode = 'donation';
+        } elseif ($type === 'purchase') {
+            $mode = 'purchase';
+        } elseif ($type === 'auction') {
+            $mode = 'auction';
+        } elseif ($type === 'charity_auction') {
+             // validation depends on chosen mode (auction or purchase)
+             // If user selects charity_auction, they MUST send a mode
+             // If they don't, we might have issues. Let's rely on input mode.
+        }
+
+        // Use mode for validation
+        switch ($mode) {
+
+        
 
             case 'auction':
                 $specificRules = [
@@ -102,18 +115,11 @@ class StoreListingRequest extends BaseFormRequest
 
             case 'donation':
                 $specificRules = [
-                    'donation_goal' => 'required|numeric|min:0',
-                    'is_goal_flexible' => 'boolean',
+                    'target' => 'required|numeric|min:0',
+                    'is_capped' => 'boolean',
                 ];
                 break;
 
-            case 'purchase':
-                $specificRules = [
-                    'price' => 'required|numeric|min:0',
-                    'quantity' => 'required|integer|min:1',
-                    'condition' => 'nullable|string|max:100',
-                ];
-                break;
         }
 
         return array_merge($rules, $specificRules);
@@ -130,6 +136,8 @@ class StoreListingRequest extends BaseFormRequest
             'title',
             'description',
             'category_id',
+            'type',
+            'mode',
             'listing_type',
             'expires_at',
             'location_text',
@@ -143,15 +151,16 @@ class StoreListingRequest extends BaseFormRequest
      */
     public function getSpecificData(): array
     {
-        $type = $this->input('listing_type');
+        $type = $this->input('type');
+        $mode = $this->input('mode');
+        
+        // Map abstract types to modes if needed
+        if (in_array($type, ['private', 'creative', 'charity'])) {
+            $mode = 'donation';
+        }
 
-        return match ($type) {
-            'investment' => $this->safe()->only([
-                'investment_goal',
-                'minimum_investment',
-                'shares_offered',
-                'share_price'
-            ]),
+        return match ($mode) {
+           
             'auction' => $this->safe()->only([
                 'start_price',
                 'starts_at',
@@ -160,14 +169,10 @@ class StoreListingRequest extends BaseFormRequest
                 'purchase_price'
             ]),
             'donation' => $this->safe()->only([
-                'donation_goal',
-                'is_goal_flexible'
+                'target',
+                'is_capped'
             ]),
-            'purchase' => $this->safe()->only([
-                'price',
-                'quantity',
-                'condition'
-            ]),
+         
             default => [],
         };
     }

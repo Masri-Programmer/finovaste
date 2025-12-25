@@ -1,15 +1,7 @@
 <template>
     <div class="container mx-auto py-6">
         <section>
-            <ListingMedia :media="listing.media">
-                <template #tags>
-                    <span
-                        class="rounded-full bg-primary/80 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur-sm"
-                    >
-                        {{ $t('listings.investment_tag') }}
-                    </span>
-                </template>
-            </ListingMedia>
+            <ListingMedia :media="listing.media"> </ListingMedia>
         </section>
 
         <section class="mt-8 grid gap-8 md:grid-cols-3">

@@ -3,34 +3,33 @@
 namespace Database\Factories;
 
 use App\Models\DonationListing;
+use App\Models\Listing;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DonationListing>
- */
 class DonationListingFactory extends Factory
 {
     protected $model = DonationListing::class;
 
     public function definition(): array
     {
-        $goal = $this->faker->numberBetween(5000, 100000);
-        $raised = $this->faker->numberBetween(0, $goal);
-
         return [
-            'donation_goal' => $goal,
-            'amount_raised' => $raised,
-            'donors_count' => $this->faker->numberBetween(0, 100),
-            'is_goal_flexible' => $this->faker->boolean(70),
+            'target' => $this->faker->randomFloat(2, 1000, 50000),
+            'raised' => 0,
+            'donors_count' => 0,
+            'is_capped' => $this->faker->boolean(10),
+            'requires_verification' => $this->faker->boolean(50),
         ];
     }
 
-    public function withListing()
+    public function withListing(): static
     {
         return $this->afterCreating(function (DonationListing $donation) {
-            $donation->listing()->save(
-                \App\Models\Listing::factory()->make()
-            );
+            Listing::factory()->create([
+                'listable_type' => DonationListing::class,
+                'listable_id' => $donation->id,
+                'type' => 'donation',
+                // Donations might expire whenever, or match a campaign end date
+            ]);
         });
     }
 }

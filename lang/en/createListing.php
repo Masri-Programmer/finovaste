@@ -82,7 +82,7 @@ return [
             'text' => 'We are obliged to issue a donation receipt or invoice for every donation over 300 euros. Please confirm that you can guarantee this.',
         ],
 
-        'donation_goal' => [
+        'target' => [
             'label' => 'Donation Goal (€)',
             'placeholder' => 'e.g. 5000',
         ],
@@ -117,14 +117,8 @@ return [
             'label' => 'Expiration Date (Optional)',
             'placeholder' => 'Select a date',
         ],
-        'is_goal_flexible' => [
+        'is_capped' => [
             'label' => 'Flexible Goal (Keep funds even if not reached)',
-        ],
-        'investment_goal' => [
-            'label' => 'Investment Goal',
-        ],
-        'minimum_investment' => [
-            'label' => 'Minimum Investment',
         ],
         'shares_offered' => [
             'label' => 'Shares Offered',
@@ -151,8 +145,6 @@ return [
     
     'placeholders' => [
         'video_embed' => 'https://www.youtube.com/watch?v=...',
-        'investment_goal' => 'e.g. 50000',
-        'minimum_investment' => 'e.g. 500',
         'shares_offered' => 'e.g. 1000',
         'share_price' => 'e.g. 50',
     ],

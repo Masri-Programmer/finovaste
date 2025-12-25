@@ -4,10 +4,8 @@ namespace App\Http\Requests\Listings;
 
 use App\Models\Listing;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\InvestmentListing;
 use App\Models\AuctionListing;
 use App\Models\DonationListing;
-use App\Models\PurchaseListing;
 use Illuminate\Validation\Rule;
 
 class UpdateListingRequest extends FormRequest
@@ -61,14 +59,8 @@ class UpdateListingRequest extends FormRequest
                 }),
             ],
         ];
-        if ($listing->listable instanceof InvestmentListing) {
-            $specificRules = [
-                'investment_goal' => 'required|numeric|min:0',
-                'minimum_investment' => 'required|numeric|min:0',
-                'shares_offered' => 'required|integer|min:1',
-                'share_price' => 'required|numeric|min:0',
-            ];
-        } elseif ($listing->listable instanceof AuctionListing) {
+    
+        if ($listing->listable instanceof AuctionListing) {
             $specificRules = [
                 'start_price' => 'required|numeric|min:0',
                 'ends_at' => 'required|date',
@@ -77,14 +69,7 @@ class UpdateListingRequest extends FormRequest
             ];
         } elseif ($listing->listable instanceof DonationListing) {
             $specificRules = [
-                'donation_goal' => 'required|numeric|min:0',
-                'is_goal_flexible' => 'boolean',
-            ];
-        } elseif ($listing->listable instanceof PurchaseListing) {
-            $specificRules = [
-                'price' => 'required|numeric|min:0',
-                'quantity' => 'required|integer|min:1',
-                'condition' => 'nullable|string|max:100',
+                'is_capped' => 'boolean',
             ];
         }
 
@@ -115,14 +100,7 @@ class UpdateListingRequest extends FormRequest
     {
         $listing = $this->route('listing');
 
-        if ($listing->listable instanceof InvestmentListing) {
-            return $this->safe()->only([
-                'investment_goal',
-                'minimum_investment',
-                'shares_offered',
-                'share_price'
-            ]);
-        }
+       
         if ($listing->listable instanceof AuctionListing) {
             return $this->safe()->only([
                 'start_price',
@@ -133,17 +111,11 @@ class UpdateListingRequest extends FormRequest
         }
         if ($listing->listable instanceof DonationListing) {
             return $this->safe()->only([
-                'donation_goal',
-                'is_goal_flexible'
+                'target',
+                'is_capped'
             ]);
         }
-        if ($listing->listable instanceof PurchaseListing) {
-            return $this->safe()->only([
-                'price',
-                'quantity',
-                'condition'
-            ]);
-        }
+     
 
         return [];
     }

@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import Pagination from '@/components/layout/Pagination.vue';
 import ListingCard from '@/components/listings/index/ListingCard.vue';
-
 import SearchFilter from '@/components/SearchFilter.vue';
-
-const filters = ref({
-    category: 'all',
-    search: '',
-});
 </script>
 
 <template>

@@ -7,9 +7,7 @@ import Layout from '@/components/layout/Layout.vue';
 import ListingAuctionForm from '@/components/listings/create/ListingAuctionForm.vue';
 import ListingCommonDetails from '@/components/listings/create/ListingCommonDetails.vue';
 import ListingDonationForm from '@/components/listings/create/ListingDonationForm.vue';
-import ListingInvestmentForm from '@/components/listings/create/ListingInvestmentForm.vue';
 import ListingMediaUpload from '@/components/listings/create/ListingMediaUpload.vue';
-import ListingPurchaseForm from '@/components/listings/create/ListingPurchaseForm.vue';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -37,10 +35,8 @@ import { Category } from '@/types';
 import {
     AuctionListable,
     DonationListable,
-    InvestmentListable,
     Listing,
     ListingMediaCollection,
-    PurchaseListable,
 } from '@/types/listings';
 
 const { locale, availableLanguages } = useLanguageSwitcher();
@@ -91,14 +87,12 @@ const existingMedia: {
     ),
 };
 
-const listingType = ref<'purchase' | 'auction' | 'donation' | 'investment'>(
-    props.listing.listable_type.includes('PurchaseListing')
-        ? 'purchase'
-        : props.listing.listable_type.includes('AuctionListing')
-          ? 'auction'
-          : props.listing.listable_type.includes('InvestmentListing')
-            ? 'investment'
-            : 'purchase',
+const listingType = ref<'auction' | 'donation'>(
+    props.listing.listable_type.includes('AuctionListing')
+        ? 'auction'
+        : props.listing.listable_type.includes('DonationListing')
+          ? 'donation'
+          : 'donation',
 );
 
 const form = useForm({
@@ -158,38 +152,14 @@ const form = useForm({
             : null,
 
     // Donation
-    donation_goal:
+    target:
         listingType.value === 'donation'
-            ? Number((props.listing.listable as DonationListable).donation_goal)
+            ? Number((props.listing.listable as DonationListable).target)
             : null,
-    is_goal_flexible:
+    is_capped:
         listingType.value === 'donation'
-            ? (props.listing.listable as DonationListable).is_goal_flexible
+            ? (props.listing.listable as DonationListable).is_capped
             : false,
-
-    // Investmen
-    investment_goal:
-        listingType.value === 'investment'
-            ? Number(
-                  (props.listing.listable as InvestmentListable)
-                      .investment_goal,
-              )
-            : null,
-    minimum_investment:
-        listingType.value === 'investment'
-            ? Number(
-                  (props.listing.listable as InvestmentListable)
-                      .minimum_investment,
-              )
-            : null,
-    shares_offered:
-        listingType.value === 'investment'
-            ? (props.listing.listable as InvestmentListable).shares_offered
-            : null,
-    share_price:
-        listingType.value === 'investment'
-            ? Number((props.listing.listable as InvestmentListable).share_price)
-            : null,
 });
 
 watch(listingType, (newType) => {
@@ -266,20 +236,12 @@ const deleteListing = () => {
                             {{ $t('createListing.sections.details') }}
                         </h3>
 
-                        <ListingPurchaseForm
-                            v-if="listingType === 'purchase'"
-                            :form="form"
-                        />
                         <ListingAuctionForm
                             v-if="listingType === 'auction'"
                             :form="form"
                         />
                         <ListingDonationForm
                             v-if="listingType === 'donation'"
-                            :form="form"
-                        />
-                        <ListingInvestmentForm
-                            v-if="listingType === 'investment'"
                             :form="form"
                         />
                     </div>

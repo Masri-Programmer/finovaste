@@ -57,12 +57,8 @@ watch(
 
 const getTypeLabel = (type: string) => {
     switch (type) {
-        case 'purchase':
-            return 'transactions.types.purchase';
         case 'auction_purchase':
             return 'transactions.types.auction_purchase';
-        case 'investment':
-            return 'transactions.types.investment';
         case 'donation':
             return 'transactions.types.donation';
         case 'auction':
@@ -95,30 +91,6 @@ const getStatusVariant = (status: string) => {
             <p class="text-muted-foreground">
                 {{ $t('transactions.description') }}
             </p>
-            <!-- <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div class="flex items-center gap-2 text-sm">
-                    <Link :href="index()" :class="{'font-bold text-primary': !filters.type, 'text-muted-foreground hover:text-primary': filters.type}">
-                        {{ $t('transactions.filters.all') }}
-                    </Link>
-                    <Link :href="index({ query: { type: 'purchase' } })" :class="{'font-bold text-primary': filters.type === 'purchase', 'text-muted-foreground hover:text-primary': filters.type !== 'purchase'}">
-                        {{ $t('transactions.filters.purchases') }}
-                    </Link>
-                    <Link :href="index({ query: { type: 'investment' } })" :class="{'font-bold text-primary': filters.type === 'investment', 'text-muted-foreground hover:text-primary': filters.type !== 'investment'}">
-                        {{ $t('transactions.filters.investments') }}
-                    </Link>
-                    <Link :href="index({ query: { type: 'donation' } })" :class="{'font-bold text-primary': filters.type === 'donation', 'text-muted-foreground hover:text-primary': filters.type !== 'donation'}">
-                        {{ $t('transactions.filters.donations') }}
-                    </Link>
-                    <Link :href="index({ query: { type: 'auction' } })" :class="{'font-bold text-primary': filters.type === 'auction', 'text-muted-foreground hover:text-primary': filters.type !== 'auction'}">
-                        {{ $t('transactions.filters.auctions') }}
-                    </Link>
-                </div>
-            
-                <div class="relative w-full sm:w-64">
-                    <Search class="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input v-model="search" :placeholder="$t('transactions.search_placeholder')" class="pl-8 bg-background" />
-                </div>
-            </div> -->
             <div
                 class="h-full rounded-md border bg-card text-card-foreground shadow-sm"
             >

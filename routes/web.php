@@ -34,7 +34,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark_all_read');
 Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
-// Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+Route::middleware(['auth', 'developer'])->prefix('developer')->name('developer.')->group(function () {
+    Route::get('/logs', [\App\Http\Controllers\LogViewerController::class, 'index'])->name('logs');
+    Route::post('/logs/clear', [\App\Http\Controllers\LogViewerController::class, 'clear'])->name('logs.clear');
+    Route::get('/logs/download', [\App\Http\Controllers\LogViewerController::class, 'download'])->name('logs.download');
+});
 
 require __DIR__ . '/listings.php';
 require __DIR__ . '/settings.php';

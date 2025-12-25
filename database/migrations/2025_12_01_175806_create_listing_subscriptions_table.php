@@ -11,13 +11,14 @@ return new class extends Migration
      */
   public function up(): void
 {
-    Schema::create('listing_updates', function (Blueprint $table) {
+    Schema::create('listing_subscriptions', function (Blueprint $table) {
         $table->id();
         $table->foreignId('listing_id')->constrained()->cascadeOnDelete();
-        $table->string('title')->nullable();
-        $table->text('content');
-        $table->string('type')->default('general');
+        $table->string('email');
+         $table->string('locale', 5)->default('de');
         $table->timestamps();
+
+        $table->unique(['listing_id', 'email']); 
     });
 }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('listing_updates');
+        Schema::dropIfExists('listing_subscriptions');
     }
 };

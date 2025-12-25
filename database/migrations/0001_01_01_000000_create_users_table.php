@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('locale')->default('de');
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->json('notification_settings')->nullable();
+            
 
             $table->rememberToken();
             $table->timestamps();

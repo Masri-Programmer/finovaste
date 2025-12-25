@@ -22,7 +22,6 @@ return [
     'donors' => 'donors',
     'investNow' => 'Invest Now',
     'investors' => 'investors',
-    'minInvestment' => 'minimum investment',
     'placeBid' => 'Make a bid',
     'price' => 'price',
     'quantity' => 'quantity',
@@ -36,27 +35,9 @@ return [
     'location' => 'Location',
     'role' => 'role',
     'contact_button' => 'Contact',
-    'dialogue' => [
-        'title' => 'Confirm investment',
-        'description' => 'You are about to invest :amount. Please confirm your entry.',
-        'amount_label' => 'amount',
-        'processing' => 'Processing...',
-        'confirm_button' => 'Confirm now',
-    ],
-    'toast' => [
-        'starting' => 'Investment is processing...',
-        'success' => 'Investment successful!',
-        'failure' => 'Investment failed. Please try again.',
-    ],
-    'min_investment' => 'Min. investment',
-    'minimum' => 'minimum',
-    'your_investment' => 'Your Investment',
     'amount' => 'amount',
     'capital_share' => 'capital share',
-    'invest_button' => 'Invest now',
-    'secure_payment' => 'Secure payment powered by PayPal, Stripe & more',
     'watch_video' => 'Watch Video',
-    'investment_tag' => 'Investment',
     "backToMarketplace" => "Back to Marketplace",
     'pagination_name' => 'Offers',
     'share' => [
@@ -98,18 +79,6 @@ return [
         'currency' => 'currency',
     ],
 
-    // Buy Now / E-commerce
-    'purchase' => [
-        'tag' => 'Buy',
-        'ownership' => 'You own this listing',
-        'purchase_details' => 'Purchase Details',
-        'price' => 'price',
-        'condition' => 'state',
-        'condition_new' => 'New',
-        'condition_used' => 'Used',
-        'available_qty' => 'Available quantity',
-        'action_btn' => 'Buy Now',
-    ],
 
     // Auction
     'auction' => [
@@ -138,26 +107,5 @@ return [
         'answer' => 'Answer',
         'no_questions_yet' => 'No questions yet',
     ],
-
-    'investment' => [
-        'tag' => 'Investment',
-        'invest_now' => 'Invest now',
-        'min_invest' => 'Minimum investment',
-        'goal' => 'Financing goal',
-        
-        // CHANGED: Key is now 'dialog' to match Vue component (was 'dialogue')
-        'dialog' => [ 
-            'title' => 'Confirm investment',
-            'description' => 'You are about to invest :amount in this project. Please review your details below.',
-            'shares_label' => 'Number of shares',
-            'confirm_button' => 'Confirm Investment',
-            'amount_label' => 'Investment amount', 
-        ],
-
-        'toast' => [
-            'starting' => 'Investment is being prepared...',
-            'success' => 'Investment successful!',
-            'failure' => 'Investment failed. Please try again.',
-        ],
-    ],
+    
 ];

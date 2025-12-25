@@ -24,6 +24,7 @@ import {
 // Routes
 import { register } from '@/routes';
 import { create } from '@/routes/listings';
+import Marketplace from './Marketplace.vue';
 
 // --- Composables ---
 const toast = useToast();
@@ -198,6 +199,8 @@ const heroOpacity = computed(() => {
                 </div>
             </div>
         </section>
+
+        <Marketplace />
 
         <section class="container mx-auto max-w-4xl px-4 py-24 text-center">
             <h2

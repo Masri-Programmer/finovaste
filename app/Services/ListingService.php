@@ -90,12 +90,6 @@ class ListingService
     private function createSpecificListing(array $data)
     {
         switch ($data['listing_type']) {
-            case 'purchase':
-                return PurchaseListing::create([
-                    'price' => $data['price'],
-                    'quantity' => $data['quantity'],
-                    'condition' => $data['condition'],
-                ]);
             case 'auction':
                 return AuctionListing::create([
                     'start_price' => $data['start_price'],
@@ -106,8 +100,8 @@ class ListingService
                 ]);
             case 'donation':
                 return DonationListing::create([
-                    'donation_goal' => $data['donation_goal'],
-                    'is_goal_flexible' =>  $data['is_goal_flexible'],
+                    'target' => $data['target'],
+                    'is_capped' =>  $data['is_capped'],
                 ]);
             default:
                 throw new \Exception("Invalid listing type: {$data['listing_type']}");
