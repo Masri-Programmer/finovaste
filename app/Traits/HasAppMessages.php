@@ -18,7 +18,7 @@ trait HasAppMessages
      * @param array $options Extra options for vue-toastification (timeout, position, etc.)
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function checkSuccess($model, ?string $action = null, ?string $route = null, array $routeParams = [], array $options = [])
+    protected function checkSuccess($model, ?string $action = null, ?string $route = null, array $routeParams = [], array $options = [], array $params = [])
     {
         $modelName = $this->getReadableModelName($model);
 
@@ -35,9 +35,9 @@ trait HasAppMessages
         $standardActionKey = 'messages.success.' . $action;
 
         if (Lang::has($standardActionKey)) {
-            $message = __($standardActionKey, ['model' => $modelName]);
+            $message = __($standardActionKey, array_merge(['model' => $modelName], $params));
         } else {
-            $message = __($action, ['model' => $modelName]);
+            $message = __($action, array_merge(['model' => $modelName], $params));
         }
 
         $response = $route ? to_route($route, $routeParams) : back();
@@ -58,6 +58,52 @@ trait HasAppMessages
                 'closeButton' => 'button',
                 'icon' => true,
                 'rtl' => false,
+            ], $options)
+        ]);
+    }
+
+    /**
+     * Handle a warning message.
+     */
+    protected function checkWarning(string $message, ?string $route = null, array $routeParams = [], array $options = [], array $params = [])
+    {
+        $response = $route ? to_route($route, $routeParams) : back();
+
+        return $response->with('notification', [
+            'type' => 'warning',
+            'title' => __('messages.titles.warning'),
+            'message' => __($message, $params),
+            'options' => array_merge([
+                'timeout' => 7000,
+                'closeOnClick' => true,
+                'pauseOnFocusLoss' => true,
+                'pauseOnHover' => true,
+                'draggable' => false,
+                'closeButton' => 'button',
+                'icon' => true,
+            ], $options)
+        ]);
+    }
+
+    /**
+     * Handle an info message.
+     */
+    protected function checkInfo(string $message, ?string $route = null, array $routeParams = [], array $options = [], array $params = [])
+    {
+        $response = $route ? to_route($route, $routeParams) : back();
+
+        return $response->with('notification', [
+            'type' => 'info',
+            'title' => __('messages.titles.info'),
+            'message' => __($message, $params),
+            'options' => array_merge([
+                'timeout' => 5000,
+                'closeOnClick' => true,
+                'pauseOnFocusLoss' => true,
+                'pauseOnHover' => true,
+                'draggable' => false,
+                'closeButton' => 'button',
+                'icon' => true,
             ], $options)
         ]);
     }

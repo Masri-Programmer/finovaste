@@ -15,6 +15,8 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    use \App\Traits\HasAppMessages;
+
     /**
      * Show the registration page.
      */
@@ -47,12 +49,33 @@ class RegisteredUserController extends Controller
         if ($userRole) {
             $user->roles()->attach($userRole);
         }
-        event(new Registered($user));
+
+        $mailFailed = false;
+        try {
+            event(new Registered($user));
+        } catch (\Exception $e) {
+            \Log::error('Registration email could not be sent: ' . $e->getMessage());
+            $mailFailed = true;
+        }
 
         Auth::login($user);
 
         $request->session()->regenerate();
 
-        return to_route('verification.notice');
+        if ($mailFailed) {
+            return $this->checkWarning(
+                'messages.auth.registration_mail_failed', 
+                'home'
+            );
+        }
+
+        return $this->checkSuccess(
+            $user, 
+            'messages.auth.registration_success', 
+            'verification.notice',
+            [],
+            [],
+            ['name' => $user->name]
+        );
     }
 }

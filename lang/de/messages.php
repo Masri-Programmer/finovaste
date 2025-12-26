@@ -58,5 +58,7 @@ return [
 
     'auth' => [
         'login_required' => 'Sie müssen eingeloggt sein, um diese Aktion durchzuführen.',
+        'registration_success' => 'Willkommen, :name! Ihr Konto wurde erfolgreich erstellt.',
+        'registration_mail_failed' => 'Konto erstellt! Wir konnten jedoch keine Bestätigungs-E-Mail senden. Sie können sich trotzdem anmelden, aber einige Funktionen sind möglicherweise eingeschränkt.',
     ],
 ];

@@ -58,5 +58,7 @@ return [
 
     'auth' => [
         'login_required' => 'You must be logged in to perform this action.',
+        'registration_success' => 'Welcome, :name! Your account has been created successfully.',
+        'registration_mail_failed' => 'Account created! However, we couldn\'t send the verification email. You can still login, but some features may be limited.',
     ],
 ];
