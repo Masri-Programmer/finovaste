@@ -59,6 +59,10 @@ class HandleInertiaRequests extends Middleware
                 'notifications' => $user?->notifications()->latest()->take(5)->get() ?? [],
                 'unread_notifications_count' => $user?->unreadNotifications()->count() ?? 0,
             ],
+            'money' => [
+                'currencies' => config('money.currencies'),
+                'default' => config('money.defaults.currency'),
+            ],
             'locale' => fn() => App::getLocale(),
             // 'locale' => $request->user()->locale ?? $request->getPreferredLanguage(),
             'supportedLocales' => fn() => config('app.supported_locales'),

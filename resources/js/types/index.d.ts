@@ -40,12 +40,12 @@ export interface User {
     email: string;
     email_verified_at: string | null;
     locale: string;
+    currency: string;
     profile_photo_path: string | null;
     created_at: string;
     updated_at: string;
     two_factor_confirmed_at: string | null;
     address_id: number | null;
-
     roles: Role[];
     addresses: Address[];
 }
@@ -100,6 +100,10 @@ export type AppPageProps<
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    money: {
+        currencies: string[];
+        default: string;
+    };
     sidebarOpen: boolean;
     listings: PaginatedResponse<Listing>;
     categories: Category[];

@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { formatCurrency } from '@/composables/useCurrency';
+import { useMoney } from '@/composables/useMoney';
 import { show } from '@/routes/listings';
 import { index, receipt } from '@/routes/transactions';
 import { Link, router } from '@inertiajs/vue3';
@@ -25,6 +25,7 @@ const props = defineProps<{
             uuid: string;
             type: string;
             amount: number;
+            currency: string;
             status: string;
             created_at: string;
             payable: {
@@ -41,6 +42,8 @@ const props = defineProps<{
         search?: string;
     };
 }>();
+
+const { formatMoney } = useMoney();
 
 const search = ref(props.filters.search || '');
 
@@ -162,7 +165,12 @@ const getStatusVariant = (status: string) => {
                                 >
                             </TableCell>
                             <TableCell>
-                                {{ formatCurrency(transaction.amount) }}
+                                {{
+                                    formatMoney(
+                                        transaction.amount,
+                                        transaction.currency,
+                                    )
+                                }}
                             </TableCell>
                             <TableCell>
                                 <Badge

@@ -94,6 +94,7 @@ class TransactionController extends Controller
                 'type'         => 'purchase',
                 'amount'       => $totalAmount,
                 'fee'          => $feeCalculator->calculate($listing, (float) $totalAmount),
+                'currency'     => \App\Services\MoneyService::getCurrency(Auth::user()),
                 'quantity'     => $quantity,
                 'status'       => 'completed',
                 'metadata'     => [
@@ -158,6 +159,7 @@ class TransactionController extends Controller
                 'type'         => 'donation',
                 'amount'       => $request->amount,
                 'fee'          => $feeCalculator->calculate($listing, (float) $request->amount),
+                'currency'     => \App\Services\MoneyService::getCurrency(Auth::user()),
                 'status'       => 'completed',
                 'metadata'     => [
                     'campaign_title' => $listing->title,

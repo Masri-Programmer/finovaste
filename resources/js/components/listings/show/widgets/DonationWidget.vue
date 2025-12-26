@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { formatCurrency } from '@/composables/useCurrency';
+import { useMoney } from '@/composables/useMoney';
 import { checkout } from '@/routes/listings';
 import { DonationListable, Listing } from '@/types/listings';
 import { router } from '@inertiajs/vue3';
@@ -11,6 +11,8 @@ const props = defineProps<{
     data: DonationListable;
     listing: Listing;
 }>();
+
+const { formatMoney } = useMoney();
 
 const amount = ref('');
 const processing = ref(false);
@@ -57,11 +59,11 @@ const donate = () => {
         <div class="mb-4 flex justify-between text-xs text-muted-foreground">
             <span
                 >{{ $t('listings.donation.raised') }}:
-                {{ formatCurrency(data.raised) }}</span
+                {{ formatMoney(data.raised) }}</span
             >
             <span
                 >{{ $t('listings.donation.goal') }}:
-                {{ formatCurrency(data.target) }}</span
+                {{ formatMoney(data.target) }}</span
             >
         </div>
 

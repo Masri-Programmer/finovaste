@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { formatCurrency } from '@/composables/useCurrency';
+import { useMoney } from '@/composables/useMoney';
 import { bid } from '@/routes/listings';
 import { AuctionListable, Listing } from '@/types/listings';
 import { useForm } from '@inertiajs/vue3';
@@ -11,6 +11,8 @@ const props = defineProps<{
     data: AuctionListable;
     listing: Listing;
 }>();
+
+const { formatMoney } = useMoney();
 
 const bidForm = useForm({
     amount: null as number | null,
@@ -31,7 +33,7 @@ const submitBid = () => {
         </h3>
         <div class="flex flex-col gap-4">
             <div class="text-center text-3xl font-bold text-primary">
-                {{ formatCurrency(data.current_bid || data.start_price) }}
+                {{ formatMoney(data.current_bid || data.start_price) }}
             </div>
             <div class="text-center text-xs text-muted-foreground">
                 {{ $t('listings.auction.ends_at') }}

@@ -70,6 +70,8 @@ class PaymentController extends Controller
         // Calculate Fee
         $fee = $feeCalculator->calculate($listing, (float) $amount);
 
+        $currency = \App\Services\MoneyService::getCurrency($user);
+
         // 3. Create Pending Transaction
         $transaction = Transaction::create([
             'user_id' => $user->id,
@@ -77,7 +79,7 @@ class PaymentController extends Controller
             'payable_id' => $listing->listable_id,
             'amount' => $amount,
             'fee' => $fee,
-            'currency' => 'EUR',
+            'currency' => $currency,
             'status' => 'pending',
             'type' => $transactionType,
             'metadata' => $metadata,
@@ -102,7 +104,7 @@ class PaymentController extends Controller
                 'customer_email' => $user->email,
                 'line_items' => [[
                     'price_data' => [
-                        'currency' => 'usd',
+                        'currency' => strtolower($currency),
                         'product_data' => [
                             'name' => $productName,
                             'images' => $images,
@@ -167,6 +169,8 @@ class PaymentController extends Controller
              return $this->checkError(__('messages.errors.bid_too_low', ['amount' => number_format($minRequired, 2)]));
         }
 
+        $currency = \App\Services\MoneyService::getCurrency($user);
+
         // 3. Create Pending Transaction
         $transaction = Transaction::create([
             'user_id' => $user->id,
@@ -177,7 +181,7 @@ class PaymentController extends Controller
             // Usually invalid to charge fee on bid if not won. 
             // We can authorize full amount. Fee is internal.
             'fee' => 0, 
-            'currency' => 'EUR',
+            'currency' => $currency,
             'status' => 'pending',
             'type' => 'auction_bid',
             'metadata' => ['is_bid' => true],
@@ -196,7 +200,7 @@ class PaymentController extends Controller
                 'customer_email' => $user->email,
                 'line_items' => [[
                     'price_data' => [
-                        'currency' => 'eur',
+                        'currency' => strtolower($currency),
                         'product_data' => [
                             'name' => "Bid on: {$listing->title}",
                             'images' => $images,
