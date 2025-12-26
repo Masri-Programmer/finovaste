@@ -13,5 +13,10 @@ defineProps<Props>();
 </script>
 
 <template>
-    <img :src="logo" alt="ranalp logo" :class="className" v-bind="$attrs" />
+    <img
+        :src="logo"
+        :alt="$page.props.name + ' logo'"
+        :class="className"
+        v-bind="$attrs"
+    />
 </template>

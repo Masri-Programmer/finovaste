@@ -60,5 +60,13 @@ return [
         'login_required' => 'Sie müssen eingeloggt sein, um diese Aktion durchzuführen.',
         'registration_success' => 'Willkommen, :name! Ihr Konto wurde erfolgreich erstellt.',
         'registration_mail_failed' => 'Konto erstellt! Wir konnten jedoch keine Bestätigungs-E-Mail senden. Sie können sich trotzdem anmelden, aber einige Funktionen sind möglicherweise eingeschränkt.',
+        'email_verification' => [
+            'subject' => 'Willkommen bei :app! Bestätigen Sie Ihre E-Mail',
+            'greeting' => 'Hallo :name,',
+            'line1' => 'Wir freuen uns, dass Sie sich bei :app angemeldet haben. Um zu beginnen und sicherzustellen, dass Ihr Konto sicher ist, bestätigen Sie bitte Ihre E-Mail-Adresse.',
+            'button' => 'E-Mail-Adresse bestätigen',
+            'line2' => 'Wenn Sie sich nicht bei :app angemeldet haben, können Sie diese E-Mail sicher ignorieren.',
+            'salutation' => 'Beste Grüße,',
+        ],
     ],
 ];

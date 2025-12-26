@@ -40,5 +40,15 @@ class AppServiceProvider extends ServiceProvider
             \Illuminate\Auth\Events\Login::class,
             \App\Listeners\SetLocaleOnLogin::class
         );
+
+        \Illuminate\Auth\Notifications\VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new \Illuminate\Notifications\Messages\MailMessage)
+                ->subject(__('messages.auth.email_verification.subject', ['app' => config('app.name')]))
+                ->greeting(__('messages.auth.email_verification.greeting', ['name' => $notifiable->name, 'app' => config('app.name')]))
+                ->line(__('messages.auth.email_verification.line1', ['app' => config('app.name')]))
+                ->action(__('messages.auth.email_verification.button', ['app' => config('app.name')]), $url)
+                ->line(__('messages.auth.email_verification.line2', ['app' => config('app.name')]))
+                ->salutation(__('messages.auth.email_verification.salutation', ['app' => config('app.name')]));
+        });
     }
 }

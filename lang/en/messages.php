@@ -60,5 +60,13 @@ return [
         'login_required' => 'You must be logged in to perform this action.',
         'registration_success' => 'Welcome, :name! Your account has been created successfully.',
         'registration_mail_failed' => 'Account created! However, we couldn\'t send the verification email. You can still login, but some features may be limited.',
+        'email_verification' => [
+            'subject' => 'Welcome to :app! Confirm your email',
+            'greeting' => 'Hi :name,',
+            'line1' => 'We\'re excited to have you join :app. To get started and ensure your account is secure, could you please confirm your email address?',
+            'button' => 'Confirm Email Address',
+            'line2' => 'If you didn\'t sign up for :app, you can safely ignore this email.',
+            'salutation' => 'Cheers,',
+        ],
     ],
 ];
