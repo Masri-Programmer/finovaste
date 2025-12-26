@@ -30,7 +30,7 @@ Route::controller(ListingController::class)
 
             Route::post('/', 'store')->name('store');
 
-            Route::post('/{listing}/bid', [AuctionController::class, 'store'])->name('bid');
+            Route::post('/{listing}/bid', [PaymentController::class, 'bidCheckout'])->name('bid');
             Route::post('/{listing}/donate', [TransactionController::class, 'donate'])->name('donate');
 
             Route::delete('/{listing}/unlike', 'unlike')->name('unlike');
