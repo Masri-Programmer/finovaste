@@ -7,25 +7,25 @@ return [
     'buttons' => [
         'submit' => 'Create Campaign',
         'submitting' => 'Creating...',
-        'preview' => 'View Preview', 
+        'preview' => 'Preview Listing', 
         'save_draft' => 'Save as Draft',
     ],
 
     'types' => [
         'private_occasion' => [
-            'title' => 'Private Occasions',
+            'title' => 'Private Occasion',
             'description' => 'Support birthdays or special events within the circle of family and friends – quite simply through private gifts.',
         ],
         'founders_creatives' => [
-            'title' => 'Founders & Creatives',
+            'title' => 'Founders & Creative',
             'description' => 'Realize your creative ideas: Present your project to our community and collect the support you need for implementation.',
         ],
         'donation_campaign' => [
-            'title' => 'Donation Campaigns',
+            'title' => 'Donation Campaign',
             'description' => 'For voluntary commitment: Present local initiatives or international aid projects and receive targeted support.',
         ],
         'charity_action' => [ 
-            'title' => 'Charity Actions',
+            'title' => 'Charity Action',
             'description' => 'Offer products for auction or direct purchase and support a good cause with the proceeds.',
         ],
     ],

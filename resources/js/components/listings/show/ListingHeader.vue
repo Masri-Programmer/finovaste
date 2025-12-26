@@ -1,7 +1,8 @@
 <template>
-    <header
-        class="absolute top-0 right-0 z-10 mb-6 flex items-center justify-between"
-    >
+    <header class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold">
+            {{ $t(`createListing.types.${listing.type}.title`) }}
+        </h1>
         <div class="flex items-center space-x-2">
             <ShareAction
                 :share-url="shareUrl"

@@ -6,6 +6,7 @@ use App\Models\Listing;
 use App\Models\Transaction;
 use App\Mail\ListingUpdated;
 use App\Traits\HasAppMessages; //
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class TransactionController extends Controller
         });
     }
 
-    public function buyItem(Request $request, Listing $listing)
+    public function buyItem(Request $request, Listing $listing, \App\Services\TransactionFeeCalculator $feeCalculator)
     {
         $item = $listing->listable;
         $quantity = $request->input('quantity', 1);
@@ -74,7 +75,7 @@ class TransactionController extends Controller
             abort(404);
         }
 
-        return DB::transaction(function () use ($listing, $item, $quantity) {
+        return DB::transaction(function () use ($listing, $item, $quantity, $feeCalculator) {
             $item = $item->lockForUpdate()->find($item->id);
 
             // 2. Check Stock
@@ -92,6 +93,7 @@ class TransactionController extends Controller
                 'payable_id'   => $item->id,
                 'type'         => 'purchase',
                 'amount'       => $totalAmount,
+                'fee'          => $feeCalculator->calculate($listing, (float) $totalAmount),
                 'quantity'     => $quantity,
                 'status'       => 'completed',
                 'metadata'     => [
@@ -136,7 +138,7 @@ class TransactionController extends Controller
     }
 
     // 3. Handle Donation
-    public function donate(Request $request, Listing $listing)
+    public function donate(Request $request, Listing $listing, \App\Services\TransactionFeeCalculator $feeCalculator)
     {
         $donation = $listing->listable;
 
@@ -144,7 +146,7 @@ class TransactionController extends Controller
             abort(404);
         }
 
-        return DB::transaction(function () use ($request, $listing, $donation) {
+        return DB::transaction(function () use ($request, $listing, $donation, $feeCalculator) {
 
             $donation = $donation->lockForUpdate()->find($donation->id);
 
@@ -155,6 +157,7 @@ class TransactionController extends Controller
                 'payable_id'   => $donation->id,
                 'type'         => 'donation',
                 'amount'       => $request->amount,
+                'fee'          => $feeCalculator->calculate($listing, (float) $request->amount),
                 'status'       => 'completed',
                 'metadata'     => [
                     'campaign_title' => $listing->title,
@@ -192,7 +195,7 @@ class TransactionController extends Controller
             'search' => 'nullable|string',
         ]);
 
-        $transactions = \App\Models\Transaction::where('user_id', Auth::id())
+        $transactions = Transaction::where('user_id', Auth::id())
             ->with(['payable.listing'])
             ->when($filters['type'] ?? null, function ($q, $type) {
                 $q->where('type', $type);
@@ -212,31 +215,31 @@ class TransactionController extends Controller
 
     public function receipt(Transaction $transaction)
     {
-        \Illuminate\Support\Facades\Log::info('Receipt download requested', ['uuid' => $transaction->uuid, 'user_id' => \Illuminate\Support\Facades\Auth::id()]);
+       Log::info('Receipt download requested', ['uuid' => $transaction->uuid, 'user_id' =>Auth::id()]);
 
-        if ($transaction->user_id !== \Illuminate\Support\Facades\Auth::id()) {
-            \Illuminate\Support\Facades\Log::warning('Unauthorized receipt access attempt', ['uuid' => $transaction->uuid, 'request_user' => \Illuminate\Support\Facades\Auth::id(), 'owner_user' => $transaction->user_id]);
+        if ($transaction->user_id !==Auth::id()) {
+           Log::warning('Unauthorized receipt access attempt', ['uuid' => $transaction->uuid, 'request_user' =>Auth::id(), 'owner_user' => $transaction->user_id]);
             abort(403);
         }
 
         if ($transaction->status !== 'completed') {
-            \Illuminate\Support\Facades\Log::warning('Receipt requested for non-completed transaction', ['uuid' => $transaction->uuid, 'status' => $transaction->status]);
+           Log::warning('Receipt requested for non-completed transaction', ['uuid' => $transaction->uuid, 'status' => $transaction->status]);
             return $this->checkError('Receipt is only available for completed transactions.');
         }
 
         try {
             $transaction->load(['payable.listing', 'user']);
-            \Illuminate\Support\Facades\Log::info('Transaction loaded for receipt', ['uuid' => $transaction->uuid]);
+           Log::info('Transaction loaded for receipt', ['uuid' => $transaction->uuid]);
 
             $pdf = Pdf::loadView('pdf.receipt', [
                 'transaction' => $transaction,
             ]);
 
-            \Illuminate\Support\Facades\Log::info('PDF view loaded', ['uuid' => $transaction->uuid]);
+           Log::info('PDF view loaded', ['uuid' => $transaction->uuid]);
 
             return $pdf->download("receipt-{$transaction->uuid}.pdf");
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('PDF generation failed', [
+           Log::error('PDF generation failed', [
                 'uuid' => $transaction->uuid,
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()

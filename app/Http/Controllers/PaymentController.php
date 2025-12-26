@@ -16,7 +16,7 @@ use Stripe\Checkout\Session;
 
 class PaymentController extends Controller
 {
-    public function checkout(Request $request, Listing $listing)
+    public function checkout(Request $request, Listing $listing, \App\Services\TransactionFeeCalculator $feeCalculator)
     {
         $user = Auth::user();
 
@@ -61,12 +61,16 @@ class PaymentController extends Controller
                 return $this->checkError('messages.errors.invalid_listing_type');
         }
 
+        // Calculate Fee
+        $fee = $feeCalculator->calculate($listing, (float) $amount);
+
         // 3. Create Pending Transaction
         $transaction = Transaction::create([
             'user_id' => $user->id,
             'payable_type' => $listing->listable_type,
             'payable_id' => $listing->listable_id,
             'amount' => $amount,
+            'fee' => $fee,
             'currency' => 'EUR',
             'status' => 'pending',
             'type' => $transactionType,
