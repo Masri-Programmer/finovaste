@@ -36,7 +36,7 @@ class TranslateSyncCommand extends Command
         }
 
         // Get API Key
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.key');
         if (!$apiKey) {
             $apiKey = $this->secret('Enter your Gemini API Key:');
         }
