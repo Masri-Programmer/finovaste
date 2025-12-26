@@ -50,7 +50,7 @@ const submitBid = () => {
                 v-if="listing.is_expired"
                 class="text-center text-sm font-bold text-destructive"
             >
-                {{ $t('listings.common.expired') }}
+                {{ $t('messages.errors.listing_expired') }}
             </div>
 
             <form
@@ -73,11 +73,7 @@ const submitBid = () => {
                         type="submit"
                         :disabled="bidForm.processing || listing.is_expired"
                     >
-                        {{
-                            listing.is_expired
-                                ? $t('listings.common.status.expired')
-                                : $t('listings.auction.bid_btn')
-                        }}
+                        {{ $t('listings.auction.bid_btn') }}
                     </Button>
                 </div>
             </form>

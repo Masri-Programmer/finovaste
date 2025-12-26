@@ -16,14 +16,12 @@ const { formatCurrency, getProgress } = useFormatting();
             <div class="mb-1 flex justify-between text-sm font-medium">
                 <span>{{ $t('listings.donationsRaised') }}</span>
                 <span class="text-foreground">
-                    {{ formatCurrency(listable.amount_raised) }} /
+                    {{ formatCurrency(listable.raised) }} /
                     {{ formatCurrency(listable.target) }}
                 </span>
             </div>
             <Progress
-                :model-value="
-                    getProgress(listable.amount_raised, listable.target)
-                "
+                :model-value="getProgress(listable.raised, listable.target)"
                 class="[&>*]:bg-destructive"
             />
         </div>

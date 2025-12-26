@@ -63,7 +63,8 @@ class ListingSeeder extends SeederOnce
         $category = Category::first();
         
         // Ensure user has an address
-        $address = $user->addresses()->first() ?? AddressFactory::new()->create(['user_id' => $user->id]);
+        $address = $user->addresses()->first() 
+            ?? \App\Models\Address::factory()->for($user, 'addressable')->create();
 
         // --- 1. Manual Auction ---
         $auction = AuctionListing::create([

@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->foreignId('listing_id')->constrained()->cascadeOnDelete();
         $table->string('title')->nullable();
-        $table->text('content')->nullable()->change();
+        $table->text('content')->nullable();
         $table->string('type')->default('general');
         $table->string('translation_key')->nullable();
         $table->json('attributes')->nullable();

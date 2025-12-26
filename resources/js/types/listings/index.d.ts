@@ -187,7 +187,7 @@ export interface InvestmentListable {
     minimum_investment: number;
     shares_offered: number;
     share_price: number;
-    amount_raised: number;
+    raised: number;
     investors_count: number;
     created_at: string | null;
     updated_at: string | null;
@@ -219,7 +219,7 @@ export interface AuctionListable {
 export interface DonationListable {
     id: number;
     target: number; // Cast decimal:2 usually results in string/number
-    raised: number; // Changed from amount_raised to match DonationListing.php
+    raised: number; // Changed from raised to match DonationListing.php
     donors_count: number;
     is_capped: boolean;
     requires_verification: boolean; // Added from DonationListing.php

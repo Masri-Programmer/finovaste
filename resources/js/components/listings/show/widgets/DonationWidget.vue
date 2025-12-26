@@ -82,7 +82,7 @@ const donate = () => {
                 v-if="listing.is_expired"
                 class="text-sm font-bold text-destructive"
             >
-                {{ $t('listings.common.expired') }}
+                {{ $t('messages.errors.listing_expired') }}
             </div>
         </div>
 
@@ -104,7 +104,7 @@ const donate = () => {
         >
             <span v-if="processing">{{ $t('actions.processing') }}</span>
             <span v-else-if="listing.is_expired">{{
-                $t('listings.common.expired')
+                $t('messages.errors.listing_expired')
             }}</span>
             <span v-else>{{ $t('listings.donation.action_btn') }}</span>
         </Button>

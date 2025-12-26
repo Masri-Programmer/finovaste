@@ -34,7 +34,7 @@ class WebhookController extends Controller
                     if ($payable) {
                         switch ($transaction->payable_type) {
                             case 'App\Models\DonationListing':
-                                $payable->increment('amount_raised', $transaction->amount);
+                                $payable->increment('raised', $transaction->amount);
                                 $payable->increment('donors_count');
                                 break;
                             case 'App\Models\AuctionListing':

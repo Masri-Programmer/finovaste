@@ -6,8 +6,6 @@ use App\Models\Bid;
 use App\Models\Listing;
 use App\Models\User;
 use App\Models\AuctionListing;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Kdabrow\SeederOnce\SeederOnce;
 class BidSeeder extends SeederOnce
 {

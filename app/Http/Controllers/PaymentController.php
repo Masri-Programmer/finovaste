@@ -283,7 +283,7 @@ class PaymentController extends Controller
                         $item->decrement('quantity', 1);
                     }
                     if ($item instanceof DonationListing) {
-                        $item->increment('amount_raised', (float) $transaction->amount);
+                        $item->increment('raised', (float) $transaction->amount);
                         $item->increment('donors_count');
                     }
                      // Add Investment logic if needed

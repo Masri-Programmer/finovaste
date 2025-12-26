@@ -167,7 +167,7 @@ class TransactionController extends Controller
                 ]
             ]);
 
-            $donation->increment('amount_raised', $request->amount);
+            $donation->increment('raised', $request->amount);
             $donation->increment('donors_count');
 
             // Notify Subscribers

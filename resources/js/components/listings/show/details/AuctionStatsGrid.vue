@@ -47,18 +47,17 @@
             />
         </template>
     </section>
-    <div class="space-y-1.5">
+    <!-- <div class="space-y-1.5">
         <div class="flex justify-between text-xs text-muted-foreground">
             <span>{{ $t('listing_details.started') }}</span>
             <span>{{ $t('listing_details.ending') }}</span>
         </div>
 
         <Progress v-model="progressPercentage" class="h-2 w-full" />
-    </div>
+    </div> -->
 </template>
 
 <script setup lang="ts">
-import { Progress } from '@/components/ui/progress';
 import { formatCurrency } from '@/composables/useCurrency';
 import type {
     AuctionListable,

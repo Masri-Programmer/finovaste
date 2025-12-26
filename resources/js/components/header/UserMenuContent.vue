@@ -10,10 +10,16 @@ import { logout } from '@/routes';
 import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/listings/users';
 import { edit } from '@/routes/profile';
-import {index as transactions} from '@/routes/transactions';
+import { index as transactions } from '@/routes/transactions';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { CreditCard, LogOut, Scroll, Settings, User as UserIcon } from 'lucide-vue-next';
+import {
+    CreditCard,
+    LogOut,
+    Scroll,
+    Settings,
+    User as UserIcon,
+} from 'lucide-vue-next';
 interface Props {
     user: User;
     roles: Array<string>;

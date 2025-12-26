@@ -53,6 +53,6 @@ class RegisteredUserController extends Controller
 
         $request->session()->regenerate();
 
-        return to_route('home');
+        return to_route('verification.notice');
     }
 }

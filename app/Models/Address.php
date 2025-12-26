@@ -57,4 +57,12 @@ class Address extends Model
     {
         return $this->hasMany(Listing::class);
     }
+
+    /**
+     * Get the owning addressable model.
+     */
+    public function addressable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo();
+    }
 }
